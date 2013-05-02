@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Reunion Scripts" default="jar" basedir=".">
+	<description>
+		This script is based on L2J reunion build script.
+	</description>
+
+	<property name="src" location="java" />
+	<property name="lib" location="lib" />
+	<property name="build" location="build" />
+	<property name="build.classes" location="${build}/classes" />
+
+	<path id="classpath">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="checkRequirements" description="Check Requirements.">
+		<fail message="Ant 1.8.2 is required. But your version is ${ant.version} and if you are using Eclipse probably is outdated.">
+			<condition>
+				<not>
+					<antversion atleast="1.8.2" />
+				</not>
+			</condition>
+		</fail>
+		<available classname="java.lang.AutoCloseable" property="JDK7.present" />
+		<fail unless="JDK7.present" message="Java 1.7 is required. But your version is Java ${ant.java.version} and probably JDK is not installed." />
+	</target>
+
+	<target name="init" depends="checkRequirements" description="Create the output directories.">
+		<delete dir="${build}" quiet="true" />
+		<mkdir dir="${build.classes}" />
+	</target>
+
+	<target name="compile" depends="init" description="Compile the source.">
+		<javac destdir="${build.classes}" debug="true" debuglevel="lines,vars,source" includeantruntime="false" source="1.7" target="1.7">
+			<src path="${src}" />
+			<classpath refid="classpath" />
+		</javac>
+		<echo message="Protecting Reunion Scripts...." />
+		<java classname="ru.catssoftware.CatsByteGuard">
+			<arg value="${build.classes}" />
+			<classpath>
+				<path location="${lib}/CatsByteGuard.jar"/>
+			</classpath>
+		</java>
+		<echo message="Protecting Reunion Scripts Done...." />
+	</target>
+
+	<target name="jar" depends="compile" description="Create the jar file">
+		<jar destfile="${build}/reunion-scripts.jar">
+			<fileset dir="${build.classes}" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Built-Date" value="${build.tstamp}" />
+			</manifest>
+		</jar>
+	</target>
+</project>
