@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.transformations;
 
 import l2r.gameserver.datatables.SkillTable;
-import l2r.gameserver.instancemanager.TransformationManager;
 import l2r.gameserver.model.L2Transformation;
 
 public class Anakim extends L2Transformation
@@ -100,6 +99,6 @@ public class Anakim extends L2Transformation
 	
 	public static void main(String[] args)
 	{
-		TransformationManager.getInstance().registerTransformation(new Anakim());
+		new Anakim();
 	}
 }
