@@ -1,4 +1,4 @@
-package l2r.gameserver.scripts.ai.group_template;
+package l2r.gameserver.scripts.ai.npc.selmahum;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -242,7 +242,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 					mob.startFear();
 					mob.setRunning();
 					mob.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(fearLocX, fearLocY, mob.getZ(), fearHeading));
-					startQuestTimer("LineUpRank", 30000L, mob, null);
+					startQuestTimer("LineUpRank", 30000, mob, null);
 				}
 			}
 			cancelQuestTimer("Animate", npc, null);
@@ -334,7 +334,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 					}
 				}
 			}
-			startQuestTimer("Animate", 15000L, npc, null);
+			startQuestTimer("Animate", 15000, npc, null);
 		}
 		return null;
 	}
@@ -364,6 +364,5 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 			this.spawns = spawns;
 			this.recruits = new ArrayList<>();
 		}
-		
 	}
 }
