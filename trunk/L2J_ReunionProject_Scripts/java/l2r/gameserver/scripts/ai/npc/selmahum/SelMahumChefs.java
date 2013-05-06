@@ -1,4 +1,4 @@
-package l2r.gameserver.scripts.ai.group_template;
+package l2r.gameserver.scripts.ai.npc.selmahum;
 
 import java.io.File;
 import java.util.Map;
@@ -25,8 +25,8 @@ import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.network.NpcStringId;
+import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.network.serverpackets.MoveToLocation;
-import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
 import l2r.util.Rnd;
@@ -45,11 +45,12 @@ public class SelMahumChefs extends AbstractNpcAI
 		22788
 	};
 	
-	private static final NpcStringId[] CHEF_FSTRINGS =
+	protected static final NpcStringId[] CHEF_FSTRINGS =
 	{
 		NpcStringId.I_BROUGHT_THE_FOOD,
 		NpcStringId.COME_AND_EAT
 	};
+	
 	private static final int CAMP_FIRE = 18927;
 	private static final int FIRE_FEED = 18933;
 	private static final int SKILL_TIRED = 6331;
@@ -217,6 +218,12 @@ public class SelMahumChefs extends AbstractNpcAI
 				}
 			}
 		}
+		else if (!Util.contains(SELMAHUM_SQUAD_LEADERS, npc.getNpcId()))
+		{
+			npc.setDisplayEffect(0);
+			npc.setIsNoRndWalk(false);
+		}
+		
 		return null;
 	}
 	
@@ -253,7 +260,6 @@ public class SelMahumChefs extends AbstractNpcAI
 					int yDiff = (group.chef.getY() - fire.getY()) > 0 ? -Rnd.get(30, 40) : Rnd.get(30, 40);
 					group.chef.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(fire.getX() - xDiff, fire.getY() - yDiff, fire.getZ(), calculateHeading(group.chef, fire)));
 					fireplaces.replace(fire, Integer.valueOf(1));
-					group.chef.broadcastPacket(new NpcSay(group.chef.getObjectId(), 0, group.chef.getNpcId(), CHEF_FSTRINGS[Rnd.get(2)]));
 					ThreadPoolManager.getInstance().scheduleAi(new FireplaceTask(group, fire), 1000L);
 					break;
 				}
@@ -529,6 +535,7 @@ public class SelMahumChefs extends AbstractNpcAI
 				L2Npc feed = addSpawn(FIRE_FEED, this.fireplace.getX(), this.fireplace.getY(), this.fireplace.getZ(), 0, false, 0L, false);
 				feed.isShowName();
 				SelMahumChefs.fireplacesFeed.put(this.fireplace, feed);
+				group.chef.broadcastPacket(new CreatureSay(group.chef.getObjectId(), 0, group.chef.getName(), CHEF_FSTRINGS[Quest.getRandom(2)]));
 				for (L2Character leader : this.group.chef.getKnownList().getKnownCharactersInRadius(1500L))
 				{
 					if ((leader instanceof L2MonsterInstance))
