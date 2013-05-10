@@ -416,13 +416,13 @@ public class SelMahumChefs extends AbstractNpcAI
 		@Override
 		public void run()
 		{
-			if ((this.mob != null) && (!this.mob.isInCombat()) && (!this.mob.isDead()))
+			if ((mob != null) && (!mob.isInCombat()) && (!mob.isDead()))
 			{
-				if ((this.mob.getFirstEffect(SKILL_FULL) == null) && (this.mob.getFirstEffect(SKILL_TIRED) == null))
+				if ((mob.getFirstEffect(SKILL_FULL) == null) && (mob.getFirstEffect(SKILL_TIRED) == null))
 				{
-					this.mob.setIsNoRndWalk(false);
-					this.mob.setDisplayEffect(3);
-					this.mob.returnToSpawn();
+					mob.setIsNoRndWalk(false);
+					mob.setDisplayEffect(3);
+					mob.returnToSpawn();
 				}
 				else
 				{
@@ -446,25 +446,25 @@ public class SelMahumChefs extends AbstractNpcAI
 		@Override
 		public void run()
 		{
-			if (this.mob.isMoving())
+			if (mob.isMoving())
 			{
 				ThreadPoolManager.getInstance().scheduleAi(new MoveToFireplace(mob, type), 1000L);
 			}
-			else if ((!this.mob.isInCombat()) && (!this.mob.isDead()))
+			else if ((!mob.isInCombat()) && (!mob.isDead()))
 			{
-				if (this.type == 0)
+				if (type == 0)
 				{
-					SkillTable.getInstance().getInfo(SKILL_TIRED, 1).getEffects(this.mob, this.mob);
-					this.mob.setDisplayEffect(2);
+					SkillTable.getInstance().getInfo(SKILL_TIRED, 1).getEffects(mob, mob);
+					mob.setDisplayEffect(2);
 				}
-				else if (this.type == 1)
+				else if (type == 1)
 				{
-					SkillTable.getInstance().getInfo(SKILL_FULL, 1).getEffects(this.mob, this.mob);
-					this.mob.setDisplayEffect(1);
+					SkillTable.getInstance().getInfo(SKILL_FULL, 1).getEffects(mob, mob);
+					mob.setDisplayEffect(1);
 				}
-				this.mob.getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
-				this.mob.setIsNoRndWalk(true);
-				ThreadPoolManager.getInstance().scheduleAi(new ReturnFromFireplace(this.mob), 300000L);
+				mob.getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
+				mob.setIsNoRndWalk(true);
+				ThreadPoolManager.getInstance().scheduleAi(new ReturnFromFireplace(mob), 300000L);
 			}
 		}
 	}
@@ -483,8 +483,8 @@ public class SelMahumChefs extends AbstractNpcAI
 		@Override
 		public void run()
 		{
-			this.group.atFirePlace = false;
-			SelMahumChefs.fireplaces.replace(this.fire, Integer.valueOf(0));
+			group.atFirePlace = false;
+			SelMahumChefs.fireplaces.replace(fire, Integer.valueOf(0));
 		}
 	}
 	
@@ -502,27 +502,27 @@ public class SelMahumChefs extends AbstractNpcAI
 		@Override
 		public void run()
 		{
-			if ((this.fireplace.getDisplayEffect() == 0) && (SelMahumChefs.fireplacesFeed.containsKey(this.fireplace)))
+			if ((fireplace.getDisplayEffect() == 0) && (SelMahumChefs.fireplacesFeed.containsKey(fireplace)))
 			{
-				SelMahumChefs.fireplacesFeed.get(this.fireplace).deleteMe();
-				SelMahumChefs.fireplacesFeed.remove(this.fireplace);
+				SelMahumChefs.fireplacesFeed.get(fireplace).deleteMe();
+				SelMahumChefs.fireplacesFeed.remove(fireplace);
 			}
-			else if (this.fireplace.getDisplayEffect() == 0)
+			else if (fireplace.getDisplayEffect() == 0)
 			{
-				this.fireplace.setDisplayEffect(1);
-				for (L2Character leader : this.group.chef.getKnownList().getKnownCharactersInRadius(1500L))
+				fireplace.setDisplayEffect(1);
+				for (L2Character leader : group.chef.getKnownList().getKnownCharactersInRadius(1500L))
 				{
 					if ((leader instanceof L2MonsterInstance))
 					{
 						if (Util.contains(SelMahumChefs.SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getNpcId()))
 						{
-							if ((!leader.isInCombat()) && (!leader.isDead()) && (leader.getFirstEffect(SKILL_TIRED) == null) && (Util.calculateDistance(this.fireplace, leader, true) > 300.0D))
+							if ((!leader.isInCombat()) && (!leader.isDead()) && (leader.getFirstEffect(SKILL_TIRED) == null) && (Util.calculateDistance(fireplace, leader, true) > 300.0D))
 							{
 								int rndX = Rnd.get(100) < 50 ? -Rnd.get(50, 100) : Rnd.get(50, 100);
 								int rndY = Rnd.get(100) < 50 ? -Rnd.get(50, 100) : Rnd.get(50, 100);
-								Location fireplaceLoc = new Location(this.fireplace.getX(), this.fireplace.getY(), this.fireplace.getZ());
-								Location leaderLoc = new Location(this.fireplace.getX() + rndX, this.fireplace.getY() + rndY, this.fireplace.getZ());
-								L2CharPosition position = new L2CharPosition(this.fireplace.getX() + rndX, this.fireplace.getY() + rndY, this.fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
+								Location fireplaceLoc = new Location(fireplace.getX(), fireplace.getY(), fireplace.getZ());
+								Location leaderLoc = new Location(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ());
+								L2CharPosition position = new L2CharPosition(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
 								leader.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, position);
 								ThreadPoolManager.getInstance().scheduleAi(new MoveToFireplace((L2MonsterInstance) leader, 1), 100);
 							}
@@ -530,25 +530,25 @@ public class SelMahumChefs extends AbstractNpcAI
 					}
 				}
 			}
-			else if ((this.fireplace.getDisplayEffect() == 1) && (!SelMahumChefs.fireplacesFeed.containsKey(this.fireplace)))
+			else if ((fireplace.getDisplayEffect() == 1) && (!SelMahumChefs.fireplacesFeed.containsKey(fireplace)))
 			{
-				L2Npc feed = addSpawn(FIRE_FEED, this.fireplace.getX(), this.fireplace.getY(), this.fireplace.getZ(), 0, false, 0L, false);
+				L2Npc feed = addSpawn(FIRE_FEED, fireplace.getX(), fireplace.getY(), fireplace.getZ(), 0, false, 0L, false);
 				feed.isShowName();
-				SelMahumChefs.fireplacesFeed.put(this.fireplace, feed);
+				SelMahumChefs.fireplacesFeed.put(fireplace, feed);
 				group.chef.broadcastPacket(new CreatureSay(group.chef.getObjectId(), 0, group.chef.getName(), CHEF_FSTRINGS[Quest.getRandom(2)]));
-				for (L2Character leader : this.group.chef.getKnownList().getKnownCharactersInRadius(1500L))
+				for (L2Character leader : group.chef.getKnownList().getKnownCharactersInRadius(1500L))
 				{
 					if ((leader instanceof L2MonsterInstance))
 					{
 						if (Util.contains(SelMahumChefs.SELMAHUM_SQUAD_LEADERS, ((L2MonsterInstance) leader).getNpcId()))
 						{
-							if ((!leader.isInCombat()) && (!leader.isDead()) && (leader.getFirstEffect(SKILL_FULL) == null) && (Util.calculateDistance(this.fireplace, leader, true) > 300.0D))
+							if ((!leader.isInCombat()) && (!leader.isDead()) && (leader.getFirstEffect(SKILL_FULL) == null) && (Util.calculateDistance(fireplace, leader, true) > 300.0D))
 							{
 								int rndX = Rnd.get(100) < 50 ? -Rnd.get(50, 100) : Rnd.get(50, 100);
 								int rndY = Rnd.get(100) < 50 ? -Rnd.get(50, 100) : Rnd.get(50, 100);
-								Location fireplaceLoc = new Location(this.fireplace.getX(), this.fireplace.getY(), this.fireplace.getZ());
-								Location leaderLoc = new Location(this.fireplace.getX() + rndX, this.fireplace.getY() + rndY, this.fireplace.getZ());
-								L2CharPosition position = new L2CharPosition(this.fireplace.getX() + rndX, this.fireplace.getY() + rndY, this.fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
+								Location fireplaceLoc = new Location(fireplace.getX(), fireplace.getY(), fireplace.getZ());
+								Location leaderLoc = new Location(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ());
+								L2CharPosition position = new L2CharPosition(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
 								leader.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, position);
 								ThreadPoolManager.getInstance().scheduleAi(new MoveToFireplace((L2MonsterInstance) leader, 1), 100);
 							}
@@ -556,21 +556,21 @@ public class SelMahumChefs extends AbstractNpcAI
 					}
 				}
 			}
-			else if ((this.fireplace.getDisplayEffect() == 1) && (SelMahumChefs.fireplacesFeed.containsKey(this.fireplace)))
+			else if ((fireplace.getDisplayEffect() == 1) && (SelMahumChefs.fireplacesFeed.containsKey(fireplace)))
 			{
-				L2Npc feed = SelMahumChefs.fireplacesFeed.get(this.fireplace);
-				SelMahumChefs.fireplacesFeed.remove(this.fireplace);
-				SelMahumChefs.fireplaces.remove(this.fireplace);
-				L2Npc fire = addSpawn(CAMP_FIRE, this.fireplace);
+				L2Npc feed = SelMahumChefs.fireplacesFeed.get(fireplace);
+				SelMahumChefs.fireplacesFeed.remove(fireplace);
+				SelMahumChefs.fireplaces.remove(fireplace);
+				L2Npc fire = addSpawn(CAMP_FIRE, fireplace);
 				fire.isShowName();
 				fire.setDisplayEffect(0);
-				this.fireplace.deleteMe();
+				fireplace.deleteMe();
 				SelMahumChefs.fireplaces.put(fire, Integer.valueOf(1));
 				SelMahumChefs.fireplacesFeed.put(fire, feed);
-				this.fireplace = fire;
-				this.fireplace.setDisplayEffect(0);
+				fireplace = fire;
+				fireplace.setDisplayEffect(0);
 			}
-			this.group.lastFirePlaceId = this.fireplace.getObjectId();
+			group.lastFirePlaceId = fireplace.getObjectId();
 			ThreadPoolManager.getInstance().scheduleAi(new MoveChefFromFireplace(group, fireplace), 10000L);
 		}
 	}
@@ -666,7 +666,7 @@ public class SelMahumChefs extends AbstractNpcAI
 		public ChefGroup(int id)
 		{
 			this.id = id;
-			this.lastInvincible.set(0);
+			lastInvincible.set(0);
 		}
 	}
 }

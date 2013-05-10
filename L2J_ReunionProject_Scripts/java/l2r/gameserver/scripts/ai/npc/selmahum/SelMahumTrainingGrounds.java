@@ -362,7 +362,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 		{
 			this.id = id;
 			this.spawns = spawns;
-			this.recruits = new ArrayList<>();
+			recruits = new ArrayList<>();
 		}
 	}
 }
