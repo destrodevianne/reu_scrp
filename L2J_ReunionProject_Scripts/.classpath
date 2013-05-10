@@ -8,6 +8,6 @@
 	<classpathentry kind="lib" path="lib/trove-3.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/CatsByteGuard.jar"/>
 	<classpathentry kind="lib" path="lib/trove-3.0.3.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/L2J_ReunionProject_Core"/>
+	<classpathentry kind="lib" path="lib/l2reunion.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
