@@ -50,7 +50,7 @@ public class PremiumVCmd implements IVoicedCommandHandler
 				html3.append("<tr><td>Expires: <font color=\"00A5FF\">Never (Normal Account)<br1></font></td></tr>");
 				html3.append("<tr><td>Current Date: <font color=\"70FFCA\">" + String.valueOf(format.format(System.currentTimeMillis())) + " <br><br></font></td></tr><br><br1><br1>");
 				html3.append("<tr><td><font color=\"LEVEL\"><center>Premium Info & Rules<br1></font></td></tr>");
-				html3.append("<tr><td>Upgrade to Premium Account: <font color=\"70FFCA\"> http://www.L][Rbs.eu</font></td></tr>");
+				html3.append("<tr><td>Upgrade to Premium Account: <font color=\"70FFCA\"> http://www.l2reunion.eu</font></td></tr>");
 				html3.append("<tr><td>Premium Account: <font color=\"70FFCA\">Benefits<br1></font></td></tr>");
 				html3.append("<tr><td>Rate EXP: <font color=\"LEVEL\">" + PremiumServiceConfigs.PREMIUM_RATE_XP + " (Account Premium)<br1></font></td></tr>");
 				html3.append("<tr><td>Rate SP: <font color=\"LEVEL\">" + PremiumServiceConfigs.PREMIUM_RATE_SP + " (Account Premium)<br1></font></td></tr>");
