@@ -44,12 +44,9 @@ public class Banking implements IVoicedCommandHandler
 		}
 		else if (command.equals("deposit"))
 		{
-			if (activeChar.getInventory().getInventoryItemCount(57, 0) >= Config.BANKING_SYSTEM_ADENA)
+			if (activeChar.getInventory().getItemByItemId(57).getCount() >= Config.BANKING_SYSTEM_ADENA)
 			{
-				if (!activeChar.reduceAdena("Goldbar", Config.BANKING_SYSTEM_ADENA, activeChar, false))
-				{
-					return false;
-				}
+				activeChar.getInventory().destroyItemByItemId("Adena", 57, Config.BANKING_SYSTEM_ADENA, activeChar, false);
 				activeChar.getInventory().addItem("Goldbar", 3470, Config.BANKING_SYSTEM_GOLDBARS, activeChar, null);
 				activeChar.getInventory().updateDatabase();
 				activeChar.sendMessage("Thank you, you now have " + Config.BANKING_SYSTEM_GOLDBARS + " Goldbar(s), and " + Config.BANKING_SYSTEM_ADENA + " less adena.");
@@ -61,12 +58,9 @@ public class Banking implements IVoicedCommandHandler
 		}
 		else if (command.equals("withdraw"))
 		{
-			if (activeChar.getInventory().getInventoryItemCount(3470, 0) >= Config.BANKING_SYSTEM_GOLDBARS)
+			if (activeChar.getInventory().getItemByItemId(3470).getCount() >= Config.BANKING_SYSTEM_GOLDBARS)
 			{
-				if (!activeChar.destroyItemByItemId("Adena", 3470, Config.BANKING_SYSTEM_GOLDBARS, activeChar, false))
-				{
-					return false;
-				}
+				activeChar.getInventory().destroyItemByItemId("Goldbar", 3470, Config.BANKING_SYSTEM_GOLDBARS, activeChar, false);
 				activeChar.getInventory().addAdena("Adena", Config.BANKING_SYSTEM_ADENA, activeChar, null);
 				activeChar.getInventory().updateDatabase();
 				activeChar.sendMessage("Thank you, you now have " + Config.BANKING_SYSTEM_ADENA + " Adena, and " + Config.BANKING_SYSTEM_GOLDBARS + " less Goldbar(s).");
