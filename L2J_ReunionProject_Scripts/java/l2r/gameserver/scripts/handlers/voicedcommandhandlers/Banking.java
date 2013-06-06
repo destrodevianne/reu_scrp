@@ -1,26 +1,23 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
- * 
- * This file is part of L2J DataPack.
- * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 
 import l2r.Config;
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.network.serverpackets.InventoryUpdate;
 
 /**
  * This class trades Gold Bars for Adena and vice versa.
@@ -28,7 +25,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
  */
 public class Banking implements IVoicedCommandHandler
 {
-	private static final String[] _voicedCommands =
+	private static String[] _voicedCommands =
 	{
 		"bank",
 		"withdraw",
@@ -36,19 +33,21 @@ public class Banking implements IVoicedCommandHandler
 	};
 	
 	@Override
-	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String params)
+	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.equals("bank"))
+		if (command.equalsIgnoreCase("bank"))
 		{
 			activeChar.sendMessage(".deposit (" + Config.BANKING_SYSTEM_ADENA + " Adena = " + Config.BANKING_SYSTEM_GOLDBARS + " Goldbar) / .withdraw (" + Config.BANKING_SYSTEM_GOLDBARS + " Goldbar = " + Config.BANKING_SYSTEM_ADENA + " Adena)");
 		}
-		else if (command.equals("deposit"))
+		else if (command.equalsIgnoreCase("deposit"))
 		{
-			if (activeChar.getInventory().getItemByItemId(57).getCount() >= Config.BANKING_SYSTEM_ADENA)
+			if (activeChar.getInventory().getInventoryItemCount(57, 0) >= Config.BANKING_SYSTEM_ADENA)
 			{
-				activeChar.getInventory().destroyItemByItemId("Adena", 57, Config.BANKING_SYSTEM_ADENA, activeChar, false);
-				activeChar.getInventory().addItem("Goldbar", 3470, Config.BANKING_SYSTEM_GOLDBARS, activeChar, null);
+				InventoryUpdate iu = new InventoryUpdate();
+				activeChar.getInventory().reduceAdena("BanbingAdenaDestroy", Config.BANKING_SYSTEM_ADENA, activeChar, null);
+				activeChar.getInventory().addItem("BanbingGoldbarCreate", 3470, Config.BANKING_SYSTEM_GOLDBARS, activeChar, null);
 				activeChar.getInventory().updateDatabase();
+				activeChar.sendPacket(iu);
 				activeChar.sendMessage("Thank you, you now have " + Config.BANKING_SYSTEM_GOLDBARS + " Goldbar(s), and " + Config.BANKING_SYSTEM_ADENA + " less adena.");
 			}
 			else
@@ -56,13 +55,15 @@ public class Banking implements IVoicedCommandHandler
 				activeChar.sendMessage("You do not have enough Adena to convert to Goldbar(s), you need " + Config.BANKING_SYSTEM_ADENA + " Adena.");
 			}
 		}
-		else if (command.equals("withdraw"))
+		else if (command.equalsIgnoreCase("withdraw"))
 		{
-			if (activeChar.getInventory().getItemByItemId(3470).getCount() >= Config.BANKING_SYSTEM_GOLDBARS)
+			if (activeChar.getInventory().getInventoryItemCount(3470, 0) >= Config.BANKING_SYSTEM_GOLDBARS)
 			{
-				activeChar.getInventory().destroyItemByItemId("Goldbar", 3470, Config.BANKING_SYSTEM_GOLDBARS, activeChar, false);
-				activeChar.getInventory().addAdena("Adena", Config.BANKING_SYSTEM_ADENA, activeChar, null);
+				InventoryUpdate iu = new InventoryUpdate();
+				activeChar.getInventory().destroyItemByItemId("BankingGoldbarDestroy", 3470, Config.BANKING_SYSTEM_GOLDBARS, activeChar, null);
+				activeChar.getInventory().addAdena("BankingAdenaCreate", Config.BANKING_SYSTEM_ADENA, activeChar, null);
 				activeChar.getInventory().updateDatabase();
+				activeChar.sendPacket(iu);
 				activeChar.sendMessage("Thank you, you now have " + Config.BANKING_SYSTEM_ADENA + " Adena, and " + Config.BANKING_SYSTEM_GOLDBARS + " less Goldbar(s).");
 			}
 			else
