@@ -31,6 +31,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.util.Util;
+import gr.reunion.interf.NexusEvents;
 
 /**
  * A chat handler
@@ -98,44 +99,44 @@ public class ChatAll implements IChatHandler
 			/**
 			 * Match the character "." literally (Exactly 1 time) Match any character that is NOT a . character. Between one and unlimited times as possible, giving back as needed (greedy)
 			 */
-			// if (text.matches("\\.{1}[^\\.]+"))
-			// {
-			// activeChar.sendPacket(SystemMessageId.INCORRECT_SYNTAX);
-			// }
-			// else
-			// {
-			CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getAppearance().getVisibleName(), text);
-			CreatureSay cs2 = new CreatureSay(activeChar.getObjectId(), type, activeChar.getNamePrefix() + activeChar.getAppearance().getVisibleName(), text);
-			Collection<L2PcInstance> plrs = activeChar.getKnownList().getKnownPlayers().values();
-			if (activeChar.isGM())
+			if (text.matches("\\.{1}[^\\.]+") && NexusEvents.isInEvent(activeChar))
 			{
-				for (L2PcInstance player : plrs)
+				activeChar.sendPacket(SystemMessageId.INCORRECT_SYNTAX);
+			}
+			else
+			{
+				CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getAppearance().getVisibleName(), text);
+				CreatureSay cs2 = new CreatureSay(activeChar.getObjectId(), type, activeChar.getNamePrefix() + activeChar.getAppearance().getVisibleName(), text);
+				Collection<L2PcInstance> plrs = activeChar.getKnownList().getKnownPlayers().values();
+				if (activeChar.isGM())
 				{
-					if ((player != null) && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
+					for (L2PcInstance player : plrs)
 					{
-						player.sendPacket(cs2);
+						if ((player != null) && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
+						{
+							player.sendPacket(cs2);
+						}
 					}
 				}
-			}
-			else if (!activeChar.isGM())
-			{
-				for (L2PcInstance player : plrs)
+				else if (!activeChar.isGM())
 				{
-					if ((player != null) && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
+					for (L2PcInstance player : plrs)
 					{
-						player.sendPacket(cs);
+						if ((player != null) && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
+						{
+							player.sendPacket(cs);
+						}
 					}
 				}
+				if (activeChar.isGM())
+				{
+					activeChar.sendPacket(cs2);
+				}
+				else if (!activeChar.isGM())
+				{
+					activeChar.sendPacket(cs);
+				}
 			}
-			if (activeChar.isGM())
-			{
-				activeChar.sendPacket(cs2);
-			}
-			else if (!activeChar.isGM())
-			{
-				activeChar.sendPacket(cs);
-			}
-			// }
 		}
 	}
 	
