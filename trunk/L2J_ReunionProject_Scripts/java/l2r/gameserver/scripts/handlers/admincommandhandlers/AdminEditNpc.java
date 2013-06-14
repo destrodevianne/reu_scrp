@@ -51,7 +51,6 @@ import l2r.gameserver.model.actor.templates.L2NpcTemplate;
 import l2r.gameserver.model.items.L2Item;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.L2SkillType;
-import l2r.gameserver.model.stats.MoveType;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.util.StringUtil;
 
@@ -747,8 +746,8 @@ public class AdminEditNpc implements IAdminCommandHandler
 			adminReply.replace("%rHand%", String.valueOf(npc.getRightHand()));
 			adminReply.replace("%lHand%", String.valueOf(npc.getLeftHand()));
 			adminReply.replace("%enchant%", String.valueOf(npc.getEnchantEffect()));
-			adminReply.replace("%walkSpd%", String.valueOf(npc.getBaseMoveSpd(MoveType.WALK)));
-			adminReply.replace("%runSpd%", String.valueOf(npc.getBaseMoveSpd(MoveType.RUN)));
+			adminReply.replace("%walkSpd%", String.valueOf(npc.getBaseWalkSpd()));
+			adminReply.replace("%runSpd%", String.valueOf(npc.getBaseRunSpd()));
 			adminReply.replace("%factionId%", npc.getAIDataStatic().getClan() == null ? "" : npc.getAIDataStatic().getClan());
 			adminReply.replace("%factionRange%", String.valueOf(npc.getAIDataStatic().getClanRange()));
 		}
