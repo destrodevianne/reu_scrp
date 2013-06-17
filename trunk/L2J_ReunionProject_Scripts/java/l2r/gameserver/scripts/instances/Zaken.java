@@ -540,6 +540,8 @@ public class Zaken extends AbstractNpcAI
 		{
 			st = newQuestState(player);
 		}
+		
+		_log.info("Teleporting player to zaken: " + player.getName());
 		player.setInstanceId(world.getInstanceId());
 		Location loc = spawnLoc.get(Rnd.get(spawnLoc.size()));
 		player.teleToLocation(loc, false);
@@ -643,8 +645,11 @@ public class Zaken extends AbstractNpcAI
 			players = party.getMembers();
 		}
 		
+		int count = 1;
 		for (L2PcInstance member : players)
 		{
+			_log.info("Zaken Party Member " + count + ", Member name is: " + member.getName());
+			count++;
 			teleportPlayer(member, spawnLocs, (ZWorld) world);
 			world.addAllowed(member.getObjectId());
 			member.sendPacket(new PlaySound("BS01_A"));
@@ -940,7 +945,7 @@ public class Zaken extends AbstractNpcAI
 		else if (event.equalsIgnoreCase("nighttime") || event.equalsIgnoreCase("daytime") || event.equalsIgnoreCase("daytime83"))
 		{
 			L2Party party = player.getParty();
-			if (!DEBUG)
+			if (!DEBUG && !player.isGM())
 			{
 				if (party == null)
 				{
@@ -1007,6 +1012,10 @@ public class Zaken extends AbstractNpcAI
 				npc.setRHandId(candleStates.BLUE.getId());
 				npcUpdate(npc);
 				world._blueCandles++;
+				if (player != null)
+				{
+					_log.warning("Player: " + player.getName() + " fires a blue candle. Candle count is: " + world._blueCandles);
+				}
 				if (world._blueCandles == 4)
 				{
 					startQuestTimer("ZakenSpawn", 1000, npc, player);
