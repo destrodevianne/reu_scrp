@@ -37,13 +37,10 @@ import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.network.serverpackets.ShowBoard;
 
-/*
- * Q.Q
- */
 public class ClanSearcher extends Quest
 {
 	private static final int NpcId = 559;
-	private static final int paymentId = 40002; // custom festival adena
+	private static final int paymentId = 57; // Item Id to get
 	// "time left" update time in minutes
 	private static final int UPDATE_TIME = 60;
 	private static final int CLAN_PRESENTATION_DURATION = 604800000; // 604800000 = 1 week
@@ -326,7 +323,7 @@ public class ClanSearcher extends Quest
 				return;
 			}
 			
-			if (player.getInventory().getItemByItemId(paymentId).getCount() > money)
+			if ((player.getInventory().getItemByItemId(paymentId) != null) && (player.getInventory().getItemByItemId(paymentId).getCount() > money))
 			{
 				player.destroyItemByItemId("clanner", paymentId, money, player, true);
 			}
