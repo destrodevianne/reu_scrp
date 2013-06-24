@@ -31,6 +31,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.util.Util;
+import gr.reunion.configs.CustomServerConfigs;
 import gr.reunion.interf.NexusEvents;
 
 /**
@@ -52,6 +53,11 @@ public class ChatAll implements IChatHandler
 	@Override
 	public void handleChat(int type, L2PcInstance activeChar, String params, String text)
 	{
+		if (activeChar.isInOlympiadMode() && !activeChar.isGM() && CustomServerConfigs.ENABLE_OLY_ANTIFEED)
+		{
+			return;
+		}
+		
 		boolean vcd_used = false;
 		if (text.startsWith("."))
 		{

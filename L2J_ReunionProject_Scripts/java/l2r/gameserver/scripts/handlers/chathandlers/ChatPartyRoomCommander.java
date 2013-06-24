@@ -24,6 +24,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.util.Util;
+import gr.reunion.configs.CustomServerConfigs;
 
 /**
  * A chat handler
@@ -42,6 +43,11 @@ public class ChatPartyRoomCommander implements IChatHandler
 	@Override
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
 	{
+		if (activeChar.isInOlympiadMode() && !activeChar.isGM() && CustomServerConfigs.ENABLE_OLY_ANTIFEED)
+		{
+			return;
+		}
+		
 		if (activeChar.isInParty())
 		{
 			if (activeChar.getParty().isInCommandChannel() && activeChar.getParty().getCommandChannel().getLeader().equals(activeChar))

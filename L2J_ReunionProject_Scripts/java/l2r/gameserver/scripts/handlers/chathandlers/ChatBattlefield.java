@@ -26,6 +26,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.util.Util;
+import gr.reunion.configs.CustomServerConfigs;
 
 /**
  * A chat handler
@@ -44,6 +45,11 @@ public class ChatBattlefield implements IChatHandler
 	@Override
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
 	{
+		if (activeChar.isInOlympiadMode() && !activeChar.isGM() && CustomServerConfigs.ENABLE_OLY_ANTIFEED)
+		{
+			return;
+		}
+		
 		if (TerritoryWarManager.getInstance().isTWChannelOpen() && (activeChar.getSiegeSide() > 0))
 		{
 			if (activeChar.isChatBanned() && Util.contains(Config.BAN_CHAT_CHANNELS, type))
@@ -55,8 +61,12 @@ public class ChatBattlefield implements IChatHandler
 			{
 				CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getNamePrefix() + activeChar.getName(), text);
 				for (L2PcInstance player : L2World.getInstance().getAllPlayersArray())
+				{
 					if (player.getSiegeSide() == activeChar.getSiegeSide())
+					{
 						player.sendPacket(cs);
+					}
+				}
 				return;
 			}
 			
