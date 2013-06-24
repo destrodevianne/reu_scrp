@@ -27,6 +27,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.util.Util;
+import gr.reunion.configs.CustomServerConfigs;
 
 /**
  * Hero chat handler.
@@ -45,6 +46,11 @@ public class ChatHeroVoice implements IChatHandler
 	@Override
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
 	{
+		if (activeChar.isInOlympiadMode() && !activeChar.isGM() && CustomServerConfigs.ENABLE_OLY_ANTIFEED)
+		{
+			return;
+		}
+		
 		if (activeChar.isHero() || activeChar.canOverrideCond(PcCondOverride.CHAT_CONDITIONS))
 		{
 			if (activeChar.isChatBanned() && Util.contains(Config.BAN_CHAT_CHANNELS, type))
@@ -63,8 +69,10 @@ public class ChatHeroVoice implements IChatHandler
 				CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getNamePrefix() + activeChar.getName(), text);
 				for (L2PcInstance player : L2World.getInstance().getAllPlayersArray())
 				{
-					if (player != null && !BlockList.isBlocked(player, activeChar))
+					if ((player != null) && !BlockList.isBlocked(player, activeChar))
+					{
 						player.sendPacket(cs);
+					}
 				}
 				return;
 			}

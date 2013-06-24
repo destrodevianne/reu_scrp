@@ -28,6 +28,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.util.Util;
+import gr.reunion.configs.CustomServerConfigs;
 
 /**
  * Trade chat handler.
@@ -46,6 +47,11 @@ public class ChatTrade implements IChatHandler
 	@Override
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
 	{
+		if (activeChar.isInOlympiadMode() && !activeChar.isGM() && CustomServerConfigs.ENABLE_OLY_ANTIFEED)
+		{
+			return;
+		}
+		
 		if (activeChar.isChatBanned() && Util.contains(Config.BAN_CHAT_CHANNELS, type))
 		{
 			activeChar.sendPacket(SystemMessageId.CHATTING_IS_CURRENTLY_PROHIBITED);
