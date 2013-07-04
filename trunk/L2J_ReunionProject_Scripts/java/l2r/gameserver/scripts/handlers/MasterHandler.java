@@ -29,6 +29,7 @@ import l2r.gameserver.handler.AdminCommandHandler;
 import l2r.gameserver.handler.BypassHandler;
 import l2r.gameserver.handler.ChatHandler;
 import l2r.gameserver.handler.ItemHandler;
+import l2r.gameserver.handler.PunishmentHandler;
 import l2r.gameserver.handler.SkillHandler;
 import l2r.gameserver.handler.TargetHandler;
 import l2r.gameserver.handler.TelnetHandler;
@@ -53,7 +54,6 @@ import l2r.gameserver.scripts.handlers.actionhandlers.L2TrapAction;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminAdmin;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminAnnouncements;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminBBS;
-import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminBan;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminBuffs;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminCHSiege;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminCache;
@@ -104,6 +104,7 @@ import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminPetition;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminPledge;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminPolymorph;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminPremium;
+import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminPunishment;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminQuest;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminRepairChar;
 import l2r.gameserver.scripts.handlers.admincommandhandlers.AdminRes;
@@ -206,6 +207,9 @@ import l2r.gameserver.scripts.handlers.itemhandlers.SpecialXMas;
 import l2r.gameserver.scripts.handlers.itemhandlers.SpiritShot;
 import l2r.gameserver.scripts.handlers.itemhandlers.SummonItems;
 import l2r.gameserver.scripts.handlers.itemhandlers.TeleportBookmark;
+import l2r.gameserver.scripts.handlers.punishmenthandlers.BanHandler;
+import l2r.gameserver.scripts.handlers.punishmenthandlers.ChatBanHandler;
+import l2r.gameserver.scripts.handlers.punishmenthandlers.JailHandler;
 import l2r.gameserver.scripts.handlers.skillhandlers.BallistaBomb;
 import l2r.gameserver.scripts.handlers.skillhandlers.BeastSkills;
 import l2r.gameserver.scripts.handlers.skillhandlers.Blow;
@@ -333,6 +337,7 @@ public class MasterHandler
 		BypassHandler.class,
 		ChatHandler.class,
 		ItemHandler.class,
+		PunishmentHandler.class,
 		SkillHandler.class,
 		UserCommandHandler.class,
 		VoicedCommandHandler.class,
@@ -368,7 +373,6 @@ public class MasterHandler
 			// Admin Command Handlers
 			AdminAdmin.class,
 			AdminAnnouncements.class,
-			AdminBan.class,
 			AdminBBS.class,
 			AdminBuffs.class,
 			AdminCache.class,
@@ -418,6 +422,7 @@ public class MasterHandler
 			AdminPForge.class,
 			AdminPledge.class,
 			AdminPolymorph.class,
+			AdminPunishment.class,
 			AdminPremium.class,
 			AdminQuest.class,
 			AdminRepairChar.class,
@@ -531,6 +536,12 @@ public class MasterHandler
 			EventItem.class,
 			(AioBufferConfigs.ENABLE_AIO_BUFFER ? AioItemBuff.class : null),
 			(AioItemsConfigs.ENABLE_AIO_NPCS ? AioItemNpcs.class : null),
+		},
+		{
+			// Punishment Handlers
+			BanHandler.class,
+			ChatBanHandler.class,
+			JailHandler.class,
 		},
 		{
 			// Skill Handlers

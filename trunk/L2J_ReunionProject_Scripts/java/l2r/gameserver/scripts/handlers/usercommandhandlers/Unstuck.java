@@ -44,6 +44,12 @@ public class Unstuck implements IUserCommandHandler
 	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
+		if (activeChar.isJailed())
+		{
+			activeChar.sendMessage("You cannot use this function while you are jailed.");
+			return false;
+		}
+		
 		int unstuckTimer = (activeChar.getAccessLevel().isGm() ? 1000 : Config.UNSTUCK_INTERVAL * 1000);
 		
 		if (activeChar.isCastingNow() || activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() || activeChar.isInOlympiadMode() || activeChar.inObserverMode() || activeChar.isCombatFlagEquipped())

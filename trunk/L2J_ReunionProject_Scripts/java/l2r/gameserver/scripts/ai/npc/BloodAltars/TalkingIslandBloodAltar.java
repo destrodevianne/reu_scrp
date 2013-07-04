@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program.
+ */
 package l2r.gameserver.scripts.ai.npc.BloodAltars;
 
 import javolution.util.FastList;
@@ -7,6 +21,9 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.quest.Quest;
 import l2r.util.Rnd;
 
+/**
+ * Author: RobikBobik
+ */
 public class TalkingIslandBloodAltar extends Quest
 {
 	private static final long delay = Config.CHANGE_STATUS * 60 * 1000;
@@ -75,14 +92,9 @@ public class TalkingIslandBloodAltar extends Quest
 			@Override
 			public void run()
 			{
-				TalkingIslandBloodAltar.this.changestatus();
+				changestatus();
 			}
 		}, delay);
-	}
-	
-	public static void main(String[] args)
-	{
-		new TalkingIslandBloodAltar(-1, TalkingIslandBloodAltar.class.getSimpleName(), "ai");
 	}
 	
 	protected void manageNpcs(boolean spawnAlive)
@@ -91,7 +103,7 @@ public class TalkingIslandBloodAltar extends Quest
 		{
 			for (int[] spawn : BLOODALTARS_ALIVE_NPC)
 			{
-				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0L, false);
+				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false);
 				if (npc != null)
 				{
 					alivenpcs.add(npc);
@@ -114,7 +126,7 @@ public class TalkingIslandBloodAltar extends Quest
 		{
 			for (int[] spawn : BLOODALTARS_DEAD_NPC)
 			{
-				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0L, false);
+				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false);
 				if (npc != null)
 				{
 					deadnpcs.add(npc);
@@ -144,29 +156,30 @@ public class TalkingIslandBloodAltar extends Quest
 			{
 				if (Rnd.chance(Config.CHANCE_SPAWN))
 				{
-					TalkingIslandBloodAltar.this.manageNpcs(false);
-					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+					boolean aliveSpawned = false;
+					if (!aliveSpawned)
 					{
-						@Override
-						public void run()
-						{
-							TalkingIslandBloodAltar.this.changestatus();
-						}
-					}, Config.RESPAWN_TIME * 60 * 1000);
-				}
-				else
-				{
-					TalkingIslandBloodAltar.this.manageNpcs(true);
-					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+						manageNpcs(false);
+					}
+					else
 					{
-						@Override
-						public void run()
+						manageNpcs(true);
+						ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 						{
-							TalkingIslandBloodAltar.this.changestatus();
-						}
-					}, Config.RESPAWN_TIME * 60 * 1000);
+							@Override
+							public void run()
+							{
+								changestatus();
+							}
+						}, Config.RESPAWN_TIME * 60 * 1000);
+					}
 				}
 			}
-		}, 10000L);
+		}, 10000);
+	}
+	
+	public static void main(String[] args)
+	{
+		new TalkingIslandBloodAltar(-1, TalkingIslandBloodAltar.class.getSimpleName(), "ai");
 	}
 }
