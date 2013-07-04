@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program.
+ */
 package l2r.gameserver.scripts.ai.npc.BloodAltars;
 
 import javolution.util.FastList;
@@ -8,9 +22,13 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.util.Rnd;
 
+/**
+ * Author: RobikBobik
+ */
 public class HeineBloodAltar extends Quest
 {
 	private static final long delay = Config.CHANGE_STATUS * 60 * 1000;
+	protected static boolean bossesSpawned = false;
 	
 	private final FastList<L2Npc> deadnpcs = new FastList<>();
 	private final FastList<L2Npc> alivenpcs = new FastList<>();
@@ -101,14 +119,9 @@ public class HeineBloodAltar extends Quest
 			@Override
 			public void run()
 			{
-				HeineBloodAltar.this.changestatus();
+				changestatus();
 			}
 		}, delay);
-	}
-	
-	public static void main(String[] args)
-	{
-		new HeineBloodAltar(-1, HeineBloodAltar.class.getSimpleName(), "ai");
 	}
 	
 	protected void manageNpcs(boolean spawnAlive)
@@ -117,7 +130,7 @@ public class HeineBloodAltar extends Quest
 		{
 			for (int[] spawn : BLOODALTARS_ALIVE_NPC)
 			{
-				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0L, false);
+				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false);
 				if (npc != null)
 				{
 					alivenpcs.add(npc);
@@ -140,7 +153,7 @@ public class HeineBloodAltar extends Quest
 		{
 			for (int[] spawn : BLOODALTARS_DEAD_NPC)
 			{
-				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0L, false);
+				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false);
 				if (npc != null)
 				{
 					deadnpcs.add(npc);
@@ -167,22 +180,23 @@ public class HeineBloodAltar extends Quest
 		{
 			for (int[] bossspawn : bossGroups)
 			{
-				L2Npc boss = addSpawn(bossspawn[0], bossspawn[1], bossspawn[2], bossspawn[3], bossspawn[4], false, 0L, false);
+				L2Npc boss = addSpawn(bossspawn[0], bossspawn[1], bossspawn[2], bossspawn[3], bossspawn[4], false, 0, false);
 				if (boss != null)
 				{
 					bosses.add(boss);
 				}
-				
 			}
-			
 		}
-		else if (!bosses.isEmpty())
+		else
 		{
-			for (L2Npc boss : bosses)
+			if (!bosses.isEmpty())
 			{
-				if (boss != null)
+				for (L2Npc boss : bosses)
 				{
-					boss.deleteMe();
+					if (boss != null)
+					{
+						boss.deleteMe();
+					}
 				}
 			}
 		}
@@ -197,30 +211,35 @@ public class HeineBloodAltar extends Quest
 			{
 				if (Rnd.chance(Config.CHANCE_SPAWN))
 				{
-					HeineBloodAltar.this.manageNpcs(false);
-					HeineBloodAltar.this.manageBosses(true);
-				}
-				else
-				{
-					HeineBloodAltar.this.manageBosses(false);
-					HeineBloodAltar.this.manageNpcs(true);
-					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+					if (!bossesSpawned)
 					{
-						@Override
-						public void run()
+						manageNpcs(false);
+						manageBosses(true);
+						bossesSpawned = true;
+					}
+					else
+					{
+						manageBosses(false);
+						manageNpcs(true);
+						bossesSpawned = false;
+						ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 						{
-							HeineBloodAltar.this.changestatus();
-						}
-					}, Config.RESPAWN_TIME * 60 * 1000);
+							@Override
+							public void run()
+							{
+								changestatus();
+							}
+						}, Config.RESPAWN_TIME * 60 * 1000);
+					}
 				}
 			}
-		}, 10000L);
+		}, 10000);
 	}
 	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		int npcId = npc.getNpcId();
+		final int npcId = npc.getNpcId();
 		
 		if (npcId == 25773)
 		{
@@ -232,7 +251,7 @@ public class HeineBloodAltar extends Quest
 			progress2 = true;
 		}
 		
-		if ((progress1) && (progress2))
+		if (progress1 && progress2)
 		{
 			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 			{
@@ -242,20 +261,24 @@ public class HeineBloodAltar extends Quest
 					progress1 = false;
 					progress2 = false;
 					
-					HeineBloodAltar.this.manageBosses(false);
-					HeineBloodAltar.this.manageNpcs(true);
+					manageBosses(false);
+					manageNpcs(true);
 					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 					{
 						@Override
 						public void run()
 						{
-							HeineBloodAltar.this.changestatus();
+							changestatus();
 						}
 					}, Config.RESPAWN_TIME * 60 * 1000);
 				}
-			}, 30000L);
+			}, 30000);
 		}
-		
 		return super.onKill(npc, player, isSummon);
+	}
+	
+	public static void main(String[] args)
+	{
+		new HeineBloodAltar(-1, HeineBloodAltar.class.getSimpleName(), "ai");
 	}
 }

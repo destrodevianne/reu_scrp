@@ -75,7 +75,7 @@ public class PvpZoneVCmd implements IVoicedCommandHandler
 			activeChar.sendMessage("You cannot use this feature while in olympiad.");
 			return false;
 		}
-		if (activeChar.isInJail())
+		if (activeChar.isJailed())
 		{
 			activeChar.sendMessage("You cannot use this feature while you are in Jail.");
 			return false;

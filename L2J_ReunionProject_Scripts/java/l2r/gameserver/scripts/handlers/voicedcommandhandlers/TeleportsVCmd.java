@@ -60,7 +60,7 @@ public class TeleportsVCmd implements IVoicedCommandHandler
 				activeChar.sendMessage("Cannot use while have pvp flag.");
 				return false;
 			}
-			if (activeChar.isInJail())
+			if (activeChar.isJailed())
 			{
 				activeChar.sendMessage("Cannot use while in jail.");
 				return false;

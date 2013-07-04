@@ -284,7 +284,7 @@ public class Wedding implements IVoicedCommandHandler
 			return false;
 		}
 		
-		if (activeChar.isInJail())
+		if (activeChar.isJailed())
 		{
 			activeChar.sendMessage("You are in Jail!");
 			return false;
@@ -345,7 +345,7 @@ public class Wedding implements IVoicedCommandHandler
 			return false;
 		}
 		
-		if (partner.isInJail())
+		if (partner.isJailed())
 		{
 			activeChar.sendMessage("Your partner is in Jail.");
 			return false;
