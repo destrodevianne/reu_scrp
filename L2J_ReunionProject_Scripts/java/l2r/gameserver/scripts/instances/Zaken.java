@@ -21,6 +21,7 @@ import java.util.List;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+import l2r.Config;
 import l2r.gameserver.GeoEngine;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.instancemanager.GrandBossManager;
@@ -412,8 +413,8 @@ public class Zaken extends AbstractNpcAI
 		
 		List<L2PcInstance> members;
 		int minLevel = 0; // nighttime haven't level limit
-		int minMembers = 3; // for daytime
-		int maxMembers = 27; // for daytime
+		int minMembers = Config.ZAKEN_MINMEMBERS_DAYTIME;
+		int maxMembers = Config.ZAKEN_MAXMEMBERS_DAYTIME;
 		
 		if (party.isInCommandChannel())
 		{
@@ -426,17 +427,17 @@ public class Zaken extends AbstractNpcAI
 		
 		if (choice.equalsIgnoreCase("daytime"))
 		{
-			minLevel = 55;
+			minLevel = Config.ZAKEN_MINLEVEL_DAYTIME;
 		}
 		else if (choice.equalsIgnoreCase("daytime83"))
 		{
-			minLevel = 78;
+			minLevel = Config.ZAKEN_MINLEVEL_DAYTIME83;
 		}
 		
 		if (choice.equalsIgnoreCase("nighttime"))
 		{
-			minMembers = 36;
-			maxMembers = 450;
+			minMembers = Config.ZAKEN_MINMEMBERS_NIGHTTIME;
+			maxMembers = Config.ZAKEN_MAXMEMBERS_NIGHTTIME;
 		}
 		
 		if (members.size() < minMembers)

@@ -143,8 +143,8 @@ public class FinalEmperialTomb extends Quest
 	}
 	
 	private static final int INSTANCEID = 136; // this is the client number
-	private static final int MIN_PLAYERS = 36;
-	private static final int MAX_PLAYERS = 45;
+	private static final int MIN_PLAYERS = Config.MIN_PLAYER_TO_FE;
+	private static final int MAX_PLAYERS = Config.MAX_PLAYER_TO_FE;
 	private static final boolean debug = false;
 	
 	private final Map<Integer, L2Territory> _spawnZoneList = new HashMap<>();
@@ -554,7 +554,7 @@ public class FinalEmperialTomb extends Quest
 		}
 		for (L2PcInstance channelMember : channel.getMembers())
 		{
-			if (channelMember.getLevel() < 80)
+			if (channelMember.getLevel() < Config.MIN_LEVEL_TO_FE)
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
 				sm.addPcName(channelMember);

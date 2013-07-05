@@ -17,6 +17,7 @@ package l2r.gameserver.scripts.instances;
 import java.util.Calendar;
 
 import javolution.util.FastMap;
+import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.NpcTable;
@@ -1287,17 +1288,17 @@ public class IceQueenCastle2 extends Quest
 			player.sendPacket(SystemMessageId.ONLY_PARTY_LEADER_CAN_ENTER);
 			return false;
 		}
-		// TODO: unhardcode freyas configs
+		
 		// Hard
 		if (_isHard && !_isEasy)
 		{
-			if (player.getParty().getCommandChannel().getMemberCount() < 11)
+			if (player.getParty().getCommandChannel().getMemberCount() < Config.MIN_PLAYERS_TO_HARD)
 			{
 				player.getParty().getCommandChannel().broadcastPacket(SystemMessage.getSystemMessage(2793).addNumber(10));
 				return false;
 			}
 			
-			if (player.getParty().getCommandChannel().getMemberCount() > 45)
+			if (player.getParty().getCommandChannel().getMemberCount() > Config.MAX_PLAYERS_TO_HARD)
 			{
 				player.getParty().getCommandChannel().broadcastPacket(SystemMessage.getSystemMessage(2102));
 				return false;
@@ -1306,13 +1307,13 @@ public class IceQueenCastle2 extends Quest
 		// Easy
 		else if (_isEasy && !_isHard)
 		{
-			if (player.getParty().getCommandChannel().getMemberCount() < 11)
+			if (player.getParty().getCommandChannel().getMemberCount() < Config.MIN_PLAYERS_TO_EASY)
 			{
 				player.getParty().getCommandChannel().broadcastPacket(SystemMessage.getSystemMessage(2793).addNumber(10));
 				return false;
 			}
 			
-			if (player.getParty().getCommandChannel().getMemberCount() > 27)
+			if (player.getParty().getCommandChannel().getMemberCount() > Config.MAX_PLAYERS_TO_EASY)
 			{
 				player.getParty().getCommandChannel().broadcastPacket(SystemMessage.getSystemMessage(2102));
 				return false;
@@ -1323,12 +1324,25 @@ public class IceQueenCastle2 extends Quest
 		{
 			QuestState st = partyMember.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
 			
-			if (partyMember.getLevel() < 82)
+			if (_isHard && !_isEasy)
 			{
-				SystemMessage sm = SystemMessage.getSystemMessage(2097);
-				sm.addPcName(partyMember);
-				player.getParty().getCommandChannel().broadcastPacket(sm);
-				return false;
+				if (partyMember.getLevel() < Config.MIN_PLAYER_LEVEL_TO_HARD)
+				{
+					SystemMessage sm = SystemMessage.getSystemMessage(2097);
+					sm.addPcName(partyMember);
+					player.getParty().getCommandChannel().broadcastPacket(sm);
+					return false;
+				}
+			}
+			else if (_isEasy && !_isHard)
+			{
+				if (partyMember.getLevel() < Config.MIN_PLAYER_LEVEL_TO_EASY)
+				{
+					SystemMessage sm = SystemMessage.getSystemMessage(2097);
+					sm.addPcName(partyMember);
+					player.getParty().getCommandChannel().broadcastPacket(sm);
+					return false;
+				}
 			}
 			
 			if (!Util.checkIfInRange(1000, player, partyMember, true))
