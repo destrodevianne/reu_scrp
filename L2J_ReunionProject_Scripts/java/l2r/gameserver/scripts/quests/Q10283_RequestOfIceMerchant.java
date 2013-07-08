@@ -19,7 +19,7 @@
 package l2r.gameserver.scripts.quests;
 
 import l2r.gameserver.ai.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
@@ -38,7 +38,7 @@ public class Q10283_RequestOfIceMerchant extends Quest
 	private static final int KIER = 32022;
 	private static final int JINIA = 32760;
 	// Location
-	private static final L2CharPosition MOVE_TO_END = new L2CharPosition(104457, -107010, -3698, 0);
+	private static final Location MOVE_TO_END = new Location(104457, -107010, -3698, 0);
 	// Misc
 	private boolean _jiniaOnSpawn = false;
 	
