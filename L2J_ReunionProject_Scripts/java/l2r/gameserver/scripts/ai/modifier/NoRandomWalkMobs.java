@@ -45,7 +45,7 @@ public class NoRandomWalkMobs extends AbstractNpcAI
 		29136, 29137, 29138, 29139, 29140, 29141, 29142, 29143, 29144, 29145, 29146, 29147,
 		29148, 29149, 32492, 32493, 32495, 32367,
 		// Sel mahums training grounds
-		22782,22785,
+		22780, 22781, 22782, 22783, 22784, 22785, 22775, 22776, 22777, 22778,
 		// 4th Seven Sign Epic Quest
 		18834, 18835, 27351,
 		// 8th Seven Sing Epic Quest
@@ -55,8 +55,10 @@ public class NoRandomWalkMobs extends AbstractNpcAI
 		22860, // Hungry Parasitic Leech
 		18256, // Four Sepulchers - Halishas chest
 		18231,18232,18233,18234,18235,18236,18237,18238,18239,18240,18241,18242,18243, // Four Sepulchers - Statue of Protection
-		//Krateis Cube
-		18601,18602
+		// Krateis Cube
+		18601,18602,
+		// Ekimus Feral Hound
+		29151
 	};
 	// @formatter:on
 	
