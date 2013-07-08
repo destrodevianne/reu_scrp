@@ -790,7 +790,7 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		else if (event.equalsIgnoreCase("32598-02.htm"))
 		{
 			st.giveItems(STAFF, 1);
-			player.sendPacket(SystemMessageId._3040);
+			player.sendPacket(SystemMessageId.USING_COURT_MAGICIANS_STAFF_TO_OPEN_DOOR);
 			st.playSound("ItemSound.quest_middle");
 		}
 		else if (event.equalsIgnoreCase("30969-11.htm"))
@@ -809,7 +809,7 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		else if (event.equalsIgnoreCase("32586-06.htm"))
 		{
 			// player.sendPacket(SystemMessageId._3031);
-			player.sendPacket(SystemMessageId._3039);
+			player.sendPacket(SystemMessageId.USING_EINHASAD_HOLY_WATER_TO_OPEN_DOOR);
 			st.playSound("ItemSound.quest_middle");
 			st.set("cond", "4");
 			st.giveItems(SWORD, 1);

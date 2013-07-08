@@ -19,7 +19,7 @@
 package l2r.gameserver.scripts.quests;
 
 import l2r.gameserver.ai.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -32,8 +32,7 @@ import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
 
 /**
- * Grave Robber Rescue (450)<br>
- * Original Jython script by Bloodshed.
+ * Grave Robber Rescue (450)
  * @author malyelfik
  */
 public class Q00450_GraveRobberRescue extends Quest
@@ -138,7 +137,7 @@ public class Q00450_GraveRobberRescue extends Quest
 			{
 				st.giveItems(EVIDENCE_OF_MIGRATION, 1);
 				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(npc.getX() + 100, npc.getY() + 100, npc.getZ(), 0));
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(npc.getX() + 100, npc.getY() + 100, npc.getZ(), 0));
 				npc.setBusy(true);
 				
 				startQuestTimer("despawn", 3000, npc, player);
