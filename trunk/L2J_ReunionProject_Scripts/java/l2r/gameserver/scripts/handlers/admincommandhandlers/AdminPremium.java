@@ -44,7 +44,7 @@ public class AdminPremium implements IAdminCommandHandler
 	{
 		if (command.equals("admin_premium_menu"))
 		{
-			AdminHelpPage.showHelpPage(activeChar, "premium_menu.htm");
+			AdminHtml.showAdminHtml(activeChar, "premium_menu.htm");
 		}
 		else if (command.startsWith("admin_premium_add1"))
 		{

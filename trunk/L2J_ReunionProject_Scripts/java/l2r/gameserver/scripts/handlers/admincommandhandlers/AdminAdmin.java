@@ -19,29 +19,16 @@
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import l2r.Config;
-import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.AdminTable;
-import l2r.gameserver.datatables.DoorTable;
-import l2r.gameserver.datatables.ItemTable;
-import l2r.gameserver.datatables.MultiSell;
-import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillTable;
-import l2r.gameserver.datatables.SpawnTable;
-import l2r.gameserver.datatables.TeleportLocationTable;
 import l2r.gameserver.handler.IAdminCommandHandler;
-import l2r.gameserver.instancemanager.QuestManager;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.olympiad.Olympiad;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
-import gr.reunion.configs.CustomConfigController;
-import gr.reunion.datatables.FakePcsTable;
 
 /**
  * This class handles following admin commands: - admin|admin1/admin2/admin3/admin4/admin5 = slots for the 5 starting admin menus - gmliston/gmlistoff = includes/excludes active character from /gmlist results - silence = toggles private messages acceptance mode - diet = toggles weight penalty mode -
@@ -67,7 +54,6 @@ public class AdminAdmin implements IAdminCommandHandler
 		"admin_silence",
 		"admin_diet",
 		"admin_tradeoff",
-		"admin_reload",
 		"admin_set",
 		"admin_set_mod",
 		"admin_saveolymp",
@@ -94,13 +80,13 @@ public class AdminAdmin implements IAdminCommandHandler
 		{
 			AdminTable.getInstance().showGm(activeChar);
 			activeChar.sendMessage("Registered into gm list");
-			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
+			AdminHtml.showAdminHtml(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_gmlistoff"))
 		{
 			AdminTable.getInstance().hideGm(activeChar);
 			activeChar.sendMessage("Removed from gm list");
-			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
+			AdminHtml.showAdminHtml(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_silence"))
 		{
@@ -114,7 +100,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				activeChar.setSilenceMode(true);
 				activeChar.sendPacket(SystemMessageId.MESSAGE_REFUSAL_MODE);
 			}
-			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
+			AdminHtml.showAdminHtml(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_saveolymp"))
 		{
@@ -179,7 +165,7 @@ public class AdminAdmin implements IAdminCommandHandler
 			{
 				activeChar.refreshOverloaded();
 			}
-			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
+			AdminHtml.showAdminHtml(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_tradeoff"))
 		{
@@ -210,103 +196,7 @@ public class AdminAdmin implements IAdminCommandHandler
 					activeChar.sendMessage("Trade refusal enabled");
 				}
 			}
-			AdminHelpPage.showHelpPage(activeChar, "gm_menu.htm");
-		}
-		else if (command.startsWith("admin_reload"))
-		{
-			StringTokenizer st = new StringTokenizer(command);
-			st.nextToken();
-			if (!st.hasMoreTokens())
-			{
-				activeChar.sendMessage("You need to specify a type to reload!");
-				activeChar.sendMessage("Usage: //reload <multisell|teleport|skill|npc|htm|item|config|npcwalkers|access|quests>");
-				return false;
-			}
-			
-			final String type = st.nextToken();
-			try
-			{
-				if (type.equals("multisell"))
-				{
-					MultiSell.getInstance().reload();
-					activeChar.sendMessage("All Multisells have been reloaded");
-				}
-				else if (type.startsWith("teleport"))
-				{
-					TeleportLocationTable.getInstance().reloadAll();
-					activeChar.sendMessage("Teleport Locations have been reloaded");
-				}
-				else if (type.startsWith("skill"))
-				{
-					SkillTable.getInstance().reload();
-					activeChar.sendMessage("All Skills have been reloaded");
-				}
-				else if (type.startsWith("npcId"))
-				{
-					Integer npcId = Integer.parseInt(st.nextToken());
-					if (npcId != null)
-					{
-						NpcTable.getInstance().reloadNpc(npcId);
-						for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
-						{
-							if (spawn != null)
-							{
-								spawn.respawnNpc(spawn.getLastSpawn());
-							}
-						}
-						activeChar.sendMessage("NPC " + npcId + " have been reloaded");
-					}
-				}
-				else if (type.equals("npc"))
-				{
-					NpcTable.getInstance().reloadAllNpc();
-					QuestManager.getInstance().reloadAllQuests();
-					activeChar.sendMessage("All NPCs have been reloaded");
-				}
-				else if (type.startsWith("htm"))
-				{
-					HtmCache.getInstance().reload();
-					activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " megabytes on " + HtmCache.getInstance().getLoadedFiles() + " files loaded");
-				}
-				else if (type.startsWith("item"))
-				{
-					ItemTable.getInstance().reload();
-					activeChar.sendMessage("Item Templates have been reloaded");
-				}
-				else if (type.startsWith("config"))
-				{
-					Config.load();
-					CustomConfigController.getInstance().reloadCustomConfigs();
-					activeChar.sendMessage("All Config Settings have been reloaded");
-				}
-				else if (type.startsWith("access"))
-				{
-					AdminTable.getInstance().load();
-					activeChar.sendMessage("Access Rights have been reloaded");
-				}
-				else if (type.startsWith("quests"))
-				{
-					QuestManager.getInstance().reloadAllQuests();
-					activeChar.sendMessage("All Quests have been reloaded.");
-				}
-				else if (type.startsWith("door"))
-				{
-					DoorTable.getInstance().load();
-					activeChar.sendMessage("All Doors have been reloaded");
-				}
-				else if (type.startsWith("fakenpc"))
-				{
-					FakePcsTable.getInstance().reloadData();
-					activeChar.sendMessage("All Fake NPC have been reloaded");
-				}
-				// activeChar.sendMessage("WARNING: There are several known issues regarding this feature. Reloading server data during runtime is STRONGLY NOT RECOMMENDED for live servers, just for developing environments.");
-			}
-			catch (Exception e)
-			{
-				activeChar.sendMessage("An error occured while reloading " + type + " !");
-				activeChar.sendMessage("Usage: //reload <multisell|teleport|skill|npc|htm|item|config|npcwalkers|access|quests>");
-				_log.log(Level.WARNING, "An error occured while reloading " + type + ": " + e, e);
-			}
+			AdminHtml.showAdminHtml(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_setconfig"))
 		{
@@ -365,7 +255,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				{
 					if (cmd[2].equalsIgnoreCase("mod"))
 					{
-						AdminHelpPage.showHelpPage(activeChar, "mods_menu.htm");
+						AdminHtml.showAdminHtml(activeChar, "mods_menu.htm");
 					}
 				}
 			}
@@ -421,7 +311,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				filename = "main";
 				break;
 		}
-		AdminHelpPage.showHelpPage(activeChar, filename + "_menu.htm");
+		AdminHtml.showAdminHtml(activeChar, filename + "_menu.htm");
 	}
 	
 	public void showConfigPage(L2PcInstance activeChar)
