@@ -26,7 +26,7 @@ public class AdminCustomCreateItem implements IAdminCommandHandler
 	{
 		if (command.equals("admin_custom_itemcreate"))
 		{
-			AdminHelpPage.showHelpPage(activeChar, "customitemcreation.htm");
+			AdminHtml.showAdminHtml(activeChar, "customitemcreation.htm");
 		}
 		else if (command.startsWith("admin_custom_create_item"))
 		{
@@ -47,7 +47,7 @@ public class AdminCustomCreateItem implements IAdminCommandHandler
 			{
 				activeChar.sendMessage("Specify a valid number.");
 			}
-			AdminHelpPage.showHelpPage(activeChar, "customitemcreation.htm");
+			AdminHtml.showAdminHtml(activeChar, "customitemcreation.htm");
 		}
 		else if (command.startsWith("admin_give_custom_item_target"))
 		{
@@ -77,7 +77,7 @@ public class AdminCustomCreateItem implements IAdminCommandHandler
 			{
 				activeChar.sendMessage("Specify a valid number.");
 			}
-			AdminHelpPage.showHelpPage(activeChar, "customitemcreation.htm");
+			AdminHtml.showAdminHtml(activeChar, "customitemcreation.htm");
 		}
 		return true;
 	}
