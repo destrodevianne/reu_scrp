@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://L2J.EternityWorld.ru/>.
- */
 package l2r.gameserver.scripts.quests;
 
 import java.util.HashMap;
@@ -285,12 +271,18 @@ public class Q00999_T1Tutorial extends Quest
 		 */
 		
 		for (int startNpc : NPCS)
+		{
 			addStartNpc(startNpc);
+		}
 		
 		for (int FirstTalkId : NPCS)
+		{
 			addFirstTalkId(FirstTalkId);
+		}
 		for (int TalkId : NPCS)
+		{
 			addTalkId(TalkId);
+		}
 		
 		addKillId(18342);
 		addKillId(20001);
@@ -300,14 +292,18 @@ public class Q00999_T1Tutorial extends Quest
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		if (Config.DISABLE_TUTORIAL)
+		{
 			return null;
+		}
 		
 		String htmltext = event;
 		
 		QuestState st = player.getQuestState(getName());
 		QuestState qs = player.getQuestState(qnTutorial);
 		if (qs == null)
+		{
 			return htmltext;
+		}
 		
 		int Ex = qs.getInt("Ex");
 		
@@ -316,9 +312,13 @@ public class Q00999_T1Tutorial extends Quest
 			if (Ex == 0)
 			{
 				if (player.getClassId().isMage())
+				{
 					st.playTutorialVoice("tutorial_voice_009b");
+				}
 				else
+				{
 					st.playTutorialVoice("tutorial_voice_009a");
+				}
 				qs.set("Ex", "1");
 			}
 			else if (Ex == 3)
@@ -359,22 +359,30 @@ public class Q00999_T1Tutorial extends Quest
 			final int gift2 = (Integer) map[9];
 			final int count2 = (Integer) map[10];
 			if (radarX != 0)
+			{
 				st.addRadar(radarX, radarY, radarZ);
-			if (st.getQuestItemsCount(item) > 0 && st.getInt("onlyone") == 0)
+			}
+			if ((st.getQuestItemsCount(item) > 0) && (st.getInt("onlyone") == 0))
 			{
 				st.addExpAndSp(0, 50);
 				st.startQuestTimer("TimerEx_GrandMaster", 60000);
 				st.takeItems(item, 1);
 				st.set("step", "3");
 				if (Ex <= 3)
+				{
 					qs.set("Ex", "4");
+				}
 				if (st.getPlayer().getClassId().getId() == classId1)
 				{
 					st.giveItems(gift1, count1);
 					if (gift1 == SPIRITSHOT_NOVICE)
+					{
 						st.playTutorialVoice("tutorial_voice_027");
+					}
 					else
+					{
 						st.playTutorialVoice("tutorial_voice_026");
+					}
 				}
 				else if (st.getPlayer().getClassId().getId() == classId2)
 				{
@@ -395,36 +403,42 @@ public class Q00999_T1Tutorial extends Quest
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		if (Config.DISABLE_TUTORIAL)
+		{
 			return null;
+		}
 		
 		String htmltext = "";
 		QuestState st = player.getQuestState(getName());
 		QuestState qs = player.getQuestState(qnTutorial);
 		
-		if (qs == null || qs.isCompleted())
+		if ((qs == null) || qs.isCompleted())
 		{
 			npc.showChatWindow(player);
 			return null;
 		}
 		
 		if (st == null)
+		{
 			st = newQuestState(player);
+		}
 		
 		int onlyone = st.getInt("onlyone");
 		int Ex = qs.getInt("Ex");
 		int step = st.getInt("step");
 		Talk talk = Talks.get(npc.getNpcId());
 		
-		if ((player.getLevel() >= 10 || onlyone != 0) && talk.npcTyp == 1)
-			htmltext = "30575-05.htm";
-		else if (onlyone == 0 && player.getLevel() < 10)
+		if (((player.getLevel() >= 10) || (onlyone != 0)) && (talk.npcTyp == 1))
 		{
-			if (talk != null && player.getRace().ordinal() == talk.raceId)
+			htmltext = "30575-05.htm";
+		}
+		else if ((onlyone == 0) && (player.getLevel() < 10))
+		{
+			if ((talk != null) && (player.getRace().ordinal() == talk.raceId))
 			{
 				htmltext = talk.htmlfiles[0];
 				if (talk.npcTyp == 1)
 				{
-					if (step == 0 && Ex < 0)
+					if ((step == 0) && (Ex < 0))
 					{
 						qs.set("Ex", "0");
 						st.startQuestTimer("TimerEx_NewbieHelper", 30000);
@@ -440,7 +454,7 @@ public class Q00999_T1Tutorial extends Quest
 							st.setState(State.STARTED);
 						}
 					}
-					else if (step == 1 && st.getQuestItemsCount(talk.item) == 0 && Ex <= 2)
+					else if ((step == 1) && (st.getQuestItemsCount(talk.item) == 0) && (Ex <= 2))
 					{
 						if (st.getQuestItemsCount(BLUE_GEM) != 0)
 						{
@@ -456,7 +470,9 @@ public class Q00999_T1Tutorial extends Quest
 								st.giveItems(SPIRITSHOT_NOVICE, 100);
 								htmltext = talk.htmlfiles[2];
 								if (htmltext.equals(""))
+								{
 									htmltext = "<html><body>I am sorry.  I only help warriors.  Please go to another Newbie Helper who may assist you.</body></html>";
+								}
 							}
 							else
 							{
@@ -464,43 +480,63 @@ public class Q00999_T1Tutorial extends Quest
 								st.giveItems(SOULSHOT_NOVICE, 200);
 								htmltext = talk.htmlfiles[1];
 								if (htmltext.equals(""))
+								{
 									htmltext = "<html><body>I am sorry.  I only help mystics.  Please go to another Newbie Helper who may assist you.</body></html>";
+								}
 							}
 						}
 						else
 						{
 							if (player.getClassId().isMage())
+							{
 								htmltext = "30131-02.htm";
+							}
 							if (player.getRace().ordinal() == 3)
+							{
 								htmltext = "30575-02.htm";
+							}
 							else
+							{
 								htmltext = "30530-02.htm";
+							}
 						}
 					}
 					else if (step == 2)
+					{
 						htmltext = talk.htmlfiles[3];
+					}
 				}
 				else if (talk.npcTyp == 0)
 				{
 					if (step == 1)
+					{
 						htmltext = talk.htmlfiles[0];
+					}
 					else if (step == 2)
+					{
 						htmltext = talk.htmlfiles[1];
+					}
 					else if (step == 3)
+					{
 						htmltext = talk.htmlfiles[2];
+					}
 				}
 			}
 		}
 		else if (step == 4)
 		{
 			if (player.getLevel() < 10)
+			{
 				htmltext = npc.getNpcId() + "-04.htm";
-			// else
-			// npc.showChatWindow(player);
+				// else
+				// npc.showChatWindow(player);
+			}
 		}
 		
-		if (htmltext == null || htmltext.equals(""))
+		if ((htmltext == null) || htmltext.equals(""))
+		{
 			npc.showChatWindow(player);
+		}
 		
 		npc.showChatWindow(player);
 		
@@ -512,11 +548,15 @@ public class Q00999_T1Tutorial extends Quest
 	{
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
+		{
 			return null;
+		}
 		
 		QuestState qs = player.getQuestState(qnTutorial);
 		if (qs == null)
+		{
 			return null;
+		}
 		
 		int Ex = qs.getInt("Ex");
 		
@@ -527,7 +567,7 @@ public class Q00999_T1Tutorial extends Quest
 			qs.set("Ex", "2");
 		}
 		
-		if (Ex <= 2 && st.getQuestItemsCount(BLUE_GEM) < 1)
+		if ((Ex <= 2) && (st.getQuestItemsCount(BLUE_GEM) < 1))
 		{
 			if (st.getRandom(100) < 100)
 			{
