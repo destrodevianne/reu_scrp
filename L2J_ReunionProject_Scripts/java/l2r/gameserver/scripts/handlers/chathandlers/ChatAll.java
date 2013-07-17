@@ -32,7 +32,7 @@ import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.util.Util;
 import gr.reunion.configs.CustomServerConfigs;
-import gr.reunion.interf.NexusEvents;
+import gr.reunion.interf.ReunionEvents;
 
 /**
  * A chat handler
@@ -105,7 +105,7 @@ public class ChatAll implements IChatHandler
 			/**
 			 * Match the character "." literally (Exactly 1 time) Match any character that is NOT a . character. Between one and unlimited times as possible, giving back as needed (greedy)
 			 */
-			if (text.matches("\\.{1}[^\\.]+") && NexusEvents.isInEvent(activeChar))
+			if (text.matches("\\.{1}[^\\.]+") && ReunionEvents.isInEvent(activeChar))
 			{
 				activeChar.sendPacket(SystemMessageId.INCORRECT_SYNTAX);
 			}
