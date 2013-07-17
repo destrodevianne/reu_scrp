@@ -29,7 +29,6 @@ import l2r.Config;
 import l2r.gameserver.SevenSigns;
 import l2r.gameserver.datatables.ClanTable;
 import l2r.gameserver.datatables.TeleportLocationTable;
-import l2r.gameserver.instancemanager.CastleManager;
 import l2r.gameserver.instancemanager.FortManager;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.L2TeleportLocation;
@@ -128,25 +127,32 @@ public class CastleChamberlain extends AbstractNpcAI
 		addFirstTalkId(NPC);
 	}
 	
+	private NpcHtmlMessage getHtmlPacket(L2PcInstance player, L2Npc npc, String htmlFile)
+	{
+		final NpcHtmlMessage packet = new NpcHtmlMessage(npc.getObjectId());
+		packet.setHtml(getHtm(player.getHtmlPrefix(), htmlFile));
+		return packet;
+	}
+	
 	private final String funcConfirmHtml(final L2PcInstance player, final L2Npc npc, final Castle castle, final int func, final int level)
 	{
-		if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+		if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 		{
-			final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
+			final NpcHtmlMessage html;
 			final String fstring = (func == Castle.FUNC_TELEPORT) ? "9" : "10";
 			if (level == 0)
 			{
-				html.setHtml(getHtm(player.getHtmlPrefix(), "castleresetdeco.html"));
+				html = getHtmlPacket(player, npc, "castleresetdeco.html");
 				html.replace("%AgitDecoSubmit%", Integer.toString(func));
 			}
 			else if ((castle.getFunction(func) != null) && (castle.getFunction(func).getLvl() == level))
 			{
-				html.setHtml(getHtm(player.getHtmlPrefix(), "castledecoalreadyset.html"));
+				html = getHtmlPacket(player, npc, "castledecoalreadyset.html");
 				html.replace("%AgitDecoEffect%", "<fstring p1=\"" + level + "\">" + fstring + "</fstring>");
 			}
 			else
 			{
-				html.setHtml(getHtm(player.getHtmlPrefix(), "castledeco-0" + func + ".html"));
+				html = getHtmlPacket(player, npc, "castledeco-0" + func + ".html");
 				html.replace("%AgitDecoCost%", "<fstring p1=\"" + getFunctionFee(func, level) + "\" p2=\"" + (getFunctionRatio(func) / 86400000) + "\">6</fstring>");
 				html.replace("%AgitDecoEffect%", "<fstring p1=\"" + level + "\">" + fstring + "</fstring>");
 				html.replace("%AgitDecoSubmit%", func + " " + level);
@@ -360,11 +366,6 @@ public class CastleChamberlain extends AbstractNpcAI
 		return price;
 	}
 	
-	private final boolean hasPrivilege(final L2PcInstance player, final int privilege)
-	{
-		return ((player.getClanPrivileges() & privilege) == privilege);
-	}
-	
 	private final boolean isDomainFortressInContractStatus(final int castleId)
 	{
 		final int numFort = ((castleId == 1) || (castleId == 5)) ? 2 : 1;
@@ -430,8 +431,7 @@ public class CastleChamberlain extends AbstractNpcAI
 						sb.append(" (<fstring>" + fortType + "</fstring>)");
 						sb.append(" : <font color=\"00FFFF\"><fstring>" + fortStatus + "</fstring></font><br>");
 					}
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-28.html"));
+					final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-28.html");
 					html.replace("%list%", sb.toString());
 					player.sendPacket(html);
 				}
@@ -443,7 +443,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "siege_functions":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
 					if (castle.getSiege().getIsInProgress())
 					{
@@ -470,13 +470,12 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "manage_doors":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
 					if (st.hasMoreTokens())
 					{
 						final StringBuilder sb = new StringBuilder();
-						final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-						html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-13.html"));
+						final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-13.html");
 						html.replace("%type%", st.nextToken());
 						while (st.hasMoreTokens())
 						{
@@ -498,12 +497,11 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "upgrade_doors":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
 					final int type = Integer.parseInt(st.nextToken());
 					final int level = Integer.parseInt(st.nextToken());
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-14.html"));
+					final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-14.html");
 					html.replace("%gate_price%", Integer.toString(getDoorUpgradePrice(type, level)));
 					html.replace("%event%", event.substring("upgrade_doors".length() + 1));
 					player.sendPacket(html);
@@ -516,46 +514,47 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "upgrade_doors_confirm":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
 					if (castle.getSiege().getIsInProgress())
 					{
-						return "chamberlain-08.html";
-					}
-					final int type = Integer.parseInt(st.nextToken());
-					final int level = Integer.parseInt(st.nextToken());
-					final int price = getDoorUpgradePrice(type, level);
-					final int[] doors = new int[2];
-					for (int i = 0; i <= st.countTokens(); i++)
-					{
-						doors[i] = Integer.parseInt(st.nextToken());
-					}
-					
-					final L2DoorInstance door = castle.getDoor(doors[0]);
-					if (door == null)
-					{
-						return null;
-					}
-					final int currentLevel = door.getStat().getUpgradeHpRatio();
-					if (currentLevel >= level)
-					{
-						final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-						html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-15.html"));
-						html.replace("%doorlevel%", Integer.toString(currentLevel));
-						player.sendPacket(html);
-					}
-					else if (player.getAdena() >= price)
-					{
-						takeItems(player, PcInventory.ADENA_ID, price);
-						for (int doorId : doors)
-						{
-							castle.setDoorUpgrade(doorId, level, true);
-						}
-						htmltext = "chamberlain-16.html";
+						htmltext = "chamberlain-08.html";
 					}
 					else
 					{
-						htmltext = "chamberlain-09.html";
+						final int type = Integer.parseInt(st.nextToken());
+						final int level = Integer.parseInt(st.nextToken());
+						final int price = getDoorUpgradePrice(type, level);
+						final int[] doors = new int[2];
+						for (int i = 0; i <= st.countTokens(); i++)
+						{
+							doors[i] = Integer.parseInt(st.nextToken());
+						}
+						
+						final L2DoorInstance door = castle.getDoor(doors[0]);
+						if (door != null)
+						{
+							final int currentLevel = door.getStat().getUpgradeHpRatio();
+							if (currentLevel >= level)
+							{
+								final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-15.html");
+								html.replace("%doorlevel%", Integer.toString(currentLevel));
+								player.sendPacket(html);
+							}
+							else if (player.getAdena() >= price)
+							{
+								takeItems(player, PcInventory.ADENA_ID, price);
+								for (int doorId : doors)
+								{
+									castle.setDoorUpgrade(doorId, level, true);
+								}
+								htmltext = "chamberlain-16.html";
+							}
+							else
+							{
+								htmltext = "chamberlain-09.html";
+							}
+						}
 					}
 				}
 				else
@@ -566,18 +565,18 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "manage_trap":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
 					if (st.hasMoreTokens())
 					{
-						final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
+						final NpcHtmlMessage html;
 						if (castle.getName().equalsIgnoreCase("aden"))
 						{
-							html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-17a.html"));
+							html = getHtmlPacket(player, npc, "chamberlain-17a.html");
 						}
 						else
 						{
-							html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-17.html"));
+							html = getHtmlPacket(player, npc, "chamberlain-17.html");
 						}
 						html.replace("%trapIndex%", st.nextToken());
 						player.sendPacket(html);
@@ -595,12 +594,11 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "upgrade_trap":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
 					final String trapIndex = st.nextToken();
 					final int level = Integer.parseInt(st.nextToken());
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-18.html"));
+					final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-18.html");
 					html.replace("%trapIndex%", trapIndex);
 					html.replace("%level%", Integer.toString(level));
 					html.replace("%dmgzone_price%", Integer.toString(getTrapUpgradePrice(level)));
@@ -614,33 +612,35 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "upgrade_trap_confirm":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
 					if (castle.getSiege().getIsInProgress())
 					{
-						return "chamberlain-08.html";
-					}
-					final int trapIndex = Integer.parseInt(st.nextToken());
-					final int level = Integer.parseInt(st.nextToken());
-					final int price = getTrapUpgradePrice(level);
-					final int currentLevel = castle.getTrapUpgradeLevel(trapIndex);
-					
-					if (currentLevel >= level)
-					{
-						final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-						html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-19.html"));
-						html.replace("%dmglevel%", Integer.toString(currentLevel));
-						player.sendPacket(html);
-					}
-					else if (player.getAdena() >= price)
-					{
-						takeItems(player, PcInventory.ADENA_ID, price);
-						castle.setTrapUpgrade(trapIndex, level, true);
-						htmltext = "chamberlain-20.html";
+						htmltext = "chamberlain-08.html";
 					}
 					else
 					{
-						htmltext = "chamberlain-09.html";
+						final int trapIndex = Integer.parseInt(st.nextToken());
+						final int level = Integer.parseInt(st.nextToken());
+						final int price = getTrapUpgradePrice(level);
+						final int currentLevel = castle.getTrapUpgradeLevel(trapIndex);
+						
+						if (currentLevel >= level)
+						{
+							final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-19.html");
+							html.replace("%dmglevel%", Integer.toString(currentLevel));
+							player.sendPacket(html);
+						}
+						else if (player.getAdena() >= price)
+						{
+							takeItems(player, PcInventory.ADENA_ID, price);
+							castle.setTrapUpgrade(trapIndex, level, true);
+							htmltext = "chamberlain-20.html";
+						}
+						else
+						{
+							htmltext = "chamberlain-09.html";
+						}
 					}
 				}
 				else
@@ -660,8 +660,7 @@ public class CastleChamberlain extends AbstractNpcAI
 					else
 					{
 						final L2Clan clan = ClanTable.getInstance().getClan(castle.getOwnerId());
-						final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-						html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-02.html"));
+						final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-02.html");
 						html.replace("%clanleadername%", clan.getLeaderName());
 						html.replace("%clanname%", clan.getName());
 						html.replace("%castlename%", String.valueOf(1001000 + castle.getCastleId()));
@@ -693,7 +692,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "manage_tax":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_TAXES))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_TAXES))
 				{
 					if (castle.getSiege().getIsInProgress())
 					{
@@ -701,8 +700,7 @@ public class CastleChamberlain extends AbstractNpcAI
 					}
 					else
 					{
-						final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-						html.setHtml(getHtm(player.getHtmlPrefix(), "castlesettaxrate.html"));
+						final NpcHtmlMessage html = getHtmlPacket(player, npc, "castlesettaxrate.html");
 						html.replace("%tax_rate%", Integer.toString(castle.getTaxPercent()));
 						html.replace("%next_tax_rate%", "0"); // TODO: Implement me!
 						html.replace("%tax_limit%", Integer.toString(getTaxLimit()));
@@ -711,8 +709,7 @@ public class CastleChamberlain extends AbstractNpcAI
 				}
 				else if (isOwner(player, npc))
 				{
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-03.html"));
+					final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-03.html");
 					html.replace("%tax_rate%", Integer.toString(castle.getTaxPercent()));
 					html.replace("%next_tax_rate%", "0"); // TODO: Implement me!
 					player.sendPacket(html);
@@ -725,7 +722,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "set_tax":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_TAXES))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_TAXES))
 				{
 					if (castle.getSiege().getIsInProgress())
 					{
@@ -733,18 +730,18 @@ public class CastleChamberlain extends AbstractNpcAI
 					}
 					else
 					{
-						final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
+						final NpcHtmlMessage html;
 						final int tax = (st.hasMoreTokens()) ? Integer.parseInt(st.nextToken()) : 0;
 						final int taxLimit = getTaxLimit();
 						if (tax > taxLimit)
 						{
-							html.setHtml(getHtm(player.getHtmlPrefix(), "castletoohightaxrate.html"));
+							html = getHtmlPacket(player, npc, "castletoohightaxrate.html");
 							html.replace("%tax_limit%", Integer.toString(taxLimit));
 						}
 						else
 						{
 							castle.setTaxPercent(tax);
-							html.setHtml(getHtm(player.getHtmlPrefix(), "castleaftersettaxrate.html"));
+							html = getHtmlPacket(player, npc, "castleaftersettaxrate.html");
 							html.replace("%next_tax_rate%", Integer.toString(tax));
 						}
 						player.sendPacket(html);
@@ -758,10 +755,9 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "manage_vault":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_TAXES))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_TAXES))
 				{
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "castlemanagevault.html"));
+					final NpcHtmlMessage html = getHtmlPacket(player, npc, "castlemanagevault.html");
 					html.replace("%tax_income%", Util.formatAdena(castle.getTreasury()));
 					html.replace("%tax_income_reserved%", "0"); // TODO: Implement me!
 					html.replace("%seed_income%", "0"); // TODO: Implement me!
@@ -775,7 +771,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "deposit":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_TAXES))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_TAXES))
 				{
 					final long amount = (st.hasMoreTokens()) ? Long.parseLong(st.nextToken()) : 0;
 					if ((amount > 0) && (amount < PcInventory.MAX_ADENA))
@@ -800,20 +796,22 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "withdraw":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_TAXES))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_TAXES))
 				{
 					final long amount = (st.hasMoreTokens()) ? Long.parseLong(st.nextToken()) : 0;
 					if (amount <= castle.getTreasury())
 					{
 						castle.addToTreasuryNoTax((-1) * amount);
 						giveAdena(player, amount, false);
-						return "chamberlain-01.html";
+						htmltext = "chamberlain-01.html";
 					}
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "castlenotenoughbalance.html"));
-					html.replace("%tax_income%", Util.formatAdena(castle.getTreasury()));
-					html.replace("%withdraw_amount%", Util.formatAdena(amount));
-					player.sendPacket(html);
+					else
+					{
+						final NpcHtmlMessage html = getHtmlPacket(player, npc, "castlenotenoughbalance.html");
+						html.replace("%tax_income%", Util.formatAdena(castle.getTreasury()));
+						html.replace("%withdraw_amount%", Util.formatAdena(amount));
+						player.sendPacket(html);
+					}
 				}
 				else
 				{
@@ -823,24 +821,49 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "manage_functions":
 			{
-				htmltext = (isOwner(player, npc)) ? (castle.getSiege().getIsInProgress()) ? "chamberlain-08.html" : "chamberlain-23.html" : "chamberlain-21.html";
+				if (!isOwner(player, npc))
+				{
+					htmltext = "chamberlain-21.html";
+				}
+				else if (castle.getSiege().getIsInProgress())
+				{
+					htmltext = "chamberlain-08.html";
+				}
+				else
+				{
+					htmltext = "chamberlain-23.html";
+				}
 				break;
 			}
 			case "banish_foreigner_show":
 			{
-				htmltext = (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_DISMISS)) ? (castle.getSiege().getIsInProgress()) ? "chamberlain-08.html" : "chamberlain-10.html" : "chamberlain-21.html";
+				if (!isOwner(player, npc) || !player.hasClanPrivilege(L2Clan.CP_CS_DISMISS))
+				{
+					htmltext = "chamberlain-21.html";
+				}
+				else if (castle.getSiege().getIsInProgress())
+				{
+					htmltext = "chamberlain-08.html";
+				}
+				else
+				{
+					htmltext = "chamberlain-10.html";
+				}
 				break;
 			}
 			case "banish_foreigner":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_DISMISS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_DISMISS))
 				{
 					if (castle.getSiege().getIsInProgress())
 					{
-						return "chamberlain-08.html";
+						htmltext = "chamberlain-08.html";
 					}
-					castle.banishForeigners();
-					htmltext = "chamberlain-11.html";
+					else
+					{
+						castle.banishForeigners();
+						htmltext = "chamberlain-11.html";
+					}
 				}
 				else
 				{
@@ -850,41 +873,51 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "doors":
 			{
-				htmltext = (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_OPEN_DOOR)) ? (castle.getSiege().getIsInProgress()) ? "chamberlain-08.html" : npc.getNpcId() + "-d.html" : "chamberlain-21.html";
+				if (!isOwner(player, npc) || !player.hasClanPrivilege(L2Clan.CP_CS_OPEN_DOOR))
+				{
+					htmltext = "chamberlain-21.html";
+				}
+				else if (castle.getSiege().getIsInProgress())
+				{
+					htmltext = "chamberlain-08.html";
+				}
+				else
+				{
+					htmltext = npc.getNpcId() + "-d.html";
+				}
 				break;
 			}
 			case "operate_door":
 			{
-				if (castle.getSiege().getIsInProgress())
+				if (!isOwner(player, npc) || !player.hasClanPrivilege(L2Clan.CP_CS_OPEN_DOOR))
+				{
+					htmltext = "chamberlain-21.html";
+				}
+				else if (castle.getSiege().getIsInProgress())
 				{
 					htmltext = "chamberlain-08.html";
 				}
-				else if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_OPEN_DOOR))
+				else
 				{
 					final boolean open = (Integer.parseInt(st.nextToken()) == 1);
 					while (st.hasMoreTokens())
 					{
 						castle.openCloseDoor(player, Integer.parseInt(st.nextToken()), open);
 					}
-					htmltext = (open) ? "chamberlain-05.html" : "chamberlain-06.html";
-				}
-				else
-				{
-					htmltext = "chamberlain-21.html";
+					htmltext = (open ? "chamberlain-05.html" : "chamberlain-06.html");
 				}
 				break;
 			}
 			case "additional_functions":
 			{
-				htmltext = (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS)) ? "castletdecomanage.html" : "chamberlain-21.html";
+				htmltext = (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS)) ? "castletdecomanage.html" : "chamberlain-21.html";
 				break;
 			}
 			case "recovery":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "castledeco-AR01.html"));
+					final NpcHtmlMessage html = getHtmlPacket(player, npc, "castledeco-AR01.html");
 					funcReplace(castle, html, Castle.FUNC_RESTORE_HP, "HP");
 					funcReplace(castle, html, Castle.FUNC_RESTORE_MP, "MP");
 					funcReplace(castle, html, Castle.FUNC_RESTORE_EXP, "XP");
@@ -898,10 +931,9 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "other":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "castledeco-AE01.html"));
+					final NpcHtmlMessage html = getHtmlPacket(player, npc, "castledeco-AE01.html");
 					funcReplace(castle, html, Castle.FUNC_TELEPORT, "TP");
 					funcReplace(castle, html, Castle.FUNC_SUPPORT, "BF");
 					player.sendPacket(html);
@@ -944,7 +976,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "set_func":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_SET_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_SET_FUNCTIONS))
 				{
 					final int func = Integer.parseInt(st.nextToken());
 					final int level = Integer.parseInt(st.nextToken());
@@ -965,13 +997,12 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "functions":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_USE_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_USE_FUNCTIONS))
 				{
 					final CastleFunction HP = castle.getFunction(Castle.FUNC_RESTORE_HP);
 					final CastleFunction MP = castle.getFunction(Castle.FUNC_RESTORE_MP);
 					final CastleFunction XP = castle.getFunction(Castle.FUNC_RESTORE_EXP);
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "castledecofunction.html"));
+					final NpcHtmlMessage html = getHtmlPacket(player, npc, "castledecofunction.html");
 					html.replace("%HPDepth%", (HP == null) ? "0" : Integer.toString(HP.getLvl()));
 					html.replace("%MPDepth%", (MP == null) ? "0" : Integer.toString(MP.getLvl()));
 					html.replace("%XPDepth%", (XP == null) ? "0" : Integer.toString(XP.getLvl()));
@@ -985,12 +1016,23 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "teleport":
 			{
-				htmltext = (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_USE_FUNCTIONS)) ? (castle.getFunction(Castle.FUNC_TELEPORT) == null) ? "castlefuncdisabled.html" : npc.getNpcId() + "-t" + castle.getFunction(Castle.FUNC_TELEPORT).getLvl() + ".html" : "chamberlain-21.html";
+				if (!isOwner(player, npc) || !player.hasClanPrivilege(L2Clan.CP_CS_USE_FUNCTIONS))
+				{
+					htmltext = "chamberlain-21.html";
+				}
+				else if (castle.getFunction(Castle.FUNC_TELEPORT) == null)
+				{
+					htmltext = "castlefuncdisabled.html";
+				}
+				else
+				{
+					htmltext = npc.getNpcId() + "-t" + castle.getFunction(Castle.FUNC_TELEPORT).getLvl() + ".html";
+				}
 				break;
 			}
 			case "goto":
 			{
-				if ((isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_USE_FUNCTIONS)))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_USE_FUNCTIONS))
 				{
 					final int locId = Integer.parseInt(st.nextToken());
 					final L2TeleportLocation list = TeleportLocationTable.getInstance().getTemplate(locId);
@@ -1010,7 +1052,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "buffer":
 			{
-				if ((isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_USE_FUNCTIONS)))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_USE_FUNCTIONS))
 				{
 					if (castle.getFunction(Castle.FUNC_SUPPORT) == null)
 					{
@@ -1018,8 +1060,7 @@ public class CastleChamberlain extends AbstractNpcAI
 					}
 					else
 					{
-						final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-						html.setHtml(getHtm(player.getHtmlPrefix(), "castlebuff-0" + castle.getFunction(Castle.FUNC_SUPPORT).getLvl() + ".html"));
+						final NpcHtmlMessage html = getHtmlPacket(player, npc, "castlebuff-0" + castle.getFunction(Castle.FUNC_SUPPORT).getLvl() + ".html");
 						html.replace("%MPLeft%", Integer.toString((int) npc.getCurrentMp()));
 						player.sendPacket(html);
 					}
@@ -1032,7 +1073,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "cast_buff":
 			{
-				if ((isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_USE_FUNCTIONS)))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_USE_FUNCTIONS))
 				{
 					if (castle.getFunction(Castle.FUNC_SUPPORT) == null)
 					{
@@ -1041,26 +1082,24 @@ public class CastleChamberlain extends AbstractNpcAI
 					else
 					{
 						final int index = Integer.parseInt(st.nextToken());
-						if (BUFFS.length <= index)
+						if (BUFFS.length > index)
 						{
-							return null;
-						}
-						final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-						final SkillHolder holder = BUFFS[index];
-						if (holder.getSkill().getMpConsume() < npc.getCurrentMp())
-						{
-							npc.setTarget(player);
-							npc.doCast(holder.getSkill());
-							html.setHtml(getHtm(player.getHtmlPrefix(), "castleafterbuff.html"));
+							final NpcHtmlMessage html;
+							final SkillHolder holder = BUFFS[index];
+							if (holder.getSkill().getMpConsume() < npc.getCurrentMp())
+							{
+								npc.setTarget(player);
+								npc.doCast(holder.getSkill());
+								html = getHtmlPacket(player, npc, "castleafterbuff.html");
+							}
+							else
+							{
+								html = getHtmlPacket(player, npc, "castlenotenoughmp.html");
+							}
 							
+							html.replace("%MPLeft%", Integer.toString((int) npc.getCurrentMp()));
+							player.sendPacket(html);
 						}
-						else
-						{
-							html.setHtml(getHtm(player.getHtmlPrefix(), "castlenotenoughmp.html"));
-						}
-						
-						html.replace("%MPLeft%", Integer.toString((int) npc.getCurrentMp()));
-						player.sendPacket(html);
 					}
 				}
 				else
@@ -1071,7 +1110,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "list_siege_clans":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_MANAGE_SIEGE))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_MANAGE_SIEGE))
 				{
 					castle.getSiege().listRegisterClan(player);
 				}
@@ -1083,7 +1122,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "list_territory_clans":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_MANAGE_SIEGE))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_MANAGE_SIEGE))
 				{
 					player.sendPacket(new ExShowDominionRegistry(castle.getCastleId(), player));
 				}
@@ -1095,12 +1134,12 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "manor":
 			{
-				htmltext = (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_MANOR_ADMIN)) ? "manor.html" : "chamberlain-21.html";
+				htmltext = (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_MANOR_ADMIN)) ? "manor.html" : "chamberlain-21.html";
 				break;
 			}
 			case "seed_status":
 			{
-				player.sendPacket(new ExShowSeedInfo(castle.getCastleId(), CastleManager.getInstance().getCastleById(castle.getCastleId()).getSeedProduction(0)));
+				player.sendPacket(new ExShowSeedInfo(castle.getCastleId(), castle.getSeedProduction(0)));
 				break;
 			}
 			case "seed_setup":
@@ -1129,10 +1168,9 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "products":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_USE_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_USE_FUNCTIONS))
 				{
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-22.html"));
+					final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-22.html");
 					html.replace("%npcId%", Integer.toString(npc.getNpcId()));
 					player.sendPacket(html);
 				}
@@ -1144,7 +1182,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "buy":
 			{
-				if (isOwner(player, npc) && hasPrivilege(player, L2Clan.CP_CS_USE_FUNCTIONS))
+				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_USE_FUNCTIONS))
 				{
 					((L2MerchantInstance) npc).showBuyWindow(player, Integer.parseInt(st.nextToken()));
 				}
@@ -1164,14 +1202,16 @@ public class CastleChamberlain extends AbstractNpcAI
 				{
 					if (hasQuestItems(player, CROWN))
 					{
-						return "chamberlain-24.html";
+						htmltext = "chamberlain-24.html";
 					}
-					final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-					html.setHtml(getHtm(player.getHtmlPrefix(), "chamberlain-25.html"));
-					html.replace("%owner_name%", String.valueOf(player.getName()));
-					html.replace("%feud_name%", String.valueOf(String.valueOf(1001000 + castle.getCastleId())));
-					player.sendPacket(html);
-					giveItems(player, CROWN, 1);
+					else
+					{
+						final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-25.html");
+						html.replace("%owner_name%", String.valueOf(player.getName()));
+						html.replace("%feud_name%", String.valueOf(String.valueOf(1001000 + castle.getCastleId())));
+						player.sendPacket(html);
+						giveItems(player, CROWN, 1);
+					}
 				}
 				else
 				{
@@ -1194,8 +1234,7 @@ public class CastleChamberlain extends AbstractNpcAI
 							final int ticketCount = castle.getTicketBuyCount();
 							if (ticketCount < (Config.SSQ_DAWN_TICKET_QUANTITY / Config.SSQ_DAWN_TICKET_BUNDLE))
 							{
-								final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-								html.setHtml(getHtm(player.getHtmlPrefix(), "ssq_selldawnticket.html"));
+								final NpcHtmlMessage html = getHtmlPacket(player, npc, "ssq_selldawnticket.html");
 								html.replace("%DawnTicketLeft%", String.valueOf(Config.SSQ_DAWN_TICKET_QUANTITY - (ticketCount * Config.SSQ_DAWN_TICKET_BUNDLE)));
 								html.replace("%DawnTicketBundle%", String.valueOf(Config.SSQ_DAWN_TICKET_BUNDLE));
 								html.replace("%DawnTicketPrice%", String.valueOf(Config.SSQ_DAWN_TICKET_PRICE * Config.SSQ_DAWN_TICKET_BUNDLE));
@@ -1239,9 +1278,11 @@ public class CastleChamberlain extends AbstractNpcAI
 									takeItems(player, PcInventory.ADENA_ID, totalCost);
 									giveItems(player, Config.SSQ_MANORS_AGREEMENT_ID, Config.SSQ_DAWN_TICKET_BUNDLE);
 									castle.setTicketBuyCount(ticketCount + 1);
-									return null;
 								}
-								htmltext = "chamberlain-09.html";
+								else
+								{
+									htmltext = "chamberlain-09.html";
+								}
 							}
 							else
 							{
