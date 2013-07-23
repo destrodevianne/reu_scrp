@@ -27,18 +27,20 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2VillageMasterInstance;
 import l2r.gameserver.model.base.ClassId;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
+import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.SystemMessage;
-import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Subclass certification
  * @author xban1x, jurchiks
  */
-public class SubclassCertification extends AbstractNpcAI
+public class SubclassCertification extends Quest
 {
+	private static final String qn = "SubclassCertification";
+	
 	// @formatter:off
 	private static final int[] NPCS =
 	{
@@ -164,7 +166,7 @@ public class SubclassCertification extends AbstractNpcAI
 	
 	private SubclassCertification()
 	{
-		super(SubclassCertification.class.getSimpleName(), "ai/npc/VillageMasters");
+		super(-1, qn, "ai/npc/VillageMasters");
 		addStartNpc(NPCS);
 		addTalkId(NPCS);
 	}
@@ -172,7 +174,7 @@ public class SubclassCertification extends AbstractNpcAI
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(qn);
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
 		{
@@ -186,7 +188,7 @@ public class SubclassCertification extends AbstractNpcAI
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = null;
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = player.getQuestState(qn);
 		if (st == null)
 		{
 			return htmltext;
