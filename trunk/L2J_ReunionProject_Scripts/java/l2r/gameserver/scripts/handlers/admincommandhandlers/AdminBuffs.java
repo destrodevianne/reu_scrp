@@ -182,7 +182,7 @@ public class AdminBuffs implements IAdminCommandHandler
 					return false;
 				}
 			}
-			else if (activeChar.getTarget().isPlayer())
+			else if ((activeChar.getTarget() != null) && activeChar.getTarget().isPlayer())
 			{
 				player = activeChar.getTarget().getActingPlayer();
 			}
