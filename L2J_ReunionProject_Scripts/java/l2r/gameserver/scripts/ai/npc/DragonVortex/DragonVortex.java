@@ -1,35 +1,31 @@
-/*
- * Copyright (C) 2004-2013 L2J DataPack
- * 
- * This file is part of L2J DataPack.
- * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package l2r.gameserver.scripts.ai.npc.DragonVortex;
 
+import javolution.util.FastList;
+import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
+import l2r.gameserver.model.quest.Quest;
+import l2r.gameserver.model.quest.QuestState;
 
-/**
- * Dragon Vortex AI
- * @author UnAfraid, improved by Adry_85
- */
-public class DragonVortex extends AbstractNpcAI
+public class DragonVortex extends Quest
 {
-	private static final int VORTEX = 32871;
+	private static final int VORTEX_1 = 32871;
+	private static final int VORTEX_2 = 32892;
+	private static final int VORTEX_3 = 32893;
+	private static final int VORTEX_4 = 32894;
+	
+	protected final FastList<L2Npc> bosses1 = new FastList<>();
+	protected final FastList<L2Npc> bosses2 = new FastList<>();
+	protected final FastList<L2Npc> bosses3 = new FastList<>();
+	protected final FastList<L2Npc> bosses4 = new FastList<>();
+	
+	protected boolean progress1 = false;
+	protected boolean progress2 = false;
+	protected boolean progress3 = false;
+	protected boolean progress4 = false;
+	
+	private static final int LARGE_DRAGON_BONE = 17248;
 	
 	private static final int[] RAIDS =
 	{
@@ -42,43 +38,205 @@ public class DragonVortex extends AbstractNpcAI
 		25718, // Emerald Horn
 	};
 	
-	private static final int LARGE_DRAGON_BONE = 17248;
+	private L2Npc boss1;
+	private L2Npc boss2;
+	private L2Npc boss3;
+	private L2Npc boss4;
 	
-	private static final int DESPAWN_DELAY = 1800000; // 30min
+	private static final int DESPAWN_DELAY = 1800000;
 	
-	private DragonVortex(String name, String descr)
+	public DragonVortex(int questId, String name, String descr)
 	{
-		super(name, descr);
+		super(questId, name, descr);
 		
-		addStartNpc(VORTEX);
-		addFirstTalkId(VORTEX);
-		addTalkId(VORTEX);
-		addKillId(RAIDS);
+		addFirstTalkId(VORTEX_1, VORTEX_2, VORTEX_3, VORTEX_4);
+		addStartNpc(VORTEX_1, VORTEX_2, VORTEX_3, VORTEX_4);
+		addTalkId(VORTEX_1, VORTEX_2, VORTEX_3, VORTEX_4);
+		
+		for (int i : RAIDS)
+		{
+			addKillId(i);
+		}
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if ("Spawn".equals(event))
+		if (event.equalsIgnoreCase("Spawn"))
 		{
-			int raid = RAIDS[getRandom(RAIDS.length)];
-			
-			if (hasQuestItems(player, LARGE_DRAGON_BONE))
+			if (npc.getNpcId() == VORTEX_1)
 			{
-				takeItems(player, LARGE_DRAGON_BONE, 1);
-				addSpawn(raid, new Location(player.getX() + getRandom(100), player.getY() + getRandom(100), player.getZ(), player.getHeading()), true, DESPAWN_DELAY);
+				if (progress1)
+				{
+					return "32871-03.htm";
+				}
+				
+				if (hasQuestItems(player, LARGE_DRAGON_BONE))
+				{
+					takeItems(player, LARGE_DRAGON_BONE, 1);
+					boss1 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+					progress1 = true;
+					if (boss1 != null)
+					{
+						bosses1.add(boss1);
+						ThreadPoolManager.getInstance().scheduleGeneral(new SpawnVortexBoss(bosses1, 1), DESPAWN_DELAY);
+					}
+					return "32871-01.htm";
+				}
+				return "32871-02.htm";
 			}
-			else
+			
+			if (npc.getNpcId() == VORTEX_2)
 			{
-				return "32871-no.html";
+				if (progress2)
+				{
+					return "32871-03.htm";
+				}
+				
+				if (hasQuestItems(player, LARGE_DRAGON_BONE))
+				{
+					takeItems(player, LARGE_DRAGON_BONE, 1);
+					boss2 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+					progress2 = true;
+					if (boss2 != null)
+					{
+						bosses2.add(boss2);
+						ThreadPoolManager.getInstance().scheduleGeneral(new SpawnVortexBoss(bosses2, 2), DESPAWN_DELAY);
+					}
+					return "32871-01.htm";
+				}
+				return "32871-02.htm";
+			}
+			
+			if (npc.getNpcId() == VORTEX_3)
+			{
+				if (progress3)
+				{
+					return "32871-03.htm";
+				}
+				
+				if (hasQuestItems(player, LARGE_DRAGON_BONE))
+				{
+					takeItems(player, LARGE_DRAGON_BONE, 1);
+					boss3 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+					progress3 = true;
+					if (boss3 != null)
+					{
+						bosses3.add(boss3);
+						ThreadPoolManager.getInstance().scheduleGeneral(new SpawnVortexBoss(bosses3, 3), DESPAWN_DELAY);
+					}
+					return "32871-01.htm";
+				}
+				return "32871-02.htm";
+			}
+			
+			if (npc.getNpcId() == VORTEX_4)
+			{
+				if (progress4)
+				{
+					return "32871-03.htm";
+				}
+				
+				if (hasQuestItems(player, LARGE_DRAGON_BONE))
+				{
+					takeItems(player, LARGE_DRAGON_BONE, 1);
+					boss4 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+					progress4 = true;
+					if (boss4 != null)
+					{
+						bosses4.add(boss4);
+						ThreadPoolManager.getInstance().scheduleGeneral(new SpawnVortexBoss(bosses4, 4), DESPAWN_DELAY);
+					}
+					return "32871-01.htm";
+				}
+				return "32871-02.htm";
 			}
 		}
-		
 		return super.onAdvEvent(event, npc, player);
+	}
+	
+	@Override
+	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	{
+		QuestState st = player.getQuestState(getName());
+		
+		if (st == null)
+		{
+			st = newQuestState(player);
+		}
+		
+		return "32871.htm";
+	}
+	
+	@Override
+	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
+	{
+		if (progress1)
+		{
+			progress1 = false;
+		}
+		
+		if (progress2)
+		{
+			progress2 = false;
+		}
+		
+		if (progress3)
+		{
+			progress3 = false;
+		}
+		
+		if (progress4)
+		{
+			progress4 = false;
+		}
+		return super.onKill(npc, player, isSummon);
+	}
+	
+	private class SpawnVortexBoss implements Runnable
+	{
+		private final FastList<L2Npc> _bosses;
+		private final int _vortex;
+		
+		public SpawnVortexBoss(FastList<L2Npc> bosses, int vortex)
+		{
+			_bosses = bosses;
+			_vortex = vortex;
+		}
+		
+		@Override
+		public void run()
+		{
+			if (!_bosses.isEmpty())
+			{
+				for (L2Npc boss : _bosses)
+				{
+					if (boss != null)
+					{
+						boss.deleteMe();
+						switch (_vortex)
+						{
+							case 1:
+								progress1 = false;
+								break;
+							case 2:
+								progress2 = false;
+								break;
+							case 3:
+								progress3 = false;
+								break;
+							case 4:
+								progress4 = false;
+								break;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public static void main(String[] args)
 	{
-		new DragonVortex(DragonVortex.class.getSimpleName(), "ai/npc");
+		new DragonVortex(-1, "DragonVortex", "ai/npc");
 	}
 }
