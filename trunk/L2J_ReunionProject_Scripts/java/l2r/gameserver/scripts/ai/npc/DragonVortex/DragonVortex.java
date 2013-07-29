@@ -79,8 +79,8 @@ public class DragonVortex extends Quest
 					if (boss1 != null)
 					{
 						bosses1.add(boss1);
-						ThreadPoolManager.getInstance().scheduleGeneral(new SpawnVortexBoss(bosses1, 1), DESPAWN_DELAY);
 					}
+					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFirstVortrexBoss(), DESPAWN_DELAY);
 					return "32871-01.htm";
 				}
 				return "32871-02.htm";
@@ -101,8 +101,8 @@ public class DragonVortex extends Quest
 					if (boss2 != null)
 					{
 						bosses2.add(boss2);
-						ThreadPoolManager.getInstance().scheduleGeneral(new SpawnVortexBoss(bosses2, 2), DESPAWN_DELAY);
 					}
+					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnSecondVortrexBoss(), DESPAWN_DELAY);
 					return "32871-01.htm";
 				}
 				return "32871-02.htm";
@@ -123,8 +123,8 @@ public class DragonVortex extends Quest
 					if (boss3 != null)
 					{
 						bosses3.add(boss3);
-						ThreadPoolManager.getInstance().scheduleGeneral(new SpawnVortexBoss(bosses3, 3), DESPAWN_DELAY);
 					}
+					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnThirdVortrexBoss(), DESPAWN_DELAY);
 					return "32871-01.htm";
 				}
 				return "32871-02.htm";
@@ -145,8 +145,8 @@ public class DragonVortex extends Quest
 					if (boss4 != null)
 					{
 						bosses4.add(boss4);
-						ThreadPoolManager.getInstance().scheduleGeneral(new SpawnVortexBoss(bosses4, 4), DESPAWN_DELAY);
 					}
+					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFourthVortrexBoss(), DESPAWN_DELAY);
 					return "32871-01.htm";
 				}
 				return "32871-02.htm";
@@ -159,7 +159,6 @@ public class DragonVortex extends Quest
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		QuestState st = player.getQuestState(getName());
-		
 		if (st == null)
 		{
 			st = newQuestState(player);
@@ -193,42 +192,76 @@ public class DragonVortex extends Quest
 		return super.onKill(npc, player, isSummon);
 	}
 	
-	private class SpawnVortexBoss implements Runnable
+	protected class SpawnFirstVortrexBoss implements Runnable
 	{
-		private final FastList<L2Npc> _bosses;
-		private final int _vortex;
-		
-		public SpawnVortexBoss(FastList<L2Npc> bosses, int vortex)
-		{
-			_bosses = bosses;
-			_vortex = vortex;
-		}
-		
 		@Override
 		public void run()
 		{
-			if (!_bosses.isEmpty())
+			if (!bosses1.isEmpty())
 			{
-				for (L2Npc boss : _bosses)
+				for (L2Npc boss : bosses1)
 				{
 					if (boss != null)
 					{
 						boss.deleteMe();
-						switch (_vortex)
-						{
-							case 1:
-								progress1 = false;
-								break;
-							case 2:
-								progress2 = false;
-								break;
-							case 3:
-								progress3 = false;
-								break;
-							case 4:
-								progress4 = false;
-								break;
-						}
+						progress1 = false;
+					}
+				}
+			}
+		}
+	}
+	
+	protected class SpawnSecondVortrexBoss implements Runnable
+	{
+		@Override
+		public void run()
+		{
+			if (!bosses2.isEmpty())
+			{
+				for (L2Npc boss : bosses2)
+				{
+					if (boss != null)
+					{
+						boss.deleteMe();
+						progress2 = false;
+					}
+				}
+			}
+		}
+	}
+	
+	protected class SpawnThirdVortrexBoss implements Runnable
+	{
+		@Override
+		public void run()
+		{
+			if (!bosses3.isEmpty())
+			{
+				for (L2Npc boss : bosses3)
+				{
+					if (boss != null)
+					{
+						boss.deleteMe();
+						progress3 = false;
+					}
+				}
+			}
+		}
+	}
+	
+	protected class SpawnFourthVortrexBoss implements Runnable
+	{
+		@Override
+		public void run()
+		{
+			if (!bosses4.isEmpty())
+			{
+				for (L2Npc boss : bosses4)
+				{
+					if (boss != null)
+					{
+						boss.deleteMe();
+						progress4 = false;
 					}
 				}
 			}
