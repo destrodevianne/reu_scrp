@@ -64,92 +64,66 @@ public class DragonVortex extends Quest
 	{
 		if (event.equalsIgnoreCase("Spawn"))
 		{
+			if (progress1 || progress2 || progress3 || progress4)
+			{
+				return "32871-03.htm";
+			}
+			
+			if (!hasQuestItems(player, LARGE_DRAGON_BONE))
+			{
+				return "32871-02.htm";
+			}
+			
 			if (npc.getNpcId() == VORTEX_1)
 			{
-				if (progress1)
+				takeItems(player, LARGE_DRAGON_BONE, 1);
+				boss1 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+				progress1 = true;
+				if (boss1 != null)
 				{
-					return "32871-03.htm";
-				}
-				
-				if (hasQuestItems(player, LARGE_DRAGON_BONE))
-				{
-					takeItems(player, LARGE_DRAGON_BONE, 1);
-					boss1 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
-					progress1 = true;
-					if (boss1 != null)
-					{
-						bosses1.add(boss1);
-					}
+					bosses1.add(boss1);
 					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFirstVortrexBoss(), DESPAWN_DELAY);
-					return "32871-01.htm";
 				}
-				return "32871-02.htm";
+				return "32871-01.htm";
 			}
 			
 			if (npc.getNpcId() == VORTEX_2)
 			{
-				if (progress2)
+				takeItems(player, LARGE_DRAGON_BONE, 1);
+				boss2 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+				progress2 = true;
+				if (boss2 != null)
 				{
-					return "32871-03.htm";
-				}
-				
-				if (hasQuestItems(player, LARGE_DRAGON_BONE))
-				{
-					takeItems(player, LARGE_DRAGON_BONE, 1);
-					boss2 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
-					progress2 = true;
-					if (boss2 != null)
-					{
-						bosses2.add(boss2);
-					}
+					bosses2.add(boss2);
 					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnSecondVortrexBoss(), DESPAWN_DELAY);
-					return "32871-01.htm";
 				}
-				return "32871-02.htm";
+				return "32871-01.htm";
 			}
 			
 			if (npc.getNpcId() == VORTEX_3)
 			{
-				if (progress3)
+				takeItems(player, LARGE_DRAGON_BONE, 1);
+				boss3 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+				progress3 = true;
+				if (boss3 != null)
 				{
-					return "32871-03.htm";
-				}
-				
-				if (hasQuestItems(player, LARGE_DRAGON_BONE))
-				{
-					takeItems(player, LARGE_DRAGON_BONE, 1);
-					boss3 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
-					progress3 = true;
-					if (boss3 != null)
-					{
-						bosses3.add(boss3);
-					}
+					bosses3.add(boss3);
 					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnThirdVortrexBoss(), DESPAWN_DELAY);
-					return "32871-01.htm";
 				}
-				return "32871-02.htm";
+				return "32871-01.htm";
 			}
 			
 			if (npc.getNpcId() == VORTEX_4)
 			{
-				if (progress4)
+				takeItems(player, LARGE_DRAGON_BONE, 1);
+				boss4 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+				progress4 = true;
+				if (boss4 != null)
 				{
-					return "32871-03.htm";
-				}
-				
-				if (hasQuestItems(player, LARGE_DRAGON_BONE))
-				{
-					takeItems(player, LARGE_DRAGON_BONE, 1);
-					boss4 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
-					progress4 = true;
-					if (boss4 != null)
-					{
-						bosses4.add(boss4);
-					}
+					bosses4.add(boss4);
 					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFourthVortrexBoss(), DESPAWN_DELAY);
-					return "32871-01.htm";
 				}
-				return "32871-02.htm";
+				return "32871-01.htm";
 			}
 		}
 		return super.onAdvEvent(event, npc, player);
@@ -197,15 +171,12 @@ public class DragonVortex extends Quest
 		@Override
 		public void run()
 		{
-			if (!bosses1.isEmpty())
+			for (L2Npc boss : bosses1)
 			{
-				for (L2Npc boss : bosses1)
+				if (boss != null)
 				{
-					if (boss != null)
-					{
-						boss.deleteMe();
-						progress1 = false;
-					}
+					boss.deleteMe();
+					progress1 = false;
 				}
 			}
 		}
@@ -216,15 +187,12 @@ public class DragonVortex extends Quest
 		@Override
 		public void run()
 		{
-			if (!bosses2.isEmpty())
+			for (L2Npc boss : bosses2)
 			{
-				for (L2Npc boss : bosses2)
+				if (boss != null)
 				{
-					if (boss != null)
-					{
-						boss.deleteMe();
-						progress2 = false;
-					}
+					boss.deleteMe();
+					progress2 = false;
 				}
 			}
 		}
@@ -235,15 +203,12 @@ public class DragonVortex extends Quest
 		@Override
 		public void run()
 		{
-			if (!bosses3.isEmpty())
+			for (L2Npc boss : bosses3)
 			{
-				for (L2Npc boss : bosses3)
+				if (boss != null)
 				{
-					if (boss != null)
-					{
-						boss.deleteMe();
-						progress3 = false;
-					}
+					boss.deleteMe();
+					progress3 = false;
 				}
 			}
 		}
@@ -254,15 +219,12 @@ public class DragonVortex extends Quest
 		@Override
 		public void run()
 		{
-			if (!bosses4.isEmpty())
+			for (L2Npc boss : bosses4)
 			{
-				for (L2Npc boss : bosses4)
+				if (boss != null)
 				{
-					if (boss != null)
-					{
-						boss.deleteMe();
-						progress4 = false;
-					}
+					boss.deleteMe();
+					progress4 = false;
 				}
 			}
 		}
