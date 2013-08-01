@@ -1,5 +1,7 @@
 package l2r.gameserver.scripts.ai.npc.DragonVortex;
 
+import java.util.concurrent.ScheduledFuture;
+
 import javolution.util.FastList;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.model.Location;
@@ -19,6 +21,11 @@ public class DragonVortex extends Quest
 	protected final FastList<L2Npc> bosses2 = new FastList<>();
 	protected final FastList<L2Npc> bosses3 = new FastList<>();
 	protected final FastList<L2Npc> bosses4 = new FastList<>();
+	
+	private ScheduledFuture<?> _despawnTask1;
+	private ScheduledFuture<?> _despawnTask2;
+	private ScheduledFuture<?> _despawnTask3;
+	private ScheduledFuture<?> _despawnTask4;
 	
 	protected boolean progress1 = false;
 	protected boolean progress2 = false;
@@ -64,11 +71,6 @@ public class DragonVortex extends Quest
 	{
 		if (event.equalsIgnoreCase("Spawn"))
 		{
-			if (progress1 || progress2 || progress3 || progress4)
-			{
-				return "32871-03.htm";
-			}
-			
 			if (!hasQuestItems(player, LARGE_DRAGON_BONE))
 			{
 				return "32871-02.htm";
@@ -76,52 +78,72 @@ public class DragonVortex extends Quest
 			
 			if (npc.getNpcId() == VORTEX_1)
 			{
+				if (progress1)
+				{
+					return "32871-03.htm";
+				}
+				
 				takeItems(player, LARGE_DRAGON_BONE, 1);
 				boss1 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
 				progress1 = true;
 				if (boss1 != null)
 				{
 					bosses1.add(boss1);
-					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFirstVortrexBoss(), DESPAWN_DELAY);
+					_despawnTask1 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFirstVortrexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
 			}
 			
 			if (npc.getNpcId() == VORTEX_2)
 			{
+				if (progress2)
+				{
+					return "32871-03.htm";
+				}
+				
 				takeItems(player, LARGE_DRAGON_BONE, 1);
 				boss2 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
 				progress2 = true;
 				if (boss2 != null)
 				{
 					bosses2.add(boss2);
-					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnSecondVortrexBoss(), DESPAWN_DELAY);
+					_despawnTask2 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnSecondVortrexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
 			}
 			
 			if (npc.getNpcId() == VORTEX_3)
 			{
+				if (progress3)
+				{
+					return "32871-03.htm";
+				}
+				
 				takeItems(player, LARGE_DRAGON_BONE, 1);
 				boss3 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
 				progress3 = true;
 				if (boss3 != null)
 				{
 					bosses3.add(boss3);
-					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnThirdVortrexBoss(), DESPAWN_DELAY);
+					_despawnTask3 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnThirdVortrexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
 			}
 			
 			if (npc.getNpcId() == VORTEX_4)
 			{
+				if (progress4)
+				{
+					return "32871-03.htm";
+				}
+				
 				takeItems(player, LARGE_DRAGON_BONE, 1);
 				boss4 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
 				progress4 = true;
 				if (boss4 != null)
 				{
 					bosses4.add(boss4);
-					ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFourthVortrexBoss(), DESPAWN_DELAY);
+					_despawnTask4 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFourthVortrexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
 			}
@@ -147,21 +169,37 @@ public class DragonVortex extends Quest
 		if (progress1)
 		{
 			progress1 = false;
+			if (_despawnTask1 != null)
+			{
+				_despawnTask1.cancel(true);
+			}
 		}
 		
 		if (progress2)
 		{
 			progress2 = false;
+			if (_despawnTask2 != null)
+			{
+				_despawnTask2.cancel(true);
+			}
 		}
 		
 		if (progress3)
 		{
 			progress3 = false;
+			if (_despawnTask3 != null)
+			{
+				_despawnTask3.cancel(true);
+			}
 		}
 		
 		if (progress4)
 		{
 			progress4 = false;
+			if (_despawnTask4 != null)
+			{
+				_despawnTask4.cancel(true);
+			}
 		}
 		return super.onKill(npc, player, isSummon);
 	}
