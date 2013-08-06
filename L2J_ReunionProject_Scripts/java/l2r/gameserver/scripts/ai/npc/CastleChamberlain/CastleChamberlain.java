@@ -802,7 +802,7 @@ public class CastleChamberlain extends AbstractNpcAI
 					if (amount <= castle.getTreasury())
 					{
 						castle.addToTreasuryNoTax((-1) * amount);
-						giveAdena(player, amount, false);
+						player.addAdena("Castle", amount, player, true);
 						htmltext = "chamberlain-01.html";
 					}
 					else
