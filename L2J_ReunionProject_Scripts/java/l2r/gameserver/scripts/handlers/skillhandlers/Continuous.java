@@ -97,7 +97,7 @@ public class Continuous implements ISkillHandler
 					if (target.isPlayer())
 					{
 						L2PcInstance trg = target.getActingPlayer();
-						if (trg.isCursedWeaponEquipped())
+						if (trg.isCursedWeaponEquipped() || trg.isInvul())
 						{
 							continue;
 						}
@@ -124,7 +124,7 @@ public class Continuous implements ISkillHandler
 			{
 				if (target != activeChar)
 				{
-					if ((trg != null) && !trg.isInSameParty(player) && !trg.isInSameAlly(player) && !trg.isInSameClan(player) && !trg.isInSameChannel(player))
+					if ((trg != null) && !trg.isInSameParty(player) && !trg.isInSameAlly(player) && !trg.isInSameClan(player) && !trg.isInSameChannel(player) && !trg.isInvul())
 					{
 						if (trg.isProtected())
 						{
