@@ -20,9 +20,9 @@ import l2r.gameserver.instancemanager.MapRegionManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.zone.ZoneId;
-import l2r.gameserver.model.zone.type.L2ChaoticZone;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.util.Rnd;
+import gr.reunion.configs.ChaoticZoneConfigs;
 
 /**
  * @author -=DoctorNo=-
@@ -112,7 +112,9 @@ public class PvpZoneVCmd implements IVoicedCommandHandler
 				activeChar.teleToLocation(loc, true);
 			}
 			else
+			{
 				activeChar.sendMessage("Cannot use this command here.");
+			}
 		}
 		else if (activeChar.getPvpFlag() == 1)
 		{
@@ -129,11 +131,13 @@ public class PvpZoneVCmd implements IVoicedCommandHandler
 			activeChar.sendMessage("You will be send to chaotic zone!");
 			activeChar.getInventory().destroyItemByItemId("root", 57, 500, activeChar, activeChar.getTarget());
 			activeChar.broadcastUserInfo();
-			int r = Rnd.get(5);
-			activeChar.teleToLocation(L2ChaoticZone._x[r], L2ChaoticZone._y[r], L2ChaoticZone._z[r]);
+			int r = Rnd.get(ChaoticZoneConfigs.CHAOTIC_ZONE_AUTO_RES_LOCS_COUNT);
+			activeChar.teleToLocation(ChaoticZoneConfigs.xCoords[r], ChaoticZoneConfigs.yCoords[r], ChaoticZoneConfigs.zCoords[r]);
 		}
 		else
+		{
 			activeChar.sendMessage("Cannot enter right now, try again later.");
+		}
 		
 		return true;
 	}
