@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 import l2r.Config;
 import l2r.L2DatabaseFactory;
 import l2r.gameserver.ai.CtrlIntention;
-import l2r.gameserver.communitybbs.Manager.RegionBBSManager;
 import l2r.gameserver.datatables.CharNameTable;
 import l2r.gameserver.datatables.ClassListData;
 import l2r.gameserver.handler.IAdminCommandHandler;
@@ -45,8 +44,6 @@ import l2r.gameserver.model.actor.instance.L2PetInstance;
 import l2r.gameserver.model.base.ClassId;
 import l2r.gameserver.network.L2GameClient;
 import l2r.gameserver.network.SystemMessageId;
-import l2r.gameserver.network.communityserver.CommunityServerThread;
-import l2r.gameserver.network.communityserver.writepackets.WorldInfo;
 import l2r.gameserver.network.serverpackets.CharInfo;
 import l2r.gameserver.network.serverpackets.ExBrExtraUserInfo;
 import l2r.gameserver.network.serverpackets.ExVoteSystemInfo;
@@ -460,7 +457,6 @@ public class AdminEditChar implements IAdminCommandHandler
 				activeChar.sendMessage("Changed name to " + val);
 				player.sendMessage("Your name has been changed by a GM.");
 				player.broadcastUserInfo();
-				CommunityServerThread.getInstance().sendPacket(new WorldInfo(player, null, WorldInfo.TYPE_UPDATE_PLAYER_DATA));
 				
 				if (player.isInParty())
 				{
@@ -479,8 +475,6 @@ public class AdminEditChar implements IAdminCommandHandler
 				{
 					player.getClan().broadcastClanStatus();
 				}
-				
-				RegionBBSManager.getInstance().changeCommunityBoard();
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{ // Case of empty character name
