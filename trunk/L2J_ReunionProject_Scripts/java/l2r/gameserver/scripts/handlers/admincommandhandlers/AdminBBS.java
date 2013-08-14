@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import l2r.gameserver.communitybbs.Manager.AdminBBSManager;
+import l2r.gameserver.communitybbs.Managers.AdminBBSManager;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 
@@ -32,7 +32,7 @@ public class AdminBBS implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		AdminBBSManager.getInstance().parsecmd(command, activeChar);
+		AdminBBSManager.getInstance().cbByPass(command, activeChar);
 		return true;
 	}
 	

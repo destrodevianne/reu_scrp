@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 
 import l2r.Config;
-import l2r.gameserver.communitybbs.Manager.RegionBBSManager;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2Object;
@@ -121,7 +120,6 @@ public class AdminEffects implements IAdminCommandHandler
 				activeChar.getAppearance().setVisible();
 				activeChar.broadcastUserInfo();
 			}
-			RegionBBSManager.getInstance().changeCommunityBoard();
 			command = "";
 			AdminHtml.showAdminHtml(activeChar, "gm_menu.htm");
 		}
@@ -131,14 +129,12 @@ public class AdminEffects implements IAdminCommandHandler
 			activeChar.broadcastUserInfo();
 			activeChar.decayMe();
 			activeChar.spawnMe();
-			RegionBBSManager.getInstance().changeCommunityBoard();
 		}
 		
 		else if (command.startsWith("admin_vis"))
 		{
 			activeChar.getAppearance().setVisible();
 			activeChar.broadcastUserInfo();
-			RegionBBSManager.getInstance().changeCommunityBoard();
 		}
 		else if (command.startsWith("admin_earthquake"))
 		{
