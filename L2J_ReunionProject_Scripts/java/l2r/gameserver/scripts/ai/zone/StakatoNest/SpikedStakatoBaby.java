@@ -1,4 +1,4 @@
-package l2r.gameserver.scripts.ai.group_template;
+package l2r.gameserver.scripts.ai.zone.StakatoNest;
 
 import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.model.actor.L2Attackable;

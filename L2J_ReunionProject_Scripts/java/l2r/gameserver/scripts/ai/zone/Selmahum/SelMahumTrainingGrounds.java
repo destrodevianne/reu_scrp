@@ -1,4 +1,4 @@
-package l2r.gameserver.scripts.ai.npc.selmahum;
+package l2r.gameserver.scripts.ai.zone.Selmahum;
 
 import java.io.File;
 import java.util.ArrayList;
