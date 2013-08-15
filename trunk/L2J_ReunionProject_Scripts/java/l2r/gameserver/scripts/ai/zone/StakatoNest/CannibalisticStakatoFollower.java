@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.individual;
+package l2r.gameserver.scripts.ai.zone.StakatoNest;
 
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.model.actor.L2Npc;

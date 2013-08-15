@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://l2r.ru/>.
  */
-package l2r.gameserver.scripts.ai.group_template;
+package l2r.gameserver.scripts.ai.zone.StakatoNest;
 
 import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.model.actor.L2Attackable;

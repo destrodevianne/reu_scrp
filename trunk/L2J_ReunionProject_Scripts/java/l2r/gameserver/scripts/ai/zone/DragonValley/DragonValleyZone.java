@@ -1,4 +1,4 @@
-package l2r.gameserver.scripts.ai.group_template;
+package l2r.gameserver.scripts.ai.zone.DragonValley;
 
 import java.util.HashMap;
 import java.util.Map;

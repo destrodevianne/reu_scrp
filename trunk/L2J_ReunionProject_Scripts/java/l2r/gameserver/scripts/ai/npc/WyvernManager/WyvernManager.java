@@ -25,6 +25,7 @@ import l2r.Config;
 import l2r.gameserver.SevenSigns;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.entity.Fort;
 import l2r.gameserver.model.entity.clanhall.SiegableHall;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
@@ -142,7 +143,8 @@ public final class WyvernManager extends AbstractNpcAI
 			}
 			case FORT:
 			{
-				if ((player.getClan() != null) && (npc.getFort() != null))
+				final Fort fort = npc.getFort();
+				if ((player.getClan() != null) && (fort != null) && (fort.getOwnerClan() != null))
 				{
 					return (player.isClanLeader() && (player.getClanId() == npc.getFort().getOwnerClan().getClanId()));
 				}
