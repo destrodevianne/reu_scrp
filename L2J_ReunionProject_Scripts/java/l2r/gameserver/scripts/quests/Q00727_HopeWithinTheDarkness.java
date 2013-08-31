@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.FortManager;
 import l2r.gameserver.instancemanager.GlobalVariablesManager;
 import l2r.gameserver.instancemanager.InstanceManager;

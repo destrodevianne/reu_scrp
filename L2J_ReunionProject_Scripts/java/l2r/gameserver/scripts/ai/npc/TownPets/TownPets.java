@@ -19,8 +19,8 @@
 package l2r.gameserver.scripts.ai.npc.TownPets;
 
 import l2r.Config;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;

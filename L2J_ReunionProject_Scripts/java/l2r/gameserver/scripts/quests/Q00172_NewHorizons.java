@@ -18,9 +18,9 @@
  */
 package l2r.gameserver.scripts.quests;
 
+import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.base.Race;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -92,7 +92,7 @@ public class Q00172_NewHorizons extends Quest
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = (player.getRace() == Race.Kamael) ? (player.getLevel() >= MIN_LEVEL) ? "32140-01.htm" : "32140-02.htm" : "32140-03.htm";
+						htmltext = (player.getRace() == PcRace.Kamael) ? (player.getLevel() >= MIN_LEVEL) ? "32140-01.htm" : "32140-02.htm" : "32140-03.htm";
 						break;
 					case State.STARTED:
 						htmltext = "32140-05.html";

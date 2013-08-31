@@ -18,13 +18,13 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.L2SkillType;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.network.SystemMessageId;
 
 /**
@@ -59,7 +59,7 @@ public class TransformDispel implements ISkillHandler
 		
 		if (pc.isTransformed() || pc.isInStance())
 		{
-			if (pc.isFlyingMounted() && !pc.isInsideZone(ZoneId.LANDING))
+			if (pc.isFlyingMounted() && !pc.isInsideZone(ZoneIdType.LANDING))
 			{
 				pc.sendPacket(SystemMessageId.TOO_HIGH_TO_PERFORM_THIS_ACTION);
 			}

@@ -1,9 +1,9 @@
 package l2r.gameserver.scripts.ai.npc.VillageMasters;
 
+import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.base.ClassId;
-import l2r.gameserver.model.base.Race;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.util.Util;
@@ -81,7 +81,7 @@ public class OrcOccupationChange1 extends Quest
 		{
 			int i = Integer.valueOf(event);
 			final ClassId cid = player.getClassId();
-			if ((cid.getRace() == Race.Orc) && (cid.getId() == CLASSES[i][1]))
+			if ((cid.getRace() == PcRace.Orc) && (cid.getId() == CLASSES[i][1]))
 			{
 				int suffix;
 				final boolean item = st.hasQuestItems(CLASSES[i][6]);
@@ -129,7 +129,7 @@ public class OrcOccupationChange1 extends Quest
 		
 		final ClassId cid = player.getClassId();
 		
-		if (cid.getRace() == Race.Orc)
+		if (cid.getRace() == PcRace.Orc)
 		{
 			switch (cid)
 			{

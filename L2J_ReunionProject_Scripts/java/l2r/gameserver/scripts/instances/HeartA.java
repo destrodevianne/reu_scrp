@@ -26,7 +26,7 @@ import java.util.concurrent.ScheduledFuture;
 import javolution.util.FastList;
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.instancemanager.SoIManager;
 import l2r.gameserver.instancemanager.ZoneManager;

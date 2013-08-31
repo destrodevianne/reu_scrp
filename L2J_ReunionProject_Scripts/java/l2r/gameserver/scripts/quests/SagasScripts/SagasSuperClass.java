@@ -15,7 +15,7 @@
 package l2r.gameserver.scripts.quests.SagasScripts;
 
 import l2r.Config;
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;

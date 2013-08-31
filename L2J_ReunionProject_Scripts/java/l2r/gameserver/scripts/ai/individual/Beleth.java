@@ -23,10 +23,10 @@ import java.util.concurrent.ScheduledFuture;
 
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.DoorTable;
 import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.instancemanager.ZoneManager;
 import l2r.gameserver.model.L2Object;

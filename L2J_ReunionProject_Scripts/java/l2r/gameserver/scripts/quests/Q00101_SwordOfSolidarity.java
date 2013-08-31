@@ -18,10 +18,10 @@
  */
 package l2r.gameserver.scripts.quests;
 
+import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.base.ClassId;
-import l2r.gameserver.model.base.Race;
 import l2r.gameserver.model.holders.ItemHolder;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
@@ -183,7 +183,7 @@ public class Q00101_SwordOfSolidarity extends Quest
 					{
 						case State.CREATED:
 						{
-							htmltext = (player.getRace() == Race.Human) ? (player.getLevel() >= MIN_LVL) ? "30008-02.htm" : "30008-08.htm" : "30008-01.htm";
+							htmltext = (player.getRace() == PcRace.Human) ? (player.getLevel() >= MIN_LVL) ? "30008-02.htm" : "30008-08.htm" : "30008-01.htm";
 							break;
 						}
 						case State.STARTED:

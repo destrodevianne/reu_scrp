@@ -21,7 +21,7 @@ import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2World;

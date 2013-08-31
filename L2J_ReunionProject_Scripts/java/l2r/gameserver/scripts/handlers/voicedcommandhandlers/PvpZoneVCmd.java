@@ -15,11 +15,12 @@
 package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 
 import javolution.text.TextBuilder;
+import l2r.gameserver.enums.TeleportWhereType;
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.instancemanager.MapRegionManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.util.Rnd;
 import gr.reunion.configs.ChaoticZoneConfigs;
@@ -107,7 +108,7 @@ public class PvpZoneVCmd implements IVoicedCommandHandler
 				activeChar.sendMessage("You will be send to nearest town!");
 				activeChar.getInventory().destroyItemByItemId("root", 57, 500, activeChar, activeChar.getTarget());
 				activeChar.broadcastUserInfo();
-				Location loc = MapRegionManager.getInstance().getTeleToLocation(activeChar, MapRegionManager.TeleportWhereType.Town);
+				Location loc = MapRegionManager.getInstance().getTeleToLocation(activeChar, TeleportWhereType.Town);
 				activeChar.setInstanceId(0);
 				activeChar.teleToLocation(loc, true);
 			}
@@ -121,7 +122,7 @@ public class PvpZoneVCmd implements IVoicedCommandHandler
 			activeChar.sendMessage("You cannot use this feature during PvP Mode.");
 			return false;
 		}
-		else if (activeChar.isInsideZone(ZoneId.ZONE_CHAOTIC))
+		else if (activeChar.isInsideZone(ZoneIdType.ZONE_CHAOTIC))
 		{
 			activeChar.sendMessage("Cannot use in chaotic zone.");
 			return false;

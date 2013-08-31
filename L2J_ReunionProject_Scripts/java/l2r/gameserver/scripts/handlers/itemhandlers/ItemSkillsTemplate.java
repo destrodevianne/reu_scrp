@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.itemhandlers;
 
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;

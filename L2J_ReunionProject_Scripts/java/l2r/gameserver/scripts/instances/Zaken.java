@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.instances;
 
-import static l2r.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
+import static l2r.gameserver.enums.CtrlIntention.AI_INTENTION_ATTACK;
 
 import java.util.Calendar;
 import java.util.List;

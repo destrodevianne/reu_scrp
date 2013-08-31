@@ -29,8 +29,9 @@ import l2r.L2DatabaseFactory;
 import l2r.gameserver.GameTimeController;
 import l2r.gameserver.SevenSigns;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.instancemanager.CoupleManager;
 import l2r.gameserver.instancemanager.GrandBossManager;
@@ -39,7 +40,6 @@ import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.effects.AbnormalEffect;
 import l2r.gameserver.model.skills.L2Skill;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.ConfirmDlg;
 import l2r.gameserver.network.serverpackets.MagicSkillUse;
@@ -326,7 +326,7 @@ public class Wedding implements IVoicedCommandHandler
 			return false;
 		}
 		
-		if (activeChar.isInsideZone(ZoneId.NO_SUMMON_FRIEND))
+		if (activeChar.isInsideZone(ZoneIdType.NO_SUMMON_FRIEND))
 		{
 			activeChar.sendMessage("You are in area which blocks summoning.");
 			return false;
@@ -423,7 +423,7 @@ public class Wedding implements IVoicedCommandHandler
 			}
 		}
 		
-		if (partner.isInsideZone(ZoneId.NO_SUMMON_FRIEND))
+		if (partner.isInsideZone(ZoneIdType.NO_SUMMON_FRIEND))
 		{
 			activeChar.sendMessage("Your partner is in area which blocks summoning.");
 			return false;

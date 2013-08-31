@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.ITargetTypeHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.targets.L2TargetType;
-import l2r.gameserver.model.zone.ZoneId;
 
 /**
  * @author UnAfraid
@@ -38,7 +38,7 @@ public class BehindAura implements ITargetTypeHandler
 	public L2Object[] getTargetList(L2Skill skill, L2Character activeChar, boolean onlyFirst, L2Character target)
 	{
 		List<L2Character> targetList = new ArrayList<>();
-		final boolean srcInArena = (activeChar.isInsideZone(ZoneId.PVP) && !activeChar.isInsideZone(ZoneId.SIEGE));
+		final boolean srcInArena = (activeChar.isInsideZone(ZoneIdType.PVP) && !activeChar.isInsideZone(ZoneIdType.SIEGE));
 		final Collection<L2Character> objs = activeChar.getKnownList().getKnownCharactersInRadius(skill.getAffectRange());
 		int maxTargets = skill.getAffectLimit();
 		for (L2Character obj : objs)

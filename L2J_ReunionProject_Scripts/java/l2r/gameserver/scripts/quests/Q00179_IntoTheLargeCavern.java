@@ -18,9 +18,9 @@
  */
 package l2r.gameserver.scripts.quests;
 
+import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.base.Race;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -94,7 +94,7 @@ public class Q00179_IntoTheLargeCavern extends Quest
 			switch (st.getState())
 			{
 				case State.CREATED:
-					if (player.getRace() != Race.Kamael)
+					if (player.getRace() != PcRace.Kamael)
 					{
 						htmltext = "32138-00b.html";
 					}

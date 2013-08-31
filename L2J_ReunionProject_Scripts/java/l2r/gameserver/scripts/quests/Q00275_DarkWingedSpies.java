@@ -18,12 +18,12 @@
  */
 package l2r.gameserver.scripts.quests;
 
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.base.Race;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -138,7 +138,7 @@ public final class Q00275_DarkWingedSpies extends Quest
 		{
 			case State.CREATED:
 			{
-				htmltext = (talker.getRace() == Race.Orc) ? (talker.getLevel() >= MIN_LVL) ? "30567-02.htm" : "30567-01.htm" : "30567-00.htm";
+				htmltext = (talker.getRace() == PcRace.Orc) ? (talker.getLevel() >= MIN_LVL) ? "30567-02.htm" : "30567-01.htm" : "30567-00.htm";
 				break;
 			}
 			case State.STARTED:

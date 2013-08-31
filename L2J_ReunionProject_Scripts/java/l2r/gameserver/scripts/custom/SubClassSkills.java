@@ -23,7 +23,7 @@ import java.util.Arrays;
 import javolution.util.FastList;
 import l2r.Config;
 import l2r.gameserver.datatables.ClassListData;
-import l2r.gameserver.model.PcCondOverride;
+import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
 import l2r.gameserver.model.quest.Quest;

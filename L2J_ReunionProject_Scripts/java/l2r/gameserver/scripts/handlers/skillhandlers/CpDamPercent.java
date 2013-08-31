@@ -18,9 +18,9 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
+import l2r.gameserver.enums.ShotType;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.ShotType;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.L2SkillType;

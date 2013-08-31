@@ -20,8 +20,8 @@ package l2r.gameserver.scripts.ai.individual;
 
 import java.util.Map;
 
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;

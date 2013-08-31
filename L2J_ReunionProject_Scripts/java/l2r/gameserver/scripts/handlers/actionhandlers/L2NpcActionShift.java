@@ -20,13 +20,13 @@ package l2r.gameserver.scripts.handlers.actionhandlers;
 
 import l2r.Config;
 import l2r.gameserver.datatables.ItemTable;
+import l2r.gameserver.enums.InstanceType;
 import l2r.gameserver.handler.IActionHandler;
 import l2r.gameserver.instancemanager.WalkingManager;
 import l2r.gameserver.model.Elementals;
 import l2r.gameserver.model.L2DropCategory;
 import l2r.gameserver.model.L2DropData;
 import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.L2Object.InstanceType;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;

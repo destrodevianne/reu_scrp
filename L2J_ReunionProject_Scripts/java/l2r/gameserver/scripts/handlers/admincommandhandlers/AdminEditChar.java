@@ -32,9 +32,9 @@ import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.L2DatabaseFactory;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.CharNameTable;
 import l2r.gameserver.datatables.ClassListData;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2World;

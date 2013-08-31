@@ -21,6 +21,7 @@ package l2r.gameserver.scripts.handlers.targethandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.ITargetTypeHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
@@ -29,7 +30,6 @@ import l2r.gameserver.model.actor.instance.L2PetInstance;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.L2SkillType;
 import l2r.gameserver.model.skills.targets.L2TargetType;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.network.SystemMessageId;
 
 /**
@@ -82,7 +82,7 @@ public class CorpsePlayer implements ITargetTypeHandler
 					if (targetPlayer != null)
 					{
 						// check target is not in a active siege zone
-						if (targetPlayer.isInsideZone(ZoneId.SIEGE) && !targetPlayer.isInSiege())
+						if (targetPlayer.isInsideZone(ZoneIdType.SIEGE) && !targetPlayer.isInSiege())
 						{
 							condGood = false;
 							activeChar.sendPacket(SystemMessageId.CANNOT_BE_RESURRECTED_DURING_SIEGE);

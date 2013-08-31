@@ -18,11 +18,11 @@
  */
 package l2r.gameserver.scripts.handlers.itemhandlers;
 
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.Dice;
 import l2r.gameserver.network.serverpackets.SystemMessage;
@@ -63,7 +63,7 @@ public class RollingDice implements IItemHandler
 		sm.addNumber(number);
 		
 		activeChar.sendPacket(sm);
-		if (activeChar.isInsideZone(ZoneId.PEACE))
+		if (activeChar.isInsideZone(ZoneIdType.PEACE))
 		{
 			Broadcast.toKnownPlayers(activeChar, sm);
 		}

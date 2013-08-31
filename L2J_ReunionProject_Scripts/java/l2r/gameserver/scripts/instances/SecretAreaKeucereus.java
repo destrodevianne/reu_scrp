@@ -1,6 +1,6 @@
 package l2r.gameserver.scripts.instances;
 
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.actor.L2Npc;

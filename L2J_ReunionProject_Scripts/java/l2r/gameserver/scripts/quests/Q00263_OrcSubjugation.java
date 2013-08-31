@@ -21,9 +21,9 @@ package l2r.gameserver.scripts.quests;
 import java.util.HashMap;
 import java.util.Map;
 
+import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.base.Race;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -119,7 +119,7 @@ public final class Q00263_OrcSubjugation extends Quest
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getRace() == Race.DarkElf) ? (player.getLevel() >= MIN_LEVEL) ? "30346-03.htm" : "30346-02.htm" : "30346-01.htm";
+				htmltext = (player.getRace() == PcRace.DarkElf) ? (player.getLevel() >= MIN_LEVEL) ? "30346-03.htm" : "30346-02.htm" : "30346-01.htm";
 				break;
 			}
 			case State.STARTED:

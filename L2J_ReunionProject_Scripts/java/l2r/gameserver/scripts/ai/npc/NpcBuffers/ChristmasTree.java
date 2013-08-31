@@ -19,11 +19,11 @@
 package l2r.gameserver.scripts.ai.npc.NpcBuffers;
 
 import l2r.gameserver.ThreadPoolManager;
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.skills.L2Skill;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
@@ -78,7 +78,7 @@ public class ChristmasTree extends AbstractNpcAI
 				return;
 			}
 			
-			if (!_npc.isInsideZone(ZoneId.PEACE))
+			if (!_npc.isInsideZone(ZoneIdType.PEACE))
 			{
 				L2Skill skill = _holder.getSkill();
 				

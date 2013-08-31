@@ -1,7 +1,7 @@
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.ai.CtrlEvent;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;

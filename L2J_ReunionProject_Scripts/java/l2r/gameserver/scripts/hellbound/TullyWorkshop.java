@@ -28,11 +28,11 @@ import java.util.concurrent.ScheduledFuture;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.DoorTable;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.RaidBossStatus;
 import l2r.gameserver.instancemanager.RaidBossSpawnManager;
-import l2r.gameserver.instancemanager.RaidBossSpawnManager.StatusEnum;
 import l2r.gameserver.instancemanager.ZoneManager;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.L2Spawn;
@@ -1652,7 +1652,7 @@ public class TullyWorkshop extends Quest
 				{
 					nextServantIdx = 0;
 					initDeathCounter(roomData[0]);
-					if (RaidBossSpawnManager.getInstance().getRaidBossStatusId(DARION) == StatusEnum.ALIVE)
+					if (RaidBossSpawnManager.getInstance().getRaidBossStatusId(DARION) == RaidBossStatus.ALIVE)
 					{
 						allowAgentSpawn = false;
 						allowServantSpawn = false;
@@ -1742,7 +1742,7 @@ public class TullyWorkshop extends Quest
 		}
 		else if (npc.getNpcId() == PILLAR)
 		{
-			npc.setIsInvul(RaidBossSpawnManager.getInstance().getRaidBossStatusId(DARION) == StatusEnum.ALIVE);
+			npc.setIsInvul(RaidBossSpawnManager.getInstance().getRaidBossStatusId(DARION) == RaidBossStatus.ALIVE);
 		}
 		return super.onSpawn(npc);
 	}
@@ -1866,7 +1866,7 @@ public class TullyWorkshop extends Quest
 	private void doOnLoadSpawn()
 	{
 		// Ghost of Tully and Spooky Tombstone should be spawned, if Tully isn't alive
-		if (RaidBossSpawnManager.getInstance().getRaidBossStatusId(TULLY) != StatusEnum.ALIVE)
+		if (RaidBossSpawnManager.getInstance().getRaidBossStatusId(TULLY) != RaidBossStatus.ALIVE)
 		{
 			for (int i = 12; i <= 13; i++)
 			{
@@ -1883,7 +1883,7 @@ public class TullyWorkshop extends Quest
 		pillarSpawn.startRespawn();
 		
 		// Doors related
-		if (RaidBossSpawnManager.getInstance().getRaidBossStatusId(DARION) != StatusEnum.ALIVE)
+		if (RaidBossSpawnManager.getInstance().getRaidBossStatusId(DARION) != RaidBossStatus.ALIVE)
 		{
 			handleDoorsOnDeath();
 		}
