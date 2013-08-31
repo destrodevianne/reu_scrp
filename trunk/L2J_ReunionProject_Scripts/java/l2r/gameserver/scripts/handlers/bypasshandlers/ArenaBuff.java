@@ -21,12 +21,12 @@ package l2r.gameserver.scripts.handlers.bypasshandlers;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
-import l2r.gameserver.model.zone.ZoneId;
 
 /**
  * @author Xaras2
@@ -94,7 +94,7 @@ public class ArenaBuff implements IBypassHandler
 			}
 			else if (cmd.equalsIgnoreCase(COMMANDS[1]))
 			{
-				if (activeChar.isInsideZone(ZoneId.PVP)) // Cannot be used while inside the pvp zone
+				if (activeChar.isInsideZone(ZoneIdType.PVP)) // Cannot be used while inside the pvp zone
 				{
 					return false;
 				}
@@ -113,7 +113,7 @@ public class ArenaBuff implements IBypassHandler
 			}
 			else if (cmd.equalsIgnoreCase(COMMANDS[2]))
 			{
-				if (activeChar.isInsideZone(ZoneId.PVP)) // Cannot be used while inside the pvp zone
+				if (activeChar.isInsideZone(ZoneIdType.PVP)) // Cannot be used while inside the pvp zone
 				{
 					return false;
 				}

@@ -25,9 +25,9 @@ import java.util.logging.Level;
 import l2r.Config;
 import l2r.gameserver.SevenSigns;
 import l2r.gameserver.SevenSignsFestival;
+import l2r.gameserver.enums.MessageType;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.L2Party;
-import l2r.gameserver.model.L2Party.messageType;
 import l2r.gameserver.model.StatsSet;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2FestivalGuideInstance;
@@ -313,7 +313,7 @@ public class Festival implements IBypassHandler
 					{
 						if (party.getMemberCount() > Config.ALT_FESTIVAL_MIN_PLAYER)
 						{
-							party.removePartyMember(activeChar, messageType.Expelled);
+							party.removePartyMember(activeChar, MessageType.Expelled);
 						}
 						else
 						{

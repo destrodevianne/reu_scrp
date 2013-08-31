@@ -15,7 +15,7 @@
 package l2r.gameserver.scripts.instances;
 
 import javolution.util.FastMap;
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.actor.L2Npc;

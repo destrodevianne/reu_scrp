@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Object;

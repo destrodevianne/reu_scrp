@@ -18,8 +18,8 @@
  */
 package l2r.gameserver.scripts.ai.individual;
 
-import static l2r.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
-import static l2r.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
+import static l2r.gameserver.enums.CtrlIntention.AI_INTENTION_FOLLOW;
+import static l2r.gameserver.enums.CtrlIntention.AI_INTENTION_IDLE;
 
 import java.util.ArrayList;
 import java.util.Collection;

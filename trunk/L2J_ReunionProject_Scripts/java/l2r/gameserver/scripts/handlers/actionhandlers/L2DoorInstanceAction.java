@@ -18,10 +18,10 @@
  */
 package l2r.gameserver.scripts.handlers.actionhandlers;
 
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.InstanceType;
 import l2r.gameserver.handler.IActionHandler;
 import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.L2Object.InstanceType;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2DoorInstance;

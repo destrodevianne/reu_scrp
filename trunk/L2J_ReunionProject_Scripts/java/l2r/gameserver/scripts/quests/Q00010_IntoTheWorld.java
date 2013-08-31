@@ -18,9 +18,9 @@
  */
 package l2r.gameserver.scripts.quests;
 
+import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.base.Race;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -108,7 +108,7 @@ public class Q00010_IntoTheWorld extends Quest
 				switch (st.getState())
 				{
 					case State.CREATED:
-						htmltext = ((player.getLevel() >= MIN_LEVEL) && (player.getRace() == Race.Dwarf)) ? "30533-01.htm" : "30533-02.html";
+						htmltext = ((player.getLevel() >= MIN_LEVEL) && (player.getRace() == PcRace.Dwarf)) ? "30533-01.htm" : "30533-02.html";
 						break;
 					case State.STARTED:
 						if (st.isCond(1))

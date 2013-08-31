@@ -21,6 +21,7 @@ package l2r.gameserver.scripts.handlers.punishmenthandlers;
 import l2r.gameserver.LoginServerThread;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.cache.HtmCache;
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.IPunishmentHandler;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -28,7 +29,6 @@ import l2r.gameserver.model.actor.tasks.player.TeleportTask;
 import l2r.gameserver.model.olympiad.OlympiadManager;
 import l2r.gameserver.model.punishment.PunishmentTask;
 import l2r.gameserver.model.punishment.PunishmentType;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.model.zone.type.L2JailZone;
 import l2r.gameserver.network.L2GameClient;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -43,11 +43,11 @@ public class JailHandler extends PlayerSpawnListener implements IPunishmentHandl
 	@Override
 	public void onSpawn(L2PcInstance activeChar)
 	{
-		if (activeChar.isJailed() && !activeChar.isInsideZone(ZoneId.JAIL))
+		if (activeChar.isJailed() && !activeChar.isInsideZone(ZoneIdType.JAIL))
 		{
 			applyToPlayer(null, activeChar);
 		}
-		else if (!activeChar.isJailed() && activeChar.isInsideZone(ZoneId.JAIL) && !activeChar.isGM())
+		else if (!activeChar.isJailed() && activeChar.isInsideZone(ZoneIdType.JAIL) && !activeChar.isGM())
 		{
 			removeFromPlayer(activeChar);
 		}

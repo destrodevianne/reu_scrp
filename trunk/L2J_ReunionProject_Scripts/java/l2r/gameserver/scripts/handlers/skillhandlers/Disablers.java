@@ -20,12 +20,12 @@ package l2r.gameserver.scripts.handlers.skillhandlers;
 
 import java.util.logging.Logger;
 
-import l2r.gameserver.ai.CtrlEvent;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.ai.L2AttackableAI;
+import l2r.gameserver.enums.CtrlEvent;
+import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.ShotType;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.ShotType;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Summon;

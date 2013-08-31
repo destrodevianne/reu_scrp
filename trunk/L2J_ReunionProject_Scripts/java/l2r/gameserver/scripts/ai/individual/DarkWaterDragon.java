@@ -22,8 +22,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javolution.util.FastSet;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;

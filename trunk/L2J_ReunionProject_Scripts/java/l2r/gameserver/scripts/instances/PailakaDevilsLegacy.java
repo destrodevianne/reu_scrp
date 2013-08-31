@@ -22,8 +22,8 @@ import java.util.List;
 
 import javolution.util.FastList;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;

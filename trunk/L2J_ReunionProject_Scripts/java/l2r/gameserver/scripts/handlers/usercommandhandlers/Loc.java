@@ -18,11 +18,11 @@
  */
 package l2r.gameserver.scripts.handlers.usercommandhandlers;
 
+import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.handler.IUserCommandHandler;
 import l2r.gameserver.instancemanager.MapRegionManager;
 import l2r.gameserver.instancemanager.ZoneManager;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.base.Race;
 import l2r.gameserver.model.zone.type.L2RespawnZone;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.SystemMessage;
@@ -44,7 +44,7 @@ public class Loc implements IUserCommandHandler
 		L2RespawnZone zone = ZoneManager.getInstance().getZone(activeChar, L2RespawnZone.class);
 		if (zone != null)
 		{
-			region = MapRegionManager.getInstance().getRestartRegion(activeChar, zone.getAllRespawnPoints().get(Race.Human)).getLocId();
+			region = MapRegionManager.getInstance().getRestartRegion(activeChar, zone.getAllRespawnPoints().get(PcRace.Human)).getLocId();
 		}
 		else
 		{

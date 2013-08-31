@@ -21,10 +21,10 @@ package l2r.gameserver.scripts.handlers.usercommandhandlers;
 import l2r.Config;
 import l2r.gameserver.GameTimeController;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.TeleportWhereType;
 import l2r.gameserver.handler.IUserCommandHandler;
-import l2r.gameserver.instancemanager.MapRegionManager;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.serverpackets.MagicSkillUse;
@@ -123,7 +123,7 @@ public class Unstuck implements IUserCommandHandler
 			_activeChar.enableAllSkills();
 			_activeChar.setIsCastingNow(false);
 			_activeChar.setInstanceId(0);
-			_activeChar.teleToLocation(MapRegionManager.TeleportWhereType.Town);
+			_activeChar.teleToLocation(TeleportWhereType.Town);
 		}
 	}
 	

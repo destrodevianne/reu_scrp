@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;

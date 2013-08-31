@@ -1,10 +1,10 @@
 package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.olympiad.OlympiadManager;
-import l2r.gameserver.model.zone.ZoneId;
 
 /**
  * @author -=DoctorNo=-
@@ -48,7 +48,7 @@ public class TeleportsVCmd implements IVoicedCommandHandler
 		if (command.equalsIgnoreCase("oren"))
 			loc = new Location(82760, 53578, -1491);
 		
-		if (!activeChar.isInsideZone(ZoneId.PEACE))
+		if (!activeChar.isInsideZone(ZoneIdType.PEACE))
 		{
 			if (activeChar.getKarma() > 0)
 			{

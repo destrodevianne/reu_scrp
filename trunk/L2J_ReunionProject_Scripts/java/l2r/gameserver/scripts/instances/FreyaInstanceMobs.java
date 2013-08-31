@@ -1,9 +1,9 @@
 package l2r.gameserver.scripts.instances;
 
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.NpcTable;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Attackable;

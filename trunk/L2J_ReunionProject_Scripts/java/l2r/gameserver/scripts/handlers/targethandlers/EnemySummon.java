@@ -18,13 +18,13 @@
  */
 package l2r.gameserver.scripts.handlers.targethandlers;
 
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.ITargetTypeHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Summon;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.targets.L2TargetType;
-import l2r.gameserver.model.zone.ZoneId;
 
 /**
  * @author UnAfraid
@@ -37,7 +37,7 @@ public class EnemySummon implements ITargetTypeHandler
 		if (target.isSummon())
 		{
 			L2Summon targetSummon = (L2Summon) target;
-			if ((activeChar.isPlayer() && (activeChar.getSummon() != targetSummon) && !targetSummon.isDead() && ((targetSummon.getOwner().getPvpFlag() != 0) || (targetSummon.getOwner().getKarma() > 0))) || (targetSummon.getOwner().isInsideZone(ZoneId.PVP) && activeChar.getActingPlayer().isInsideZone(ZoneId.PVP)) || (targetSummon.getOwner().isInDuel() && activeChar.getActingPlayer().isInDuel() && (targetSummon.getOwner().getDuelId() == activeChar.getActingPlayer().getDuelId())))
+			if ((activeChar.isPlayer() && (activeChar.getSummon() != targetSummon) && !targetSummon.isDead() && ((targetSummon.getOwner().getPvpFlag() != 0) || (targetSummon.getOwner().getKarma() > 0))) || (targetSummon.getOwner().isInsideZone(ZoneIdType.PVP) && activeChar.getActingPlayer().isInsideZone(ZoneIdType.PVP)) || (targetSummon.getOwner().isInDuel() && activeChar.getActingPlayer().isInDuel() && (targetSummon.getOwner().getDuelId() == activeChar.getActingPlayer().getDuelId())))
 			{
 				return new L2Character[]
 				{

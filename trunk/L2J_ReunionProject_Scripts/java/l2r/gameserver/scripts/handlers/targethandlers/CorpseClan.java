@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.ITargetTypeHandler;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.L2ClanMember;
@@ -32,7 +33,6 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.L2SkillType;
 import l2r.gameserver.model.skills.targets.L2TargetType;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.util.Util;
 
 /**
@@ -113,7 +113,7 @@ public class CorpseClan implements ITargetTypeHandler
 					if (skill.getSkillType() == L2SkillType.RESURRECT)
 					{
 						// check target is not in a active siege zone
-						if (obj.isInsideZone(ZoneId.SIEGE) && !obj.isInSiege())
+						if (obj.isInsideZone(ZoneIdType.SIEGE) && !obj.isInSiege())
 						{
 							continue;
 						}

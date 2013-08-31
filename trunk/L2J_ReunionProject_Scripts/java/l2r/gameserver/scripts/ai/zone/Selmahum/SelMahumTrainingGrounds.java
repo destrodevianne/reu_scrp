@@ -10,8 +10,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import javolution.util.FastMap;
 import l2r.Config;
-import l2r.gameserver.ai.CtrlEvent;
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlEvent;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;

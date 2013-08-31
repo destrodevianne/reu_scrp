@@ -20,10 +20,11 @@ package l2r.gameserver.scripts.handlers.skillhandlers;
 
 import l2r.Config;
 import l2r.gameserver.GeoData;
+import l2r.gameserver.enums.PcCondOverride;
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.instancemanager.ZoneManager;
 import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.PcCondOverride;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.itemcontainer.Inventory;
@@ -33,7 +34,6 @@ import l2r.gameserver.model.items.type.L2WeaponType;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.L2SkillType;
 import l2r.gameserver.model.zone.L2ZoneType;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.model.zone.type.L2FishingZone;
 import l2r.gameserver.model.zone.type.L2WaterZone;
 import l2r.gameserver.network.SystemMessageId;
@@ -118,14 +118,14 @@ public class Fishing implements ISkillHandler
 				return;
 			}
 			
-			if (player.isInsideZone(ZoneId.WATER))
+			if (player.isInsideZone(ZoneIdType.WATER))
 			{
 				// You can't fish in water
 				player.sendPacket(SystemMessageId.CANNOT_FISH_UNDER_WATER);
 				return;
 			}
 			
-			if (player.isInsideZone(ZoneId.PEACE))
+			if (player.isInsideZone(ZoneIdType.PEACE))
 			{
 				// You can't fish here.
 				player.sendPacket(SystemMessageId.CANNOT_FISH_HERE);

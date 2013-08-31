@@ -3,8 +3,8 @@ package l2r.gameserver.scripts.instances;
 import java.util.List;
 
 import javolution.util.FastList;
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.Location;

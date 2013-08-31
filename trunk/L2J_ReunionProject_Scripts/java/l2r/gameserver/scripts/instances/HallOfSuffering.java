@@ -22,9 +22,9 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.ai.CtrlEvent;
 import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;

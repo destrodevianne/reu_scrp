@@ -21,18 +21,18 @@ package l2r.gameserver.scripts.ai.individual.Venom;
 import java.util.ArrayList;
 import java.util.List;
 
-import l2r.gameserver.ai.CtrlIntention;
 import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.TeleportWhereType;
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.instancemanager.CastleManager;
 import l2r.gameserver.instancemanager.GlobalVariablesManager;
-import l2r.gameserver.instancemanager.MapRegionManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.skills.L2Skill;
-import l2r.gameserver.model.zone.ZoneId;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.scripting.scriptengine.events.SiegeEvent;
@@ -144,7 +144,7 @@ public final class Venom extends AbstractNpcAI
 		{
 			case TELEPORT_CUBE:
 			{
-				talker.teleToLocation(MapRegionManager.TeleportWhereType.Town);
+				talker.teleToLocation(TeleportWhereType.Town);
 				break;
 			}
 			case DUNGEON_KEEPER:
@@ -178,7 +178,7 @@ public final class Venom extends AbstractNpcAI
 				}
 				break;
 			case "raid_check":
-				if (!npc.isInsideZone(ZoneId.SIEGE) && !npc.isTeleporting())
+				if (!npc.isInsideZone(ZoneIdType.SIEGE) && !npc.isTeleporting())
 				{
 					npc.teleToLocation(new Location(_venomX, _venomY, _venomZ), false);
 				}

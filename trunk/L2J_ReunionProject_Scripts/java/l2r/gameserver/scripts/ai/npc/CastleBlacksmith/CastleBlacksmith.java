@@ -18,8 +18,8 @@
  */
 package l2r.gameserver.scripts.ai.npc.CastleBlacksmith;
 
+import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.model.L2Clan;
-import l2r.gameserver.model.PcCondOverride;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;

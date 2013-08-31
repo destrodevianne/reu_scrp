@@ -21,7 +21,7 @@ import java.util.concurrent.ScheduledFuture;
 import javolution.util.FastList;
 import l2r.gameserver.GameTimeController;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.ai.CtrlIntention;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.network.serverpackets.NpcSay;

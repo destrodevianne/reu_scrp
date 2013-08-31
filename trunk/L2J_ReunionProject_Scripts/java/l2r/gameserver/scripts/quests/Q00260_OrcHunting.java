@@ -21,9 +21,9 @@ package l2r.gameserver.scripts.quests;
 import java.util.HashMap;
 import java.util.Map;
 
+import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.base.Race;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -121,7 +121,7 @@ public final class Q00260_OrcHunting extends Quest
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getRace() == Race.Elf) ? (player.getLevel() >= MIN_LVL) ? "30221-03.htm" : "30221-02.html" : "30221-01.html";
+				htmltext = (player.getRace() == PcRace.Elf) ? (player.getLevel() >= MIN_LVL) ? "30221-03.htm" : "30221-02.html" : "30221-01.html";
 				break;
 			}
 			case State.STARTED:
