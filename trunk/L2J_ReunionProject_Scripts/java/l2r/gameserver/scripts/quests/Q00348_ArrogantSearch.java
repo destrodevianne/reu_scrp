@@ -10,7 +10,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class Q00348_ArrogantSearch extends Quest
 {
-	private static final String qn = "_348_ArrogantSearch";
+	private static final String qn = "Q00348_ArrogantSearch";
 	
 	// MOBS
 	private static final int YINTZU = 20647;
