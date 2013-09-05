@@ -47,7 +47,7 @@ public class QuestLink implements IBypassHandler
 	@Override
 	public boolean useBypass(String command, L2PcInstance activeChar, L2Character target)
 	{
-		if (!target.isNpc())
+		if ((target == null) || !target.isNpc())
 		{
 			return false;
 		}
