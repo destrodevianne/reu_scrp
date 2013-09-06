@@ -6,6 +6,7 @@ import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import gr.reunion.antibotSystem.AntibotSystem;
 import gr.reunion.antibotSystem.dynamicHtmls.GenerateHtmls;
+import gr.reunion.configs.AntibotConfigs;
 
 /**
  * @author -=DoctorNo=-
@@ -30,11 +31,14 @@ public class Antibot implements IVoicedCommandHandler
 			{
 				StringTokenizer st = new StringTokenizer(target);
 				String newpass = "";
-				String botAnswer = "";
+				String botAnswer = "NULL";
 				if (st.hasMoreTokens())
 				{
 					newpass = st.nextToken();
-					botAnswer = st.nextToken();
+					if (AntibotConfigs.ENABLE_DOUBLE_PROTECTION)
+					{
+						botAnswer = st.nextToken();
+					}
 				}
 				
 				AntibotSystem.checkFarmCaptchaCode(activeChar, newpass, botAnswer);
@@ -50,11 +54,14 @@ public class Antibot implements IVoicedCommandHandler
 			{
 				StringTokenizer st = new StringTokenizer(target);
 				String newpass = "";
-				String botAnswer = "";
+				String botAnswer = "NULL";
 				if (st.hasMoreTokens())
 				{
 					newpass = st.nextToken();
-					botAnswer = st.nextToken();
+					if (AntibotConfigs.ENABLE_DOUBLE_PROTECTION)
+					{
+						botAnswer = st.nextToken();
+					}
 				}
 				
 				AntibotSystem.checkEnchantCaptchaCode(activeChar, newpass, botAnswer);
@@ -64,7 +71,7 @@ public class Antibot implements IVoicedCommandHandler
 				GenerateHtmls.captchaHtml(activeChar, "ENCHANT");
 			}
 		}
-		if (command.equalsIgnoreCase("farmcaptcha") || command.equalsIgnoreCase("captcha") && activeChar.isFarmBot())
+		if (command.equalsIgnoreCase("farmcaptcha") || (command.equalsIgnoreCase("captcha") && activeChar.isFarmBot()))
 		{
 			AntibotSystem.refreshImage(activeChar, false, true);
 			return false;
