@@ -50,10 +50,10 @@ public class DragonVortex extends Quest
 	private L2Npc boss3;
 	private L2Npc boss4;
 	
-	private int boss1ObjId = 0;
-	private int boss2ObjId = 0;
-	private int boss3ObjId = 0;
-	private int boss4ObjId = 0;
+	protected int boss1ObjId = 0;
+	protected int boss2ObjId = 0;
+	protected int boss3ObjId = 0;
+	protected int boss4ObjId = 0;
 	
 	private static final int DESPAWN_DELAY = 3600000;
 	
@@ -238,6 +238,7 @@ public class DragonVortex extends Quest
 				}
 			}
 			
+			boss1ObjId = 0;
 			bosses1.clear();
 		}
 	}
@@ -256,6 +257,7 @@ public class DragonVortex extends Quest
 				}
 			}
 			
+			boss2ObjId = 0;
 			bosses2.clear();
 		}
 	}
@@ -274,6 +276,7 @@ public class DragonVortex extends Quest
 				}
 			}
 			
+			boss3ObjId = 0;
 			bosses3.clear();
 		}
 	}
@@ -292,6 +295,7 @@ public class DragonVortex extends Quest
 				}
 			}
 			
+			boss4ObjId = 0;
 			bosses4.clear();
 		}
 	}
