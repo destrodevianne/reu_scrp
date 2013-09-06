@@ -50,7 +50,12 @@ public class DragonVortex extends Quest
 	private L2Npc boss3;
 	private L2Npc boss4;
 	
-	private static final int DESPAWN_DELAY = 1800000;
+	private int boss1ObjId = 0;
+	private int boss2ObjId = 0;
+	private int boss3ObjId = 0;
+	private int boss4ObjId = 0;
+	
+	private static final int DESPAWN_DELAY = 3600000;
 	
 	public DragonVortex(int questId, String name, String descr)
 	{
@@ -89,6 +94,7 @@ public class DragonVortex extends Quest
 				if (boss1 != null)
 				{
 					bosses1.add(boss1);
+					boss1ObjId = boss1.getObjectId();
 					_despawnTask1 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFirstVortrexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
@@ -107,6 +113,7 @@ public class DragonVortex extends Quest
 				if (boss2 != null)
 				{
 					bosses2.add(boss2);
+					boss2ObjId = boss2.getObjectId();
 					_despawnTask2 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnSecondVortrexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
@@ -125,6 +132,7 @@ public class DragonVortex extends Quest
 				if (boss3 != null)
 				{
 					bosses3.add(boss3);
+					boss3ObjId = boss3.getObjectId();
 					_despawnTask3 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnThirdVortrexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
@@ -143,6 +151,7 @@ public class DragonVortex extends Quest
 				if (boss4 != null)
 				{
 					bosses4.add(boss4);
+					boss4ObjId = boss4.getObjectId();
 					_despawnTask4 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFourthVortrexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
@@ -166,41 +175,52 @@ public class DragonVortex extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		if (progress1)
+		int npcObjId = npc.getObjectId();
+		
+		if ((boss1ObjId != 0) && (npcObjId == boss1ObjId) && progress1)
 		{
 			progress1 = false;
+			boss1ObjId = 0;
+			bosses1.clear();
 			if (_despawnTask1 != null)
 			{
 				_despawnTask1.cancel(true);
 			}
 		}
 		
-		if (progress2)
+		if ((boss2ObjId != 0) && (npcObjId == boss2ObjId) && progress2)
 		{
 			progress2 = false;
+			boss2ObjId = 0;
+			bosses2.clear();
 			if (_despawnTask2 != null)
 			{
 				_despawnTask2.cancel(true);
 			}
 		}
 		
-		if (progress3)
+		if ((boss3ObjId != 0) && (npcObjId == boss3ObjId) && progress3)
 		{
 			progress3 = false;
+			boss3ObjId = 0;
+			bosses3.clear();
 			if (_despawnTask3 != null)
 			{
 				_despawnTask3.cancel(true);
 			}
 		}
 		
-		if (progress4)
+		if ((boss4ObjId != 0) && (npcObjId == boss4ObjId) && progress4)
 		{
 			progress4 = false;
+			boss4ObjId = 0;
+			bosses4.clear();
 			if (_despawnTask4 != null)
 			{
 				_despawnTask4.cancel(true);
 			}
 		}
+		
 		return super.onKill(npc, player, isSummon);
 	}
 	
@@ -217,6 +237,8 @@ public class DragonVortex extends Quest
 					progress1 = false;
 				}
 			}
+			
+			bosses1.clear();
 		}
 	}
 	
@@ -233,6 +255,8 @@ public class DragonVortex extends Quest
 					progress2 = false;
 				}
 			}
+			
+			bosses2.clear();
 		}
 	}
 	
@@ -249,6 +273,8 @@ public class DragonVortex extends Quest
 					progress3 = false;
 				}
 			}
+			
+			bosses3.clear();
 		}
 	}
 	
@@ -265,6 +291,8 @@ public class DragonVortex extends Quest
 					progress4 = false;
 				}
 			}
+			
+			bosses4.clear();
 		}
 	}
 	
