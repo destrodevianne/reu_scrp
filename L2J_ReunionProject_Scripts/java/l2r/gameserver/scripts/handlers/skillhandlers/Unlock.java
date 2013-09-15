@@ -18,12 +18,10 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
-import l2r.gameserver.model.actor.instance.L2ChestInstance;
 import l2r.gameserver.model.actor.instance.L2DoorInstance;
 import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -97,34 +95,6 @@ public class Unlock implements ISkillHandler
 					activeChar.sendPacket(SystemMessageId.FAILED_TO_UNLOCK_DOOR);
 				}
 			}
-			else if (target instanceof L2ChestInstance)
-			{
-				L2ChestInstance chest = (L2ChestInstance) target;
-				if ((chest.getCurrentHp() <= 0) || chest.isInteracted() || (activeChar.getInstanceId() != chest.getInstanceId()))
-				{
-					activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-					return;
-				}
-				
-				chest.setInteracted();
-				if (chestUnlock(skill, chest))
-				{
-					activeChar.broadcastSocialAction(3);
-					chest.setSpecialDrop();
-					chest.setMustRewardExpSp(false);
-					chest.reduceCurrentHp(99999999, activeChar, skill);
-				}
-				else
-				{
-					activeChar.broadcastSocialAction(13);
-					chest.addDamageHate(activeChar, 0, 1);
-					chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, activeChar);
-					if (chestTrap(chest))
-					{
-						chest.chestTrap(activeChar);
-					}
-				}
-			}
 		}
 	}
 	
@@ -148,71 +118,6 @@ public class Unlock implements ISkillHandler
 			default:
 				return Rnd.get(120) < 100;
 		}
-	}
-	
-	private static final boolean chestUnlock(L2Skill skill, L2Character chest)
-	{
-		int chance = 0;
-		if (chest.getLevel() > 60)
-		{
-			if (skill.getLevel() < 10)
-			{
-				return false;
-			}
-			
-			chance = ((skill.getLevel() - 10) * 5) + 30;
-		}
-		else if (chest.getLevel() > 40)
-		{
-			if (skill.getLevel() < 6)
-			{
-				return false;
-			}
-			
-			chance = ((skill.getLevel() - 6) * 5) + 10;
-		}
-		else if (chest.getLevel() > 30)
-		{
-			if (skill.getLevel() < 3)
-			{
-				return false;
-			}
-			if (skill.getLevel() > 12)
-			{
-				return true;
-			}
-			
-			chance = ((skill.getLevel() - 3) * 5) + 30;
-		}
-		else
-		{
-			if (skill.getLevel() > 10)
-			{
-				return true;
-			}
-			
-			chance = (skill.getLevel() * 5) + 35;
-		}
-		
-		chance = Math.min(chance, 50);
-		return Rnd.get(100) < chance;
-	}
-	
-	private static final boolean chestTrap(L2Character chest)
-	{
-		if (chest.getLevel() > 60)
-		{
-			return Rnd.get(100) < 80;
-		}
-		if (chest.getLevel() > 40)
-		{
-			return Rnd.get(100) < 50;
-		}
-		if (chest.getLevel() > 30)
-		{
-			return Rnd.get(100) < 30;
-		}
-		return Rnd.get(100) < 10;
 	}
 	
 	@Override

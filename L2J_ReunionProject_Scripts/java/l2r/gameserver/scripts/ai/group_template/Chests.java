@@ -18,15 +18,17 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.actor.L2Character;
+import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2ChestInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
+import l2r.util.Rnd;
 
 /**
  * Chest AI implementation.
@@ -34,119 +36,163 @@ import l2r.gameserver.util.Util;
  */
 public class Chests extends AbstractNpcAI
 {
-	// NPCs
-	// @formatter:off
-	private static final int[] TREASURE_CHESTS =
+	private static final int _SKILL_UNLOCK_ID = 27;
+	private static final int _SKILL_MAESTRO_KEY_ID = 22271;
+	// TARGET_AURA skill with suicide(Treasure Bomb)
+	private static final int _SKILL_SUICIDE_ID = 4143;
+	
+	private static final int _NPCID_REWARD_CHESTS_MIN_ID = 18265;
+	private static final int _NPCID_REWARD_CHESTS_MAX_ID = 18286;
+	
+	private static final int[] _SKILL_UNLOCK_MAX_CHANCES =
 	{
-		18265, 18266, 18267, 18268, 18269, 18270, 18271, 18272, 18273, 18274,
-		18275, 18276, 18277, 18278, 18279, 18280, 18281, 18282, 18283, 18284,
-		18285, 18286, 18287, 18288, 18289, 18290, 18291, 18292, 18293, 18294,
-		18295, 18296, 18297, 18298, 21671, 21694, 21717, 21740, 21763, 21786,
-		21801, 21802, 21803, 21804, 21805, 21806, 21807, 21808, 21809, 21810,
-		21811, 21812, 21813, 21814, 21815, 21816, 21817, 21818, 21819, 21820,
-		21821, 21822
+		98,
+		84,
+		99,
+		84,
+		88,
+		90,
+		89,
+		88,
+		86,
+		90,
+		87,
+		89,
+		89,
+		89,
+		89
 	};
-	// @formatter:on
-	private static final int SKILL_DELUXE_KEY = 2229;
-	// Base chance for BOX to be opened
-	private static final int BASE_CHANCE = 100;
-	// Percent to decrease base chance when grade of DELUXE key not match
-	private static final int LEVEL_DECREASE = 40;
-	// Chance for a chest to actually be a BOX (as opposed to being a mimic).
-	private static final int IS_BOX = 40;
+	
+	private static void selfDestructChest(L2ChestInstance chest)
+	{
+		chest.doCast(SkillTable.getInstance().getInfo(_SKILL_SUICIDE_ID, chest.getLevel() / 10));
+	}
+	
+	public static void main(String[] args)
+	{
+		Chests chestsAi = new Chests();
+		
+		for (int chestNpcId = _NPCID_REWARD_CHESTS_MIN_ID; chestNpcId <= _NPCID_REWARD_CHESTS_MAX_ID; ++chestNpcId)
+		{
+			chestsAi.addSpawnId(chestNpcId);
+			chestsAi.addAttackId(chestNpcId);
+			chestsAi.addSkillSeeId(chestNpcId);
+			chestsAi.addSpellFinishedId(chestNpcId);
+			
+			// setup already spawned chests :o
+			for (L2Spawn chestSpawn : SpawnTable.getInstance().getSpawns(chestNpcId))
+			{
+				chestsAi.onSpawn(chestSpawn.getLastSpawn());
+			}
+		}
+	}
 	
 	private Chests()
 	{
 		super(Chests.class.getSimpleName(), "ai/group_template");
-		registerMobs(TREASURE_CHESTS, QuestEventType.ON_ATTACK, QuestEventType.ON_SKILL_SEE);
 	}
 	
 	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isSummon)
+	public String onSpawn(L2Npc npc)
 	{
-		if (npc instanceof L2ChestInstance)
-		{
-			// this behavior is only run when the target of skill is the passed npc (chest)
-			// i.e. when the player is attempting to open the chest using a skill
-			if (!Util.contains(targets, npc))
-			{
-				return super.onSkillSee(npc, caster, skill, targets, isSummon);
-			}
-			L2ChestInstance chest = ((L2ChestInstance) npc);
-			
-			// if this has already been interacted, no further ai decisions are needed
-			// if it's the first interaction, check if this is a box or mimic
-			if (!chest.isInteracted())
-			{
-				chest.setInteracted();
-				if (getRandom(100) < IS_BOX)
-				{
-					// if it's a box, either it will be successfully opened by a proper key, or instantly disappear
-					if (skill.getId() == SKILL_DELUXE_KEY)
-					{
-						// check the chance to open the box
-						int keyLevelNeeded = chest.getLevel() / 10;
-						keyLevelNeeded -= skill.getLevel();
-						if (keyLevelNeeded < 0)
-						{
-							keyLevelNeeded *= -1;
-						}
-						int chance = BASE_CHANCE - (keyLevelNeeded * LEVEL_DECREASE);
-						
-						// success, pretend-death with rewards: chest.reduceCurrentHp(99999999, player)
-						if (getRandom(100) < chance)
-						{
-							chest.setMustRewardExpSp(false);
-							chest.setSpecialDrop();
-							chest.reduceCurrentHp(99999999, caster, null);
-							return null;
-						}
-					}
-					// used a skill other than chest-key, or used a chest-key but failed to open: disappear with no rewards
-					chest.deleteMe();
-				}
-				else
-				{
-					L2Character originalCaster = isSummon ? caster.getSummon() : caster;
-					chest.setRunning();
-					chest.addDamageHate(originalCaster, 0, 999);
-					chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, originalCaster);
-				}
-			}
-		}
-		return super.onSkillSee(npc, caster, skill, targets, isSummon);
+		L2ChestInstance chest = (L2ChestInstance) npc;
+		chest.disableCoreAI(true);
+		chest.setIsNoRndWalk(true);
+		chest.setMustRewardExpSp(false);
+		chest.enableItemDrop(false);
+		chest.setIsInvul(true);
+		chest.resetInteract();
+		return null;
 	}
 	
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		if (npc instanceof L2ChestInstance)
+		L2ChestInstance chest = (L2ChestInstance) npc;
+		if (!chest.tryInteract())
 		{
-			L2ChestInstance chest = ((L2ChestInstance) npc);
-			// if this was a mimic, set the target, start the skills and become agro
-			if (!chest.isInteracted())
+			return null;
+		}
+		
+		selfDestructChest(chest);
+		return null;
+	}
+	
+	@Override
+	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	{
+		// only trigger behavior when the npc seeing this also is in target list
+		if (!Util.contains(targets, npc))
+		{
+			return null;
+		}
+		
+		L2ChestInstance chest = (L2ChestInstance) npc;
+		if (!chest.tryInteract())
+		{
+			return null;
+		}
+		
+		// Not required, we only register valid chests
+		// @formatter:off
+/*		if ((chest.getId() < _NPCID_REWARD_CHESTS_MIN_ID) || (chest.getId() > _NPCID_REWARD_CHESTS_MAX_ID))
+		{
+			// consider this to be a trap chest
+			selfDestructChest(chest);
+			return null;
+		}*/
+		// @formatter:on
+		
+		int openChance = 0;
+		
+		switch (skill.getId())
+		{
+			case _SKILL_UNLOCK_ID:
 			{
-				chest.setInteracted();
-				if (getRandom(100) < IS_BOX)
+				int maxChance = 0;
+				try
 				{
-					chest.deleteMe();
+					maxChance = _SKILL_UNLOCK_MAX_CHANCES[skill.getLevel() - 1];
+				}
+				catch (RuntimeException e)
+				{
+					// do nothing, most likely a IndexOutOfBoundsException which should not happen anyway
+				}
+				
+				openChance = Math.min(maxChance, maxChance - ((chest.getLevel() - (skill.getLevel() * 4) - 16) * 6));
+			}
+			case _SKILL_MAESTRO_KEY_ID:
+			{
+				if (((caster.getLevel() <= 77) && (Math.abs(chest.getLevel() - caster.getLevel()) > 6)) || ((caster.getLevel() >= 78) && (Math.abs(chest.getLevel() - caster.getLevel()) > 5)))
+				{
+					openChance = 0;
 				}
 				else
 				{
-					// if this weren't a box, upon interaction start the mimic behaviors...
-					// TODO: perhaps a self-buff (skill id 4245) with random chance goes here?
-					L2Character originalAttacker = isSummon ? attacker.getSummon() : attacker;
-					chest.setRunning();
-					chest.addDamageHate(originalAttacker, 0, (damage * 100) / (chest.getLevel() + 7));
-					chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, originalAttacker);
+					openChance = 100;
 				}
 			}
 		}
-		return super.onAttack(npc, attacker, damage, isSummon);
+		
+		if (Rnd.get(100) < openChance)
+		{
+			chest.enableItemDrop(true);
+			chest.setIsInvul(false);
+			chest.reduceCurrentHp(chest.getMaxHp(), caster, null);
+		}
+		else
+		{
+			selfDestructChest(chest);
+		}
+		
+		return null;
 	}
 	
-	public static void main(String[] args)
+	@Override
+	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
 	{
-		new Chests();
+		// after self descruction casting, chest is deleted and decayed directly
+		npc.deleteMe();
+		return null;
 	}
 }
