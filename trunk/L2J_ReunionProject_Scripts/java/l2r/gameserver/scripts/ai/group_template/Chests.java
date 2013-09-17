@@ -82,7 +82,10 @@ public class Chests extends AbstractNpcAI
 			// setup already spawned chests :o
 			for (L2Spawn chestSpawn : SpawnTable.getInstance().getSpawns(chestNpcId))
 			{
-				chestsAi.onSpawn(chestSpawn.getLastSpawn());
+				if (chestSpawn.getLastSpawn() != null)
+				{
+					chestsAi.onSpawn(chestSpawn.getLastSpawn());
+				}
 			}
 		}
 	}
