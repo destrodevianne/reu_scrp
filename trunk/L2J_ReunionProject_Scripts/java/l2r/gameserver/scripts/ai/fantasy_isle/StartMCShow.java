@@ -18,6 +18,8 @@
  */
 package l2r.gameserver.scripts.ai.fantasy_isle;
 
+import java.util.logging.Logger;
+
 import l2r.gameserver.instancemanager.QuestManager;
 
 /**
@@ -25,9 +27,18 @@ import l2r.gameserver.instancemanager.QuestManager;
  */
 public class StartMCShow implements Runnable
 {
+	public static final Logger _log = Logger.getLogger(StartMCShow.class.getName());
+	
 	@Override
 	public void run()
 	{
-		QuestManager.getInstance().getQuest("MC_Show").notifyEvent("Start", null, null);
+		try
+		{
+			QuestManager.getInstance().getQuest("MC_Show").notifyEvent("Start", null, null);
+		}
+		catch (Exception e)
+		{
+			_log.warning("Logger: notifyEvent failed (StartMcShow) Report this to team. ");
+		}
 	}
 }

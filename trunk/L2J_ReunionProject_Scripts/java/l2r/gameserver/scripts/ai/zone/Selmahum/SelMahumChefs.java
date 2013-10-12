@@ -550,6 +550,7 @@ public class SelMahumChefs extends AbstractNpcAI
 			if (spawn != null)
 			{
 				spawn.getLastSpawn().setDisplayEffect(0);
+				spawn.getLastSpawn().setIsRunner(true);
 				fireplaces.put(spawn.getLastSpawn(), Integer.valueOf(0));
 				spawn.getLastSpawn().isShowName();
 			}
@@ -567,6 +568,7 @@ public class SelMahumChefs extends AbstractNpcAI
 			group.chef.getSpawn().setAmount(1);
 			group.chef.getSpawn().startRespawn();
 			group.chef.getSpawn().setRespawnDelay(60);
+			group.chef.setIsRunner(true);
 			group.chef.setWalking();
 			group.escorts = new L2Npc[2];
 			Location[] spawns = escortSpawns.get(groupId);
@@ -575,6 +577,7 @@ public class SelMahumChefs extends AbstractNpcAI
 				group.escorts[i] = addSpawn(SELMAHUM_ESCORT_GUARD, spawns[i].getX(), spawns[i].getY(), spawns[i].getZ(), spawns[i].getHeading(), false, 0);
 				group.escorts[i].getSpawn().stopRespawn();
 				group.escorts[i].setIsNoRndWalk(true);
+				group.chef.setIsRunner(true);
 				group.escorts[i].setWalking();
 				group.escorts[i].getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, group.chef);
 			}

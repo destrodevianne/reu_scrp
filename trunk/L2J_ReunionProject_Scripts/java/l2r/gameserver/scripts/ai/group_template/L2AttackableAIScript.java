@@ -127,7 +127,14 @@ public final class L2AttackableAIScript extends Quest
 		
 		// By default, when a faction member calls for help, attack the caller's attacker.
 		// Notify the AI with EVT_AGGRESSION
-		npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, originalAttackTarget, 1);
+		try
+		{
+			npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, originalAttackTarget, 1);
+		}
+		catch (Exception e)
+		{
+			_log.warning("Logger: notifyEvent failed (L2AttackableAIScript) Report this to team. ");
+		}
 		
 		return null;
 	}

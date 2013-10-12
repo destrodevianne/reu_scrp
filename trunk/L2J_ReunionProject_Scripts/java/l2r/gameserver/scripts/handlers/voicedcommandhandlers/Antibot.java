@@ -4,9 +4,9 @@ import java.util.StringTokenizer;
 
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import gr.reunion.antibotSystem.AntibotSystem;
-import gr.reunion.antibotSystem.dynamicHtmls.GenerateHtmls;
-import gr.reunion.configs.AntibotConfigs;
+import gr.reunion.antibotEngine.AntibotSystem;
+import gr.reunion.antibotEngine.dynamicHtmls.GenerateHtmls;
+import gr.reunion.configsEngine.AntibotConfigs;
 
 /**
  * @author -=DoctorNo=-

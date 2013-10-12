@@ -37,7 +37,7 @@ public class NoRandomAnimation extends AbstractNpcAI
 	};
 	// @formatter:on
 	
-	public NoRandomAnimation(int questId, String name, String descr)
+	public NoRandomAnimation(String name, String descr)
 	{
 		super(name, descr);
 		
@@ -65,6 +65,6 @@ public class NoRandomAnimation extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new NoRandomAnimation(-1, "NoRandomAnimation", "ai");
+		new NoRandomAnimation("NoRandomAnimation", "ai");
 	}
 }

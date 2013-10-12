@@ -19,7 +19,9 @@
 package l2r.gameserver.scripts.quests;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -29,10 +31,10 @@ import l2r.gameserver.model.quest.State;
 import l2r.gameserver.util.Util;
 
 /**
- * An Obvious Lie (32)
+ * An Obvious Lie (32).
  * @author janiko
  */
-public class Q00032_AnObviousLie extends Quest
+public final class Q00032_AnObviousLie extends Quest
 {
 	// NPCs
 	private static final int MAXIMILIAN = 30120;
@@ -50,13 +52,16 @@ public class Q00032_AnObviousLie extends Quest
 	private static final int MIN_LVL = 45;
 	private static final int REQUIRED_HERB_COUNT = 20;
 	// Reward
-	private static final int RACCOON_EAR = 7680;
-	private static final int CAT_EAR = 6843;
-	private static final int RABBIT_EAR = 7683;
-	
-	private Q00032_AnObviousLie(int questId, String name, String descr)
+	private static final Map<String, Integer> EARS = new HashMap<>();
 	{
-		super(questId, name, descr);
+		EARS.put("cat", 6843); // Cat Ears
+		EARS.put("raccoon", 7680); // Raccoon ears
+		EARS.put("rabbit", 7683); // Rabbit ears
+	}
+	
+	private Q00032_AnObviousLie()
+	{
+		super(32, Q00032_AnObviousLie.class.getSimpleName(), "An Obvious Lie");
 		addStartNpc(MAXIMILIAN);
 		addTalkId(MAXIMILIAN, GENTLER, MIKI_THE_CAT);
 		addKillId(ALLIGATOR);
@@ -152,18 +157,9 @@ public class Q00032_AnObviousLie extends Quest
 			{
 				if (st.isCond(8) && (st.getQuestItemsCount(THREAD) >= 1000) && (st.getQuestItemsCount(SUEDE) >= 500))
 				{
-					if (event.equals("cat"))
-					{
-						st.giveItems(CAT_EAR, 1);
-					}
-					else if (event.equals("racoon"))
-					{
-						st.giveItems(RACCOON_EAR, 1);
-					}
-					else if (event.equals("rabbit"))
-					{
-						st.giveItems(RABBIT_EAR, 1);
-					}
+					st.takeItems(THREAD, 1000);
+					st.takeItems(SUEDE, 500);
+					st.rewardItems(EARS.get(event), 1);
 					st.exitQuest(false, true);
 					htmltext = "30094-16.html";
 				}
@@ -339,6 +335,6 @@ public class Q00032_AnObviousLie extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q00032_AnObviousLie(32, Q00032_AnObviousLie.class.getSimpleName(), "An Obvious Lie");
+		new Q00032_AnObviousLie();
 	}
 }

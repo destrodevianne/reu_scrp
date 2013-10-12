@@ -62,7 +62,7 @@ public class NoRandomWalkMobs extends AbstractNpcAI
 	};
 	// @formatter:on
 	
-	public NoRandomWalkMobs(int questId, String name, String descr)
+	public NoRandomWalkMobs(String name, String descr)
 	{
 		super(name, descr);
 		
@@ -90,6 +90,6 @@ public class NoRandomWalkMobs extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new NoRandomWalkMobs(-1, "NoRandomWalkMobs", "ai");
+		new NoRandomWalkMobs("NoRandomWalkMobs", "ai");
 	}
 }

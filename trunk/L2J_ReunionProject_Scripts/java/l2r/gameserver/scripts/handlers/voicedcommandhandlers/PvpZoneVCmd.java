@@ -23,7 +23,7 @@ import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.util.Rnd;
-import gr.reunion.configs.ChaoticZoneConfigs;
+import gr.reunion.configsEngine.ChaoticZoneConfigs;
 
 /**
  * @author -=DoctorNo=-

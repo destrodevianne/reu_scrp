@@ -21,10 +21,8 @@ package l2r.gameserver.scripts.handlers.actionhandlers;
 import l2r.gameserver.enums.InstanceType;
 import l2r.gameserver.handler.IActionHandler;
 import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
-import l2r.gameserver.network.serverpackets.MyTargetSelected;
 
 public class L2TrapAction implements IActionHandler
 {
@@ -39,14 +37,12 @@ public class L2TrapAction implements IActionHandler
 		}
 		
 		activeChar.setTarget(target);
-		MyTargetSelected my = new MyTargetSelected(target.getObjectId(), activeChar.getLevel() - ((L2Character) target).getLevel());
-		activeChar.sendPacket(my);
 		return true;
 	}
 	
 	@Override
 	public InstanceType getInstanceType()
 	{
-		return InstanceType.L2Trap;
+		return InstanceType.L2TrapInstance;
 	}
 }

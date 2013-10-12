@@ -22,8 +22,9 @@ import java.util.List;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.Config;
-import l2r.gameserver.GeoEngine;
+import l2r.gameserver.GeoData;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.instancemanager.ZoneManager;
@@ -38,6 +39,7 @@ import l2r.gameserver.model.actor.instance.L2DecoyInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.instancezone.InstanceWorld;
+import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.zone.L2ZoneForm;
@@ -47,14 +49,13 @@ import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.AbstractNpcInfo;
 import l2r.gameserver.network.serverpackets.PlaySound;
 import l2r.gameserver.network.serverpackets.SystemMessage;
-import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
 import l2r.util.Rnd;
 
 /**
  * @author Nyaran (based on org.inc? work)
  */
-public class Zaken extends AbstractNpcAI
+public class Zaken extends Quest
 {
 	private class ZWorld extends InstanceWorld
 	{
@@ -134,6 +135,9 @@ public class Zaken extends AbstractNpcAI
 	private static final int PATHFINDER = 32713;
 	// Barrel
 	private static final int BARREL = 32705;
+	
+	// Teleports
+	private static final Location ENTER_TELEPORT = new Location(52680, 219088, -3232);
 	
 	private static List<L2PcInstance> _playersInside = new FastList<>();
 	
@@ -392,22 +396,15 @@ public class Zaken extends AbstractNpcAI
 	
 	private boolean checkConditions(L2PcInstance player, String choice)
 	{
-		if (DEBUG)
+		if (DEBUG || player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS))
 		{
 			return true;
 		}
 		
-		if (player == null)
-		{
-			return false;
-		}
-		if (player.isGM())
-		{
-			return true;
-		}
 		L2Party party = player.getParty();
 		if (party == null)
 		{
+			player.sendPacket(SystemMessageId.NOT_IN_PARTY_CANT_ENTER);
 			return false;
 		}
 		
@@ -456,16 +453,7 @@ public class Zaken extends AbstractNpcAI
 		}
 		else if (members.size() > maxMembers)
 		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_CANNOT_ENTER_BECAUSE_MAXIMUM_ENTRANTS); // FIXME: Need correct msg
-			sm.addNumber(maxMembers);
-			if (party.isInCommandChannel())
-			{
-				party.getCommandChannel().broadcastPacket(sm);
-			}
-			else
-			{
-				party.broadcastPacket(sm);
-			}
+			player.sendPacket(SystemMessageId.PARTY_EXCEEDED_THE_LIMIT_CANT_ENTER);
 			return false;
 		}
 		
@@ -475,14 +463,7 @@ public class Zaken extends AbstractNpcAI
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
 				sm.addPcName(member);
-				if (party.isInCommandChannel())
-				{
-					party.getCommandChannel().broadcastPacket(sm);
-				}
-				else
-				{
-					party.broadcastPacket(sm);
-				}
+				party.broadcastPacket(sm);
 				return false;
 			}
 			
@@ -490,14 +471,7 @@ public class Zaken extends AbstractNpcAI
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_IS_IN_LOCATION_THAT_CANNOT_BE_ENTERED);
 				sm.addPcName(member);
-				if (party.isInCommandChannel())
-				{
-					party.getCommandChannel().broadcastPacket(sm);
-				}
-				else
-				{
-					party.broadcastPacket(sm);
-				}
+				party.broadcastPacket(sm);
 				return false;
 			}
 			
@@ -519,14 +493,7 @@ public class Zaken extends AbstractNpcAI
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_MAY_NOT_REENTER_YET);
 				sm.addPcName(member);
-				if (party.isInCommandChannel())
-				{
-					party.getCommandChannel().broadcastPacket(sm);
-				}
-				else
-				{
-					party.broadcastPacket(sm);
-				}
+				party.broadcastPacket(sm);
 				return false;
 			}
 			_playersInside.add(member);
@@ -534,54 +501,12 @@ public class Zaken extends AbstractNpcAI
 		return true;
 	}
 	
-	private void teleportPlayer(L2PcInstance player, FastList<Location> spawnLoc, ZWorld world)
+	protected int enterInstance(L2PcInstance player, String template, String choice, Location loc)
 	{
-		QuestState st = player.getQuestState(getName());
-		if (st == null)
-		{
-			st = newQuestState(player);
-		}
-		
-		_log.info("Teleporting player to zaken: " + player.getName());
-		player.setInstanceId(world.getInstanceId());
-		Location loc = spawnLoc.get(Rnd.get(spawnLoc.size()));
-		player.teleToLocation(loc, false);
-		if (world.getInstanceId() == INSTANCEID_DAY83)
-		{
-			player.stopAllEffectsExceptThoseThatLastThroughDeath();
-		}
-		
-		L2Summon pet = player.getSummon();
-		if (pet != null)
-		{
-			if (world.getInstanceId() == INSTANCEID_DAY83)
-			{
-				pet.stopAllEffectsExceptThoseThatLastThroughDeath();
-			}
-		}
-		
-		world._playersInInstance.add(player);
-		if (DEBUG)
-		{
-			System.out.println("Player " + player + " teleported to " + loc.getX() + " " + loc.getY() + " " + loc.getZ() + " in instance " + world.getInstanceId() + "[" + world.getTemplateId() + "]");
-		}
-	}
-	
-	protected synchronized int enterInstance(L2PcInstance player, String template, String choice)
-	{
-		FastList<Location> spawnLocs;
-		if (choice.equalsIgnoreCase("nighttime"))
-		{
-			spawnLocs = _spawnPcLocationNighttime;
-		}
-		else
-		{
-			spawnLocs = _spawnPcLocationDaytime;
-		}
-		
 		int instanceId = 0;
 		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
+		// existing instance
 		if (world != null)
 		{
 			if (!(world instanceof ZWorld))
@@ -589,7 +514,7 @@ public class Zaken extends AbstractNpcAI
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER));
 				return 0;
 			}
-			teleportPlayer(player, spawnLocs, (ZWorld) world);
+			teleportPlayer(player, loc, world.getInstanceId(), false);
 			return world.getInstanceId();
 		}
 		// new instance
@@ -599,7 +524,6 @@ public class Zaken extends AbstractNpcAI
 		}
 		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
 		world = new ZWorld();
-		world.setInstanceId(instanceId);
 		if (choice.equalsIgnoreCase("daytime"))
 		{
 			world.setTemplateId(INSTANCEID_DAY);
@@ -613,6 +537,8 @@ public class Zaken extends AbstractNpcAI
 			world.setTemplateId(INSTANCEID_NIGHT);
 		}
 		
+		world.setInstanceId(instanceId);
+		world.setStatus(0);
 		InstanceManager.getInstance().addWorld(world);
 		_log.info("Zaken (" + choice + ") started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
 		
@@ -651,7 +577,7 @@ public class Zaken extends AbstractNpcAI
 		{
 			_log.info("Zaken Party Member " + count + ", Member name is: " + member.getName());
 			count++;
-			teleportPlayer(member, spawnLocs, (ZWorld) world);
+			teleportPlayer(member, loc, world.getInstanceId(), false);
 			world.addAllowed(member.getObjectId());
 			member.sendPacket(new PlaySound("BS01_A"));
 		}
@@ -744,7 +670,7 @@ public class Zaken extends AbstractNpcAI
 			{
 				for (L2Character obj : world._playersInZakenZone)
 				{
-					if (!(GeoEngine.getInstance().canSeeTarget(obj, npc)))
+					if (!(GeoData.getInstance().canSeeTarget(obj, npc)))
 					{
 						continue;
 					}
@@ -966,7 +892,7 @@ public class Zaken extends AbstractNpcAI
 				}
 			}
 			
-			enterInstance(player, "Zaken" + event + ".xml", event);
+			enterInstance(player, "Zaken" + event + ".xml", event, ENTER_TELEPORT);
 		}
 		InstanceWorld tmpworld;
 		
@@ -1475,21 +1401,21 @@ public class Zaken extends AbstractNpcAI
 		return super.onExitZone(character, zone);
 	}
 	
-	public Zaken(String name, String descr)
+	public Zaken(int questId, String name, String descr)
 	{
-		super(name, descr);
+		super(questId, name, descr);
 		
 		addStartNpc(PATHFINDER);
 		addTalkId(PATHFINDER);
 		addFirstTalkId(PATHFINDER);
 		addFirstTalkId(BARREL);
 		
-		registerMobs(new int[]
-		{
-			ZAKEN_DAY,
-			ZAKEN_DAY83,
-			ZAKEN_NIGHT
-		});
+		addKillId(ZAKEN_DAY);
+		addAttackId(ZAKEN_DAY);
+		addKillId(ZAKEN_DAY83);
+		addAttackId(ZAKEN_DAY83);
+		addKillId(ZAKEN_NIGHT);
+		addAttackId(ZAKEN_NIGHT);
 		
 		for (int i = 120111; i <= 120125; i++)
 		{
@@ -1500,7 +1426,6 @@ public class Zaken extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		// now call the constructor (starts up the)
-		new Zaken(Zaken.class.getSimpleName(), "instances");
+		new Zaken(-1, Zaken.class.getSimpleName(), "instances");
 	}
 }

@@ -28,8 +28,6 @@ import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.ActionFailed;
-import l2r.gameserver.network.serverpackets.MyTargetSelected;
-import l2r.gameserver.network.serverpackets.ValidateLocation;
 
 public class L2PcInstanceAction implements IActionHandler
 {
@@ -74,21 +72,9 @@ public class L2PcInstanceAction implements IActionHandler
 		{
 			// Set the target of the activeChar
 			activeChar.setTarget(target);
-			
-			// Send a Server->Client packet MyTargetSelected to the activeChar
-			// The color to display in the select window is White
-			activeChar.sendPacket(new MyTargetSelected(target.getObjectId(), 0));
-			if (activeChar != target)
-			{
-				activeChar.sendPacket(new ValidateLocation((L2Character) target));
-			}
 		}
 		else if (interact)
 		{
-			if (activeChar != target)
-			{
-				activeChar.sendPacket(new ValidateLocation((L2Character) target));
-			}
 			// Check if this L2PcInstance has a Private Store
 			if (((L2PcInstance) target).getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_NONE)
 			{

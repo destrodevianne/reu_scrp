@@ -93,7 +93,14 @@ public final class Q00183_RelicExploration extends Quest
 				{
 					st = quest.newQuestState(player);
 					st.setState(State.STARTED);
-					quest.notifyEvent("30621-01.htm", npc, player);
+					try
+					{
+						quest.notifyEvent("30621-01.htm", npc, player);
+					}
+					catch (Exception e)
+					{
+						_log.warning("Logger: notifyEvent failed (Q00183 1) Report this to team. ");
+					}
 				}
 				break;
 			}
@@ -105,7 +112,14 @@ public final class Q00183_RelicExploration extends Quest
 				{
 					st = quest.newQuestState(player);
 					st.setState(State.STARTED);
-					quest.notifyEvent("30621-01.htm", npc, player);
+					try
+					{
+						quest.notifyEvent("30621-01.htm", npc, player);
+					}
+					catch (Exception e)
+					{
+						_log.warning("Logger: notifyEvent failed (Q00183 2) Report this to team. ");
+					}
 				}
 				break;
 			}

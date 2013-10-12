@@ -27,6 +27,7 @@ import java.util.Calendar;
 import l2r.gameserver.GameTimeController;
 import l2r.gameserver.LoginServerThread;
 import l2r.gameserver.datatables.AdminTable;
+import l2r.gameserver.enums.ItemLocation;
 import l2r.gameserver.handler.ITelnetHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2World;
@@ -153,7 +154,7 @@ public class StatusHandler implements ITelnetHandler
 			}
 			if (obj instanceof L2ItemInstance)
 			{
-				if (((L2ItemInstance) obj).getLocation() == L2ItemInstance.ItemLocation.VOID)
+				if (((L2ItemInstance) obj).getLocation() == ItemLocation.VOID)
 				{
 					itemVoidCount++;
 				}

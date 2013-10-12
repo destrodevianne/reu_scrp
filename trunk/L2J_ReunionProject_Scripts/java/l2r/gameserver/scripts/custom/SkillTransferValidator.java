@@ -21,6 +21,7 @@ package l2r.gameserver.scripts.custom;
 import l2r.Config;
 import l2r.gameserver.datatables.ClassListData;
 import l2r.gameserver.datatables.SkillTreesData;
+import l2r.gameserver.enums.IllegalActionPunishmentType;
 import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.model.L2SkillLearn;
 import l2r.gameserver.model.actor.L2Npc;
@@ -117,7 +118,7 @@ public final class SkillTransferValidator extends L2Script
 								if (count < 0)
 								{
 									final String className = ClassListData.getInstance().getClass(player.getClassId()).getClassName();
-									Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has too many transfered skills or items, skill:" + s.getName() + " (" + sk.getId() + "/" + sk.getLevel() + "), class:" + className, 1);
+									Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has too many transfered skills or items, skill:" + s.getName() + " (" + sk.getId() + "/" + sk.getLevel() + "), class:" + className, IllegalActionPunishmentType.BROADCAST);
 									if (Config.SKILL_CHECK_REMOVE)
 									{
 										player.removeSkill(sk);
