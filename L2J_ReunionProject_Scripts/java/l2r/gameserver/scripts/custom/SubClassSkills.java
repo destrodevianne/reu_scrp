@@ -23,6 +23,7 @@ import java.util.Arrays;
 import javolution.util.FastList;
 import l2r.Config;
 import l2r.gameserver.datatables.ClassListData;
+import l2r.gameserver.enums.IllegalActionPunishmentType;
 import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
@@ -216,7 +217,7 @@ public final class SubClassSkills extends Quest
 			{
 				for (L2Skill s : certSkills)
 				{
-					Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has cert skill on subclass :" + s.getName() + "(" + s.getId() + "/" + s.getLevel() + "), class:" + ClassListData.getInstance().getClass(player.getClassId()).getClassName(), 0);
+					Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has cert skill on subclass :" + s.getName() + "(" + s.getId() + "/" + s.getLevel() + "), class:" + ClassListData.getInstance().getClass(player.getClassId()).getClassName(), IllegalActionPunishmentType.NONE);
 					
 					if (Config.SKILL_CHECK_REMOVE)
 					{
@@ -300,22 +301,22 @@ public final class SubClassSkills extends Quest
 								if (!Util.contains(_certSkillsByLevel[i], id))
 								{
 									// should remove this skill ?
-									Util.handleIllegalPlayerAction(player, "Invalid cert variable WITH skill:" + qName + "=" + qValue + " - skill does not match certificate level", 0);
+									Util.handleIllegalPlayerAction(player, "Invalid cert variable WITH skill:" + qName + "=" + qValue + " - skill does not match certificate level", IllegalActionPunishmentType.NONE);
 								}
 							}
 							else
 							{
-								Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - skill not found", 0);
+								Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - skill not found", IllegalActionPunishmentType.NONE);
 							}
 						}
 						else
 						{
-							Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - no certified skills found", 0);
+							Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - no certified skills found", IllegalActionPunishmentType.NONE);
 						}
 					}
 					catch (NumberFormatException e)
 					{
-						Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - not a number", 0);
+						Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - not a number", IllegalActionPunishmentType.NONE);
 					}
 				}
 				else
@@ -349,23 +350,23 @@ public final class SubClassSkills extends Quest
 							{
 								if (!Util.contains(_certItemsByLevel[i], item.getItemId()))
 								{
-									Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - item found but does not match certificate level", 0);
+									Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - item found but does not match certificate level", IllegalActionPunishmentType.NONE);
 								}
 							}
 							else
 							{
-								Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - item not found", 0);
+								Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - item not found", IllegalActionPunishmentType.NONE);
 							}
 						}
 						else
 						{
-							Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - no cert item found in inventory", 0);
+							Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - no cert item found in inventory", IllegalActionPunishmentType.NONE);
 						}
 						
 					}
 					catch (NumberFormatException e)
 					{
-						Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - not a number", 0);
+						Util.handleIllegalPlayerAction(player, "Invalid cert variable:" + qName + "=" + qValue + " - not a number", IllegalActionPunishmentType.NONE);
 					}
 				}
 			}
@@ -385,11 +386,11 @@ public final class SubClassSkills extends Quest
 				{
 					if (cSkills[i][1] == skill.getLevel())
 					{
-						Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has invalid cert skill :" + skill.getName() + "(" + skill.getId() + "/" + skill.getLevel() + ")", 0);
+						Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has invalid cert skill :" + skill.getName() + "(" + skill.getId() + "/" + skill.getLevel() + ")", IllegalActionPunishmentType.NONE);
 					}
 					else
 					{
-						Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has invalid cert skill :" + skill.getName() + "(" + skill.getId() + "/" + skill.getLevel() + "), level too high", 0);
+						Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " has invalid cert skill :" + skill.getName() + "(" + skill.getId() + "/" + skill.getLevel() + "), level too high", IllegalActionPunishmentType.NONE);
 					}
 					
 					if (Config.SKILL_CHECK_REMOVE)
@@ -399,7 +400,7 @@ public final class SubClassSkills extends Quest
 				}
 				else
 				{
-					Util.handleIllegalPlayerAction(player, "Invalid cert skill :" + skill.getName() + "(" + skill.getId() + "/" + skill.getLevel() + "), level too low", 0);
+					Util.handleIllegalPlayerAction(player, "Invalid cert skill :" + skill.getName() + "(" + skill.getId() + "/" + skill.getLevel() + "), level too low", IllegalActionPunishmentType.NONE);
 				}
 			}
 		}
@@ -414,7 +415,7 @@ public final class SubClassSkills extends Quest
 				}
 				
 				item = certItems[i];
-				Util.handleIllegalPlayerAction(player, "Invalid cert item without variable or with wrong count:" + item.getObjectId(), 0);
+				Util.handleIllegalPlayerAction(player, "Invalid cert item without variable or with wrong count:" + item.getObjectId(), IllegalActionPunishmentType.NONE);
 			}
 		}
 		

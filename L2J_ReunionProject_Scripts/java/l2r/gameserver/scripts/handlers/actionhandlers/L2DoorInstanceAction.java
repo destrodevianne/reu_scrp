@@ -28,8 +28,6 @@ import l2r.gameserver.model.actor.instance.L2DoorInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.entity.clanhall.SiegableHall;
 import l2r.gameserver.network.serverpackets.ConfirmDlg;
-import l2r.gameserver.network.serverpackets.MyTargetSelected;
-import l2r.gameserver.network.serverpackets.StaticObject;
 
 public class L2DoorInstanceAction implements IActionHandler
 {
@@ -39,14 +37,7 @@ public class L2DoorInstanceAction implements IActionHandler
 		// Check if the L2PcInstance already target the L2NpcInstance
 		if (activeChar.getTarget() != target)
 		{
-			// Set the target of the L2PcInstance activeChar
 			activeChar.setTarget(target);
-			
-			// Send a Server->Client packet MyTargetSelected to the L2PcInstance activeChar
-			activeChar.sendPacket(new MyTargetSelected(target.getObjectId(), 0));
-			
-			StaticObject su = new StaticObject((L2DoorInstance) target, activeChar.isGM());
-			activeChar.sendPacket(su);
 		}
 		else if (interact)
 		{

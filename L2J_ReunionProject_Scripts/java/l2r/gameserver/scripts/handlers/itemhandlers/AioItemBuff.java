@@ -5,7 +5,7 @@ import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
-import gr.reunion.configs.AioBufferConfigs;
+import gr.reunion.configsEngine.AioBufferConfigs;
 
 /**
  * @author DoctorNo

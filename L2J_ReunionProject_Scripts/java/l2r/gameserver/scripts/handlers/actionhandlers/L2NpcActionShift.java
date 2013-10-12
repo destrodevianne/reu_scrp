@@ -30,14 +30,11 @@ import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
-import l2r.gameserver.model.actor.instance.L2MerchantInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.items.L2Item;
 import l2r.gameserver.model.stats.BaseStats;
 import l2r.gameserver.model.stats.Stats;
-import l2r.gameserver.network.serverpackets.MyTargetSelected;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
-import l2r.gameserver.network.serverpackets.StatusUpdate;
 import l2r.util.StringUtil;
 
 public class L2NpcActionShift implements IActionHandler
@@ -66,22 +63,7 @@ public class L2NpcActionShift implements IActionHandler
 			// Set the target of the L2PcInstance activeChar
 			activeChar.setTarget(target);
 			
-			// Send a Server->Client packet MyTargetSelected to the L2PcInstance activeChar
-			// The activeChar.getLevel() - getLevel() permit to display the correct color in the select window
-			MyTargetSelected my = new MyTargetSelected(target.getObjectId(), activeChar.getLevel() - ((L2Character) target).getLevel());
-			activeChar.sendPacket(my);
-			
-			// Check if the activeChar is attackable (without a forced attack)
-			if (target.isAutoAttackable(activeChar))
-			{
-				// Send a Server->Client packet StatusUpdate of the L2NpcInstance to the L2PcInstance to update its HP bar
-				StatusUpdate su = new StatusUpdate(target);
-				su.addAttribute(StatusUpdate.CUR_HP, (int) ((L2Character) target).getCurrentHp());
-				su.addAttribute(StatusUpdate.MAX_HP, ((L2Character) target).getMaxHp());
-				activeChar.sendPacket(su);
-			}
-			
-			NpcHtmlMessage html = new NpcHtmlMessage(0);
+			final NpcHtmlMessage html = new NpcHtmlMessage(0);
 			html.setFile(activeChar.getHtmlPrefix(), "data/html/admin/npcinfo.htm");
 			
 			html.replace("%objid%", String.valueOf(target.getObjectId()));
@@ -181,15 +163,6 @@ public class L2NpcActionShift implements IActionHandler
 				html.replace("%route%", "");
 			}
 			
-			if (target instanceof L2MerchantInstance)
-			{
-				html.replace("%butt%", "<button value=\"Shop\" action=\"bypass -h admin_showShop " + String.valueOf(((L2Npc) target).getTemplate().getNpcId()) + "\" width=60 height=21 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
-			}
-			else
-			{
-				html.replace("%butt%", "");
-			}
-			
 			activeChar.sendPacket(html);
 		}
 		else if (Config.ALT_GAME_VIEWNPC)
@@ -197,22 +170,7 @@ public class L2NpcActionShift implements IActionHandler
 			// Set the target of the L2PcInstance activeChar
 			activeChar.setTarget(target);
 			
-			// Send a Server->Client packet MyTargetSelected to the L2PcInstance activeChar
-			// The activeChar.getLevel() - getLevel() permit to display the correct color in the select window
-			MyTargetSelected my = new MyTargetSelected(target.getObjectId(), activeChar.getLevel() - ((L2Character) target).getLevel());
-			activeChar.sendPacket(my);
-			
-			// Check if the activeChar is attackable (without a forced attack)
-			if (target.isAutoAttackable(activeChar))
-			{
-				// Send a Server->Client packet StatusUpdate of the L2NpcInstance to the L2PcInstance to update its HP bar
-				StatusUpdate su = new StatusUpdate(target);
-				su.addAttribute(StatusUpdate.CUR_HP, (int) ((L2Character) target).getCurrentHp());
-				su.addAttribute(StatusUpdate.MAX_HP, ((L2Character) target).getMaxHp());
-				activeChar.sendPacket(su);
-			}
-			
-			NpcHtmlMessage html = new NpcHtmlMessage(0);
+			final NpcHtmlMessage html = new NpcHtmlMessage(0);
 			int hpMul = Math.round((float) (((L2Character) target).getStat().calcStat(Stats.MAX_HP, 1, (L2Character) target, null) / BaseStats.CON.calcBonus((L2Character) target)));
 			if (hpMul == 0)
 			{

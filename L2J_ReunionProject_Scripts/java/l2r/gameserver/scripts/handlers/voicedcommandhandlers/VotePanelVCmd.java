@@ -2,7 +2,7 @@ package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import gr.reunion.voteSystem.dynamicHtmls.GenerateHtmls;
+import gr.reunion.voteEngine.dynamicHtmls.GenerateHtmls;
 
 public class VotePanelVCmd implements IVoicedCommandHandler
 {
@@ -15,7 +15,9 @@ public class VotePanelVCmd implements IVoicedCommandHandler
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		if (command.equalsIgnoreCase("votepanel"))
+		{
 			GenerateHtmls.getInstance().VotePanelHtml(activeChar);
+		}
 		
 		return true;
 	}

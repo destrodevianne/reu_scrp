@@ -18,7 +18,7 @@ import javolution.text.TextBuilder;
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
-import gr.reunion.configs.CustomServerConfigs;
+import gr.reunion.configsEngine.CustomServerConfigs;
 
 public class CcpVCmd implements IVoicedCommandHandler
 {

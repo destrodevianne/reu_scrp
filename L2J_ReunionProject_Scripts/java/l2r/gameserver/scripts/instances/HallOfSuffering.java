@@ -597,7 +597,14 @@ public class HallOfSuffering extends Quest
 		boss.broadcastStatusUpdate();
 		
 		// Notify L2Character AI
-		boss.getAI().notifyEvent(CtrlEvent.EVT_DEAD);
+		try
+		{
+			boss.getAI().notifyEvent(CtrlEvent.EVT_DEAD);
+		}
+		catch (Exception e)
+		{
+			_log.warning("Logger: notifyEvent failed (HallOfSuffering 1) Report this to team. ");
+		}
 		
 		if (boss.getWorldRegion() != null)
 		{
@@ -731,7 +738,14 @@ public class HallOfSuffering extends Quest
 				L2Character hated = ((L2MonsterInstance) aliveTwin).getMostHated();
 				if (hated != null)
 				{
-					npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, hated, 1000);
+					try
+					{
+						npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, hated, 1000);
+					}
+					catch (Exception e)
+					{
+						_log.warning("Logger: notifyEvent failed (HallOfSuffering 2) Report this to team. ");
+					}
 				}
 				
 				aliveTwin.setIsInvul(true); // make other boss invul

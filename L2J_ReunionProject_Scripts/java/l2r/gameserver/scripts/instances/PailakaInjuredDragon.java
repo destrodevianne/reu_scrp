@@ -559,7 +559,14 @@ public class PailakaInjuredDragon extends Quest
 		else if (event.equalsIgnoreCase("latana_animation2"))
 		{
 			npc.doCast(SkillTable.getInstance().getInfo(5759, 1));
-			npc.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, player);
+			try
+			{
+				npc.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, player);
+			}
+			catch (Exception e)
+			{
+				_log.warning("Logger: notifyEvent failed (PailakaInjuredDragon 1) Report this to team. ");
+			}
 			return null;
 		}
 		return event;
@@ -794,7 +801,14 @@ public class PailakaInjuredDragon extends Quest
 		final int mageX = (int) (npc.getX() + (150 * Math.cos(rads)));
 		final int mageY = (int) (npc.getY() + (150 * Math.sin(rads)));
 		final L2Npc mageBack = addSpawn(mageId, mageX, mageY, npc.getZ(), npc.getSpawn().getHeading(), false, 0, true, npc.getInstanceId());
-		mageBack.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, player, 1000);
+		try
+		{
+			mageBack.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, player, 1000);
+		}
+		catch (Exception e)
+		{
+			_log.warning("Logger: notifyEvent failed (PailakaInjuredDragon 2) Report this to team. ");
+		}
 	}
 	
 	/*

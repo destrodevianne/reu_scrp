@@ -207,7 +207,14 @@ public class Disablers implements ISkillHandler
 				{
 					if (target.isL2Attackable())
 					{
-						target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, (int) ((150 * skill.getPower()) / (target.getLevel() + 7)));
+						try
+						{
+							target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, (int) ((150 * skill.getPower()) / (target.getLevel() + 7)));
+						}
+						catch (Exception e)
+						{
+							_log.warning("Logger: notifyEvent failed (Disablers 1) Report this to team. ");
+						}
 					}
 					skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss));
 					// TODO: Remove this when lethal effect is done.
@@ -263,7 +270,14 @@ public class Disablers implements ISkillHandler
 							sm.addSkillName(skill);
 							activeChar.sendPacket(sm);
 						}
-						target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+						try
+						{
+							target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+						}
+						catch (Exception e)
+						{
+							_log.warning("Logger: notifyEvent failed (Disablers 2) Report this to team. ");
+						}
 					}
 					break;
 				}
@@ -295,12 +309,26 @@ public class Disablers implements ISkillHandler
 								sm.addSkillName(skill);
 								activeChar.sendPacket(sm);
 							}
-							target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+							try
+							{
+								target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+							}
+							catch (Exception e)
+							{
+								_log.warning("Logger: notifyEvent failed (Disablers 3) Report this to team. ");
+							}
 						}
 					}
 					else
 					{
-						target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+						try
+						{
+							target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+						}
+						catch (Exception e)
+						{
+							_log.warning("Logger: notifyEvent failed (Disablers 4) Report this to team. ");
+						}
 					}
 					break;
 				}

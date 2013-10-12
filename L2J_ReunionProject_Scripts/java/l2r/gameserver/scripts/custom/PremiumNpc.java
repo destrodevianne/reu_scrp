@@ -10,7 +10,7 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
-import gr.reunion.configs.PremiumServiceConfigs;
+import gr.reunion.configsEngine.PremiumServiceConfigs;
 
 /**
  * @author -=DoctorNo=-

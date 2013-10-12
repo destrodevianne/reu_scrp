@@ -126,7 +126,14 @@ public class WarriorFishingBlock extends AbstractNpcAI
 		npc.broadcastPacket(say);
 		
 		((L2Attackable) npc).addDamageHate(player, 0, 2000);
-		npc.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, player);
+		try
+		{
+			npc.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, player);
+		}
+		catch (Exception e)
+		{
+			_log.warning("Logger: notifyEvent failed (WarriorFishingBlock) Report this to team. ");
+		}
 		npc.addAttackerToAttackByList(player);
 		
 		startQuestTimer("DESPAWN", DESPAWN_TIME, npc, player);

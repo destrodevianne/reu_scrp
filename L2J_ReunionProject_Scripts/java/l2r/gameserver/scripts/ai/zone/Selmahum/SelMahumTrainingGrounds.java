@@ -197,13 +197,27 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 				{
 					camp.officer.broadcastPacket(new CreatureSay(camp.officer.getObjectId(), 1, camp.officer.getName(), NpcStringId.WHO_IS_DISRUPTING_THE_ORDER));
 				}
-				camp.officer.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, attacker, Integer.valueOf(1));
+				try
+				{
+					camp.officer.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, attacker, Integer.valueOf(1));
+				}
+				catch (Exception e)
+				{
+					_log.warning("Logger: notifyEvent failed (SelMahumTrainingGrounds first call) Report this to team. ");
+				}
 			}
 			for (L2Npc recruit : camp.recruits)
 			{
 				if ((recruit != null) && (!recruit.isDead()) && (!recruit.equals(npc)))
 				{
-					recruit.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, attacker, Integer.valueOf(1));
+					try
+					{
+						recruit.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, attacker, Integer.valueOf(1));
+					}
+					catch (Exception e)
+					{
+						_log.warning("Logger: notifyEvent failed (SelMahumTrainingGrounds second call) Report this to team. ");
+					}
 				}
 			}
 		}

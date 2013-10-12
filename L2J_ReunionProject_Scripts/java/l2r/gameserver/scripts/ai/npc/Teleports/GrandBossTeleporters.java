@@ -136,7 +136,14 @@ public class GrandBossTeleporters extends AbstractNpcAI
 							if (status == 0)
 							{
 								L2GrandBossInstance antharas = GrandBossManager.getInstance().getBoss(29019);
-								antharasAI().notifyEvent("waiting", antharas, player);
+								try
+								{
+									antharasAI().notifyEvent("waiting", antharas, player);
+								}
+								catch (Exception e)
+								{
+									_log.warning("Logger: notifyEvent failed (GrandBossTeleporter) Report this to team. ");
+								}
 							}
 						}
 						else
