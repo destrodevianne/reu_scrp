@@ -1407,15 +1407,10 @@ public class Zaken extends Quest
 		
 		addStartNpc(PATHFINDER);
 		addTalkId(PATHFINDER);
-		addFirstTalkId(PATHFINDER);
-		addFirstTalkId(BARREL);
-		
-		addKillId(ZAKEN_DAY);
-		addAttackId(ZAKEN_DAY);
-		addKillId(ZAKEN_DAY83);
-		addAttackId(ZAKEN_DAY83);
-		addKillId(ZAKEN_NIGHT);
-		addAttackId(ZAKEN_NIGHT);
+		addFirstTalkId(PATHFINDER, BARREL);
+		addKillId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
+		addAttackId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
+		addAggroRangeEnterId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
 		
 		for (int i = 120111; i <= 120125; i++)
 		{

@@ -1671,6 +1671,7 @@ public class IceQueenCastle2 extends Quest
 		addSpawnId(archery_knight);
 		addSpawnId(18854);
 		addSpawnId(glacier);
+		addAggroRangeEnterId(freya_controller);
 		// Hard
 		addKillId(Glakias_hard);
 		addAttackId(archery_knight_hard);
