@@ -20,8 +20,6 @@ package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.gameserver.datatables.ClassListData;
@@ -38,6 +36,9 @@ import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.network.serverpackets.PledgeSkillList;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.util.StringUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class handles following admin commands:
@@ -61,7 +62,7 @@ import l2r.util.StringUtil;
  */
 public class AdminSkill implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminSkill.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(AdminSkill.class);
 	
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -457,7 +458,7 @@ public class AdminSkill implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "", e);
+				_log.warn("", e);
 			}
 			if (skill != null)
 			{
@@ -470,7 +471,7 @@ public class AdminSkill implements IAdminCommandHandler
 				activeChar.sendMessage("You gave the skill " + name + " to " + player.getName() + ".");
 				if (Config.DEBUG)
 				{
-					_log.fine("[GM]" + activeChar.getName() + " gave skill " + name + " to " + player.getName() + ".");
+					_log.info("[GM]" + activeChar.getName() + " gave skill " + name + " to " + player.getName() + ".");
 				}
 				activeChar.sendSkillList();
 			}
@@ -505,7 +506,7 @@ public class AdminSkill implements IAdminCommandHandler
 			activeChar.sendMessage("You removed the skill " + skillname + " from " + player.getName() + ".");
 			if (Config.DEBUG)
 			{
-				_log.fine("[GM]" + activeChar.getName() + " removed skill " + skillname + " from " + player.getName() + ".");
+				_log.info("[GM]" + activeChar.getName() + " removed skill " + skillname + " from " + player.getName() + ".");
 			}
 			activeChar.sendSkillList();
 		}

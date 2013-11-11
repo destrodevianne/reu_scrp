@@ -457,7 +457,7 @@ public class Parade extends AbstractNpcAI
 						else if (!actor.isMoving())
 						{
 							actor.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(actor.getXdestination(), actor.getYdestination(), actor.getZdestination(), actor.getHeading()));
-							System.out.println("__BASENAME__:__LINE__: " + actor.getNpcId() + " " + actor.getX() + "," + actor.getY() + "," + actor.getZ() + "," + actor.getHeading() + " -> " + actor.getXdestination() + "," + actor.getYdestination() + "," + actor.getZdestination() + " " + (actor.hasAI() ? actor.getAI().getIntention().name() : "NOAI"));
+							_log.info("__BASENAME__:__LINE__: " + actor.getNpcId() + " " + actor.getX() + "," + actor.getY() + "," + actor.getZ() + "," + actor.getHeading() + " -> " + actor.getXdestination() + "," + actor.getYdestination() + "," + actor.getZdestination() + " " + (actor.hasAI() ? actor.getAI().getIntention().name() : "NOAI"));
 							actor.broadcastPacket(new NpcSay(actor.getObjectId(), 0, actor.getNpcId(), actor.getNpcId() + "/" + actor.getXdestination() + "," + actor.getYdestination() + "," + actor.getZdestination()));
 						}
 					}

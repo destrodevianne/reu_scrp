@@ -148,7 +148,7 @@ public class TarBeetleSpawn extends DocumentParser
 			spawn.setHeading(Rnd.get(65535));
 			spawn.setLocx(loc[0]);
 			spawn.setLocy(loc[1]);
-			spawn.setLocz(GeoData.getInstance().getSpawnHeight(loc[0], loc[1], loc[2], loc[3]));
+			spawn.setLocz(GeoData.getInstance().getSpawnHeight(loc[0], loc[1], loc[2], loc[3], null));
 			
 			final L2Npc npc = spawn.doSpawn();
 			npc.setIsNoRndWalk(true);
@@ -161,7 +161,7 @@ public class TarBeetleSpawn extends DocumentParser
 		}
 		catch (Exception e)
 		{
-			_log.warning(TarBeetleSpawn.class.getSimpleName() + ": Could not spawn npc! Error: " + e.getMessage());
+			_log.warn(TarBeetleSpawn.class.getSimpleName() + ": Could not spawn npc! Error: " + e.getMessage());
 		}
 	}
 	

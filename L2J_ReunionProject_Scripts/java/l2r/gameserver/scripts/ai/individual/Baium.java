@@ -24,12 +24,12 @@ import static l2r.gameserver.enums.CtrlIntention.AI_INTENTION_IDLE;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 
 import javolution.util.FastList;
 import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.ThreadPoolManager;
+import l2r.gameserver.enums.MountType;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.Location;
@@ -215,7 +215,7 @@ public class Baium extends AbstractNpcAI
 							}
 							catch (Exception e)
 							{
-								_log.log(Level.WARNING, "", e);
+								_log.warn(String.valueOf(e));
 							}
 						}
 					}, 11100L);
@@ -324,7 +324,7 @@ public class Baium extends AbstractNpcAI
 								}
 								catch (Throwable e)
 								{
-									_log.log(Level.WARNING, "", e);
+									_log.warn(String.valueOf(e));
 								}
 							}
 						}, 100L);
@@ -419,7 +419,7 @@ public class Baium extends AbstractNpcAI
 			return super.onAttack(npc, attacker, damage, isSummon);
 		}
 		
-		if (attacker.getMountType() == 1)
+		if (attacker.getMountType() == MountType.STRIDER)
 		{
 			boolean hasStriderDebuff = false;
 			final L2Effect[] effects = npc.getAllEffects();

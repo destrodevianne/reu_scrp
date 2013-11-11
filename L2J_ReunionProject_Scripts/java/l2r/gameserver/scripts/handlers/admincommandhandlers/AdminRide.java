@@ -18,8 +18,8 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
+import l2r.gameserver.datatables.TransformData;
 import l2r.gameserver.handler.IAdminCommandHandler;
-import l2r.gameserver.instancemanager.TransformationManager;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 
@@ -82,7 +82,7 @@ public class AdminRide implements IAdminCommandHandler
 				}
 				else
 				{
-					TransformationManager.getInstance().transformPlayer(PURPLE_MANED_HORSE_TRANSFORMATION_ID, player);
+					TransformData.getInstance().transformPlayer(PURPLE_MANED_HORSE_TRANSFORMATION_ID, player);
 				}
 				
 				return true;
@@ -95,7 +95,7 @@ public class AdminRide implements IAdminCommandHandler
 				}
 				else
 				{
-					TransformationManager.getInstance().transformPlayer(JET_BIKE_TRANSFORMATION_ID, player);
+					TransformData.getInstance().transformPlayer(JET_BIKE_TRANSFORMATION_ID, player);
 				}
 				
 				return true;

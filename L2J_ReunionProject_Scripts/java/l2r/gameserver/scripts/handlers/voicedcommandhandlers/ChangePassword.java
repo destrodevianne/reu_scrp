@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 
 import l2r.gameserver.LoginServerThread;
 import l2r.gameserver.cache.HtmCache;
@@ -92,7 +91,7 @@ public class ChangePassword implements IVoicedCommandHandler
 			catch (Exception e)
 			{
 				activeChar.sendMessage("A problem occured while changing password!");
-				_log.log(Level.WARNING, "", e);
+				_log.warn("", e);
 			}
 		}
 		else

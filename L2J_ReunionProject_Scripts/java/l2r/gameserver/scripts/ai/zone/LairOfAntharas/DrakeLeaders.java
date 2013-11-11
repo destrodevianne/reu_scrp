@@ -2,7 +2,6 @@ package l2r.gameserver.scripts.ai.zone.LairOfAntharas;
 
 import java.io.File;
 import java.util.TreeMap;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -170,7 +169,7 @@ public class DrakeLeaders extends AbstractNpcAI
 		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/drake_leaders.xml");
 		if (!f.exists())
 		{
-			_log.severe("[Drake Leaders AI]: Error! drake_leaders.xml file is missing!");
+			_log.error("[Drake Leaders AI]: Error! drake_leaders.xml file is missing!");
 			return;
 		}
 		
@@ -206,7 +205,7 @@ public class DrakeLeaders extends AbstractNpcAI
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "[Drake Leaders AI]: Error while loading drake_leaders.xml file: " + e.getMessage(), e);
+			_log.warn("[Drake Leaders AI]: Error while loading drake_leaders.xml file: " + e.getMessage(), e);
 		}
 		loadSpawns();
 	}

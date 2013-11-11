@@ -19,7 +19,7 @@
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import l2r.gameserver.handler.IAdminCommandHandler;
-import l2r.gameserver.instancemanager.PetitionManager;
+import l2r.gameserver.instancemanager.petition.PetitionManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;

@@ -26,6 +26,7 @@ import javax.script.ScriptException;
 import l2r.Config;
 import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.AdminTable;
+import l2r.gameserver.datatables.BuyListData;
 import l2r.gameserver.datatables.CrestTable;
 import l2r.gameserver.datatables.DoorTable;
 import l2r.gameserver.datatables.ItemTable;
@@ -172,6 +173,12 @@ public class AdminReload implements IAdminCommandHandler
 				{
 					MultiSell.getInstance().reload();
 					AdminTable.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded Multisells.");
+					break;
+				}
+				case "buylist":
+				{
+					BuyListData.getInstance().load();
+					AdminTable.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded Buylists.");
 					break;
 				}
 				case "teleport":

@@ -18,10 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-
 import l2r.Config;
 import l2r.gameserver.enums.ShotType;
 import l2r.gameserver.handler.ISkillHandler;
@@ -35,10 +31,14 @@ import l2r.gameserver.model.stats.Formulas;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Mdam implements ISkillHandler
 {
-	protected static final Logger _log = Logger.getLogger(Mdam.class.getName());
-	private static final Logger _logDamage = Logger.getLogger("damage");
+	protected static final Logger _log = LoggerFactory.getLogger(Mdam.class);
+	@SuppressWarnings("unused")
+	private static final Logger _logDamage = LoggerFactory.getLogger("damage");
 	
 	private static final L2SkillType[] SKILL_IDS =
 	{
@@ -144,18 +144,10 @@ public class Mdam implements ISkillHandler
 				// Logging damage
 				if (Config.LOG_GAME_DAMAGE && activeChar.isPlayable() && (damage > Config.LOG_GAME_DAMAGE_THRESHOLD))
 				{
-					LogRecord record = new LogRecord(Level.INFO, "");
-					record.setParameters(new Object[]
-					{
-						activeChar,
-						" did damage ",
-						damage,
-						skill,
-						" to ",
-						target
-					});
-					record.setLoggerName("mdam");
-					_logDamage.log(record);
+					// FIXME:LOGGER
+					/**
+					 * LogRecord record = new LogRecord(Level.INFO, ""); record.setParameters(new Object[] { activeChar, " did damage ", damage, skill, " to ", target }); record.setLoggerName("mdam"); _logDamage.log(record);
+					 */
 				}
 			}
 		}

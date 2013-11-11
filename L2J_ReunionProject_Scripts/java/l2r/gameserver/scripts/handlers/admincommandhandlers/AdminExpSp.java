@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.gameserver.datatables.ClassListData;
@@ -29,6 +28,9 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class handles following admin commands: <li>add_exp_sp_to_character <i>shows menu for add or remove</i> <li>add_exp_sp exp sp <i>Adds exp & sp to target, displays menu if a parameter is missing</i> <li>remove_exp_sp exp sp <i>Removes exp & sp from target, displays menu if a parameter is
  * missing</i>
@@ -36,7 +38,7 @@ import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
  */
 public class AdminExpSp implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminExpSp.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(AdminExpSp.class);
 	
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -152,7 +154,7 @@ public class AdminExpSp implements IAdminCommandHandler
 			activeChar.sendMessage("Added " + expval + " xp and " + spval + " sp to " + player.getName() + ".");
 			if (Config.DEBUG)
 			{
-				_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") added " + expval + " xp and " + spval + " sp to " + player.getObjectId() + ".");
+				_log.info("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") added " + expval + " xp and " + spval + " sp to " + player.getObjectId() + ".");
 			}
 		}
 		return true;
@@ -199,7 +201,7 @@ public class AdminExpSp implements IAdminCommandHandler
 			activeChar.sendMessage("Removed " + expval + " xp and " + spval + " sp from " + player.getName() + ".");
 			if (Config.DEBUG)
 			{
-				_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") removed " + expval + " xp and " + spval + " sp from " + player.getObjectId() + ".");
+				_log.info("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") removed " + expval + " xp and " + spval + " sp from " + player.getObjectId() + ".");
 			}
 		}
 		return true;

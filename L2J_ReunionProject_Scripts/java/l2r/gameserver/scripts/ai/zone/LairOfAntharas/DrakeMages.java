@@ -2,7 +2,6 @@ package l2r.gameserver.scripts.ai.zone.LairOfAntharas;
 
 import java.io.File;
 import java.util.TreeMap;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -170,7 +169,7 @@ public class DrakeMages extends AbstractNpcAI
 		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/drake_mages.xml");
 		if (!f.exists())
 		{
-			_log.severe("[Drake Mages AI]: Error! drake_mages.xml file is missing!");
+			_log.error("[Drake Mages AI]: Error! drake_mages.xml file is missing!");
 			return;
 		}
 		
@@ -206,7 +205,7 @@ public class DrakeMages extends AbstractNpcAI
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "[Drake Mages AI]: Error while loading drake_mages.xml file: " + e.getMessage(), e);
+			_log.warn("[Drake Mages AI]: Error while loading drake_mages.xml file: " + e.getMessage(), e);
 		}
 		loadSpawns();
 	}

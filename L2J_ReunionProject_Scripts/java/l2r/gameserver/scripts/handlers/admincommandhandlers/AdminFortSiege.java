@@ -36,7 +36,7 @@ import l2r.util.StringUtil;
  */
 public class AdminFortSiege implements IAdminCommandHandler
 {
-	// private static Logger _log = Logger.getLogger(AdminFortSiege.class.getName());
+	// private static Logger _log = LoggerFactory.getLogger(AdminFortSiege.class);
 	
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -156,7 +156,7 @@ public class AdminFortSiege implements IAdminCommandHandler
 		{
 			if (fort != null)
 			{
-				StringUtil.append(cList, "<td fixwidth=90><a action=\"bypass -h admin_fortsiege ", String.valueOf(fort.getFortId()), "\">", fort.getName(), " id: ", String.valueOf(fort.getFortId()), "</a></td>");
+				StringUtil.append(cList, "<td fixwidth=90><a action=\"bypass -h admin_fortsiege ", String.valueOf(fort.getResidenceId()), "\">", fort.getName(), " id: ", String.valueOf(fort.getResidenceId()), "</a></td>");
 				i++;
 			}
 			
@@ -176,7 +176,7 @@ public class AdminFortSiege implements IAdminCommandHandler
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile(activeChar.getHtmlPrefix(), "data/html/admin/fort.htm");
 		adminReply.replace("%fortName%", fort.getName());
-		adminReply.replace("%fortId%", String.valueOf(fort.getFortId()));
+		adminReply.replace("%fortId%", String.valueOf(fort.getResidenceId()));
 		activeChar.sendPacket(adminReply);
 	}
 	

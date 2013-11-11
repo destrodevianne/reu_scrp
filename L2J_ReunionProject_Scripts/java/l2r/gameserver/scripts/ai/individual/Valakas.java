@@ -25,6 +25,7 @@ import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.MountType;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.Location;
@@ -409,7 +410,7 @@ public class Valakas extends AbstractNpcAI
 		}
 		
 		// Debuff strider-mounted players.
-		if (attacker.getMountType() == 1)
+		if (attacker.getMountType() == MountType.STRIDER)
 		{
 			final L2Skill skill = SkillTable.getInstance().getInfo(4258, 1);
 			if (attacker.getFirstEffect(skill) == null)

@@ -510,7 +510,7 @@ public class IceQueenCastle2 extends Quest
 		}
 		else
 		{
-			System.out.println("Warning!!! Not Found world at handleWorldState(int, int).");
+			_log.warn("IceQueenCastle2: Not Found world at handleWorldState(int, int).");
 		}
 	}
 	
@@ -931,7 +931,7 @@ public class IceQueenCastle2 extends Quest
 				}
 				break;
 			default:
-				System.out.println("Warning!!! Not handled world status - " + statusId);
+				_log.warn("IceQueenCastle2: Not handled world status - " + statusId);
 				break;
 		}
 		world.setStatus(statusId);
@@ -963,7 +963,7 @@ public class IceQueenCastle2 extends Quest
 		
 		if (world == null)
 		{
-			System.out.println("Warning!!! World not found in getWorld(int instanceId)");
+			_log.warn("IceQueenCastle2: World not found in getWorld(int instanceId)");
 		}
 		return world;
 	}
@@ -984,7 +984,7 @@ public class IceQueenCastle2 extends Quest
 		
 		if (world == null)
 		{
-			System.out.println("Warning!!! World not found in getWorld(int instanceId)");
+			_log.warn("IceQueenCastle2: World not found in getWorld(int instanceId)");
 		}
 		return world;
 	}
@@ -1655,29 +1655,18 @@ public class IceQueenCastle2 extends Quest
 	public IceQueenCastle2(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		addTalkId(Superior_Knight);
-		addTalkId(Jinia);
-		addStartNpc(Jinia);
-		addStartNpc(Superior_Knight);
+		addTalkId(Jinia, Superior_Knight);
+		addStartNpc(Jinia, Superior_Knight);
 		addFirstTalkId(Superior_Knight);
-		addKillId(Glakias);
-		addAttackId(archery_knight);
-		addAttackId(freyaStand);
-		addKillId(freyaOnThrone);
-		addKillId(freyaStand);
-		addKillId(freyaSpelling);
-		addKillId(archery_knight);
-		addKillId(glacier);
+		addAttackId(archery_knight, freyaStand);
+		addKillId(freyaOnThrone, freyaStand, freyaSpelling, archery_knight, glacier, Glakias);
 		addSpawnId(archery_knight);
-		addSpawnId(18854);
-		addSpawnId(glacier);
+		addSpawnId(18854, glacier);
 		addAggroRangeEnterId(freya_controller);
 		// Hard
-		addKillId(Glakias_hard);
 		addAttackId(archery_knight_hard);
 		addAttackId(freyaStand_hard);
-		addKillId(freyaStand_hard);
-		addKillId(archery_knight_hard);
+		addKillId(freyaStand_hard, Glakias_hard, archery_knight_hard);
 		addSpawnId(archery_knight_hard);
 		// Hard - end
 	}

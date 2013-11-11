@@ -50,7 +50,7 @@ public class QuestItems implements IItemHandler
 		final L2Item itm = item.getItem();
 		if (itm.getQuestEvents() == null)
 		{
-			_log.warning(QuestItems.class.getSimpleName() + ": Null list for item handler QuestItems!");
+			_log.warn(QuestItems.class.getSimpleName() + ": Null list for item handler QuestItems!");
 			return false;
 		}
 		

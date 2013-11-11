@@ -565,7 +565,7 @@ public class PailakaInjuredDragon extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning("Logger: notifyEvent failed (PailakaInjuredDragon 1) Report this to team. ");
+				_log.warn("Logger: notifyEvent failed (PailakaInjuredDragon 1) Report this to team. ");
 			}
 			return null;
 		}
@@ -807,7 +807,7 @@ public class PailakaInjuredDragon extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.warning("Logger: notifyEvent failed (PailakaInjuredDragon 2) Report this to team. ");
+			_log.warn("Logger: notifyEvent failed (PailakaInjuredDragon 2) Report this to team. ");
 		}
 	}
 	

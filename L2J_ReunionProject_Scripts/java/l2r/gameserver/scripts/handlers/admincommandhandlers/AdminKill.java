@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.gameserver.handler.IAdminCommandHandler;
@@ -30,6 +29,9 @@ import l2r.gameserver.model.actor.instance.L2ControllableMobInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class handles following admin commands: - kill = kills target L2Character - kill_monster = kills target non-player - kill <radius> = If radius is specified, then ALL players only in that radius will be killed. - kill_monster <radius> = If radius is specified, then ALL non-players only in
  * that radius will be killed.
@@ -37,7 +39,7 @@ import l2r.gameserver.network.SystemMessageId;
  */
 public class AdminKill implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminKill.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(AdminKill.class);
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_kill",
@@ -157,7 +159,7 @@ public class AdminKill implements IAdminCommandHandler
 		}
 		if (Config.DEBUG)
 		{
-			_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed character " + target.getObjectId());
+			_log.info("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed character " + target.getObjectId());
 		}
 	}
 	

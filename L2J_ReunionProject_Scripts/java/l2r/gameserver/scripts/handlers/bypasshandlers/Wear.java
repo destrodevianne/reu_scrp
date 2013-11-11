@@ -19,14 +19,13 @@
 package l2r.gameserver.scripts.handlers.bypasshandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 
 import l2r.Config;
-import l2r.gameserver.TradeController;
+import l2r.gameserver.datatables.BuyListData;
 import l2r.gameserver.handler.IBypassHandler;
-import l2r.gameserver.model.L2TradeList;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.buylist.L2BuyList;
 import l2r.gameserver.network.serverpackets.ActionFailed;
 import l2r.gameserver.network.serverpackets.ShopPreviewList;
 
@@ -65,32 +64,24 @@ public class Wear implements IBypassHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception in " + getClass().getSimpleName(), e);
+			_log.warn("Exception in " + getClass().getSimpleName(), e);
 		}
 		return false;
 	}
 	
 	private static final void showWearWindow(L2PcInstance player, int val)
 	{
+		final L2BuyList buyList = BuyListData.getInstance().getBuyList(val);
+		if (buyList == null)
+		{
+			_log.warn("BuyList not found! BuyListId:" + val);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		player.tempInventoryDisable();
 		
-		if (Config.DEBUG)
-		{
-			_log.fine("Showing wearlist");
-		}
-		
-		L2TradeList list = TradeController.getInstance().getBuyList(val);
-		
-		if (list != null)
-		{
-			ShopPreviewList bl = new ShopPreviewList(list, player.getAdena(), player.getExpertiseLevel());
-			player.sendPacket(bl);
-		}
-		else
-		{
-			_log.warning("no buylist with id:" + val);
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-		}
+		player.sendPacket(new ShopPreviewList(buyList, player.getAdena(), player.getExpertiseLevel()));
 	}
 	
 	@Override

@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import java.util.logging.Logger;
-
 import l2r.Config;
 import l2r.gameserver.datatables.ManorData;
 import l2r.gameserver.enums.CtrlIntention;
@@ -35,12 +33,15 @@ import l2r.gameserver.network.serverpackets.ActionFailed;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.util.Rnd;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author l3x
  */
 public class Sow implements ISkillHandler
 {
-	private static Logger _log = Logger.getLogger(Sow.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(Sow.class);
 	
 	private static final L2SkillType[] SKILL_IDS =
 	{

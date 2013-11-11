@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.ai.npc;
 
-import java.util.logging.Logger;
-
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
@@ -32,13 +30,16 @@ import l2r.gameserver.network.serverpackets.SocialAction;
 import l2r.gameserver.scripting.scriptengine.impl.L2Script;
 import l2r.gameserver.util.Broadcast;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Abstract NPC AI class for datapack based AIs.
  * @author UnAfraid, Zoey76
  */
 public abstract class AbstractNpcAI extends L2Script
 {
-	public Logger _log = Logger.getLogger(getClass().getSimpleName());
+	public Logger _log = LoggerFactory.getLogger(getClass());
 	
 	public AbstractNpcAI(String name, String descr)
 	{

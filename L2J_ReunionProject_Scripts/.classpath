@@ -9,7 +9,9 @@
 	<classpathentry kind="lib" path="lib/CatsByteGuard.jar"/>
 	<classpathentry kind="lib" path="lib/trove-3.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/l2reunion.jar"/>
+	<classpathentry kind="lib" path="/L2J_Reunion_Core/dist/libs/slf4j-api-1.6.4.jar"/>
 	<classpathentry kind="lib" path="lib/reunion_events.jar"/>
 	<classpathentry kind="lib" path="lib/reunion_interface.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.6.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

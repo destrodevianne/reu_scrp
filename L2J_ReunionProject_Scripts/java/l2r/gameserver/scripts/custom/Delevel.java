@@ -73,7 +73,7 @@ public class Delevel extends Quest
 		}
 		catch (final SQLException e)
 		{
-			_log.warning("Could not store Delevel Manager access level:" + e);
+			_log.warn("Could not store Delevel Manager access level:" + e);
 		}
 	}
 	
@@ -318,6 +318,6 @@ public class Delevel extends Quest
 	public static void main(final String[] args)
 	{
 		new Delevel(-1, "Delevel", "custom");
-		System.out.println("CUSTOM: Delevel Manager loaded");
+		_log.info("CUSTOM: Delevel Manager loaded");
 	}
 }

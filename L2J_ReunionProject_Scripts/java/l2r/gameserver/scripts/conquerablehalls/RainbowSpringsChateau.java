@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.L2DatabaseFactory;
@@ -60,13 +59,16 @@ import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.util.Util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Rainbow Springs Chateau clan hall siege script.
  * @author BiggBoss
  */
 public class RainbowSpringsChateau extends Quest
 {
-	private static final Logger _log = Logger.getLogger(RainbowSpringsChateau.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(RainbowSpringsChateau.class);
 	
 	protected static class SetFinalAttackers implements Runnable
 	{
@@ -322,7 +324,7 @@ public class RainbowSpringsChateau extends Quest
 			}
 			else
 			{
-				_log.warning("CHSiegeManager: No Date setted for RainBow Springs Chateau Clan hall siege!. SIEGE CANCELED!");
+				_log.warn("CHSiegeManager: No Date setted for RainBow Springs Chateau Clan hall siege!. SIEGE CANCELED!");
 			}
 		}
 	}
@@ -715,7 +717,7 @@ public class RainbowSpringsChateau extends Quest
 	{
 		if ((arena < 0) || (arena > 3))
 		{
-			_log.warning("RainbowSptringChateau siege: Wrong arena id passed: " + arena);
+			_log.warn("RainbowSptringChateau siege: Wrong arena id passed: " + arena);
 			return;
 		}
 		for (L2PcInstance pc : leader.getParty().getMembers())

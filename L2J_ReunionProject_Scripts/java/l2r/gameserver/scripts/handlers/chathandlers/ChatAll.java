@@ -20,7 +20,6 @@ package l2r.gameserver.scripts.handlers.chathandlers;
 
 import java.util.Collection;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.gameserver.handler.IChatHandler;
@@ -31,6 +30,10 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.util.Util;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gr.reunion.interf.ReunionEvents;
 
 /**
@@ -39,7 +42,7 @@ import gr.reunion.interf.ReunionEvents;
  */
 public class ChatAll implements IChatHandler
 {
-	private static Logger _log = Logger.getLogger(ChatAll.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(ChatAll.class);
 	
 	private static final int[] COMMAND_IDS =
 	{
@@ -88,7 +91,7 @@ public class ChatAll implements IChatHandler
 			{
 				if (Config.DEBUG)
 				{
-					_log.warning("No handler registered for bypass '" + command + "'");
+					_log.warn("No handler registered for bypass '" + command + "'");
 				}
 				vcd_used = false;
 			}

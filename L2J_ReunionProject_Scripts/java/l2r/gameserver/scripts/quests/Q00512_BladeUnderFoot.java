@@ -17,7 +17,6 @@ package l2r.gameserver.scripts.quests;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.instancemanager.FortManager;
@@ -42,9 +41,12 @@ import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.util.Util;
 import l2r.util.Rnd;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class Q00512_BladeUnderFoot extends Quest
 {
-	public static final Logger _log = Logger.getLogger(Q00512_BladeUnderFoot.class.getName());
+	public static final Logger _log = LoggerFactory.getLogger(Q00512_BladeUnderFoot.class);
 	
 	public class CAUWorld extends InstanceWorld
 	{
@@ -258,7 +260,7 @@ public final class Q00512_BladeUnderFoot extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning("Castle BladeUnderFoot Raid Spawn error: " + e);
+				_log.warn("Castle BladeUnderFoot Raid Spawn error: " + e);
 			}
 		}
 	}
@@ -273,7 +275,7 @@ public final class Q00512_BladeUnderFoot extends Quest
 		{
 			return "CastleWarden-01.htm";
 		}
-		if ((player.getClan() == null) || (player.getClan().getCastleId() != castle.getCastleId()))
+		if ((player.getClan() == null) || (player.getClan().getCastleId() != castle.getResidenceId()))
 		{
 			return "CastleWarden-01.htm";
 		}
@@ -282,7 +284,7 @@ public final class Q00512_BladeUnderFoot extends Quest
 		{
 			for (Fort fort : FortManager.getInstance().getForts())
 			{
-				if (fort.getCastleId() == castle.getCastleId())
+				if (fort.getCastleId() == castle.getResidenceId())
 				{
 					haveContract = true;
 					break;

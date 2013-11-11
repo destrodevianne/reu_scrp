@@ -20,7 +20,6 @@ package l2r.gameserver.scripts.handlers.bypasshandlers;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 
 import l2r.Config;
 import l2r.gameserver.datatables.MultiSell;
@@ -222,7 +221,7 @@ public class OlympiadManagerLink implements IBypassHandler
 						OlympiadManager.getInstance().registerNoble(activeChar, CompetitionType.TEAMS);
 						break;
 					default:
-						_log.warning("Olympiad System: Couldnt send packet for request " + val);
+						_log.warn("Olympiad System: Couldnt send packet for request " + val);
 						break;
 				}
 			}
@@ -238,7 +237,7 @@ public class OlympiadManagerLink implements IBypassHandler
 				
 				if (params[1] == null)
 				{
-					_log.warning("Olympiad Buffer Warning: npcId = " + ((L2Npc) target).getNpcId() + " has no buffGroup set in the bypass for the buff selected.");
+					_log.warn("Olympiad Buffer Warning: npcId = " + ((L2Npc) target).getNpcId() + " has no buffGroup set in the bypass for the buff selected.");
 					return false;
 				}
 				int buffGroup = Integer.parseInt(params[1]);
@@ -247,7 +246,7 @@ public class OlympiadManagerLink implements IBypassHandler
 				
 				if (npcBuffGroupInfo == null)
 				{
-					_log.warning("Olympiad Buffer Warning: npcId = " + ((L2Npc) target).getNpcId() + " Location: " + target.getX() + ", " + target.getY() + ", " + target.getZ() + " Player: " + activeChar.getName() + " has tried to use skill group (" + buffGroup + ") not assigned to the NPC Buffer!");
+					_log.warn("Olympiad Buffer Warning: npcId = " + ((L2Npc) target).getNpcId() + " Location: " + target.getX() + ", " + target.getY() + ", " + target.getZ() + " Player: " + activeChar.getName() + " has tried to use skill group (" + buffGroup + ") not assigned to the NPC Buffer!");
 					return false;
 				}
 				
@@ -325,14 +324,14 @@ public class OlympiadManagerLink implements IBypassHandler
 						activeChar.sendPacket(new ExHeroList());
 						break;
 					default:
-						_log.warning("Olympiad System: Couldnt send packet for request " + val);
+						_log.warn("Olympiad System: Couldnt send packet for request " + val);
 						break;
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception in " + getClass().getSimpleName(), e);
+			_log.warn("Exception in " + getClass().getSimpleName(), e);
 		}
 		
 		return true;

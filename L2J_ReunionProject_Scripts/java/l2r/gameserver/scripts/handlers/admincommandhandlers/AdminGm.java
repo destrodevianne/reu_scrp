@@ -18,11 +18,12 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import java.util.logging.Logger;
-
 import l2r.gameserver.datatables.AdminTable;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class handles following admin commands: - gm = turns gm mode off
@@ -30,7 +31,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminGm implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminGm.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(AdminGm.class);
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_gm"

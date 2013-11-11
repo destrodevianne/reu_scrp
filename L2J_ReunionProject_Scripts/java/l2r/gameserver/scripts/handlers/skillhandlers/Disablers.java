@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import java.util.logging.Logger;
-
 import l2r.gameserver.ai.L2AttackableAI;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
@@ -41,6 +39,9 @@ import l2r.gameserver.model.stats.Formulas;
 import l2r.gameserver.model.stats.Stats;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.SystemMessage;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This Handles Disabler skills
@@ -66,7 +67,7 @@ public class Disablers implements ISkillHandler
 		L2SkillType.DISARM
 	};
 	
-	protected static final Logger _log = Logger.getLogger(L2Skill.class.getName());
+	protected static final Logger _log = LoggerFactory.getLogger(L2Skill.class);
 	
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
@@ -213,7 +214,7 @@ public class Disablers implements ISkillHandler
 						}
 						catch (Exception e)
 						{
-							_log.warning("Logger: notifyEvent failed (Disablers 1) Report this to team. ");
+							_log.warn("Logger: notifyEvent failed (Disablers 1) Report this to team. ");
 						}
 					}
 					skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss));
@@ -276,7 +277,7 @@ public class Disablers implements ISkillHandler
 						}
 						catch (Exception e)
 						{
-							_log.warning("Logger: notifyEvent failed (Disablers 2) Report this to team. ");
+							_log.warn("Logger: notifyEvent failed (Disablers 2) Report this to team. ");
 						}
 					}
 					break;
@@ -315,7 +316,7 @@ public class Disablers implements ISkillHandler
 							}
 							catch (Exception e)
 							{
-								_log.warning("Logger: notifyEvent failed (Disablers 3) Report this to team. ");
+								_log.warn("Logger: notifyEvent failed (Disablers 3) Report this to team. ");
 							}
 						}
 					}
@@ -327,7 +328,7 @@ public class Disablers implements ISkillHandler
 						}
 						catch (Exception e)
 						{
-							_log.warning("Logger: notifyEvent failed (Disablers 4) Report this to team. ");
+							_log.warn("Logger: notifyEvent failed (Disablers 4) Report this to team. ");
 						}
 					}
 					break;

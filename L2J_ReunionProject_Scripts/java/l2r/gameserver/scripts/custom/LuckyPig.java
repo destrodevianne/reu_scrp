@@ -17,7 +17,6 @@ package l2r.gameserver.scripts.custom;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
@@ -121,7 +120,7 @@ public class LuckyPig extends AbstractNpcAI
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, e.getMessage(), e);
+				_log.warn(e.getMessage(), e);
 			}
 		}
 		return super.onAdvEvent(event, npc, player);

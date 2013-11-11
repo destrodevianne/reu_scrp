@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.bypasshandlers;
 
-import java.util.logging.Level;
-
 import l2r.Config;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
@@ -99,7 +97,7 @@ public class PrivateWarehouse implements IBypassHandler
 				
 				if (Config.DEBUG)
 				{
-					_log.fine("Source: L2WarehouseInstance.java; Player: " + activeChar.getName() + "; Command: showDepositWindow; Message: Showing items to deposit.");
+					_log.info("Source: L2WarehouseInstance.java; Player: " + activeChar.getName() + "; Command: showDepositWindow; Message: Showing items to deposit.");
 				}
 				
 				activeChar.sendPacket(new WareHouseDepositList(activeChar, WareHouseDepositList.PRIVATE));
@@ -110,7 +108,7 @@ public class PrivateWarehouse implements IBypassHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception in " + getClass().getSimpleName(), e);
+			_log.warn("Exception in " + getClass().getSimpleName(), e);
 		}
 		return false;
 	}
@@ -137,7 +135,7 @@ public class PrivateWarehouse implements IBypassHandler
 		
 		if (Config.DEBUG)
 		{
-			_log.fine("Source: L2WarehouseInstance.java; Player: " + player.getName() + "; Command: showRetrieveWindow; Message: Showing stored items.");
+			_log.info("Source: L2WarehouseInstance.java; Player: " + player.getName() + "; Command: showRetrieveWindow; Message: Showing stored items.");
 		}
 	}
 	

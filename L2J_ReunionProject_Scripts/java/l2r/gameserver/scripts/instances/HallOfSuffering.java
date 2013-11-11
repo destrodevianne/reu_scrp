@@ -540,7 +540,7 @@ public class HallOfSuffering extends Quest
 			case 4:
 				return ROOM_5_MOBS;
 		}
-		_log.warning("");
+		_log.warn("");
 		return new int[][] {};
 	}
 	
@@ -603,7 +603,7 @@ public class HallOfSuffering extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.warning("Logger: notifyEvent failed (HallOfSuffering 1) Report this to team. ");
+			_log.warn("Logger: notifyEvent failed (HallOfSuffering 1) Report this to team. ");
 		}
 		
 		if (boss.getWorldRegion() != null)
@@ -744,7 +744,7 @@ public class HallOfSuffering extends Quest
 					}
 					catch (Exception e)
 					{
-						_log.warning("Logger: notifyEvent failed (HallOfSuffering 2) Report this to team. ");
+						_log.warn("Logger: notifyEvent failed (HallOfSuffering 2) Report this to team. ");
 					}
 				}
 				
@@ -865,7 +865,7 @@ public class HallOfSuffering extends Quest
 			InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 			if (((HSWorld) world).rewardItemId == -1)
 			{
-				_log.warning("Hall of Suffering: " + player.getName() + "(" + player.getObjectId() + ") is try to cheat!");
+				_log.warn("Hall of Suffering: " + player.getName() + "(" + player.getObjectId() + ") is try to cheat!");
 				return getPtLeaderText(player, (HSWorld) world);
 			}
 			else if (((HSWorld) world).isRewarded)
@@ -901,7 +901,7 @@ public class HallOfSuffering extends Quest
 			InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 			if (((HSWorld) world).rewardItemId == -1)
 			{
-				_log.warning("Hall of Suffering: " + player.getName() + "(" + player.getObjectId() + ") is try to cheat!");
+				_log.warn("Hall of Suffering: " + player.getName() + "(" + player.getObjectId() + ") is try to cheat!");
 				return getPtLeaderText(player, (HSWorld) world);
 			}
 			else if (((HSWorld) world).isRewarded)

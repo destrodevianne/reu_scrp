@@ -132,7 +132,7 @@ public class WarriorFishingBlock extends AbstractNpcAI
 		}
 		catch (Exception e)
 		{
-			_log.warning("Logger: notifyEvent failed (WarriorFishingBlock) Report this to team. ");
+			_log.warn("Logger: notifyEvent failed (WarriorFishingBlock) Report this to team. ");
 		}
 		npc.addAttackerToAttackByList(player);
 		

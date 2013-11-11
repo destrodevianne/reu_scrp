@@ -133,7 +133,7 @@ public final class L2AttackableAIScript extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.warning("Logger: notifyEvent failed (L2AttackableAIScript 1) Report this to team. ");
+			_log.warn("Logger: notifyEvent failed (L2AttackableAIScript 1) Report this to team. ");
 		}
 		
 		return null;
@@ -179,7 +179,7 @@ public final class L2AttackableAIScript extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning("Logger: notifyEvent failed (L2AttackableAIScript 2) Report this to team. ");
+				_log.warn("Logger: notifyEvent failed (L2AttackableAIScript 2) Report this to team. ");
 			}
 			attackable.addDamageHate(originalAttacker, damage, (damage * 100) / (attackable.getLevel() + 7));
 		}

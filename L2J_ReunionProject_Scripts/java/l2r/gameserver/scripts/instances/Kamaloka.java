@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.instancemanager.InstanceManager;
@@ -1610,7 +1609,7 @@ public class Kamaloka extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "", e);
+			_log.warn("", e);
 		}
 		return "";
 	}

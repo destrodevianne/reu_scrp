@@ -22,8 +22,9 @@ import java.util.List;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.Config;
-import l2r.gameserver.GeoData;
+import l2r.gameserver.GeoEngine;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.enums.MountType;
 import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.instancemanager.InstanceManager;
@@ -655,7 +656,7 @@ public class Zaken extends Quest
 		
 		if (DEBUG)
 		{
-			System.out.println("Zaken minions spawned");
+			_log.info("Zaken minions spawned");
 		}
 	}
 	
@@ -670,7 +671,7 @@ public class Zaken extends Quest
 			{
 				for (L2Character obj : world._playersInZakenZone)
 				{
-					if (!(GeoData.getInstance().canSeeTarget(obj, npc)))
+					if (!(GeoEngine.getInstance().canSeeTarget(obj, npc)))
 					{
 						continue;
 					}
@@ -693,7 +694,7 @@ public class Zaken extends Quest
 			{
 				Object[] characters = result.toArray();
 				character = (L2Character) characters[Rnd.get(characters.length)];
-				System.out.println("Zaken target to " + character);
+				_log.info("Zaken target to " + character);
 			}
 		}
 		return character;
@@ -738,7 +739,7 @@ public class Zaken extends Quest
 		
 		if (DEBUG)
 		{
-			System.out.println("Player " + player + " Zaken reuse set to: " + reuseTime.getTime());
+			_log.info("Player " + player + " Zaken reuse set to: " + reuseTime.getTime());
 		}
 	}
 	
@@ -941,7 +942,7 @@ public class Zaken extends Quest
 				world._blueCandles++;
 				if (player != null)
 				{
-					_log.warning("Player: " + player.getName() + " fires a blue candle. Candle count is: " + world._blueCandles);
+					_log.warn("Player: " + player.getName() + " fires a blue candle. Candle count is: " + world._blueCandles);
 				}
 				if (world._blueCandles == 4)
 				{
@@ -1172,7 +1173,7 @@ public class Zaken extends Quest
 		int npcId = npc.getNpcId();
 		if ((npcId == ZAKEN_DAY) || (npcId == ZAKEN_DAY83) || (npcId == ZAKEN_NIGHT))
 		{
-			if (attacker.getMountType() == 1)
+			if (attacker.getMountType() == MountType.STRIDER)
 			{
 				int sk_4258 = 0;
 				L2Effect[] effects = attacker.getAllEffects();

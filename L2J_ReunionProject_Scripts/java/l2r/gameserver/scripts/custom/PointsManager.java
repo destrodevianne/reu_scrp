@@ -105,6 +105,6 @@ public final class PointsManager extends Quest
 	public static void main(String[] args)
 	{
 		new PointsManager(-1, "PointsManager", "custom");
-		System.out.println("CUSTOM: PointsManager Manager loaded");
+		_log.info("CUSTOM: PointsManager Manager loaded");
 	}
 }
