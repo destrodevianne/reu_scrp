@@ -18,19 +18,15 @@
  */
 package l2r.gameserver.scripts.quests;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import l2r.Config;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
-import l2r.gameserver.util.Util;
 
 /**
  * Seekers Of The Holy Grail (638)
@@ -40,60 +36,35 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 {
 	private static class DropInfo
 	{
-		private final int _itemId;
-		private final int _chance;
-		private final int _keyId;
-		private final int _keyChance;
-		private final int _keyCount;
+		public final int itemId;
+		public final double chance;
+		public final int keyId;
+		public final int keyChance;
+		public final int keyCount;
 		
-		public DropInfo(int itemId, int chance)
+		public DropInfo(int itemId, double chance)
 		{
 			this(itemId, chance, 0, 0, 0);
 		}
 		
-		public DropInfo(int itemId, int chance, int keyId, int keyChance, int count)
+		public DropInfo(int itemId, double chance, int keyId, int keyChance, int count)
 		{
-			_itemId = itemId;
-			_chance = chance;
-			_keyId = keyId;
-			_keyChance = keyChance;
-			_keyCount = count;
-		}
-		
-		public int getItemId()
-		{
-			return _itemId;
-		}
-		
-		public int getChance()
-		{
-			return _chance;
-		}
-		
-		public int getKeyId()
-		{
-			return _keyId;
-		}
-		
-		public int getKeyChance()
-		{
-			return _keyChance;
-		}
-		
-		public int getKeyCount()
-		{
-			return _keyCount;
+			this.itemId = itemId;
+			this.chance = chance;
+			this.keyId = keyId;
+			this.keyChance = keyChance;
+			this.keyCount = count;
 		}
 	}
 	
-	// Npc
+	// NPC
 	private static final int INNOCENTIN = 31328;
 	// Items
 	private static final int TOTEM = 8068;
 	private static final int ANTEROOM_KEY = 8273;
 	private static final int CHAPEL_KEY = 8274;
 	private static final int KEY_OF_DARKNESS = 8275;
-	// Miscs
+	// Misc
 	private static final int MIN_LVL = 73;
 	private static final int TOTEMS_REQUIRED_COUNT = 2000;
 	// Rewards
@@ -101,63 +72,62 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 	private static final int SCROLL_ENCHANT_A_S = 960;
 	// Mobs
 	private static final Map<Integer, DropInfo> MOBS_DROP_CHANCES = new HashMap<>();
-	
 	static
 	{
-		MOBS_DROP_CHANCES.put(22136, new DropInfo(TOTEM, 55)); // Gatekeeper Zombie
-		MOBS_DROP_CHANCES.put(22137, new DropInfo(TOTEM, 6)); // Penance Guard
-		MOBS_DROP_CHANCES.put(22138, new DropInfo(TOTEM, 6)); // Chapel Guard
-		MOBS_DROP_CHANCES.put(22139, new DropInfo(TOTEM, 54)); // Old Aristocrat's Soldier
-		MOBS_DROP_CHANCES.put(22140, new DropInfo(TOTEM, 54)); // Zombie Worker
-		MOBS_DROP_CHANCES.put(22141, new DropInfo(TOTEM, 55)); // Forgotten Victim
-		MOBS_DROP_CHANCES.put(22142, new DropInfo(TOTEM, 54)); // Triol's Layperson
-		MOBS_DROP_CHANCES.put(22143, new DropInfo(TOTEM, 62, CHAPEL_KEY, 100, 1)); // Triol's Believer
-		MOBS_DROP_CHANCES.put(22144, new DropInfo(TOTEM, 54)); // Resurrected Temple Knight
-		MOBS_DROP_CHANCES.put(22145, new DropInfo(TOTEM, 53)); // Ritual Sacrifice
-		MOBS_DROP_CHANCES.put(22146, new DropInfo(TOTEM, 54, KEY_OF_DARKNESS, 10, 1)); // Triol's Priest
-		MOBS_DROP_CHANCES.put(22147, new DropInfo(TOTEM, 55)); // Ritual Offering
-		MOBS_DROP_CHANCES.put(22148, new DropInfo(TOTEM, 45)); // Triol's Believer
-		MOBS_DROP_CHANCES.put(22149, new DropInfo(TOTEM, 54, ANTEROOM_KEY, 100, 6)); // Ritual Offering
-		MOBS_DROP_CHANCES.put(22150, new DropInfo(TOTEM, 46)); // Triol's Believer
-		MOBS_DROP_CHANCES.put(22151, new DropInfo(TOTEM, 62, KEY_OF_DARKNESS, 10, 1)); // Triol's Priest
-		MOBS_DROP_CHANCES.put(22152, new DropInfo(TOTEM, 55)); // Temple Guard
-		MOBS_DROP_CHANCES.put(22153, new DropInfo(TOTEM, 54)); // Temple Guard Captain
-		MOBS_DROP_CHANCES.put(22154, new DropInfo(TOTEM, 53)); // Ritual Sacrifice
-		MOBS_DROP_CHANCES.put(22155, new DropInfo(TOTEM, 75)); // Triol's High Priest
-		MOBS_DROP_CHANCES.put(22156, new DropInfo(TOTEM, 67)); // Triol's Priest
-		MOBS_DROP_CHANCES.put(22157, new DropInfo(TOTEM, 66)); // Triol's Priest
-		MOBS_DROP_CHANCES.put(22158, new DropInfo(TOTEM, 67)); // Triol's Believer
-		MOBS_DROP_CHANCES.put(22159, new DropInfo(TOTEM, 75)); // Triol's High Priest
-		MOBS_DROP_CHANCES.put(22160, new DropInfo(TOTEM, 67)); // Triol's Priest
-		MOBS_DROP_CHANCES.put(22161, new DropInfo(TOTEM, 78)); // Ritual Sacrifice
-		MOBS_DROP_CHANCES.put(22162, new DropInfo(TOTEM, 67)); // Triol's Believer
-		MOBS_DROP_CHANCES.put(22163, new DropInfo(TOTEM, 87)); // Triol's High Priest
-		MOBS_DROP_CHANCES.put(22164, new DropInfo(TOTEM, 67)); // Triol's Believer
-		MOBS_DROP_CHANCES.put(22165, new DropInfo(TOTEM, 66)); // Triol's Priest
-		MOBS_DROP_CHANCES.put(22166, new DropInfo(TOTEM, 66)); // Triol's Believer
-		MOBS_DROP_CHANCES.put(22167, new DropInfo(TOTEM, 75)); // Triol's High Priest
-		MOBS_DROP_CHANCES.put(22168, new DropInfo(TOTEM, 66)); // Triol's Priest
-		MOBS_DROP_CHANCES.put(22169, new DropInfo(TOTEM, 78)); // Ritual Sacrifice
-		MOBS_DROP_CHANCES.put(22170, new DropInfo(TOTEM, 67)); // Triol's Believer
-		MOBS_DROP_CHANCES.put(22171, new DropInfo(TOTEM, 87)); // Triol's High Priest
-		MOBS_DROP_CHANCES.put(22172, new DropInfo(TOTEM, 78)); // Ritual Sacrifice
-		MOBS_DROP_CHANCES.put(22173, new DropInfo(TOTEM, 66)); // Triol's Priest
-		MOBS_DROP_CHANCES.put(22174, new DropInfo(TOTEM, 67)); // Triol's Priest
-		MOBS_DROP_CHANCES.put(22175, new DropInfo(TOTEM, 3)); // Andreas' Captain of the Royal Guard
-		MOBS_DROP_CHANCES.put(22176, new DropInfo(TOTEM, 3)); // Andreas' Royal Guards
-		MOBS_DROP_CHANCES.put(22188, new DropInfo(TOTEM, 3)); // Andreas' Captain of the Royal Guard
-		MOBS_DROP_CHANCES.put(22189, new DropInfo(TOTEM, 3)); // Andreas' Royal Guards
-		MOBS_DROP_CHANCES.put(22190, new DropInfo(TOTEM, 3)); // Ritual Sacrifice
-		MOBS_DROP_CHANCES.put(22191, new DropInfo(TOTEM, 3)); // Andreas' Captain of the Royal Guard
-		MOBS_DROP_CHANCES.put(22192, new DropInfo(TOTEM, 3)); // Andreas' Royal Guards
-		MOBS_DROP_CHANCES.put(22193, new DropInfo(TOTEM, 3)); // Andreas' Royal Guards
-		MOBS_DROP_CHANCES.put(22194, new DropInfo(TOTEM, 3)); // Penance Guard
-		MOBS_DROP_CHANCES.put(22194, new DropInfo(TOTEM, 3)); // Ritual Sacrifice
+		MOBS_DROP_CHANCES.put(22136, new DropInfo(TOTEM, 0.55)); // Gatekeeper Zombie
+		MOBS_DROP_CHANCES.put(22137, new DropInfo(TOTEM, 0.06)); // Penance Guard
+		MOBS_DROP_CHANCES.put(22138, new DropInfo(TOTEM, 0.06)); // Chapel Guard
+		MOBS_DROP_CHANCES.put(22139, new DropInfo(TOTEM, 0.54)); // Old Aristocrat's Soldier
+		MOBS_DROP_CHANCES.put(22140, new DropInfo(TOTEM, 0.54)); // Zombie Worker
+		MOBS_DROP_CHANCES.put(22141, new DropInfo(TOTEM, 0.55)); // Forgotten Victim
+		MOBS_DROP_CHANCES.put(22142, new DropInfo(TOTEM, 0.54)); // Triol's Layperson
+		MOBS_DROP_CHANCES.put(22143, new DropInfo(TOTEM, 0.62, CHAPEL_KEY, 100, 1)); // Triol's Believer
+		MOBS_DROP_CHANCES.put(22144, new DropInfo(TOTEM, 0.54)); // Resurrected Temple Knight
+		MOBS_DROP_CHANCES.put(22145, new DropInfo(TOTEM, 0.53)); // Ritual Sacrifice
+		MOBS_DROP_CHANCES.put(22146, new DropInfo(TOTEM, 0.54, KEY_OF_DARKNESS, 10, 1)); // Triol's Priest
+		MOBS_DROP_CHANCES.put(22147, new DropInfo(TOTEM, 0.55)); // Ritual Offering
+		MOBS_DROP_CHANCES.put(22148, new DropInfo(TOTEM, 0.45)); // Triol's Believer
+		MOBS_DROP_CHANCES.put(22149, new DropInfo(TOTEM, 0.54, ANTEROOM_KEY, 100, 6)); // Ritual Offering
+		MOBS_DROP_CHANCES.put(22150, new DropInfo(TOTEM, 0.46)); // Triol's Believer
+		MOBS_DROP_CHANCES.put(22151, new DropInfo(TOTEM, 0.62, KEY_OF_DARKNESS, 10, 1)); // Triol's Priest
+		MOBS_DROP_CHANCES.put(22152, new DropInfo(TOTEM, 0.55)); // Temple Guard
+		MOBS_DROP_CHANCES.put(22153, new DropInfo(TOTEM, 0.54)); // Temple Guard Captain
+		MOBS_DROP_CHANCES.put(22154, new DropInfo(TOTEM, 0.53)); // Ritual Sacrifice
+		MOBS_DROP_CHANCES.put(22155, new DropInfo(TOTEM, 0.75)); // Triol's High Priest
+		MOBS_DROP_CHANCES.put(22156, new DropInfo(TOTEM, 0.67)); // Triol's Priest
+		MOBS_DROP_CHANCES.put(22157, new DropInfo(TOTEM, 0.66)); // Triol's Priest
+		MOBS_DROP_CHANCES.put(22158, new DropInfo(TOTEM, 0.67)); // Triol's Believer
+		MOBS_DROP_CHANCES.put(22159, new DropInfo(TOTEM, 0.75)); // Triol's High Priest
+		MOBS_DROP_CHANCES.put(22160, new DropInfo(TOTEM, 0.67)); // Triol's Priest
+		MOBS_DROP_CHANCES.put(22161, new DropInfo(TOTEM, 0.78)); // Ritual Sacrifice
+		MOBS_DROP_CHANCES.put(22162, new DropInfo(TOTEM, 0.67)); // Triol's Believer
+		MOBS_DROP_CHANCES.put(22163, new DropInfo(TOTEM, 0.87)); // Triol's High Priest
+		MOBS_DROP_CHANCES.put(22164, new DropInfo(TOTEM, 0.67)); // Triol's Believer
+		MOBS_DROP_CHANCES.put(22165, new DropInfo(TOTEM, 0.66)); // Triol's Priest
+		MOBS_DROP_CHANCES.put(22166, new DropInfo(TOTEM, 0.66)); // Triol's Believer
+		MOBS_DROP_CHANCES.put(22167, new DropInfo(TOTEM, 0.75)); // Triol's High Priest
+		MOBS_DROP_CHANCES.put(22168, new DropInfo(TOTEM, 0.66)); // Triol's Priest
+		MOBS_DROP_CHANCES.put(22169, new DropInfo(TOTEM, 0.78)); // Ritual Sacrifice
+		MOBS_DROP_CHANCES.put(22170, new DropInfo(TOTEM, 0.67)); // Triol's Believer
+		MOBS_DROP_CHANCES.put(22171, new DropInfo(TOTEM, 0.87)); // Triol's High Priest
+		MOBS_DROP_CHANCES.put(22172, new DropInfo(TOTEM, 0.78)); // Ritual Sacrifice
+		MOBS_DROP_CHANCES.put(22173, new DropInfo(TOTEM, 0.66)); // Triol's Priest
+		MOBS_DROP_CHANCES.put(22174, new DropInfo(TOTEM, 0.67)); // Triol's Priest
+		MOBS_DROP_CHANCES.put(22175, new DropInfo(TOTEM, 0.03)); // Andreas' Captain of the Royal Guard
+		MOBS_DROP_CHANCES.put(22176, new DropInfo(TOTEM, 0.03)); // Andreas' Royal Guards
+		MOBS_DROP_CHANCES.put(22188, new DropInfo(TOTEM, 0.03)); // Andreas' Captain of the Royal Guard
+		MOBS_DROP_CHANCES.put(22189, new DropInfo(TOTEM, 0.03)); // Andreas' Royal Guards
+		MOBS_DROP_CHANCES.put(22190, new DropInfo(TOTEM, 0.03)); // Ritual Sacrifice
+		MOBS_DROP_CHANCES.put(22191, new DropInfo(TOTEM, 0.03)); // Andreas' Captain of the Royal Guard
+		MOBS_DROP_CHANCES.put(22192, new DropInfo(TOTEM, 0.03)); // Andreas' Royal Guards
+		MOBS_DROP_CHANCES.put(22193, new DropInfo(TOTEM, 0.03)); // Andreas' Royal Guards
+		MOBS_DROP_CHANCES.put(22194, new DropInfo(TOTEM, 0.03)); // Penance Guard
+		MOBS_DROP_CHANCES.put(22194, new DropInfo(TOTEM, 0.03)); // Ritual Sacrifice
 	}
 	
-	private Q00638_SeekersOfTheHolyGrail(int questId, String name, String descr)
+	private Q00638_SeekersOfTheHolyGrail()
 	{
-		super(questId, name, descr);
+		super(638, Q00638_SeekersOfTheHolyGrail.class.getSimpleName(), "Seekers Of The Holy Grail");
 		addStartNpc(INNOCENTIN);
 		addTalkId(INNOCENTIN);
 		addKillId(MOBS_DROP_CHANCES.keySet());
@@ -167,27 +137,26 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		final QuestState st = player.getQuestState(getName());
+		final QuestState qs = getQuestState(player, false);
 		String htmltext = null;
-		if (st == null)
+		if (qs == null)
 		{
 			return htmltext;
 		}
-		
 		switch (event)
 		{
 			case "31328-03.htm":
 			{
-				if (st.isCreated())
+				if (qs.isCreated())
 				{
-					st.startQuest();
+					qs.startQuest();
 					htmltext = event;
 				}
 				break;
 			}
 			case "31328-06.html":
 			{
-				if (st.isStarted())
+				if (qs.isStarted())
 				{
 					htmltext = event;
 				}
@@ -195,34 +164,34 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 			}
 			case "reward":
 			{
-				if (st.isStarted() && (st.getQuestItemsCount(TOTEM) >= TOTEMS_REQUIRED_COUNT))
+				if (qs.isStarted() && (getQuestItemsCount(player, TOTEM) >= TOTEMS_REQUIRED_COUNT))
 				{
 					if (getRandom(100) < 80)
 					{
 						if (getRandomBoolean())
 						{
-							st.rewardItems(SCROLL_ENCHANT_A_S, 1);
+							rewardItems(player, SCROLL_ENCHANT_A_S, 1);
 						}
 						else
 						{
-							st.rewardItems(SCROLL_ENCHANT_W_S, 1);
+							rewardItems(player, SCROLL_ENCHANT_W_S, 1);
 						}
 						htmltext = "31328-07.html";
 					}
 					else
 					{
-						st.giveAdena(3576000, true);
+						giveAdena(player, 3576000, true);
 						htmltext = "31328-08.html";
 					}
-					st.takeItems(TOTEM, 2000);
+					takeItems(player, TOTEM, 2000);
 				}
 				break;
 			}
 			case "31328-09.html":
 			{
-				if (st.isStarted())
+				if (qs.isStarted())
 				{
-					st.exitQuest(true, true);
+					qs.exitQuest(true, true);
 					htmltext = "31328-09.html";
 				}
 			}
@@ -234,38 +203,15 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		final List<QuestState> randomList = new ArrayList<>();
-		final QuestState st = killer.getQuestState(getName());
-		if ((st != null) && st.isStarted())
-		{
-			randomList.add(st);
-			randomList.add(st);
-		}
-		
-		if (killer.isInParty())
-		{
-			for (L2PcInstance member : killer.getParty().getMembers())
-			{
-				final QuestState st2 = member.getQuestState(getName());
-				if ((st2 != null) && st2.isStarted())
-				{
-					randomList.add(st2);
-				}
-			}
-		}
-		
-		if (!randomList.isEmpty())
+		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
+		if (qs != null)
 		{
 			final DropInfo info = MOBS_DROP_CHANCES.get(npc.getNpcId());
-			final QuestState st3 = randomList.get(getRandom(randomList.size()));
-			if ((getRandom(100) < info.getChance()) && Util.checkIfInRange(1500, npc, st3.getPlayer(), true))
+			if (giveItemRandomly(qs.getPlayer(), npc, info.itemId, 1, 0, info.chance, true))
 			{
-				final int rate = (npc.isChampion()) ? (int) Config.L2JMOD_CHAMPION_REWARDS : (int) Config.RATE_QUEST_DROP;
-				st3.giveItems(info.getItemId(), 1 * rate);
-				st3.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
-				if ((info.getKeyId() > 0) && (getRandom(100) < info.getKeyChance()))
+				if ((info.keyId > 0) && (getRandom(100) < info.keyChance))
 				{
-					((L2MonsterInstance) npc).dropItem(killer, info.getKeyId(), info.getKeyCount());
+					((L2MonsterInstance) npc).dropItem(killer, info.keyId, info.keyCount);
 				}
 			}
 		}
@@ -275,23 +221,22 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		final QuestState st = player.getQuestState(getName());
+		final QuestState qs = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		if (st == null)
+		if (qs == null)
 		{
 			return htmltext;
 		}
-		
-		switch (st.getState())
+		switch (qs.getState())
 		{
 			case State.CREATED:
 			{
-				htmltext = (player.getLevel() >= MIN_LVL) ? "31328-01.htm" : "31328-02.htm";
+				htmltext = ((player.getLevel() >= MIN_LVL) ? "31328-01.htm" : "31328-02.htm");
 				break;
 			}
 			case State.STARTED:
 			{
-				htmltext = (st.getQuestItemsCount(TOTEM) >= TOTEMS_REQUIRED_COUNT) ? "31328-04.html" : "31328-05.html";
+				htmltext = ((getQuestItemsCount(player, TOTEM) >= TOTEMS_REQUIRED_COUNT) ? "31328-04.html" : "31328-05.html");
 				break;
 			}
 		}
@@ -300,7 +245,6 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q00638_SeekersOfTheHolyGrail(638, Q00638_SeekersOfTheHolyGrail.class.getSimpleName(), "Seekers Of The Holy Grail");
+		new Q00638_SeekersOfTheHolyGrail();
 	}
-	
 }

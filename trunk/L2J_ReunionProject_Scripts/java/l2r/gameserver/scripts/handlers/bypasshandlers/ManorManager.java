@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.handlers.bypasshandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.instancemanager.CastleManager;
@@ -79,7 +78,7 @@ public class ManorManager implements IBypassHandler
 			final int castleId;
 			if (state < 0)
 			{
-				castleId = castle.getCastleId(); // info for current manor
+				castleId = castle.getResidenceId(); // info for current manor
 			}
 			else
 			{
@@ -89,7 +88,7 @@ public class ManorManager implements IBypassHandler
 			switch (ask)
 			{
 				case 1: // Seed purchase
-					if (castleId != castle.getCastleId())
+					if (castleId != castle.getResidenceId())
 					{
 						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.HERE_YOU_CAN_BUY_ONLY_SEEDS_OF_S1_MANOR);
 						sm.addString(manager.getCastle().getName());
@@ -139,7 +138,7 @@ public class ManorManager implements IBypassHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception in " + getClass().getSimpleName(), e);
+			_log.warn("Exception in " + getClass().getSimpleName(), e);
 		}
 		return false;
 	}

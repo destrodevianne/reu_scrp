@@ -184,7 +184,7 @@ public class Antharas extends AbstractNpcAI
 		}
 		catch (Exception e)
 		{
-			_log.warning(e.getMessage());
+			_log.warn(e.getMessage());
 		}
 		
 		// Setting spawn data of teleport cube.
@@ -208,7 +208,7 @@ public class Antharas extends AbstractNpcAI
 		}
 		catch (Exception e)
 		{
-			_log.warning(e.getMessage());
+			_log.warn(e.getMessage());
 		}
 		int status = GrandBossManager.getInstance().getBossStatus(ANTHARAS_OLD_ID);
 		if (FWA_OLDANTHARAS || (status == WAITING))
@@ -613,7 +613,7 @@ public class Antharas extends AbstractNpcAI
 			}
 			catch (Exception e)
 			{
-				_log.warning(e.getMessage());
+				_log.warn(e.getMessage());
 			}
 		}
 	}

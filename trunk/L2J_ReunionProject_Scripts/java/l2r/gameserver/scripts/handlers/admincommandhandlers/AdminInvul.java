@@ -18,12 +18,13 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import java.util.logging.Logger;
-
 import l2r.Config;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class handles following admin commands: - invul = turns invulnerability on/off
@@ -31,7 +32,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminInvul implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminInvul.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(AdminInvul.class);
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_invul",
@@ -78,7 +79,7 @@ public class AdminInvul implements IAdminCommandHandler
 			text = activeChar.getName() + " is now mortal";
 			if (Config.DEBUG)
 			{
-				_log.fine("GM: Gm removed invul mode from character " + activeChar.getName() + "(" + activeChar.getObjectId() + ")");
+				_log.info("GM: Gm removed invul mode from character " + activeChar.getName() + "(" + activeChar.getObjectId() + ")");
 			}
 		}
 		else
@@ -87,7 +88,7 @@ public class AdminInvul implements IAdminCommandHandler
 			text = activeChar.getName() + " is now invulnerable";
 			if (Config.DEBUG)
 			{
-				_log.fine("GM: Gm activated invul mode for character " + activeChar.getName() + "(" + activeChar.getObjectId() + ")");
+				_log.info("GM: Gm activated invul mode for character " + activeChar.getName() + "(" + activeChar.getObjectId() + ")");
 			}
 		}
 		activeChar.sendMessage(text);

@@ -592,7 +592,7 @@ public class DefenceHallOfSuffering extends Quest
 			case 4:
 				return ROOM_5_MOBS;
 		}
-		_log.warning("");
+		_log.warn("");
 		return new int[][] {};
 	}
 	
@@ -655,7 +655,7 @@ public class DefenceHallOfSuffering extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.warning("Logger: notifyEvent failed (DefenceHallOfSuffering 1) Report this to team. ");
+			_log.warn("Logger: notifyEvent failed (DefenceHallOfSuffering 1) Report this to team. ");
 		}
 		
 		if (boss.getWorldRegion() != null)
@@ -729,7 +729,7 @@ public class DefenceHallOfSuffering extends Quest
 					}
 					catch (Exception e)
 					{
-						_log.warning("Logger: notifyEvent failed (DefenceHallOfSuffering 2) Report this to team. ");
+						_log.warn("Logger: notifyEvent failed (DefenceHallOfSuffering 2) Report this to team. ");
 					}
 				}
 				
@@ -933,6 +933,6 @@ public class DefenceHallOfSuffering extends Quest
 	{
 		// now call the constructor (starts up the)
 		new DefenceHallOfSuffering(-1, qn, "instances");
-		System.out.println("Instance: Seed of DefenceHallOfSuffering");
+		_log.info("Instance: Seed of DefenceHallOfSuffering");
 	}
 }

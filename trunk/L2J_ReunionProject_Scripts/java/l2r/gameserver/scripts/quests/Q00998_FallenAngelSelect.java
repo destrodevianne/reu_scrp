@@ -82,7 +82,7 @@ public class Q00998_FallenAngelSelect extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning("Logger: notifyEvent failed (Q00998) Report this to team. ");
+				_log.warn("Logger: notifyEvent failed (Q00998) Report this to team. ");
 			}
 			player.getQuestState(getName()).setState(State.COMPLETED);
 		}

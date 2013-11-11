@@ -31,7 +31,7 @@ import l2r.gameserver.model.skills.L2SkillType;
  */
 public class BeastSkills implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(BeastSkills.class.getName());
+	// private static Logger _log = LoggerFactory.getLogger(BeastSkills.class);
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.BEAST_FEED,

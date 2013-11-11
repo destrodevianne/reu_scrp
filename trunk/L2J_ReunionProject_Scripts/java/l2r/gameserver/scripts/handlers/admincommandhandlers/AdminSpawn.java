@@ -21,7 +21,6 @@ package l2r.gameserver.scripts.handlers.admincommandhandlers;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,13 +48,16 @@ import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.util.Broadcast;
 import l2r.util.StringUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class handles following admin commands: - show_spawns = shows menu - spawn_index lvl = shows menu for monsters with respective level - spawn_monster id = spawns monster id on target
  * @version $Revision: 1.2.2.5.2.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminSpawn implements IAdminCommandHandler
 {
-	private static final Logger _log = Logger.getLogger(AdminSpawn.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(AdminSpawn.class);
 	
 	private static final String[] ADMIN_COMMANDS =
 	{

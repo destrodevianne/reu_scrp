@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
@@ -1096,7 +1095,7 @@ public class RimKamaloka extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "RimKamaloka: error during spawn: ", e);
+			_log.warn("RimKamaloka: error during spawn: ", e);
 		}
 	}
 	
@@ -1346,7 +1345,7 @@ public class RimKamaloka extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "RimKamaloka: problem with exit: ", e);
+				_log.warn("RimKamaloka: problem with exit: ", e);
 			}
 			return null;
 		}
@@ -1362,7 +1361,7 @@ public class RimKamaloka extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "RimKamaloka: problem with reward: ", e);
+				_log.warn("RimKamaloka: problem with reward: ", e);
 			}
 			return "Rewarded.htm";
 		}

@@ -222,6 +222,6 @@ public class NevitsHerald extends Quest
 	public static void main(String[] args)
 	{
 		new NevitsHerald(-1, "NevitsHerald", "custom");
-		System.out.println("CUSTOM: NevitsHerald loaded");
+		_log.info("CUSTOM: NevitsHerald loaded");
 	}
 }

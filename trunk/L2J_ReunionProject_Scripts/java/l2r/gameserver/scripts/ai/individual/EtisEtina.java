@@ -27,11 +27,14 @@ public class EtisEtina extends AbstractNpcAI
 	private static final int GUARD1 = 18950;
 	private static final int GUARD2 = 18951;
 	private boolean summonsReleased = false;
+	private L2Npc warrior1;
+	private L2Npc warrior2;
 	
-	public EtisEtina(int id, String name, String descr)
+	public EtisEtina(String name, String descr)
 	{
 		super(name, descr);
 		addAttackId(ETIS);
+		addKillId(ETIS);
 	}
 	
 	@Override
@@ -42,26 +45,42 @@ public class EtisEtina extends AbstractNpcAI
 			int maxHp = npc.getMaxHp();
 			double nowHp = npc.getStatus().getCurrentHp();
 			
-			if (nowHp < maxHp * 0.7D && !summonsReleased)
+			if ((nowHp < (maxHp * 0.7D)) && !summonsReleased)
 			{
-				L2Npc warrior = addSpawn(GUARD1, npc.getX() + Rnd.get(10, 50), npc.getY() + Rnd.get(10, 50), npc.getZ(), 0, false, 0L, false, npc.getInstanceId());
-				warrior.setRunning();
-				((L2Attackable) warrior).addDamageHate(attacker, 1, 99999);
-				warrior.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
-				
-				L2Npc warrior1 = addSpawn(GUARD2, npc.getX() + Rnd.get(10, 80), npc.getY() + Rnd.get(10, 80), npc.getZ(), 0, false, 0L, false, npc.getInstanceId());
+				warrior1 = addSpawn(GUARD1, npc.getX() + Rnd.get(10, 50), npc.getY() + Rnd.get(10, 50), npc.getZ(), 0, false, 0L, false, npc.getInstanceId());
 				warrior1.setRunning();
 				((L2Attackable) warrior1).addDamageHate(attacker, 1, 99999);
 				warrior1.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
+				
+				warrior2 = addSpawn(GUARD2, npc.getX() + Rnd.get(10, 80), npc.getY() + Rnd.get(10, 80), npc.getZ(), 0, false, 0L, false, npc.getInstanceId());
+				warrior2.setRunning();
+				((L2Attackable) warrior2).addDamageHate(attacker, 1, 99999);
+				warrior2.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
 				summonsReleased = true;
 			}
 		}
 		
-		return null;
+		return onAttack(npc, attacker, damage, isPet);
+	}
+	
+	@Override
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	{
+		if ((warrior1 != null) && !warrior1.isDead())
+		{
+			warrior1.decayMe();
+		}
+		
+		if ((warrior2 != null) && !warrior2.isDead())
+		{
+			warrior2.decayMe();
+		}
+		
+		return super.onKill(npc, killer, isPet);
 	}
 	
 	public static void main(String[] args)
 	{
-		new EtisEtina(-1, EtisEtina.class.getSimpleName(), "ai");
+		new EtisEtina(EtisEtina.class.getSimpleName(), "ai");
 	}
 }

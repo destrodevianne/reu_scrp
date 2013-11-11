@@ -18,10 +18,11 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import java.util.logging.Logger;
-
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class handles following admin commands:
@@ -32,7 +33,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminUnblockIp implements IAdminCommandHandler
 {
-	private static final Logger _log = Logger.getLogger(AdminUnblockIp.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(AdminUnblockIp.class);
 	
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -71,7 +72,7 @@ public class AdminUnblockIp implements IAdminCommandHandler
 	private boolean unblockIp(String ipAddress, L2PcInstance activeChar)
 	{
 		// LoginServerThread.getInstance().unBlockip(ipAddress);
-		_log.warning("IP removed by GM " + activeChar.getName());
+		_log.warn("IP removed by GM " + activeChar.getName());
 		return true;
 	}
 }

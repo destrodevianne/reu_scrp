@@ -113,7 +113,7 @@ public class MercenaryCaptain extends AbstractNpcAI
 				}
 				case "territory":
 				{
-					player.sendPacket(new ExShowDominionRegistry(npc.getCastle().getCastleId(), player));
+					player.sendPacket(new ExShowDominionRegistry(npc.getCastle().getResidenceId(), player));
 					break;
 				}
 				case "strider":
@@ -151,7 +151,7 @@ public class MercenaryCaptain extends AbstractNpcAI
 						}
 						default:
 						{
-							_log.warning(MercenaryCaptain.class.getSimpleName() + ": Unknown strider type: " + type);
+							_log.warn(MercenaryCaptain.class.getSimpleName() + ": Unknown strider type: " + type);
 							return null;
 						}
 					}
@@ -168,7 +168,7 @@ public class MercenaryCaptain extends AbstractNpcAI
 					}
 					else
 					{
-						final int listId = 676 + npc.getCastle().getCastleId();
+						final int listId = 676 + npc.getCastle().getResidenceId();
 						MultiSell.getInstance().separateAndSend(listId, player, npc, false);
 					}
 					break;
@@ -181,7 +181,7 @@ public class MercenaryCaptain extends AbstractNpcAI
 					}
 					else
 					{
-						final int listId = 685 + npc.getCastle().getCastleId();
+						final int listId = 685 + npc.getCastle().getResidenceId();
 						MultiSell.getInstance().separateAndSend(listId, player, npc, false);
 					}
 					break;

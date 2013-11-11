@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 import l2r.gameserver.ThreadPoolManager;
@@ -48,6 +47,9 @@ import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.util.Util;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class Q00727_HopeWithinTheDarkness extends Quest
 {
@@ -93,7 +95,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 	private static final long WAVE_SPAWN_DELAY = 480000; // Spawn next wave's bosses (8 min)
 	private static final long PRIVATE_SPAWN_DELAY = 180000; // Spawn monsters (3 min after boss had been spawned)
 	
-	public static final Logger _log = Logger.getLogger(Q00727_HopeWithinTheDarkness.class.getName());
+	public static final Logger _log = LoggerFactory.getLogger(Q00727_HopeWithinTheDarkness.class);
 	
 	private final Map<Integer, CastleDungeon> _castleDungeons = new HashMap<>(21);
 	
@@ -441,7 +443,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 		{
 			for (Fort fort : FortManager.getInstance().getForts())
 			{
-				if (fort.getCastleId() == castle.getCastleId())
+				if (fort.getCastleId() == castle.getResidenceId())
 				{
 					haveContract = true;
 					break;
@@ -460,7 +462,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 		if ((st == null) || (st.getInt("cond") < 1))
 		{
 			// check if player is from clan, that owns castle
-			if ((player.getClan() == null) || (player.getClan().getCastleId() != castle.getCastleId()))
+			if ((player.getClan() == null) || (player.getClan().getCastleId() != castle.getResidenceId()))
 			{
 				return "CastleWarden-08.htm";
 			}
@@ -495,7 +497,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 				return getHtm(player.getHtmlPrefix(), "CastleWarden-12.htm").replace("%player%", partyMember.getName());
 			}
 			
-			if ((player.getClan() == null) || (player.getClan().getCastleId() != castle.getCastleId()))
+			if ((player.getClan() == null) || (player.getClan().getCastleId() != castle.getResidenceId()))
 			{
 				return getHtm(player.getHtmlPrefix(), "CastleWarden-11.htm").replace("%player%", partyMember.getName());
 			}
@@ -622,7 +624,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning("Castle HopeWithinTheDarkness NPC Spawn error: " + e);
+				_log.warn("Castle HopeWithinTheDarkness NPC Spawn error: " + e);
 			}
 		}
 	}
@@ -670,7 +672,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning("Castle HopeWithinTheDarkness Monster Spawn error: " + e);
+				_log.warn("Castle HopeWithinTheDarkness Monster Spawn error: " + e);
 			}
 		}
 	}
@@ -736,7 +738,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning("Win manage error: " + e);
+				_log.warn("Win manage error: " + e);
 			}
 		}
 	}
@@ -894,7 +896,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 			}
 		}
 		
-		if ((player.getClan() == null) || (npc.getCastle() == null) || (player.getClan().getCastleId() != npc.getCastle().getCastleId()))
+		if ((player.getClan() == null) || (npc.getCastle() == null) || (player.getClan().getCastleId() != npc.getCastle().getResidenceId()))
 		{
 			return "CastleWarden-03.htm";
 		}

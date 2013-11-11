@@ -20,8 +20,8 @@ package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
+import l2r.gameserver.datatables.TransformData;
 import l2r.gameserver.handler.IAdminCommandHandler;
-import l2r.gameserver.instancemanager.TransformationManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -75,23 +75,20 @@ public class AdminPolymorph implements IAdminCommandHandler
 					activeChar.sendPacket(SystemMessageId.CANNOT_TRANSFORM_WHILE_SITTING);
 					return false;
 				}
-				
 				else if (cha.isTransformed() || cha.isInStance())
 				{
 					// Transform-untransorm player quickly to force the client to reload the character textures
-					TransformationManager.getInstance().transformPlayer(105, cha);
+					TransformData.getInstance().transformPlayer(105, cha);
 					cha.untransform();
 					// activeChar.sendPacket(SystemMessageId.YOU_ALREADY_POLYMORPHED_AND_CANNOT_POLYMORPH_AGAIN);
 					// return false;
 				}
-				
 				else if (cha.isInWater())
 				{
 					activeChar.sendPacket(SystemMessageId.YOU_CANNOT_POLYMORPH_INTO_THE_DESIRED_FORM_IN_WATER);
 					return false;
 				}
-				
-				else if (cha.isFlyingMounted() || cha.isMounted() || cha.isRidingStrider())
+				else if (cha.isFlyingMounted() || cha.isMounted())
 				{
 					activeChar.sendPacket(SystemMessageId.YOU_CANNOT_POLYMORPH_WHILE_RIDING_A_PET);
 					return false;
@@ -103,7 +100,7 @@ public class AdminPolymorph implements IAdminCommandHandler
 					if (Util.isDigit(parts[1]))
 					{
 						final int id = Integer.parseInt(parts[1]);
-						if (!TransformationManager.getInstance().transformPlayer(id, cha))
+						if (!TransformData.getInstance().transformPlayer(id, cha))
 						{
 							cha.sendMessage("Unknown transformation Id: " + id);
 						}

@@ -99,7 +99,7 @@ public final class Q00183_RelicExploration extends Quest
 					}
 					catch (Exception e)
 					{
-						_log.warning("Logger: notifyEvent failed (Q00183 1) Report this to team. ");
+						_log.warn("Logger: notifyEvent failed (Q00183 1) Report this to team. ");
 					}
 				}
 				break;
@@ -118,7 +118,7 @@ public final class Q00183_RelicExploration extends Quest
 					}
 					catch (Exception e)
 					{
-						_log.warning("Logger: notifyEvent failed (Q00183 2) Report this to team. ");
+						_log.warn("Logger: notifyEvent failed (Q00183 2) Report this to team. ");
 					}
 				}
 				break;

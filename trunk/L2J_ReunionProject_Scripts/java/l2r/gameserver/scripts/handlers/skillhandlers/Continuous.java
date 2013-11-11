@@ -202,7 +202,7 @@ public class Continuous implements ISkillHandler
 						}
 						catch (Exception e)
 						{
-							_log.warning("Logger: notifyEvent failed (Continuous) Report this to team. ");
+							_log.warn("Logger: notifyEvent failed (Continuous) Report this to team. ");
 						}
 					}
 					else if (target.isPlayable())

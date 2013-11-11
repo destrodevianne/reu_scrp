@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -231,7 +230,7 @@ public class Stage1 extends Quest
 			File file = new File(Config.DATAPACK_ROOT + "/data/spawnZones/seed_of_destruction.xml");
 			if (!file.exists())
 			{
-				_log.severe("[Seed of Destruction] Missing seed_of_destruction.xml. The quest wont work without it!");
+				_log.error("[Seed of Destruction] Missing seed_of_destruction.xml. The quest wont work without it!");
 				return;
 			}
 			
@@ -251,7 +250,7 @@ public class Stage1 extends Quest
 								Node att = attrs.getNamedItem("npcId");
 								if (att == null)
 								{
-									_log.severe("[Seed of Destruction] Missing npcId in npc List, skipping");
+									_log.error("[Seed of Destruction] Missing npcId in npc List, skipping");
 									continue;
 								}
 								int npcId = Integer.parseInt(attrs.getNamedItem("npcId").getNodeValue());
@@ -259,7 +258,7 @@ public class Stage1 extends Quest
 								att = attrs.getNamedItem("flag");
 								if (att == null)
 								{
-									_log.severe("[Seed of Destruction] Missing flag in npc List npcId: " + npcId + ", skipping");
+									_log.error("[Seed of Destruction] Missing flag in npc List npcId: " + npcId + ", skipping");
 									continue;
 								}
 								int flag = Integer.parseInt(attrs.getNamedItem("flag").getNodeValue());
@@ -375,21 +374,21 @@ public class Stage1 extends Quest
 								Node att = attrs.getNamedItem("id");
 								if (att == null)
 								{
-									_log.severe("[Seed of Destruction] Missing id in spawnZones List, skipping");
+									_log.error("[Seed of Destruction] Missing id in spawnZones List, skipping");
 									continue;
 								}
 								int id = Integer.parseInt(att.getNodeValue());
 								att = attrs.getNamedItem("minZ");
 								if (att == null)
 								{
-									_log.severe("[Seed of Destruction] Missing minZ in spawnZones List id: " + id + ", skipping");
+									_log.error("[Seed of Destruction] Missing minZ in spawnZones List id: " + id + ", skipping");
 									continue;
 								}
 								int minz = Integer.parseInt(att.getNodeValue());
 								att = attrs.getNamedItem("maxZ");
 								if (att == null)
 								{
-									_log.severe("[Seed of Destruction] Missing maxZ in spawnZones List id: " + id + ", skipping");
+									_log.error("[Seed of Destruction] Missing maxZ in spawnZones List id: " + id + ", skipping");
 									continue;
 								}
 								int maxz = Integer.parseInt(att.getNodeValue());
@@ -433,7 +432,7 @@ public class Stage1 extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "[Seed of Destruction] Could not parse data.xml file: " + e.getMessage(), e);
+			_log.warn("[Seed of Destruction] Could not parse data.xml file: " + e.getMessage(), e);
 		}
 		if (Config.DEBUG)
 		{
@@ -578,7 +577,7 @@ public class Stage1 extends Quest
 							if (_spawnZoneList.containsKey(spw.zone))
 							{
 								int[] point = _spawnZoneList.get(spw.zone).getRandomPoint();
-								spawn(world, spw.npcId, point[0], point[1], GeoData.getInstance().getSpawnHeight(point[0], point[1], point[2], point[3]), getRandom(65535), spw.isNeededNextFlag);
+								spawn(world, spw.npcId, point[0], point[1], GeoData.getInstance().getSpawnHeight(point[0], point[1], point[2], point[3], null), getRandom(65535), spw.isNeededNextFlag);
 							}
 							else
 							{

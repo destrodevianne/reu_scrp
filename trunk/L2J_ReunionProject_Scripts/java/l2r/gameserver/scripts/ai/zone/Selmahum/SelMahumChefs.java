@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -617,7 +616,7 @@ public class SelMahumChefs extends AbstractNpcAI
 		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/selmahum_chefs.xml");
 		if (!f.exists())
 		{
-			_log.severe("[Sel Mahum Chefs]: Error! cooks.xml file is missing!");
+			_log.error("[Sel Mahum Chefs]: Error! cooks.xml file is missing!");
 			return;
 		}
 		
@@ -653,7 +652,7 @@ public class SelMahumChefs extends AbstractNpcAI
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "[Sel Mahum Chefs]: Error while loading cooks.xml file: " + e.getMessage(), e);
+			_log.warn("[Sel Mahum Chefs]: Error while loading cooks.xml file: " + e.getMessage(), e);
 		}
 		calculateEscortSpawns();
 		loadFireplaces();

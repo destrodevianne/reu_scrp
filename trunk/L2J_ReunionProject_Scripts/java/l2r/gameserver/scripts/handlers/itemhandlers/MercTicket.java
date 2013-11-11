@@ -49,7 +49,7 @@ public class MercTicket implements IItemHandler
 		int castleId = -1;
 		if (castle != null)
 		{
-			castleId = castle.getCastleId();
+			castleId = castle.getResidenceId();
 		}
 		
 		// add check that certain tickets can only be placed in certain castles
@@ -72,7 +72,7 @@ public class MercTicket implements IItemHandler
 		// Checking Seven Signs Quest Period
 		if (SevenSigns.getInstance().getCurrentPeriod() != SevenSigns.PERIOD_SEAL_VALIDATION)
 		{
-			// _log.warning("Someone has tried to spawn a guardian during Quest Event Period of The Seven Signs.");
+			// _log.warn("Someone has tried to spawn a guardian during Quest Event Period of The Seven Signs.");
 			activeChar.sendPacket(SystemMessageId.THIS_MERCENARY_CANNOT_BE_POSITIONED_ANYMORE);
 			return false;
 		}
@@ -83,7 +83,7 @@ public class MercTicket implements IItemHandler
 			{
 				if (SevenSigns.getInstance().checkIsDawnPostingTicket(itemId))
 				{
-					// _log.warning("Someone has tried to spawn a Dawn Mercenary though the Seal of Strife is not controlled by anyone.");
+					// _log.warn("Someone has tried to spawn a Dawn Mercenary though the Seal of Strife is not controlled by anyone.");
 					activeChar.sendPacket(SystemMessageId.THIS_MERCENARY_CANNOT_BE_POSITIONED_ANYMORE);
 					return false;
 				}
@@ -93,7 +93,7 @@ public class MercTicket implements IItemHandler
 			{
 				if (!SevenSigns.getInstance().checkIsRookiePostingTicket(itemId))
 				{
-					// _log.warning("Someone has tried to spawn a non-Rookie Mercenary though the Seal of Strife is controlled by Revolutionaries of Dusk.");
+					// _log.warn("Someone has tried to spawn a non-Rookie Mercenary though the Seal of Strife is controlled by Revolutionaries of Dusk.");
 					activeChar.sendPacket(SystemMessageId.THIS_MERCENARY_CANNOT_BE_POSITIONED_ANYMORE);
 					return false;
 				}

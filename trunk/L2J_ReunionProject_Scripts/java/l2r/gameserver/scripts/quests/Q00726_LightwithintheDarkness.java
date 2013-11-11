@@ -338,7 +338,7 @@ public class Q00726_LightwithintheDarkness extends Quest
 		{
 			return "FortWarden-01a.htm";
 		}
-		if ((player.getClan() == null) || (player.getClan().getFortId() != fort.getFortId()))
+		if ((player.getClan() == null) || (player.getClan().getFortId() != fort.getResidenceId()))
 		{
 			return "FortressWarden-01.htm";
 		}
@@ -362,7 +362,7 @@ public class Q00726_LightwithintheDarkness extends Quest
 		}
 		for (L2PcInstance partyMember : party.getMembers())
 		{
-			if ((partyMember.getClan() == null) || (partyMember.getClan().getFortId() == 0) || (partyMember.getClan().getFortId() != fort.getFortId()))
+			if ((partyMember.getClan() == null) || (partyMember.getClan().getFortId() == 0) || (partyMember.getClan().getFortId() != fort.getResidenceId()))
 			{
 				return showHtmlFile(player, "FortWarden-11.htm").replace("%player%", partyMember.getName());
 			}

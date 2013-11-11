@@ -111,7 +111,7 @@ public final class Q00511_AwlUnderFoot extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning("Fortress AwlUnderFoot Raid Spawn error: " + e);
+				_log.warn("Fortress AwlUnderFoot Raid Spawn error: " + e);
 			}
 		}
 	}
@@ -229,7 +229,7 @@ public final class Q00511_AwlUnderFoot extends Quest
 		{
 			return "FortressWarden-01.htm";
 		}
-		if ((player.getClan() == null) || (player.getClan().getFortId() != fortress.getFortId()))
+		if ((player.getClan() == null) || (player.getClan().getFortId() != fortress.getResidenceId()))
 		{
 			return "FortressWarden-01.htm";
 		}
@@ -253,7 +253,7 @@ public final class Q00511_AwlUnderFoot extends Quest
 		}
 		for (L2PcInstance partyMember : party.getMembers())
 		{
-			if ((partyMember.getClan() == null) || (partyMember.getClan().getFortId() == 0) || (partyMember.getClan().getFortId() != fortress.getFortId()))
+			if ((partyMember.getClan() == null) || (partyMember.getClan().getFortId() == 0) || (partyMember.getClan().getFortId() != fortress.getResidenceId()))
 			{
 				return getHtm(player.getHtmlPrefix(), "FortressWarden-05.htm").replace("%player%", partyMember.getName());
 			}

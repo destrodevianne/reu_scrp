@@ -18,9 +18,6 @@
  */
 package l2r.gameserver.scripts.vehicles;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.instancemanager.BoatManager;
 import l2r.gameserver.model.VehiclePathPoint;
@@ -30,12 +27,15 @@ import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.network.serverpackets.PlaySound;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author DS
  */
 public class BoatGiranTalking implements Runnable
 {
-	private static final Logger _log = Logger.getLogger(BoatGiranTalking.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(BoatGiranTalking.class);
 	
 	// Time: 868s
 	private static final VehiclePathPoint[] GIRAN_TO_TALKING =
@@ -270,7 +270,7 @@ public class BoatGiranTalking implements Runnable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, e.getMessage());
+			_log.warn(e.getMessage());
 		}
 	}
 	

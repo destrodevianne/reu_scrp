@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import l2r.Config;
@@ -30,6 +29,9 @@ import l2r.gameserver.model.olympiad.Olympiad;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class handles following admin commands: - admin|admin1/admin2/admin3/admin4/admin5 = slots for the 5 starting admin menus - gmliston/gmlistoff = includes/excludes active character from /gmlist results - silence = toggles private messages acceptance mode - diet = toggles weight penalty mode -
  * tradeoff = toggles trade acceptance mode - reload = reloads specified component from multisell|skill|npc|htm|item - set/set_menu/set_mod = alters specified server setting - saveolymp = saves olympiad state manually - manualhero = cycles olympiad and calculate new heroes.
@@ -37,7 +39,7 @@ import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
  */
 public class AdminAdmin implements IAdminCommandHandler
 {
-	private static final Logger _log = Logger.getLogger(AdminAdmin.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(AdminAdmin.class);
 	
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -115,7 +117,7 @@ public class AdminAdmin implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.warning("An error occured while ending olympiad: " + e);
+				_log.warn("An error occured while ending olympiad: " + e);
 			}
 			activeChar.sendMessage("Heroes formed.");
 		}

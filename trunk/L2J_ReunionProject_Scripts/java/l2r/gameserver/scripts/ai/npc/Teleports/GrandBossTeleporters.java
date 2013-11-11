@@ -142,7 +142,7 @@ public class GrandBossTeleporters extends AbstractNpcAI
 								}
 								catch (Exception e)
 								{
-									_log.warning("Logger: notifyEvent failed (GrandBossTeleporter) Report this to team. ");
+									_log.warn("Logger: notifyEvent failed (GrandBossTeleporter) Report this to team. ");
 								}
 							}
 						}

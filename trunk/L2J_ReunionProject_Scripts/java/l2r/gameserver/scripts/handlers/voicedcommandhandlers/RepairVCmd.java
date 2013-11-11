@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 import l2r.L2DatabaseFactory;
 import l2r.gameserver.cache.HtmCache;
@@ -26,9 +25,12 @@ import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class RepairVCmd implements IVoicedCommandHandler
 {
-	static final Logger _log = Logger.getLogger(RepairVCmd.class.getName());
+	static final Logger _log = LoggerFactory.getLogger(RepairVCmd.class);
 	
 	private static final String[] VOICED_COMMANDS =
 	{
@@ -72,7 +74,7 @@ public class RepairVCmd implements IVoicedCommandHandler
 		// Command for enter repairFunction from html
 		if (command.startsWith("startrepair") && (repairChar != null))
 		{
-			// _log.warning("Repair Attempt: Character " + repairChar);
+			// _log.warn("Repair Attempt: Character " + repairChar);
 			if (checkAcc(activeChar, repairChar))
 			{
 				if (checkChar(activeChar, repairChar))
@@ -112,7 +114,7 @@ public class RepairVCmd implements IVoicedCommandHandler
 			activeChar.sendPacket(npcHtmlMessage);
 			return false;
 		}
-		// _log.warning("Repair Attempt: Failed. ");
+		// _log.warn("Repair Attempt: Failed. ");
 		return false;
 	}
 	
@@ -132,7 +134,7 @@ public class RepairVCmd implements IVoicedCommandHandler
 				if (activeChar.getName().compareTo(rset.getString(1)) != 0)
 					result += rset.getString(1) + ";";
 			}
-			// _log.warning("Repair Attempt: Output Result for searching characters on account:"+result);
+			// _log.warn("Repair Attempt: Output Result for searching characters on account:"+result);
 			rset.close();
 			statement.close();
 		}
@@ -325,7 +327,7 @@ public class RepairVCmd implements IVoicedCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.warning("GameServer: could not repair character:" + e);
+			_log.warn("GameServer: could not repair character:" + e);
 		}
 		finally
 		{

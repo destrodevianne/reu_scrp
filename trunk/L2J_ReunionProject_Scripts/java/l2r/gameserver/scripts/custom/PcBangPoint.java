@@ -1007,7 +1007,9 @@ public class PcBangPoint extends Quest
 		QuestState st = player.getQuestState(qn);
 		
 		if (st == null)
+		{
 			return htmltext;
+		}
 		
 		if (POINTSSKILL.containsKey(event))
 		{
@@ -1034,7 +1036,7 @@ public class PcBangPoint extends Quest
 		}
 		else if (PETSKILL.containsKey(event))
 		{
-			if (player.getSummon() == null || !(player.getSummon() instanceof L2ServitorInstance))
+			if ((player.getSummon() == null) || !(player.getSummon() instanceof L2ServitorInstance))
 			{
 				htmltext = "nosummon.htm";
 			}
@@ -1127,7 +1129,7 @@ public class PcBangPoint extends Quest
 		}
 		else if (event.equalsIgnoreCase("pet_warrior"))
 		{
-			if (player.getSummon() == null || !(player.getSummon() instanceof L2ServitorInstance))
+			if ((player.getSummon() == null) || !(player.getSummon() instanceof L2ServitorInstance))
 			{
 				htmltext = "nosummon.htm";
 			}
@@ -1191,7 +1193,7 @@ public class PcBangPoint extends Quest
 		}
 		else if (event.equalsIgnoreCase("pet_mage"))
 		{
-			if (player.getSummon() == null || !(player.getSummon() instanceof L2ServitorInstance))
+			if ((player.getSummon() == null) || !(player.getSummon() instanceof L2ServitorInstance))
 			{
 				htmltext = "nosummon.htm";
 			}

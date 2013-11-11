@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.itemhandlers;
 
-import java.util.logging.Level;
-
 import l2r.gameserver.enums.ShotType;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.model.L2Object;
@@ -67,7 +65,7 @@ public class FishShots implements IItemHandler
 		
 		if (skills == null)
 		{
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": is missing skills!");
+			_log.warn(getClass().getSimpleName() + ": is missing skills!");
 			return false;
 		}
 		

@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.handlers.bypasshandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 
 import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.IBypassHandler;
@@ -133,7 +132,7 @@ public class ArenaBuff implements IBypassHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception in " + getClass().getSimpleName(), e);
+			_log.warn("Exception in " + getClass().getSimpleName(), e);
 		}
 		return false;
 	}

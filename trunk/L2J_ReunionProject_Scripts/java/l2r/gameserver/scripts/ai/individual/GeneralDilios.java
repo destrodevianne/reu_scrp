@@ -60,7 +60,7 @@ public class GeneralDilios extends AbstractNpcAI
 		_guards = SpawnTable.getInstance().getSpawns(GUARD_ID);
 		if ((_general == null) || _guards.isEmpty())
 		{
-			_log.warning(GeneralDilios.class.getSimpleName() + ": Cannot find NPCs!");
+			_log.warn(GeneralDilios.class.getSimpleName() + ": Cannot find NPCs!");
 			return;
 		}
 		startQuestTimer("command_0", 60000, null, null);

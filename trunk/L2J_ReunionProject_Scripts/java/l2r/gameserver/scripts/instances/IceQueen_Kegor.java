@@ -245,7 +245,7 @@ public class IceQueen_Kegor extends Quest
 		
 		if (hostQuest == null)
 		{
-			System.out.println("null host quest");
+			_log.warn("IceQueen_Kegor: null host quest");
 			return htmltext;
 		}
 		

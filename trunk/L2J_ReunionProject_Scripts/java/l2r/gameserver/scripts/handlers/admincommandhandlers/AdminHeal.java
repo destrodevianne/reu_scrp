@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import java.util.Collection;
-import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.gameserver.handler.IAdminCommandHandler;
@@ -29,13 +28,16 @@ import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class handles following admin commands: - heal = restores HP/MP/CP on target, name or radius
  * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $ Small typo fix by Zoey76 24/02/2011
  */
 public class AdminHeal implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminRes.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(AdminRes.class);
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_heal"
@@ -60,7 +62,7 @@ public class AdminHeal implements IAdminCommandHandler
 			{
 				if (Config.DEVELOPER)
 				{
-					_log.warning("Heal error: " + e);
+					_log.warn("Heal error: " + e);
 				}
 				activeChar.sendMessage("Incorrect target/radius specified.");
 			}
@@ -132,7 +134,7 @@ public class AdminHeal implements IAdminCommandHandler
 			}
 			if (Config.DEBUG)
 			{
-				_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") healed character " + target.getName());
+				_log.info("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") healed character " + target.getName());
 			}
 		}
 		else

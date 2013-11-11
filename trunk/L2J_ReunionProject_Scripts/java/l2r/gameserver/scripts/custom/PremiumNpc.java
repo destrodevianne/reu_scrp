@@ -141,6 +141,6 @@ public class PremiumNpc extends Quest
 	public static void main(String args[])
 	{
 		new PremiumNpc(-1, "PremiumNpc", "custom");
-		System.out.println("CUSTOM: Premium Manager loaded");
+		_log.info("CUSTOM: Premium Manager loaded");
 	}
 }

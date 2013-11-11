@@ -18,15 +18,16 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import java.util.logging.Logger;
-
-import l2r.gameserver.TradeController;
+import l2r.gameserver.datatables.BuyListData;
 import l2r.gameserver.handler.IAdminCommandHandler;
-import l2r.gameserver.model.L2TradeList;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.buylist.L2BuyList;
 import l2r.gameserver.network.serverpackets.ActionFailed;
 import l2r.gameserver.network.serverpackets.BuyList;
 import l2r.gameserver.network.serverpackets.ExBuySellList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class handles following admin commands:
@@ -37,7 +38,7 @@ import l2r.gameserver.network.serverpackets.ExBuySellList;
  */
 public class AdminShop implements IAdminCommandHandler
 {
-	private static final Logger _log = Logger.getLogger(AdminShop.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(AdminShop.class);
 	
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -81,19 +82,19 @@ public class AdminShop implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.warning("admin buylist failed:" + command);
+			_log.warn("admin buylist failed:" + command);
 		}
 		
-		L2TradeList list = TradeController.getInstance().getBuyList(val);
+		L2BuyList buyList = BuyListData.getInstance().getBuyList(val);
 		
-		if (list != null)
+		if (buyList != null)
 		{
-			activeChar.sendPacket(new BuyList(list, activeChar.getAdena(), 0));
+			activeChar.sendPacket(new BuyList(buyList, activeChar.getAdena(), 0));
 			activeChar.sendPacket(new ExBuySellList(activeChar, 0, false));
 		}
 		else
 		{
-			_log.warning("no buylist with id:" + val);
+			_log.warn("no buylist with id:" + val);
 		}
 		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}

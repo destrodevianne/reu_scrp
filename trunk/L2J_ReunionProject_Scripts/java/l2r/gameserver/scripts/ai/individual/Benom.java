@@ -39,7 +39,7 @@ public class Benom extends AbstractNpcAI
 			}
 			catch (Exception e)
 			{
-				_log.warning("Logger: notifyEvent failed (Benom) Report this to team. ");
+				_log.warn("Logger: notifyEvent failed (Benom) Report this to team. ");
 			}
 			npc.setTarget(attacker);
 			npc.doCast(skill);

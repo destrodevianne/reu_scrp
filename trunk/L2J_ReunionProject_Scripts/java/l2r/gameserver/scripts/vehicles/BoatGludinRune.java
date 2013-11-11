@@ -18,9 +18,6 @@
  */
 package l2r.gameserver.scripts.vehicles;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.instancemanager.BoatManager;
 import l2r.gameserver.model.VehiclePathPoint;
@@ -30,12 +27,15 @@ import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.network.serverpackets.PlaySound;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author DS
  */
 public class BoatGludinRune implements Runnable
 {
-	private static final Logger _log = Logger.getLogger(BoatGludinRune.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(BoatGludinRune.class);
 	
 	// Time: 1151s
 	private static final VehiclePathPoint[] GLUDIN_TO_RUNE =
@@ -306,7 +306,7 @@ public class BoatGludinRune implements Runnable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, e.getMessage());
+			_log.warn(e.getMessage());
 		}
 	}
 	

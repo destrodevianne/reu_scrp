@@ -20,7 +20,6 @@ package l2r.gameserver.scripts.hellbound;
 
 import java.io.File;
 import java.util.Map;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -141,7 +140,7 @@ public class Engine extends Quest implements Runnable
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Hellbound doors problem!", e);
+				_log.warn("Hellbound doors problem!", e);
 			}
 		}
 		
@@ -158,7 +157,7 @@ public class Engine extends Quest implements Runnable
 		final File file = new File(Config.DATAPACK_ROOT, pointsInfoFile);
 		if (!file.exists())
 		{
-			_log.warning("Cannot locate points info file: " + pointsInfoFile);
+			_log.warn("Cannot locate points info file: " + pointsInfoFile);
 			return;
 		}
 		
@@ -172,7 +171,7 @@ public class Engine extends Quest implements Runnable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Could not parse " + pointsInfoFile + " file: " + e.getMessage(), e);
+			_log.warn("Could not parse " + pointsInfoFile + " file: " + e.getMessage(), e);
 			return;
 		}
 		
@@ -190,7 +189,7 @@ public class Engine extends Quest implements Runnable
 						att = attrs.getNamedItem("id");
 						if (att == null)
 						{
-							_log.severe("[Hellbound Trust Points Info] Missing NPC ID, skipping record");
+							_log.error("[Hellbound Trust Points Info] Missing NPC ID, skipping record");
 							continue;
 						}
 						
@@ -199,7 +198,7 @@ public class Engine extends Quest implements Runnable
 						att = attrs.getNamedItem("points");
 						if (att == null)
 						{
-							_log.severe("[Hellbound Trust Points Info] Missing reward point info for NPC ID " + npcId + ", skipping record");
+							_log.error("[Hellbound Trust Points Info] Missing reward point info for NPC ID " + npcId + ", skipping record");
 							continue;
 						}
 						int points = Integer.parseInt(att.getNodeValue());
@@ -207,7 +206,7 @@ public class Engine extends Quest implements Runnable
 						att = attrs.getNamedItem("minHellboundLvl");
 						if (att == null)
 						{
-							_log.severe("[Hellbound Trust Points Info] Missing minHellboundLvl info for NPC ID " + npcId + ", skipping record");
+							_log.error("[Hellbound Trust Points Info] Missing minHellboundLvl info for NPC ID " + npcId + ", skipping record");
 							continue;
 						}
 						int minHbLvl = Integer.parseInt(att.getNodeValue());
@@ -215,7 +214,7 @@ public class Engine extends Quest implements Runnable
 						att = attrs.getNamedItem("maxHellboundLvl");
 						if (att == null)
 						{
-							_log.severe("[Hellbound Trust Points Info] Missing maxHellboundLvl info for NPC ID " + npcId + ", skipping record");
+							_log.error("[Hellbound Trust Points Info] Missing maxHellboundLvl info for NPC ID " + npcId + ", skipping record");
 							continue;
 						}
 						int maxHbLvl = Integer.parseInt(att.getNodeValue());

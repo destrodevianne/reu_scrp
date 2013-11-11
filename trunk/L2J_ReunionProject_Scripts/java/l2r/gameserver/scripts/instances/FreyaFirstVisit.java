@@ -624,9 +624,7 @@ public class FreyaFirstVisit extends Quest
 		addStartNpc(_jinia_2);
 		addTalkId(_jinia_2);
 		addAggroRangeEnterId(_freya_controller);
-		addAttackId(_jinia_guard1);
-		addAttackId(_jinia_guard2);
-		addAttackId(_jinia_guard3);
+		addAttackId(_jinia_guard1, _jinia_guard2, _jinia_guard3);
 	}
 	
 	public static void main(String[] args)

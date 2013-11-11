@@ -26,6 +26,7 @@ import java.util.Map;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.ItemHolder;
+import l2r.gameserver.model.holders.QuestItemHolder;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
@@ -48,25 +49,25 @@ public final class Alexandria extends AbstractNpcAI
 		new ItemHolder(9817, 50),
 	};
 	// Agathions
-	private static final ItemHolder[] LITTLE_DEVILS = new ItemHolder[]
+	private static final QuestItemHolder[] LITTLE_DEVILS = new QuestItemHolder[]
 	{
-		new ItemHolder(10321, 10408, 600),
-		new ItemHolder(10322, 0, 10),
-		new ItemHolder(10323, 0, 10),
-		new ItemHolder(10324, 0, 5),
-		new ItemHolder(10325, 0, 5),
-		new ItemHolder(10326, 0, 370),
+		new AdditionalQuestItemHolder(10321, 600, 1, 10408),
+		new QuestItemHolder(10322, 10),
+		new QuestItemHolder(10323, 10),
+		new QuestItemHolder(10324, 5),
+		new QuestItemHolder(10325, 5),
+		new QuestItemHolder(10326, 370),
 	};
-	private static final ItemHolder[] LITTLE_ANGELS = new ItemHolder[]
+	private static final QuestItemHolder[] LITTLE_ANGELS = new QuestItemHolder[]
 	{
-		new ItemHolder(10315, 10408, 600),
-		new ItemHolder(10316, 0, 10),
-		new ItemHolder(10317, 0, 10),
-		new ItemHolder(10318, 0, 5),
-		new ItemHolder(10319, 0, 5),
-		new ItemHolder(10320, 0, 370),
+		new AdditionalQuestItemHolder(10315, 600, 1, 10408),
+		new QuestItemHolder(10316, 10),
+		new QuestItemHolder(10317, 10),
+		new QuestItemHolder(10318, 5),
+		new QuestItemHolder(10319, 5),
+		new QuestItemHolder(10320, 370),
 	};
-	private static final Map<String, List<ItemHolder>> AGATHIONS = new HashMap<>();
+	private static final Map<String, List<QuestItemHolder>> AGATHIONS = new HashMap<>();
 	static
 	{
 		AGATHIONS.put("littleAngel", Arrays.asList(LITTLE_ANGELS));
@@ -94,9 +95,9 @@ public final class Alexandria extends AbstractNpcAI
 			final int chance = getRandom(1000);
 			int chance2 = 0;
 			int chance3 = 0;
-			for (ItemHolder agathion : AGATHIONS.get(event))
+			for (QuestItemHolder agathion : AGATHIONS.get(event))
 			{
-				chance3 += agathion.getCount();
+				chance3 += agathion.getChance();
 				if ((chance >= chance2) && (chance2 < chance3))
 				{
 					boolean hasAllItems = true;
@@ -114,14 +115,14 @@ public final class Alexandria extends AbstractNpcAI
 						{
 							takeItems(player, item);
 						}
+						
 						giveItems(player, agathion.getId(), 1);
-						if (agathion.getObjectId() == 0)
+						htmltext = "30098-03.html";
+						
+						if (agathion instanceof AdditionalQuestItemHolder)
 						{
-							htmltext = "30098-03.html";
-						}
-						else
-						{
-							giveItems(player, agathion.getObjectId(), 1);
+							final AdditionalQuestItemHolder addAgathion = (AdditionalQuestItemHolder) agathion;
+							giveItems(player, addAgathion.getAdditionalId(), 1);
 							htmltext = "30098-03a.html";
 						}
 					}
@@ -131,7 +132,7 @@ public final class Alexandria extends AbstractNpcAI
 					}
 					break;
 				}
-				chance2 += agathion.getCount();
+				chance2 += agathion.getChance();
 			}
 		}
 		return htmltext;
@@ -140,5 +141,21 @@ public final class Alexandria extends AbstractNpcAI
 	public static void main(String[] args)
 	{
 		new Alexandria();
+	}
+	
+	public static class AdditionalQuestItemHolder extends QuestItemHolder
+	{
+		private final int _additionalId;
+		
+		public AdditionalQuestItemHolder(int id, int chance, long count, int additionalId)
+		{
+			super(id, chance, count);
+			_additionalId = additionalId;
+		}
+		
+		public int getAdditionalId()
+		{
+			return _additionalId;
+		}
 	}
 }

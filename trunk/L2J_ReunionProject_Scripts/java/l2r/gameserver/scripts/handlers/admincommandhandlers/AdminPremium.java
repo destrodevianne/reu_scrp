@@ -19,11 +19,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import l2r.L2DatabaseFactory;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AdminPremium implements IAdminCommandHandler
 {
@@ -37,7 +39,7 @@ public class AdminPremium implements IAdminCommandHandler
 	};
 	
 	private static final String UPDATE_PREMIUMSERVICE = "UPDATE characters_premium SET premium_service=?,enddate=? WHERE account_name=?";
-	private static final Logger _log = Logger.getLogger(AdminPremium.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(AdminPremium.class);
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

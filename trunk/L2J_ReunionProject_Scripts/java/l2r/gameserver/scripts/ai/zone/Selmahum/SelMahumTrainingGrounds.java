@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -123,7 +122,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/training_grounds.xml");
 		if (!f.exists())
 		{
-			_log.severe("[Sel Mahum Training Grounds] Missing training_grounds.xml!");
+			_log.error("[Sel Mahum Training Grounds] Missing training_grounds.xml!");
 			return;
 		}
 		
@@ -164,7 +163,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "[Sel Mahum Training Grounds] Could not parse training_grounds.xml file: " + e.getMessage(), e);
+			_log.warn("[Sel Mahum Training Grounds] Could not parse training_grounds.xml file: " + e.getMessage(), e);
 		}
 		initSpawns();
 	}
@@ -203,7 +202,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 				}
 				catch (Exception e)
 				{
-					_log.warning("Logger: notifyEvent failed (SelMahumTrainingGrounds first call) Report this to team. ");
+					_log.warn("Logger: notifyEvent failed (SelMahumTrainingGrounds first call) Report this to team. ");
 				}
 			}
 			for (L2Npc recruit : camp.recruits)
@@ -216,7 +215,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 					}
 					catch (Exception e)
 					{
-						_log.warning("Logger: notifyEvent failed (SelMahumTrainingGrounds second call) Report this to team. ");
+						_log.warn("Logger: notifyEvent failed (SelMahumTrainingGrounds second call) Report this to team. ");
 					}
 				}
 			}

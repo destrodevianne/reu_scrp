@@ -19,8 +19,6 @@
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.gameserver.datatables.AdminTable;
@@ -33,13 +31,16 @@ import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class handles following admin commands: - handles every admin menu command
  * @version $Revision: 1.3.2.6.2.4 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminMenu implements IAdminCommandHandler
 {
-	private static final Logger _log = Logger.getLogger(AdminMenu.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(AdminMenu.class);
 	
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -113,7 +114,7 @@ public class AdminMenu implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "", e);
+				_log.warn("", e);
 			}
 		}
 		else if (command.startsWith("admin_recall_clan_menu"))
@@ -143,7 +144,7 @@ public class AdminMenu implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "", e);
+				_log.warn("", e);
 			}
 		}
 		else if (command.startsWith("admin_goto_char_menu"))
@@ -194,7 +195,7 @@ public class AdminMenu implements IAdminCommandHandler
 				if (!AdminTable.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access right to use this command!");
-					_log.warning("Character " + activeChar.getName() + " tryed to use admin command " + subCommand + ", but have no access to it!");
+					_log.warn("Character " + activeChar.getName() + " tryed to use admin command " + subCommand + ", but have no access to it!");
 					return false;
 				}
 				IAdminCommandHandler ach = AdminCommandHandler.getInstance().getHandler(subCommand);
@@ -211,7 +212,7 @@ public class AdminMenu implements IAdminCommandHandler
 				if (!AdminTable.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access right to use this command!");
-					_log.warning("Character " + activeChar.getName() + " tryed to use admin command " + subCommand + ", but have no access to it!");
+					_log.warn("Character " + activeChar.getName() + " tryed to use admin command " + subCommand + ", but have no access to it!");
 					return false;
 				}
 				IAdminCommandHandler ach = AdminCommandHandler.getInstance().getHandler(subCommand);

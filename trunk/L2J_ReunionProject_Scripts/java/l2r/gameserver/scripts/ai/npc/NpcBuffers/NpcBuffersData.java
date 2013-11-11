@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 
 import l2r.gameserver.engines.DocumentParser;
 import l2r.gameserver.model.StatsSet;
@@ -46,7 +45,7 @@ public class NpcBuffersData extends DocumentParser
 	public void load()
 	{
 		parseDatapackFile("data/scripts/ai/npc/NpcBuffers/NpcBuffersData.xml");
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + _npcBuffers.size() + " buffers data.");
+		_log.info(getClass().getSimpleName() + ": Loaded: " + _npcBuffers.size() + " buffers data.");
 	}
 	
 	@Override

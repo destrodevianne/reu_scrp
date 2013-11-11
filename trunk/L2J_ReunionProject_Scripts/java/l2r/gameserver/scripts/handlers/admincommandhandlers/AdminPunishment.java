@@ -23,14 +23,13 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.CharNameTable;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.instancemanager.PunishmentManager;
+import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.punishment.PunishmentAffect;
 import l2r.gameserver.model.punishment.PunishmentTask;
@@ -39,18 +38,29 @@ import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.util.GMAudit;
 import l2r.gameserver.util.Util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author UnAfraid
  */
 public class AdminPunishment implements IAdminCommandHandler
 {
-	private static final Logger _log = Logger.getLogger(AdminPunishment.class.getName());
+	private static final Logger _log = LoggerFactory.getLogger(AdminPunishment.class);
 	
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_punishment",
 		"admin_punishment_add",
-		"admin_punishment_remove"
+		"admin_punishment_remove",
+		"admin_ban_acc",
+		"admin_unban_acc",
+		"admin_ban_chat",
+		"admin_unban_chat",
+		"admin_ban_char",
+		"admin_unban_char",
+		"admin_jail",
+		"admin_unjail"
 	};
 	
 	private static SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -75,11 +85,11 @@ public class AdminPunishment implements IAdminCommandHandler
 					{
 						content = content.replaceAll("%punishments%", Util.implode(PunishmentType.values(), ";"));
 						content = content.replaceAll("%affects%", Util.implode(PunishmentAffect.values(), ";"));
-						activeChar.sendPacket(new NpcHtmlMessage(5, 5, content));
+						activeChar.sendPacket(new NpcHtmlMessage(0, 1, content));
 					}
 					else
 					{
-						_log.log(Level.WARNING, getClass().getSimpleName() + ": data/html/admin/punishment.htm is missing");
+						_log.warn(getClass().getSimpleName() + ": data/html/admin/punishment.htm is missing");
 					}
 				}
 				else
@@ -138,22 +148,35 @@ public class AdminPunishment implements IAdminCommandHandler
 								content = content.replaceAll("%punishments%", sb.toString());
 								content = content.replaceAll("%affects%", Util.implode(PunishmentAffect.values(), ";"));
 								content = content.replaceAll("%affect_type%", affect.name());
-								activeChar.sendPacket(new NpcHtmlMessage(5, 5, content));
+								activeChar.sendPacket(new NpcHtmlMessage(0, 1, content));
 							}
 							else
 							{
-								_log.log(Level.WARNING, getClass().getSimpleName() + ": data/html/admin/punishment-info.htm is missing");
+								_log.warn(getClass().getSimpleName() + ": data/html/admin/punishment-info.htm is missing");
 							}
 							break;
 						}
 						case "player":
 						{
-							if ((activeChar.getTarget() == null) || !activeChar.getTarget().isPlayer())
+							L2PcInstance target = null;
+							if (st.hasMoreTokens())
+							{
+								final String playerName = st.nextToken();
+								if (playerName.isEmpty() && ((activeChar.getTarget() == null) || !activeChar.getTarget().isPlayer()))
+								{
+									return useAdminCommand("admin_punishment", activeChar);
+								}
+								target = L2World.getInstance().getPlayer(playerName);
+							}
+							if ((target == null) && ((activeChar.getTarget() == null) || !activeChar.getTarget().isPlayer()))
 							{
 								activeChar.sendMessage("You must target player!");
 								break;
 							}
-							L2PcInstance target = activeChar.getTarget().getActingPlayer();
+							if (target == null)
+							{
+								target = activeChar.getTarget().getActingPlayer();
+							}
 							String content = HtmCache.getInstance().getHtm(activeChar.getHtmlPrefix(), "data/html/admin/punishment-player.htm");
 							if (content != null)
 							{
@@ -162,11 +185,11 @@ public class AdminPunishment implements IAdminCommandHandler
 								content = content.replaceAll("%acc%", target.getAccountName());
 								content = content.replaceAll("%char%", target.getName());
 								content = content.replaceAll("%ip%", target.getIPAddress());
-								activeChar.sendPacket(new NpcHtmlMessage(5, 5, content));
+								activeChar.sendPacket(new NpcHtmlMessage(0, 1, content));
 							}
 							else
 							{
-								_log.log(Level.WARNING, getClass().getSimpleName() + ": data/html/admin/punishment-player.htm is missing");
+								_log.warn(getClass().getSimpleName() + ": data/html/admin/punishment-player.htm is missing");
 							}
 							break;
 						}
@@ -304,6 +327,62 @@ public class AdminPunishment implements IAdminCommandHandler
 				activeChar.sendMessage("Punishment " + type.name() + " have been stopped to: " + affect + " " + name + "!");
 				GMAudit.auditGMAction(activeChar.getName() + " [" + activeChar.getObjectId() + "]", cmd, affect.name(), name);
 				return useAdminCommand("admin_punishment info " + name + " " + affect.name(), activeChar);
+			}
+			case "admin_ban_char":
+			{
+				if (st.hasMoreTokens())
+				{
+					return useAdminCommand(String.format("admin_punishment_add %s %s %s %s %s", st.nextToken(), PunishmentAffect.CHARACTER, PunishmentType.BAN, 0, "Banned by admin"), activeChar);
+				}
+			}
+			case "admin_unban_char":
+			{
+				if (st.hasMoreTokens())
+				{
+					return useAdminCommand(String.format("admin_punishment_remove %s %s %s", st.nextToken(), PunishmentAffect.CHARACTER, PunishmentType.BAN), activeChar);
+				}
+			}
+			case "admin_ban_acc":
+			{
+				if (st.hasMoreTokens())
+				{
+					return useAdminCommand(String.format("admin_punishment_add %s %s %s %s %s", st.nextToken(), PunishmentAffect.ACCOUNT, PunishmentType.BAN, 0, "Banned by admin"), activeChar);
+				}
+			}
+			case "admin_unban_acc":
+			{
+				if (st.hasMoreTokens())
+				{
+					return useAdminCommand(String.format("admin_punishment_remove %s %s %s", st.nextToken(), PunishmentAffect.ACCOUNT, PunishmentType.BAN), activeChar);
+				}
+			}
+			case "admin_ban_chat":
+			{
+				if (st.hasMoreTokens())
+				{
+					return useAdminCommand(String.format("admin_punishment_add %s %s %s %s %s", st.nextToken(), PunishmentAffect.CHARACTER, PunishmentType.CHAT_BAN, 0, "Chat banned by admin"), activeChar);
+				}
+			}
+			case "admin_unban_chat":
+			{
+				if (st.hasMoreTokens())
+				{
+					return useAdminCommand(String.format("admin_punishment_remove %s %s %s", st.nextToken(), PunishmentAffect.CHARACTER, PunishmentType.CHAT_BAN), activeChar);
+				}
+			}
+			case "admin_jail":
+			{
+				if (st.hasMoreTokens())
+				{
+					return useAdminCommand(String.format("admin_punishment_add %s %s %s %s %s", st.nextToken(), PunishmentAffect.CHARACTER, PunishmentType.JAIL, 0, "Jailed by admin"), activeChar);
+				}
+			}
+			case "admin_unjail":
+			{
+				if (st.hasMoreTokens())
+				{
+					return useAdminCommand(String.format("admin_punishment_remove %s %s %s", st.nextToken(), PunishmentAffect.CHARACTER, PunishmentType.JAIL), activeChar);
+				}
 			}
 		}
 		return true;

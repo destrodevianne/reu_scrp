@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import java.util.logging.Level;
-
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;
@@ -124,7 +122,7 @@ public class SummonFriend implements ISkillHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "", e);
+			_log.error(String.valueOf(e));
 		}
 	}
 	

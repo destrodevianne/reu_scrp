@@ -510,6 +510,6 @@ public class ClanSearcher extends Quest
 	public static void main(String[] args)
 	{
 		new ClanSearcher(-1, "ClanSearcher", "custom");
-		System.out.println("CUSTOM: ClanSearcher Manager loaded");
+		_log.info("CUSTOM: ClanSearcher Manager loaded");
 	}
 }

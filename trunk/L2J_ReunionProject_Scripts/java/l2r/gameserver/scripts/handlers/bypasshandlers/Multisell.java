@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.bypasshandlers;
 
-import java.util.logging.Level;
-
 import l2r.gameserver.datatables.MultiSell;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
@@ -61,7 +59,7 @@ public class Multisell implements IBypassHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception in " + getClass().getSimpleName(), e);
+			_log.warn("Exception in " + getClass().getSimpleName(), e);
 		}
 		return false;
 	}

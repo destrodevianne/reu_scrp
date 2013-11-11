@@ -18,16 +18,17 @@
  */
 package l2r.gameserver.scripts.ai.fantasy_isle;
 
-import java.util.logging.Logger;
-
 import l2r.gameserver.instancemanager.QuestManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Start MC Show.
  */
 public class StartMCShow implements Runnable
 {
-	public static final Logger _log = Logger.getLogger(StartMCShow.class.getName());
+	public static final Logger _log = LoggerFactory.getLogger(StartMCShow.class);
 	
 	@Override
 	public void run()
@@ -38,7 +39,7 @@ public class StartMCShow implements Runnable
 		}
 		catch (Exception e)
 		{
-			_log.warning("Logger: notifyEvent failed (StartMcShow) Report this to team. ");
+			_log.warn("Logger: notifyEvent failed (StartMcShow) Report this to team. ");
 		}
 	}
 }

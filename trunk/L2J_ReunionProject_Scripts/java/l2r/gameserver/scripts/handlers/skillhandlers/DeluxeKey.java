@@ -18,20 +18,21 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import java.util.logging.Logger;
-
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.L2SkillType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Julian
  */
 public class DeluxeKey implements ISkillHandler
 {
-	private static Logger _log = Logger.getLogger(DeluxeKey.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(DeluxeKey.class);
 	
 	private static final L2SkillType[] SKILL_IDS =
 	{
@@ -53,7 +54,7 @@ public class DeluxeKey implements ISkillHandler
 			return;
 		}
 		
-		_log.fine("Delux key casting succeded.");
+		_log.info("Delux key casting succeded.");
 		
 		// This is just a dummy skill handler for the golden food and crystal food skills,
 		// since the AI responce onSkillUse handles the rest.

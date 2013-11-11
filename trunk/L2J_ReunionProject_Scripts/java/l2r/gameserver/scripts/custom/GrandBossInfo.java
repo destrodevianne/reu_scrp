@@ -96,6 +96,6 @@ public class GrandBossInfo extends Quest
 	public static void main(final String[] args)
 	{
 		new GrandBossInfo(-1, "GrandBossInfo", "custom");
-		System.out.println("CUSTOM: GrandBossInfo Manager loaded");
+		_log.info("CUSTOM: GrandBossInfo Manager loaded");
 	}
 }
