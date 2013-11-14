@@ -28,8 +28,8 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.zone.type.L2BossZone;
-import l2r.gameserver.scripts.ai.individual.Antharas;
-import l2r.gameserver.scripts.ai.individual.Valakas;
+import l2r.gameserver.scripts.ai.grandboss.Antharas;
+import l2r.gameserver.scripts.ai.grandboss.Valakas;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
