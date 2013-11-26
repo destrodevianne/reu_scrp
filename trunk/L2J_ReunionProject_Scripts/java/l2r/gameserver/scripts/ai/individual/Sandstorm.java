@@ -18,7 +18,7 @@ public class Sandstorm extends AbstractNpcAI
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == Sandstorm)
 		{
 			npc.setTarget(player);

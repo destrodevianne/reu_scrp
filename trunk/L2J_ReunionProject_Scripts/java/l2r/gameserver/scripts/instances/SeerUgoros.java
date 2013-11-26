@@ -131,7 +131,7 @@ public class SeerUgoros extends AbstractNpcAI
 					_weed = null;
 					_weed_attack = false;
 					_ugoros.getStatus().setCurrentHp(_ugoros.getStatus().getCurrentHp() + (_ugoros.getMaxHp() * 0.2));
-					_ugoros.broadcastPacket(new NpcSay(_ugoros.getObjectId(), 0, _ugoros.getNpcId(), "What a formidable foe! But i have the Abyss Weed given to me by the Black Abyss! Let me see..."));
+					_ugoros.broadcastPacket(new NpcSay(_ugoros.getObjectId(), 0, _ugoros.getId(), "What a formidable foe! But i have the Abyss Weed given to me by the Black Abyss! Let me see..."));
 				}
 				else
 				{
@@ -208,7 +208,7 @@ public class SeerUgoros extends AbstractNpcAI
 			return null;
 		}
 		
-		if (npc.getNpcId() == _weed_id)
+		if (npc.getId() == _weed_id)
 		{
 			if ((_ugoros != null) && (_weed != null) && npc.equals(_weed))
 			{
@@ -219,7 +219,7 @@ public class SeerUgoros extends AbstractNpcAI
 				// Set it
 				_weed_killed_by_player = true;
 				// Complain
-				_ugoros.broadcastPacket(new NpcSay(_ugoros.getObjectId(), 0, _ugoros.getNpcId(), "No! How dare you to stop me from using the Abyss Weed... Do you know what you have done?!"));
+				_ugoros.broadcastPacket(new NpcSay(_ugoros.getObjectId(), 0, _ugoros.getId(), "No! How dare you to stop me from using the Abyss Weed... Do you know what you have done?!"));
 				// Cancel current think-task
 				if (_thinkTask != null)
 				{
@@ -237,7 +237,7 @@ public class SeerUgoros extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (npc.getNpcId() == _seer_ugoros)
+		if (npc.getId() == _seer_ugoros)
 		{
 			if (_thinkTask != null)
 			{
@@ -281,7 +281,7 @@ public class SeerUgoros extends AbstractNpcAI
 		{
 			return;
 		}
-		NpcSay cs = new NpcSay(npc.getObjectId(), 1, npc.getNpcId(), _text);
+		NpcSay cs = new NpcSay(npc.getObjectId(), 1, npc.getId(), _text);
 		L2MapRegion region = MapRegionManager.getInstance().getMapRegion(npc.getX(), npc.getY());
 		for (L2PcInstance player : L2World.getInstance().getAllPlayersArray())
 		{
@@ -319,7 +319,7 @@ public class SeerUgoros extends AbstractNpcAI
 					
 					for (L2Character _char : _ugoros.getKnownList().getKnownCharactersInRadius(2000))
 					{
-						if ((_char instanceof L2Attackable) && !_char.isDead() && (((L2Attackable) _char).getNpcId() == _weed_id))
+						if ((_char instanceof L2Attackable) && !_char.isDead() && (((L2Attackable) _char).getId() == _weed_id))
 						{
 							_weed_attack = true;
 							_weed = (L2Attackable) _char;

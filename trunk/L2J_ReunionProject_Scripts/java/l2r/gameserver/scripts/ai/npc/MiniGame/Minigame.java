@@ -110,7 +110,7 @@ public class Minigame extends AbstractNpcAI
 			}
 			case "off":
 			{
-				if (npc.getNpcId() == BURNER)
+				if (npc.getId() == BURNER)
 				{
 					npc.setDisplayEffect(2);
 					npc.setIsRunning(false);
@@ -259,7 +259,7 @@ public class Minigame extends AbstractNpcAI
 				if ((obj != null) && obj.isNpc())
 				{
 					L2Npc npc = (L2Npc) obj;
-					if (npc.getNpcId() == BURNER)
+					if (npc.getId() == BURNER)
 					{
 						npc.doCast(TRIGGER_MIRAGE.getSkill());
 						final int pos = room.getBurnerPos(npc);

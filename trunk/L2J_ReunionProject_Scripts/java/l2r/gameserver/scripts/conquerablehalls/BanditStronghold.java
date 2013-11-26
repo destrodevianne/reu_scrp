@@ -21,7 +21,6 @@ package l2r.gameserver.scripts.conquerablehalls;
 import java.util.Collection;
 
 import l2r.gameserver.instancemanager.ZoneManager;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.zone.type.L2ResidenceHallTeleportZone;
 
@@ -85,7 +84,7 @@ public final class BanditStronghold extends FlagWar
 		}
 		
 		QUEST_REWARD = 5009;
-		CENTER = new L2CharPosition(82882, -16280, -1894, 0);
+		CENTER = new Location(82882, -16280, -1894, 0);
 	}
 	
 	public BanditStronghold(int questId, String name, String descr, int hallId)

@@ -106,7 +106,7 @@ public class TeleportToUndergroundColiseum extends AbstractNpcAI
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (Util.contains(MANAGERS, npc.getNpcId()))
+		if (Util.contains(MANAGERS, npc.getId()))
 		{
 			player.teleToLocation(RETURN_LOCS[getRandom(RETURN_LOCS.length)], false);
 		}

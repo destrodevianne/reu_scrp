@@ -1620,7 +1620,7 @@ public class Kamaloka extends Quest
 	@Override
 	public final String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		
 		if (npcId == TELEPORTER)
 		{
@@ -1662,7 +1662,7 @@ public class Kamaloka extends Quest
 	@Override
 	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == TELEPORTER)
+		if (npc.getId() == TELEPORTER)
 		{
 			if (player.isInParty() && player.getParty().isLeader(player))
 			{

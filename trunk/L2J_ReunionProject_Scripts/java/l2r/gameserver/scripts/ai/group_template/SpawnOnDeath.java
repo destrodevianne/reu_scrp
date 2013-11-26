@@ -52,7 +52,7 @@ public class SpawnOnDeath extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		L2Attackable newNpc = null;
 		if (MOBSPAWNS15.containsKey(Integer.valueOf(npcId)))
 		{

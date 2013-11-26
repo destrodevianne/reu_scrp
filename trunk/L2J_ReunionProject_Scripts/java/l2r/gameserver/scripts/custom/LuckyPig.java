@@ -21,9 +21,9 @@ import java.util.Map;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2World;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.itemcontainer.PcInventory;
@@ -74,9 +74,9 @@ public class LuckyPig extends AbstractNpcAI
 						continue;
 					}
 					L2ItemInstance item = (L2ItemInstance) object;
-					if (item.getItemId() == PcInventory.ADENA_ID)
+					if (item.getId() == PcInventory.ADENA_ID)
 					{
-						npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(item.getX(), item.getY(), item.getZ(), 0));
+						npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(item.getX(), item.getY(), item.getZ(), 0));
 						L2World.getInstance().removeVisibleObject(item, item.getWorldRegion());
 						L2World.getInstance().removeObject(item);
 						if (_ADENAS.containsKey(npc.getObjectId()))
@@ -129,7 +129,7 @@ public class LuckyPig extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (Util.contains(_MOBS, npc.getNpcId()))
+		if (Util.contains(_MOBS, npc.getId()))
 		{
 			if (Rnd.chance(50))
 			{
@@ -144,14 +144,14 @@ public class LuckyPig extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case LUCKY_PIG_NPC:
 			{
 				List<Long> _adena = new FastList<>();
 				_ADENAS.put(npc.getObjectId(), _adena);
 				startQuestTimer("checkForAdena", 1000, npc, null, true);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "I am hungry please give me some adenas!"));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "I am hungry please give me some adenas!"));
 				break;
 			}
 			case LUCKY_PIG_MOB_PINK:

@@ -41,7 +41,7 @@ public class DragonKnight extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == DRAGON_KNIGHT_1)
+		if (npc.getId() == DRAGON_KNIGHT_1)
 		{
 			if (Rnd.get(1000) < 400)
 			{
@@ -57,7 +57,7 @@ public class DragonKnight extends AbstractNpcAI
 			}
 		}
 		
-		if (npc.getNpcId() == DRAGON_KNIGHT_2)
+		if (npc.getId() == DRAGON_KNIGHT_2)
 		{
 			if (Rnd.get(1000) < 350)
 			{

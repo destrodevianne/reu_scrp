@@ -81,7 +81,7 @@ public class DragonVortex extends Quest
 				return "32871-02.htm";
 			}
 			
-			if (npc.getNpcId() == VORTEX_1)
+			if (npc.getId() == VORTEX_1)
 			{
 				if (progress1)
 				{
@@ -100,7 +100,7 @@ public class DragonVortex extends Quest
 				return "32871-01.htm";
 			}
 			
-			if (npc.getNpcId() == VORTEX_2)
+			if (npc.getId() == VORTEX_2)
 			{
 				if (progress2)
 				{
@@ -119,7 +119,7 @@ public class DragonVortex extends Quest
 				return "32871-01.htm";
 			}
 			
-			if (npc.getNpcId() == VORTEX_3)
+			if (npc.getId() == VORTEX_3)
 			{
 				if (progress3)
 				{
@@ -138,7 +138,7 @@ public class DragonVortex extends Quest
 				return "32871-01.htm";
 			}
 			
-			if (npc.getNpcId() == VORTEX_4)
+			if (npc.getId() == VORTEX_4)
 			{
 				if (progress4)
 				{

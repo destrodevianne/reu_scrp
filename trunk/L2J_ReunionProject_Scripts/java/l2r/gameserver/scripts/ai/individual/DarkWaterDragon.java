@@ -142,7 +142,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int npcObjId = npc.getObjectId();
 		if (npcId == DRAGON)
 		{
@@ -175,7 +175,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int npcObjId = npc.getObjectId();
 		if (npcId == DRAGON)
 		{
@@ -205,7 +205,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int npcObjId = npc.getObjectId();
 		if (npcId == FAFURION)
 		{

@@ -9,7 +9,6 @@ import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
@@ -53,7 +52,7 @@ public class Knoriks extends AbstractNpcAI
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (npc.getNpcId() == KNORIKS)
+		if (npc.getId() == KNORIKS)
 		{
 			KnoriksGroup group = getGroup(npc);
 			
@@ -70,7 +69,7 @@ public class Knoriks extends AbstractNpcAI
 	@Override
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		if (npc.getNpcId() == KNORIKS)
+		if (npc.getId() == KNORIKS)
 		{
 			KnoriksGroup group = getGroup(npc);
 			group._attackDirection = true;
@@ -109,7 +108,7 @@ public class Knoriks extends AbstractNpcAI
 				}
 				MoveToLocation mov = new MoveToLocation(group._knoriks);
 				group._knoriks.broadcastPacket(mov);
-				group._knoriks.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(loc.getX(), loc.getY(), loc.getZ(), loc.getHeading()));
+				group._knoriks.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(loc.getX(), loc.getY(), loc.getZ(), loc.getHeading()));
 			}
 		}
 	}
@@ -126,14 +125,14 @@ public class Knoriks extends AbstractNpcAI
 	
 	protected KnoriksGroup getGroup(L2Npc npc)
 	{
-		if ((npc == null) || (npc.getNpcId() != KNORIKS))
+		if ((npc == null) || (npc.getId() != KNORIKS))
 		{
 			return null;
 		}
 		
 		for (KnoriksGroup group : _knoriksGroups.values())
 		{
-			if ((npc.getNpcId() == KNORIKS) && npc.equals(group._knoriks))
+			if ((npc.getId() == KNORIKS) && npc.equals(group._knoriks))
 			{
 				return group;
 			}

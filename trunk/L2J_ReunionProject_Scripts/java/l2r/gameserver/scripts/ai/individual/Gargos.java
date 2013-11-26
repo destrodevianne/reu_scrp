@@ -48,7 +48,7 @@ public class Gargos extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == GARGOS)
 		{
@@ -64,7 +64,7 @@ public class Gargos extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == GARGOS)
 			cancelQuestTimer("TimeToFire", npc, player);

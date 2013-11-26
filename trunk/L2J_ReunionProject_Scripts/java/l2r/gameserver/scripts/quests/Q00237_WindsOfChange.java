@@ -157,7 +157,7 @@ public class Q00237_WindsOfChange extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case FLAUEN:
 				switch (st.getState())

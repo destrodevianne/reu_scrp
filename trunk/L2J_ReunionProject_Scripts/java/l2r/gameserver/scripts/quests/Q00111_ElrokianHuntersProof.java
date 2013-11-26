@@ -221,7 +221,7 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 		final QuestState qs = getRandomPartyMemberState(player, -1, 3, npc);
 		if (qs != null)
 		{
-			final ItemChanceHolder item = MOBS_DROP_CHANCES.get(npc.getNpcId());
+			final ItemChanceHolder item = MOBS_DROP_CHANCES.get(npc.getId());
 			if (item.getCount() == qs.getMemoState())
 			{
 				if (qs.isCond(4))
@@ -260,7 +260,7 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 		{
 			case State.COMPLETED:
 			{
-				if (npc.getNpcId() == MARQUEZ)
+				if (npc.getId() == MARQUEZ)
 				{
 					htmltext = getAlreadyCompletedMsg(player);
 				}
@@ -268,7 +268,7 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 			}
 			case State.CREATED:
 			{
-				if (npc.getNpcId() == MARQUEZ)
+				if (npc.getId() == MARQUEZ)
 				{
 					htmltext = ((player.getLevel() >= MIN_LEVEL) ? "32113-01.htm" : "32113-06.html");
 				}
@@ -276,7 +276,7 @@ public final class Q00111_ElrokianHuntersProof extends Quest
 			}
 			case State.STARTED:
 			{
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case MARQUEZ:
 					{

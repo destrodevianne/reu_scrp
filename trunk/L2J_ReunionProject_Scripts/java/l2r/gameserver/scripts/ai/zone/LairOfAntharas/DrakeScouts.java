@@ -9,7 +9,6 @@ import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
@@ -53,7 +52,7 @@ public class DrakeScouts extends AbstractNpcAI
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (npc.getNpcId() == DRAKE_SCOUT)
+		if (npc.getId() == DRAKE_SCOUT)
 		{
 			DrakeScoutGroup group = getGroup(npc);
 			
@@ -70,7 +69,7 @@ public class DrakeScouts extends AbstractNpcAI
 	@Override
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		if (npc.getNpcId() == DRAKE_SCOUT)
+		if (npc.getId() == DRAKE_SCOUT)
 		{
 			DrakeScoutGroup group = getGroup(npc);
 			group._attackDirection = true;
@@ -109,7 +108,7 @@ public class DrakeScouts extends AbstractNpcAI
 				}
 				MoveToLocation mov = new MoveToLocation(group._scout);
 				group._scout.broadcastPacket(mov);
-				group._scout.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(loc.getX(), loc.getY(), loc.getZ(), loc.getHeading()));
+				group._scout.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(loc.getX(), loc.getY(), loc.getZ(), loc.getHeading()));
 			}
 		}
 	}
@@ -126,14 +125,14 @@ public class DrakeScouts extends AbstractNpcAI
 	
 	protected DrakeScoutGroup getGroup(L2Npc npc)
 	{
-		if ((npc == null) || (npc.getNpcId() != DRAKE_SCOUT))
+		if ((npc == null) || (npc.getId() != DRAKE_SCOUT))
 		{
 			return null;
 		}
 		
 		for (DrakeScoutGroup group : _scoutGroups.values())
 		{
-			if ((npc.getNpcId() == DRAKE_SCOUT) && npc.equals(group._scout))
+			if ((npc.getId() == DRAKE_SCOUT) && npc.equals(group._scout))
 			{
 				return group;
 			}

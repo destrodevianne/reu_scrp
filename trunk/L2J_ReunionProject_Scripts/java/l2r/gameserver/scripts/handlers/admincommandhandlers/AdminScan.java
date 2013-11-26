@@ -68,7 +68,7 @@ public class AdminScan implements IAdminCommandHandler
 				if (character instanceof L2Npc)
 				{
 					sb.append("<tr>");
-					sb.append("<td width=\"54\">" + ((L2Npc) character).getNpcId() + "</td>");
+					sb.append("<td width=\"54\">" + ((L2Npc) character).getId() + "</td>");
 					sb.append("<td width=\"54\">" + character.getName() + "</td>");
 					sb.append("<td width=\"54\">" + Math.round(Util.calculateDistance(activeChar, character, false)) + "</td>");
 					sb.append("<td width=\"54\"><a action=\"bypass -h admin_deleteNpcByObjectId " + character.getObjectId() + "\"><font color=\"LEVEL\">Delete</font></a></td>");
@@ -96,7 +96,7 @@ public class AdminScan implements IAdminCommandHandler
 						{
 							spawn.stopRespawn();
 							
-							if (RaidBossSpawnManager.getInstance().isDefined(spawn.getNpcid()))
+							if (RaidBossSpawnManager.getInstance().isDefined(spawn.getId()))
 							{
 								RaidBossSpawnManager.getInstance().deleteSpawn(spawn, true);
 							}

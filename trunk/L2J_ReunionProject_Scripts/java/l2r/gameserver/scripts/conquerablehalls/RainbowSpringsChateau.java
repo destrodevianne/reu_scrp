@@ -333,7 +333,7 @@ public class RainbowSpringsChateau extends Quest
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		String html = "";
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		if (npcId == MESSENGER)
 		{
 			final String main = (_rainbow.getOwnerId() > 0) ? "messenger_yetti001.htm" : "messenger_yetti001a.htm";
@@ -387,7 +387,7 @@ public class RainbowSpringsChateau extends Quest
 	{
 		String html = event;
 		final L2Clan clan = player.getClan();
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case MESSENGER:
 				switch (event)
@@ -405,7 +405,7 @@ public class RainbowSpringsChateau extends Quest
 						{
 							html = "messenger_yetti014.htm";
 						}
-						else if (_warDecreesCount.containsKey(clan.getClanId()))
+						else if (_warDecreesCount.containsKey(clan.getId()))
 						{
 							html = "messenger_yetti013.htm";
 						}
@@ -423,9 +423,9 @@ public class RainbowSpringsChateau extends Quest
 							else
 							{
 								long count = warDecrees.getCount();
-								_warDecreesCount.put(clan.getClanId(), count);
+								_warDecreesCount.put(clan.getId(), count);
 								player.destroyItem("Rainbow Springs Registration", warDecrees, npc, true);
-								updateAttacker(clan.getClanId(), count, false);
+								updateAttacker(clan.getId(), count, false);
 								html = "messenger_yetti009.htm";
 							}
 						}
@@ -435,7 +435,7 @@ public class RainbowSpringsChateau extends Quest
 						{
 							html = "messenger_yetti010.htm";
 						}
-						else if (!_warDecreesCount.containsKey(clan.getClanId()))
+						else if (!_warDecreesCount.containsKey(clan.getId()))
 						{
 							html = "messenger_yetti016.htm";
 						}
@@ -445,17 +445,17 @@ public class RainbowSpringsChateau extends Quest
 						}
 						else
 						{
-							updateAttacker(clan.getClanId(), 0, true);
+							updateAttacker(clan.getId(), 0, true);
 							html = "messenger_yetti018.htm";
 						}
 						break;
 					case "unregister":
 						if (_rainbow.isRegistering())
 						{
-							if (_warDecreesCount.containsKey(clan.getClanId()))
+							if (_warDecreesCount.containsKey(clan.getId()))
 							{
-								player.addItem("Rainbow Spring unregister", WAR_DECREES, _warDecreesCount.get(clan.getClanId()) / 2, npc, true);
-								_warDecreesCount.remove(clan.getClanId());
+								player.addItem("Rainbow Spring unregister", WAR_DECREES, _warDecreesCount.get(clan.getId()) / 2, npc, true);
+								_warDecreesCount.remove(clan.getId());
 								html = "messenger_yetti019.htm";
 							}
 							else
@@ -633,7 +633,7 @@ public class RainbowSpringsChateau extends Quest
 			return null;
 		}
 		
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		final int index = _acceptedClans.indexOf(clan);
 		
 		if (npcId == CHEST)
@@ -670,7 +670,7 @@ public class RainbowSpringsChateau extends Quest
 			return null;
 		}
 		
-		int yeti = ((L2Npc) target).getNpcId();
+		int yeti = ((L2Npc) target).getId();
 		
 		if (!isYetiTarget(yeti))
 		{
@@ -684,7 +684,7 @@ public class RainbowSpringsChateau extends Quest
 			return null;
 		}
 		
-		final int itemId = item.getItemId();
+		final int itemId = item.getId();
 		
 		// Nectar must spawn the enraged yeti. Dunno if it makes any other thing
 		// Also, the items must execute:
@@ -743,9 +743,9 @@ public class RainbowSpringsChateau extends Quest
 				try
 				{
 					_gourds[i] = new L2Spawn(NpcTable.getInstance().getTemplate(GOURDS[i]));
-					_gourds[i].setLocx(ARENAS[i][0] + 150);
-					_gourds[i].setLocy(ARENAS[i][1] + 150);
-					_gourds[i].setLocz(ARENAS[i][2]);
+					_gourds[i].setX(ARENAS[i][0] + 150);
+					_gourds[i].setY(ARENAS[i][1] + 150);
+					_gourds[i].setZ(ARENAS[i][2]);
 					_gourds[i].setHeading(1);
 					_gourds[i].setAmount(1);
 				}
@@ -779,9 +779,9 @@ public class RainbowSpringsChateau extends Quest
 			
 			_gourds[(iterator - 1) - i] = curSpawn;
 			
-			int newX = oldSpawn.getLocx();
-			int newY = oldSpawn.getLocy();
-			int newZ = oldSpawn.getLocz();
+			int newX = oldSpawn.getX();
+			int newY = oldSpawn.getY();
+			int newZ = oldSpawn.getZ();
 			
 			curSpawn.getLastSpawn().teleToLocation(newX, newY, newZ);
 		}
@@ -844,7 +844,7 @@ public class RainbowSpringsChateau extends Quest
 			_usedTextPassages.put(message, new ArrayList<L2Clan>());
 			int shout = Say2.NPC_SHOUT;
 			int objId = npc.getObjectId();
-			NpcSay say = new NpcSay(objId, shout, npc.getNpcId(), message);
+			NpcSay say = new NpcSay(objId, shout, npc.getId(), message);
 			npc.broadcastPacket(say);
 		}
 	}

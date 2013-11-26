@@ -22,7 +22,7 @@ import l2r.Config;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GrandBossManager;
-import l2r.gameserver.model.L2CharPosition;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.StatsSet;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
@@ -107,7 +107,7 @@ public class Sailren extends AbstractNpcAI
 		else if (event.equalsIgnoreCase("start"))
 		{
 			npc.setRunning();
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(27628, -6109, -1982, 44732));
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(27628, -6109, -1982, 44732));
 			startQuestTimer("mob_has_arrived", 200, npc, null, true);
 		}
 		else if (event.equalsIgnoreCase("start2"))
@@ -191,9 +191,9 @@ public class Sailren extends AbstractNpcAI
 			{
 				npc.setIsImmobilized(true);
 				startQuestTimer("action_1", 500, npc, null);
-				npc.getSpawn().setLocx(27628);
-				npc.getSpawn().setLocy(-6109);
-				npc.getSpawn().setLocz(-1982);
+				npc.getSpawn().setX(27628);
+				npc.getSpawn().setY(-6109);
+				npc.getSpawn().setZ(-1982);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 				cancelQuestTimer("mob_has_arrived", npc, null);
 			}
@@ -255,16 +255,16 @@ public class Sailren extends AbstractNpcAI
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		_LastAction = System.currentTimeMillis();
-		if (npc.isInvul() && (npc.getNpcId() == SAILREN))
+		if (npc.isInvul() && (npc.getId() == SAILREN))
 		{
 			return null;
 		}
-		if (((npc.getNpcId() == VELOCIRAPTOR) || (npc.getNpcId() == PTEROSAUR) || (npc.getNpcId() == TYRANNOSAURUS)) && (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING))
+		if (((npc.getId() == VELOCIRAPTOR) || (npc.getId() == PTEROSAUR) || (npc.getId() == TYRANNOSAURUS)) && (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING))
 		{
 			if (getQuestTimer("mob_has_arrived", npc, null) != null)
 			{
 				getQuestTimer("mob_has_arrived", npc, null).cancel();
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(npc.getX(), npc.getY(), npc.getZ(), npc.getHeading()));
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(npc.getX(), npc.getY(), npc.getZ(), npc.getHeading()));
 				startQuestTimer("camera_6", 0, npc, null);
 			}
 		}
@@ -274,7 +274,7 @@ public class Sailren extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if ((GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING) && (npc.getNpcId() == SAILREN))
+		if ((GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING) && (npc.getId() == SAILREN))
 		{
 			npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 			cancelQuestTimer("sailren_despawn", npc, null);
@@ -287,17 +287,17 @@ public class Sailren extends AbstractNpcAI
 			info.set("respawn_time", System.currentTimeMillis() + respawnTime);
 			GrandBossManager.getInstance().setStatsSet(SAILREN, info);
 		}
-		else if ((GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING) && (npc.getNpcId() == VELOCIRAPTOR))
+		else if ((GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING) && (npc.getId() == VELOCIRAPTOR))
 		{
 			cancelQuestTimer("sailren_despawn", npc, null);
 			startQuestTimer("waiting2", 15000, npc, null);
 		}
-		else if ((GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING) && (npc.getNpcId() == PTEROSAUR))
+		else if ((GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING) && (npc.getId() == PTEROSAUR))
 		{
 			cancelQuestTimer("sailren_despawn", npc, null);
 			startQuestTimer("waiting3", 15000, npc, null);
 		}
-		else if ((GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING) && (npc.getNpcId() == TYRANNOSAURUS))
+		else if ((GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING) && (npc.getId() == TYRANNOSAURUS))
 		{
 			cancelQuestTimer("sailren_despawn", npc, null);
 			startQuestTimer("waiting_boss", 15000, npc, null);

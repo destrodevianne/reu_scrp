@@ -66,7 +66,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 				activeChar.sendMessage("====== Cursed Weapons: ======");
 				for (CursedWeapon cw : cwm.getCursedWeapons())
 				{
-					activeChar.sendMessage("> " + cw.getName() + " (" + cw.getItemId() + ")");
+					activeChar.sendMessage("> " + cw.getName() + " (" + cw.getId() + ")");
 					if (cw.isActivated())
 					{
 						L2PcInstance pl = cw.getPlayer();
@@ -96,7 +96,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 				adminReply.setFile(activeChar.getHtmlPrefix(), "data/html/admin/cwinfo.htm");
 				for (CursedWeapon cw : cwm.getCursedWeapons())
 				{
-					itemId = cw.getItemId();
+					itemId = cw.getId();
 					
 					StringUtil.append(replyMSG, "<table width=270><tr><td>Name:</td><td>", cw.getName(), "</td></tr>");
 					
@@ -141,7 +141,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 					{
 						if (cwp.getName().toLowerCase().contains(parameter.toLowerCase()))
 						{
-							id = cwp.getItemId();
+							id = cwp.getId();
 							break;
 						}
 					}

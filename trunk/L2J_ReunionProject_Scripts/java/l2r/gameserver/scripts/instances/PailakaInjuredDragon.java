@@ -325,7 +325,7 @@ public class PailakaInjuredDragon extends Quest
 		{
 			if (Rnd.get(100) < pd.getChance())
 			{
-				((L2MonsterInstance) mob).dropItem(player, pd.getItemID(), Rnd.get(1, 6));
+				((L2MonsterInstance) mob).dropItem(player, pd.getId(), Rnd.get(1, 6));
 				return;
 			}
 		}
@@ -582,7 +582,7 @@ public class PailakaInjuredDragon extends Quest
 		}
 		
 		final int cond = st.getInt("cond");
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case KETRA_ORC_SHAMAN:
 				switch (st.getState())
@@ -655,7 +655,7 @@ public class PailakaInjuredDragon extends Quest
 		 * right mob When you kill a mob wall, another mage type appears behind. If all mobs from the front are killed then the ones that are behind are despawned. Also this mobs should be damaged, like with 30% of max HP, because they should be easy to kill
 		 */
 		final int cond = st.getInt("cond");
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case VARKA_SILENOS_FOOTMAN:
 			case VARKA_SILENOS_RECRUIT:
@@ -831,12 +831,12 @@ public class PailakaInjuredDragon extends Quest
 			
 			final L2Npc knownNpc = (L2Npc) npcs;
 			
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case VARKA_SILENOS_FOOTMAN:
 				case VARKA_SILENOS_RECRUIT:
 				case VARKA_SILENOS_WARRIOR:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_FOOTMAN:
 						case VARKA_SILENOS_RECRUIT:
@@ -847,7 +847,7 @@ public class PailakaInjuredDragon extends Quest
 				case VARKA_ELITE_GUARD:
 				case VARKAS_COMMANDER:
 				case VARKA_SILENOS_OFFICER:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_ELITE_GUARD:
 						case VARKAS_COMMANDER:
@@ -858,7 +858,7 @@ public class PailakaInjuredDragon extends Quest
 				case VARKA_SILENOS_GREAT_MAGUS:
 				case VARKA_SILENOS_GENERAL:
 				case VARKAS_PROPHET:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_GREAT_MAGUS:
 						case VARKA_SILENOS_GENERAL:
@@ -868,7 +868,7 @@ public class PailakaInjuredDragon extends Quest
 					break;
 				case VARKA_SILENOS_HEAD_GUARD:
 				case PROPHET_GUARD:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_HEAD_GUARD:
 						case PROPHET_GUARD:
@@ -893,12 +893,12 @@ public class PailakaInjuredDragon extends Quest
 			
 			final L2Npc knownNpc = (L2Npc) npcs;
 			
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case VARKA_SILENOS_FOOTMAN:
 				case VARKA_SILENOS_RECRUIT:
 				case VARKA_SILENOS_WARRIOR:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_MEDIUM:
 						case VARKA_SILENOS_PRIEST:
@@ -910,7 +910,7 @@ public class PailakaInjuredDragon extends Quest
 				case VARKA_ELITE_GUARD:
 				case VARKAS_COMMANDER:
 				case VARKA_SILENOS_OFFICER:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_SHAMAN:
 						case VARKA_SILENOS_SEER:
@@ -922,7 +922,7 @@ public class PailakaInjuredDragon extends Quest
 				case VARKA_SILENOS_GREAT_MAGUS:
 				case VARKA_SILENOS_GENERAL:
 				case VARKAS_PROPHET:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_SILENOS_MAGNUS:
 						case DISCIPLE_OF_PROPHET:
@@ -933,7 +933,7 @@ public class PailakaInjuredDragon extends Quest
 					break;
 				case VARKA_SILENOS_HEAD_GUARD:
 				case PROPHET_GUARD:
-					switch (knownNpc.getNpcId())
+					switch (knownNpc.getId())
 					{
 						case VARKA_HEAD_MAGUS:
 						case VARKA_SILENOS_GREAT_SEER:
@@ -961,7 +961,7 @@ public class PailakaInjuredDragon extends Quest
 		}
 		
 		// If enter on aggro range of Latana, start animation
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case LATANA:
 				// Start Latana's Animation
@@ -984,7 +984,7 @@ public class PailakaInjuredDragon extends Quest
 		}
 		
 		// If enter on aggro range of Latana, start animation
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case LATANA:
 				// Start Latana's Animation
@@ -1015,7 +1015,7 @@ public class PailakaInjuredDragon extends Quest
 				/*
 				 * Every monster on pailaka should be Aggresive and Active, with the same clan, also wall mobs cannot move, they all use magic from far, and if you get in combat range they hit
 				 */
-				if (mobId == npc.getNpcId())
+				if (mobId == npc.getId())
 				{
 					final L2MonsterInstance monster = (L2MonsterInstance) npc;
 					monster.setIsImmobilized(true);
@@ -1101,7 +1101,7 @@ public class PailakaInjuredDragon extends Quest
 			_chance = chance;
 		}
 		
-		public int getItemID()
+		public int getId()
 		{
 			return _itemId;
 		}

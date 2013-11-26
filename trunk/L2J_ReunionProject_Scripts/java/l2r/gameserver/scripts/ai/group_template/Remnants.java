@@ -69,7 +69,7 @@ public class Remnants extends AbstractNpcAI
 					{
 						npc.doDie(caster);
 						//@formatter:off
-						/*if (npc.getNpcId() == DEREK)
+						/*if (npc.getId() == DEREK)
 						{
 							caster.sendMessage(MSG_DEREK);
 						}

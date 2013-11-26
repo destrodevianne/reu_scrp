@@ -68,10 +68,10 @@ public class L2NpcActionShift implements IActionHandler
 			
 			html.replace("%objid%", String.valueOf(target.getObjectId()));
 			html.replace("%class%", target.getClass().getSimpleName());
-			html.replace("%id%", String.valueOf(((L2Npc) target).getTemplate().getNpcId()));
+			html.replace("%id%", String.valueOf(((L2Npc) target).getTemplate().getId()));
 			html.replace("%lvl%", String.valueOf(((L2Npc) target).getTemplate().getLevel()));
 			html.replace("%name%", String.valueOf(((L2Npc) target).getTemplate().getName()));
-			html.replace("%tmplid%", String.valueOf(((L2Npc) target).getTemplate().getNpcId()));
+			html.replace("%tmplid%", String.valueOf(((L2Npc) target).getTemplate().getId()));
 			html.replace("%aggro%", String.valueOf((target instanceof L2Attackable) ? ((L2Attackable) target).getAggroRange() : 0));
 			html.replace("%hp%", String.valueOf((int) ((L2Character) target).getCurrentHp()));
 			html.replace("%hpmax%", String.valueOf(((L2Character) target).getMaxHp()));
@@ -98,7 +98,7 @@ public class L2NpcActionShift implements IActionHandler
 			html.replace("%heading%", String.valueOf(((L2Character) target).getHeading()));
 			html.replace("%collision_radius%", String.valueOf(((L2Character) target).getTemplate().getfCollisionRadius()));
 			html.replace("%collision_height%", String.valueOf(((L2Character) target).getTemplate().getfCollisionHeight()));
-			html.replace("%dist%", String.valueOf((int) Math.sqrt(activeChar.getDistanceSq(target))));
+			html.replace("%dist%", String.valueOf((int) activeChar.calculateDistance(target, true, false)));
 			
 			byte attackAttribute = ((L2Character) target).getAttackElement();
 			html.replace("%ele_atk%", Elementals.getElementName(attackAttribute));
@@ -112,9 +112,19 @@ public class L2NpcActionShift implements IActionHandler
 			
 			if (((L2Npc) target).getSpawn() != null)
 			{
-				html.replace("%spawn%", ((L2Npc) target).getSpawn().getLocx() + " " + ((L2Npc) target).getSpawn().getLocy() + " " + ((L2Npc) target).getSpawn().getLocz());
-				html.replace("%loc2d%", String.valueOf((int) Math.sqrt(((L2Character) target).getPlanDistanceSq(((L2Npc) target).getSpawn().getLocx(), ((L2Npc) target).getSpawn().getLocy()))));
-				html.replace("%loc3d%", String.valueOf((int) Math.sqrt(((L2Character) target).getDistanceSq(((L2Npc) target).getSpawn().getLocx(), ((L2Npc) target).getSpawn().getLocy(), ((L2Npc) target).getSpawn().getLocz()))));
+				html.replace("%territory%", ((L2Npc) target).getSpawn().getSpawnTerritory() == null ? "None" : ((L2Npc) target).getSpawn().getSpawnTerritory().getName());
+				if (((L2Npc) target).getSpawn().isTerritoryBased())
+				{
+					html.replace("%spawntype%", "Random");
+					html.replace("%spawn%", ((L2Npc) target).getSpawn().getX(target) + " " + ((L2Npc) target).getSpawn().getY(target) + " " + ((L2Npc) target).getSpawn().getZ(target));
+				}
+				else
+				{
+					html.replace("%spawntype%", "Fixed");
+					html.replace("%spawn%", ((L2Npc) target).getSpawn().getX() + " " + ((L2Npc) target).getSpawn().getY() + " " + ((L2Npc) target).getSpawn().getZ());
+				}
+				html.replace("%loc2d%", String.valueOf((int) target.calculateDistance(((L2Npc) target).getSpawn().getLocation(target), false, false)));
+				html.replace("%loc3d%", String.valueOf((int) target.calculateDistance(((L2Npc) target).getSpawn().getLocation(target), true, false)));
 				if (((L2Npc) target).getSpawn().getRespawnMinDelay() == 0)
 				{
 					html.replace("%resp%", "None");
@@ -130,6 +140,8 @@ public class L2NpcActionShift implements IActionHandler
 			}
 			else
 			{
+				html.replace("%territory%", "<font color=FF0000>--</font>");
+				html.replace("%spawntype%", "<font color=FF0000>--</font>");
 				html.replace("%spawn%", "<font color=FF0000>null</font>");
 				html.replace("%loc2d%", "<font color=FF0000>--</font>");
 				html.replace("%loc3d%", "<font color=FF0000>--</font>");
@@ -185,7 +197,7 @@ public class L2NpcActionShift implements IActionHandler
 				{
 					for (L2DropData drop : cat.getAllDrops())
 					{
-						final L2Item item = ItemTable.getInstance().getTemplate(drop.getItemId());
+						final L2Item item = ItemTable.getInstance().getTemplate(drop.getId());
 						if (item == null)
 						{
 							continue;

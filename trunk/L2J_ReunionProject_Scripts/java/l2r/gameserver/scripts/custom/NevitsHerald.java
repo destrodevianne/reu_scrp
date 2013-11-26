@@ -118,7 +118,7 @@ public class NevitsHerald extends Quest
 	{
 		String htmltext = event;
 		
-		if (npc.getNpcId() == NevitsHerald)
+		if (npc.getId() == NevitsHerald)
 		{
 			if (event.equalsIgnoreCase("buff"))
 			{
@@ -162,7 +162,7 @@ public class NevitsHerald extends Quest
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		ExShowScreenMessage message = null;
-		if (npc.getNpcId() == Valakas)
+		if (npc.getId() == Valakas)
 		{
 			// message = new ExShowScreenMessage(1900151, 10000, null);
 			message = new ExShowScreenMessage(NpcStringId.THE_EVIL_FIRE_DRAGON_VALAKAS_HAS_BEEN_DEFEATED, 2, 10000);

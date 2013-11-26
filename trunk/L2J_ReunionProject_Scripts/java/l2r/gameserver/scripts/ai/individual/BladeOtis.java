@@ -64,7 +64,7 @@ public class BladeOtis extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int objId = npc.getObjectId();
 		int maxHp = npc.getMaxHp();
 		double nowHp = npc.getStatus().getCurrentHp();
@@ -82,7 +82,7 @@ public class BladeOtis extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int objId = npc.getObjectId();
 		if (npcId == GUARD)
 		{

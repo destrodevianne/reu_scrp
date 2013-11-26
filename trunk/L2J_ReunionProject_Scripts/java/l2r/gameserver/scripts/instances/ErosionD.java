@@ -1123,7 +1123,7 @@ public class ErosionD extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 		{
@@ -1146,7 +1146,7 @@ public class ErosionD extends Quest
 		{
 			final HEDWorld world = (HEDWorld) tmpworld;
 			
-			if (npc.getNpcId() == 18668)
+			if (npc.getId() == 18668)
 			{
 				for (int i = 0; i < Rnd.get(1, 4); i++)
 				{
@@ -1161,13 +1161,13 @@ public class ErosionD extends Quest
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (Util.contains(NOTMOVE, npc.getNpcId()))
+		if (Util.contains(NOTMOVE, npc.getId()))
 		{
 			npc.setIsNoRndWalk(true);
 			npc.setIsImmobilized(true);
 		}
 		
-		if (npc.getNpcId() == SEED)
+		if (npc.getId() == SEED)
 		{
 			((L2QuestGuardInstance) npc).setPassive(true);
 		}
@@ -1176,7 +1176,7 @@ public class ErosionD extends Quest
 		if (tmpworld instanceof HEDWorld)
 		{
 			HEDWorld world = (HEDWorld) tmpworld;
-			if (npc.getNpcId() == TUMOR_DEAD)
+			if (npc.getId() == TUMOR_DEAD)
 			{
 				world.addTag(1);
 			}
@@ -1191,7 +1191,7 @@ public class ErosionD extends Quest
 		if (tmpworld instanceof HEDWorld)
 		{
 			final HEDWorld world = (HEDWorld) tmpworld;
-			if (npc.getNpcId() == TUMOR_ALIVE)
+			if (npc.getId() == TUMOR_ALIVE)
 			{
 				((L2MonsterInstance) npc).dropItem(player, 13797, Rnd.get(2, 5));
 				npc.deleteMe();
@@ -1212,7 +1212,7 @@ public class ErosionD extends Quest
 				}, tumorRespawnTime);
 			}
 			
-			if (npc.getNpcId() == 18711)
+			if (npc.getId() == 18711)
 			{
 				tumorRespawnTime += 5 * 1000;
 			}
@@ -1244,7 +1244,7 @@ public class ErosionD extends Quest
 		{
 			soulwagonSpawned = true;
 			L2Npc soul = spawnNpc(25636, npc.getLocation(), 0, world.getInstanceId());
-			NpcSay cs = new NpcSay(soul.getObjectId(), Say2.SHOUT, soul.getNpcId(), NpcStringId.HA_HA_HA);
+			NpcSay cs = new NpcSay(soul.getObjectId(), Say2.SHOUT, soul.getId(), NpcStringId.HA_HA_HA);
 			soul.broadcastPacket(cs);
 		}
 	}

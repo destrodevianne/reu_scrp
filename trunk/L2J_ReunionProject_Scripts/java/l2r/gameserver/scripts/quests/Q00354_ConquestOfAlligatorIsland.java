@@ -141,7 +141,7 @@ public final class Q00354_ConquestOfAlligatorIsland extends Quest
 		final QuestState st = getRandomPartyMemberState(player, -1, 3, npc);
 		if ((st != null) && st.isStarted())
 		{
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			if (MOB1.containsKey(npcId))
 			{
 				st.giveItemRandomly(npc, ALLIGATOR_TOOTH, 1, 0, MOB1.get(npcId), true);

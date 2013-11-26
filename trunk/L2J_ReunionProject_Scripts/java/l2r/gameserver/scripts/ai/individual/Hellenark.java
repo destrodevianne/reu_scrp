@@ -69,7 +69,7 @@ public class Hellenark extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
 	{
-		if (npc.getNpcId() == Hellenark)
+		if (npc.getId() == Hellenark)
 		{
 			if (status == 0)
 				startQuestTimer("spawn", 20000L, npc, null, false);

@@ -90,7 +90,7 @@ public class Q10270_BirthOfTheSeed extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState qs = player.getQuestState(getName());
 		int cond = qs.getInt("cond");
 		String htmltext = getNoQuestMsg(player);
@@ -181,7 +181,7 @@ public class Q10270_BirthOfTheSeed extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (npc.getNpcId() == _klanikus)
+		if (npc.getId() == _klanikus)
 		{
 			if (player.getParty() != null)
 			{
@@ -213,7 +213,7 @@ public class Q10270_BirthOfTheSeed extends Quest
 					qs.giveItems(13869, 1);
 			}
 		}
-		else if (npc.getNpcId() == _klodekus)
+		else if (npc.getId() == _klodekus)
 		{
 			if (player.getParty() != null)
 			{
@@ -245,7 +245,7 @@ public class Q10270_BirthOfTheSeed extends Quest
 					qs.giveItems(13868, 1);
 			}
 		}
-		else if (npc.getNpcId() == _cohemenes)
+		else if (npc.getId() == _cohemenes)
 		{
 			if (player.getParty() != null)
 			{

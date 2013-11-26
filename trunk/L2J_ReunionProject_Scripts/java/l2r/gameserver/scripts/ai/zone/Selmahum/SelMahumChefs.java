@@ -13,7 +13,6 @@ import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
@@ -134,7 +133,7 @@ public class SelMahumChefs extends AbstractNpcAI
 				Location loc = group.pathPoints.get(group.currentPoint);
 				int nextPathPoint = getNextPoint(group, group.currentPoint);
 				loc.setHeading(calculateHeading(loc, group.pathPoints.get(nextPathPoint)));
-				group.chef.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(loc.getX(), loc.getY(), loc.getZ(), loc.getHeading()));
+				group.chef.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(loc.getX(), loc.getY(), loc.getZ(), loc.getHeading()));
 			}
 		}
 	}
@@ -203,7 +202,7 @@ public class SelMahumChefs extends AbstractNpcAI
 				{
 					if ((leader != null) && (leader instanceof L2MonsterInstance))
 					{
-						if (!Util.contains(BLOCK_NPC, ((L2MonsterInstance) leader).getNpcId()))
+						if (!Util.contains(BLOCK_NPC, ((L2MonsterInstance) leader).getId()))
 						{
 							if (!leader.isAttackingNow() && !leader.isDead() && (leader.getFirstEffect(SKILL_TIRED) == null))
 							{
@@ -211,7 +210,7 @@ public class SelMahumChefs extends AbstractNpcAI
 								int rndY = getRandom(100) < 50 ? -getRandom(50, 100) : getRandom(50, 100);
 								Location fireplaceLoc = new Location(fireplace.getX(), fireplace.getY(), fireplace.getZ());
 								Location leaderLoc = new Location(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ());
-								L2CharPosition position = new L2CharPosition(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
+								Location position = new Location(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
 								leader.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, position);
 								ThreadPoolManager.getInstance().scheduleAi(new MoveToFireplace((L2MonsterInstance) leader, 0), 1000);
 							}
@@ -229,7 +228,7 @@ public class SelMahumChefs extends AbstractNpcAI
 				{
 					if ((leader != null) && (leader instanceof L2MonsterInstance))
 					{
-						if (!Util.contains(BLOCK_NPC, ((L2MonsterInstance) leader).getNpcId()))
+						if (!Util.contains(BLOCK_NPC, ((L2MonsterInstance) leader).getId()))
 						{
 							if (!leader.isAttackingNow() && !leader.isDead() && (leader.getFirstEffect(SKILL_FULL) == null))
 							{
@@ -237,7 +236,7 @@ public class SelMahumChefs extends AbstractNpcAI
 								int rndY = getRandom(100) < 50 ? -getRandom(50, 100) : getRandom(50, 100);
 								Location fireplaceLoc = new Location(fireplace.getX(), fireplace.getY(), fireplace.getZ());
 								Location leaderLoc = new Location(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ());
-								L2CharPosition position = new L2CharPosition(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
+								Location position = new Location(fireplace.getX() + rndX, fireplace.getY() + rndY, fireplace.getZ(), calculateHeading(leaderLoc, fireplaceLoc));
 								leader.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, position);
 								ThreadPoolManager.getInstance().scheduleAi(new MoveToFireplace((L2MonsterInstance) leader, 1), 100);
 							}
@@ -357,7 +356,7 @@ public class SelMahumChefs extends AbstractNpcAI
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == SELMAHUM_CHEF)
+		if (npc.getId() == SELMAHUM_CHEF)
 		{
 			ChefGroup group = getChefGroup(npc);
 			if (group == null)
@@ -386,7 +385,7 @@ public class SelMahumChefs extends AbstractNpcAI
 	@Override
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		if (npc.getNpcId() == SELMAHUM_CHEF)
+		if (npc.getId() == SELMAHUM_CHEF)
 		{
 			ChefGroup group = getChefGroup(npc);
 			if ((group.lastInvincible.get() < System.currentTimeMillis()) && (((npc.getCurrentHp() / npc.getMaxHp()) * 100) < 50))
@@ -415,7 +414,7 @@ public class SelMahumChefs extends AbstractNpcAI
 				}
 			}
 		}
-		else if (npc.getNpcId() == SELMAHUM_ESCORT_GUARD)
+		else if (npc.getId() == SELMAHUM_ESCORT_GUARD)
 		{
 			ChefGroup group = getChefGroup(npc);
 			if ((group != null) && !group.chef.isDead() && !group.chef.isInCombat())
@@ -438,7 +437,7 @@ public class SelMahumChefs extends AbstractNpcAI
 				}
 			}
 		}
-		else if (!Util.contains(SELMAHUM_SQUAD_LEADERS, npc.getNpcId()))
+		else if (!Util.contains(SELMAHUM_SQUAD_LEADERS, npc.getId()))
 		{
 			npc.setDisplayEffect(0);
 			npc.setIsNoRndWalk(false);
@@ -449,7 +448,7 @@ public class SelMahumChefs extends AbstractNpcAI
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		if (npc.getNpcId() == SELMAHUM_CHEF)
+		if (npc.getId() == SELMAHUM_CHEF)
 		{
 			ChefGroup group = getChefGroup(npc);
 			for (L2Npc escort : group.escorts)
@@ -474,7 +473,7 @@ public class SelMahumChefs extends AbstractNpcAI
 					group.atFirePlace = true;
 					int xDiff = (group.chef.getX() - fire.getX()) > 0 ? -getRandom(30, 40) : getRandom(30, 40);
 					int yDiff = (group.chef.getY() - fire.getY()) > 0 ? -getRandom(30, 40) : getRandom(30, 40);
-					group.chef.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(fire.getX() - xDiff, fire.getY() - yDiff, fire.getZ(), calculateHeading(group.chef, fire)));
+					group.chef.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(fire.getX() - xDiff, fire.getY() - yDiff, fire.getZ(), calculateHeading(group.chef, fire)));
 					fireplaces.replace(fire, 1);
 					ThreadPoolManager.getInstance().scheduleAi(new FireplaceTask(group, fire), 1000);
 					break;
@@ -490,17 +489,17 @@ public class SelMahumChefs extends AbstractNpcAI
 	
 	private ChefGroup getChefGroup(L2Npc npc)
 	{
-		if ((npc == null) || ((npc.getNpcId() != SELMAHUM_CHEF) && (npc.getNpcId() != SELMAHUM_ESCORT_GUARD)))
+		if ((npc == null) || ((npc.getId() != SELMAHUM_CHEF) && (npc.getId() != SELMAHUM_ESCORT_GUARD)))
 		{
 			return null;
 		}
 		for (ChefGroup group : chefGroups.values())
 		{
-			if ((npc.getNpcId() == SELMAHUM_CHEF) && npc.equals(group.chef))
+			if ((npc.getId() == SELMAHUM_CHEF) && npc.equals(group.chef))
 			{
 				return group;
 			}
-			if (npc.getNpcId() == SELMAHUM_ESCORT_GUARD)
+			if (npc.getId() == SELMAHUM_ESCORT_GUARD)
 			{
 				for (L2Npc escort : group.escorts)
 				{

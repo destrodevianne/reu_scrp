@@ -101,7 +101,7 @@ public class Q00027_ChestCaughtWithABaitOfWind extends Quest
 				break;
 			case State.CREATED:
 				final QuestState qs = player.getQuestState(Q00050_LanoscosSpecialBait.class.getSimpleName());
-				if (npc.getNpcId() == LANOSCO)
+				if (npc.getId() == LANOSCO)
 				{
 					htmltext = "31570-02.htm";
 					if (qs != null)
@@ -111,7 +111,7 @@ public class Q00027_ChestCaughtWithABaitOfWind extends Quest
 				}
 				break;
 			case State.STARTED:
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case LANOSCO:
 						if (st.isCond(1))

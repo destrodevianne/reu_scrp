@@ -142,7 +142,7 @@ public class VanHalter extends Quest
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == ANDREAS_VAN_HALTER)
 		{
 			int maxHp = npc.getMaxHp();
@@ -158,7 +158,7 @@ public class VanHalter extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (isIntInArray(npcId, TRIOLS))
 		{
@@ -227,9 +227,9 @@ public class VanHalter extends Quest
 			L2Spawn tempSpawn;
 			
 			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setLocx(-16397);
-			tempSpawn.setLocy(-55200);
-			tempSpawn.setLocz(-10449);
+			tempSpawn.setX(-16397);
+			tempSpawn.setY(-55200);
+			tempSpawn.setZ(-10449);
 			tempSpawn.setHeading(16384);
 			tempSpawn.setAmount(1);
 			tempSpawn.setRespawnDelay(60000);
@@ -237,9 +237,9 @@ public class VanHalter extends Quest
 			_cameraMarkerSpawn.put(1, tempSpawn);
 			
 			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setLocx(-16397);
-			tempSpawn.setLocy(-55200);
-			tempSpawn.setLocz(-10051);
+			tempSpawn.setX(-16397);
+			tempSpawn.setY(-55200);
+			tempSpawn.setZ(-10051);
 			tempSpawn.setHeading(16384);
 			tempSpawn.setAmount(1);
 			tempSpawn.setRespawnDelay(60000);
@@ -247,9 +247,9 @@ public class VanHalter extends Quest
 			_cameraMarkerSpawn.put(2, tempSpawn);
 			
 			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setLocx(-16397);
-			tempSpawn.setLocy(-55200);
-			tempSpawn.setLocz(-9741);
+			tempSpawn.setX(-16397);
+			tempSpawn.setY(-55200);
+			tempSpawn.setZ(-9741);
 			tempSpawn.setHeading(16384);
 			tempSpawn.setAmount(1);
 			tempSpawn.setRespawnDelay(60000);
@@ -257,9 +257,9 @@ public class VanHalter extends Quest
 			_cameraMarkerSpawn.put(3, tempSpawn);
 			
 			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setLocx(-16397);
-			tempSpawn.setLocy(-55200);
-			tempSpawn.setLocz(-9394);
+			tempSpawn.setX(-16397);
+			tempSpawn.setY(-55200);
+			tempSpawn.setZ(-9394);
 			tempSpawn.setHeading(16384);
 			tempSpawn.setAmount(1);
 			tempSpawn.setRespawnDelay(60000);
@@ -267,9 +267,9 @@ public class VanHalter extends Quest
 			_cameraMarkerSpawn.put(4, tempSpawn);
 			
 			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setLocx(-16397);
-			tempSpawn.setLocy(-55197);
-			tempSpawn.setLocz(-8739);
+			tempSpawn.setX(-16397);
+			tempSpawn.setY(-55197);
+			tempSpawn.setZ(-8739);
 			tempSpawn.setHeading(16384);
 			tempSpawn.setAmount(1);
 			tempSpawn.setRespawnDelay(60000);
@@ -329,9 +329,9 @@ public class VanHalter extends Quest
 				{
 					spawnDat = new L2Spawn(template1);
 					spawnDat.setAmount(rset.getInt("count"));
-					spawnDat.setLocx(rset.getInt("locx"));
-					spawnDat.setLocy(rset.getInt("locy"));
-					spawnDat.setLocz(rset.getInt("locz"));
+					spawnDat.setX(rset.getInt("locx"));
+					spawnDat.setY(rset.getInt("locy"));
+					spawnDat.setZ(rset.getInt("locz"));
 					spawnDat.setHeading(rset.getInt("heading"));
 					spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
 					SpawnTable.getInstance().addNewSpawn(spawnDat, false);
@@ -402,9 +402,9 @@ public class VanHalter extends Quest
 				{
 					spawnDat = new L2Spawn(template1);
 					spawnDat.setAmount(rset.getInt("count"));
-					spawnDat.setLocx(rset.getInt("locx"));
-					spawnDat.setLocy(rset.getInt("locy"));
-					spawnDat.setLocz(rset.getInt("locz"));
+					spawnDat.setX(rset.getInt("locx"));
+					spawnDat.setY(rset.getInt("locy"));
+					spawnDat.setZ(rset.getInt("locz"));
 					spawnDat.setHeading(rset.getInt("heading"));
 					spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
 					SpawnTable.getInstance().addNewSpawn(spawnDat, false);
@@ -441,7 +441,7 @@ public class VanHalter extends Quest
 			L2MonsterInstance triol = (L2MonsterInstance) trs.doSpawn();
 			triol.setIsParalyzed(true);
 			_triolRevelation.add(triol);
-			if ((trs.getNpcid() != 32067) && (trs.getNpcid() != 32068))
+			if ((trs.getId() != 32067) && (trs.getId() != 32068))
 			{
 				_triolRevelationAlive.add(trs);
 			}
@@ -479,9 +479,9 @@ public class VanHalter extends Quest
 				{
 					spawnDat = new L2Spawn(template1);
 					spawnDat.setAmount(rset.getInt("count"));
-					spawnDat.setLocx(rset.getInt("locx"));
-					spawnDat.setLocy(rset.getInt("locy"));
-					spawnDat.setLocz(rset.getInt("locz"));
+					spawnDat.setX(rset.getInt("locx"));
+					spawnDat.setY(rset.getInt("locy"));
+					spawnDat.setZ(rset.getInt("locz"));
 					spawnDat.setHeading(rset.getInt("heading"));
 					spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
 					SpawnTable.getInstance().addNewSpawn(spawnDat, false);
@@ -552,9 +552,9 @@ public class VanHalter extends Quest
 				{
 					spawnDat = new L2Spawn(template1);
 					spawnDat.setAmount(rset.getInt("count"));
-					spawnDat.setLocx(rset.getInt("locx"));
-					spawnDat.setLocy(rset.getInt("locy"));
-					spawnDat.setLocz(rset.getInt("locz"));
+					spawnDat.setX(rset.getInt("locx"));
+					spawnDat.setY(rset.getInt("locy"));
+					spawnDat.setZ(rset.getInt("locz"));
 					spawnDat.setHeading(rset.getInt("heading"));
 					spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
 					SpawnTable.getInstance().addNewSpawn(spawnDat, false);
@@ -618,9 +618,9 @@ public class VanHalter extends Quest
 				{
 					spawnDat = new L2Spawn(template1);
 					spawnDat.setAmount(rset.getInt("count"));
-					spawnDat.setLocx(rset.getInt("locx"));
-					spawnDat.setLocy(rset.getInt("locy"));
-					spawnDat.setLocz(rset.getInt("locz"));
+					spawnDat.setX(rset.getInt("locx"));
+					spawnDat.setY(rset.getInt("locy"));
+					spawnDat.setZ(rset.getInt("locz"));
 					spawnDat.setHeading(rset.getInt("heading"));
 					spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
 					SpawnTable.getInstance().addNewSpawn(spawnDat, false);
@@ -690,9 +690,9 @@ public class VanHalter extends Quest
 				{
 					spawnDat = new L2Spawn(template1);
 					spawnDat.setAmount(rset.getInt("count"));
-					spawnDat.setLocx(rset.getInt("locx"));
-					spawnDat.setLocy(rset.getInt("locy"));
-					spawnDat.setLocz(rset.getInt("locz"));
+					spawnDat.setX(rset.getInt("locx"));
+					spawnDat.setY(rset.getInt("locy"));
+					spawnDat.setZ(rset.getInt("locz"));
 					spawnDat.setHeading(rset.getInt("heading"));
 					spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
 					SpawnTable.getInstance().addNewSpawn(spawnDat, false);
@@ -757,9 +757,9 @@ public class VanHalter extends Quest
 				{
 					spawnDat = new L2Spawn(template1);
 					spawnDat.setAmount(rset.getInt("count"));
-					spawnDat.setLocx(rset.getInt("locx"));
-					spawnDat.setLocy(rset.getInt("locy"));
-					spawnDat.setLocz(rset.getInt("locz"));
+					spawnDat.setX(rset.getInt("locx"));
+					spawnDat.setY(rset.getInt("locy"));
+					spawnDat.setZ(rset.getInt("locz"));
 					spawnDat.setHeading(rset.getInt("heading"));
 					spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
 					SpawnTable.getInstance().addNewSpawn(spawnDat, false);
@@ -824,9 +824,9 @@ public class VanHalter extends Quest
 				{
 					spawnDat = new L2Spawn(template1);
 					spawnDat.setAmount(rset.getInt("count"));
-					spawnDat.setLocx(rset.getInt("locx"));
-					spawnDat.setLocy(rset.getInt("locy"));
-					spawnDat.setLocz(rset.getInt("locz"));
+					spawnDat.setX(rset.getInt("locx"));
+					spawnDat.setY(rset.getInt("locy"));
+					spawnDat.setZ(rset.getInt("locz"));
 					spawnDat.setHeading(rset.getInt("heading"));
 					spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
 					SpawnTable.getInstance().addNewSpawn(spawnDat, false);
@@ -1183,8 +1183,8 @@ public class VanHalter extends Quest
 				
 				bpc.add(pc);
 			}
-			_bleedingPlayers.remove(tr.getNpcId());
-			_bleedingPlayers.put(tr.getNpcId(), bpc);
+			_bleedingPlayers.remove(tr.getId());
+			_bleedingPlayers.put(tr.getId(), bpc);
 		}
 	}
 	

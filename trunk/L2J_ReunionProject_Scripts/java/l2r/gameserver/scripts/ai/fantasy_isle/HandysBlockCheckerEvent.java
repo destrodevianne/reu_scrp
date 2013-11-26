@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.ai.fantasy_isle;
 
 import l2r.Config;
 import l2r.gameserver.instancemanager.HandysBlockCheckerManager;
-import l2r.gameserver.instancemanager.HandysBlockCheckerManager.ArenaParticipantsHolder;
+import l2r.gameserver.model.ArenaParticipantsHolder;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
@@ -56,7 +56,7 @@ public class HandysBlockCheckerEvent extends Quest
 			return null;
 		}
 		
-		final int arena = npc.getNpcId() - A_MANAGER_1;
+		final int arena = npc.getId() - A_MANAGER_1;
 		if (eventIsFull(arena))
 		{
 			player.sendPacket(SystemMessageId.CANNOT_REGISTER_CAUSE_QUEUE_FULL);

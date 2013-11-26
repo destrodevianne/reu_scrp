@@ -73,7 +73,7 @@ public class ClanSearcher extends Quest
 		else if (event.startsWith("add"))
 		{
 			saveClanPresentation(event, npc, player);
-			showMoreClanInfo("moreinfo_" + player.getClan().getClanId(), npc, player);
+			showMoreClanInfo("moreinfo_" + player.getClan().getId(), npc, player);
 			
 		}
 		else if (event.startsWith("moreinfo_"))
@@ -107,7 +107,7 @@ public class ClanSearcher extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		if (player.getQuestState(getName()) == null)
 		{
 			newQuestState(player);
@@ -225,7 +225,7 @@ public class ClanSearcher extends Quest
 				smallClanInfo = smallClanInfo.replaceAll("<", "");
 				smallClanInfo = smallClanInfo.replaceAll(">", "");
 				smallClanInfo = smallClanInfo.replaceAll("bypass", "");
-				sb.append("<tr><td align=center fixwidth=\"140\"><font color=00FFFF>" + entry.getKey().getName() + "</font></td><td align=center fixwidth=\"100\"><font color=00FFFF>" + entry.getKey().getLevel() + "</font></td><td align=center fixwidth=\"140\"><font color=00FFFF>" + entry.getKey().getLeaderName() + "</font></td><td align=center fixwidth=\"370\"><font color=00FFFF>" + smallClanInfo + "...</font><a action=\"bypass -h Quest ClanSearcher moreinfo_" + entry.getKey().getClanId() + "\">(more info)</a></td></tr>");
+				sb.append("<tr><td align=center fixwidth=\"140\"><font color=00FFFF>" + entry.getKey().getName() + "</font></td><td align=center fixwidth=\"100\"><font color=00FFFF>" + entry.getKey().getLevel() + "</font></td><td align=center fixwidth=\"140\"><font color=00FFFF>" + entry.getKey().getLeaderName() + "</font></td><td align=center fixwidth=\"370\"><font color=00FFFF>" + smallClanInfo + "...</font><a action=\"bypass -h Quest ClanSearcher moreinfo_" + entry.getKey().getId() + "\">(more info)</a></td></tr>");
 				i++;
 			}
 			while (i < 15) // Create empty clan spots for better look
@@ -274,7 +274,7 @@ public class ClanSearcher extends Quest
 				else
 				{
 					// Player isn't in a clan, give him invitation request button
-					sb.append("<tr><td align=center height=20><a action=\"bypass -h Quest ClanSearcher requestjoin_" + clan.getClanId() + "\">Send invitation request</a></td></tr>");
+					sb.append("<tr><td align=center height=20><a action=\"bypass -h Quest ClanSearcher requestjoin_" + clan.getId() + "\">Send invitation request</a></td></tr>");
 				}
 				sb.append("<tr><td align=center height=30><a action=\"bypass -h Quest ClanSearcher show_list\">Back</a></td></tr>");
 				sb.append("</table>");
@@ -489,14 +489,14 @@ public class ClanSearcher extends Quest
 				if ((entry.getValue() - (UPDATE_TIME * 60000)) < 1)
 				{
 					PreparedStatement statement = c.prepareStatement("UPDATE clan_search SET timeleft=0,visible=0 WHERE clanId=?");
-					statement.setInt(1, entry.getKey().getClanId());
+					statement.setInt(1, entry.getKey().getId());
 					statement.execute();
 				}
 				else
 				{
 					PreparedStatement statement = c.prepareStatement("UPDATE clan_search SET timeleft=? WHERE clanId=?");
 					statement.setInt(1, entry.getValue() - (UPDATE_TIME * 60000));
-					statement.setInt(2, entry.getKey().getClanId());
+					statement.setInt(2, entry.getKey().getId());
 					statement.execute();
 				}
 			}

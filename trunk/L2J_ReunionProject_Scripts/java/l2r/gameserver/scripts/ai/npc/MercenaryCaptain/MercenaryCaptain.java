@@ -80,7 +80,7 @@ public class MercenaryCaptain extends AbstractNpcAI
 		{
 			for (TerritoryNPCSpawn spawn : terr.getSpawnList())
 			{
-				if (NPCS.keySet().contains(spawn.getNpcId()))
+				if (NPCS.keySet().contains(spawn.getId()))
 				{
 					startQuestTimer("say", DELAY, spawn.getNpc(), null, true);
 				}
@@ -120,7 +120,7 @@ public class MercenaryCaptain extends AbstractNpcAI
 				{
 					final String type = st.nextToken();
 					final int price = (type.equals("3")) ? TerritoryWarManager.MINTWBADGEFORBIGSTRIDER : TerritoryWarManager.MINTWBADGEFORSTRIDERS;
-					final int badgeId = NPCS.get(npc.getNpcId());
+					final int badgeId = NPCS.get(npc.getId());
 					if (getQuestItemsCount(player, badgeId) < price)
 					{
 						return "36481-07.html";
@@ -220,7 +220,7 @@ public class MercenaryCaptain extends AbstractNpcAI
 		}
 		else
 		{
-			htmltext = (npc.getCastle().getSiege().getIsInProgress() || TerritoryWarManager.getInstance().isTWInProgress()) ? "36481-06.html" : npc.getNpcId() + "-01.html";
+			htmltext = (npc.getCastle().getSiege().getIsInProgress() || TerritoryWarManager.getInstance().isTWInProgress()) ? "36481-06.html" : npc.getId() + "-01.html";
 		}
 		return htmltext;
 	}

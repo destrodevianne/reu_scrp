@@ -153,7 +153,7 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 			return htmltext;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == RAFFORTY)
 		{

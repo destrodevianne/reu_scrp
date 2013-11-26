@@ -486,7 +486,7 @@ public class CastleChamberlain extends AbstractNpcAI
 					}
 					else
 					{
-						htmltext = npc.getNpcId() + "-du.html";
+						htmltext = npc.getId() + "-du.html";
 					}
 				}
 				else
@@ -583,7 +583,7 @@ public class CastleChamberlain extends AbstractNpcAI
 					}
 					else
 					{
-						htmltext = npc.getNpcId() + "-tu.html";
+						htmltext = npc.getId() + "-tu.html";
 					}
 				}
 				else
@@ -883,7 +883,7 @@ public class CastleChamberlain extends AbstractNpcAI
 				}
 				else
 				{
-					htmltext = npc.getNpcId() + "-d.html";
+					htmltext = npc.getId() + "-d.html";
 				}
 				break;
 			}
@@ -1026,7 +1026,7 @@ public class CastleChamberlain extends AbstractNpcAI
 				}
 				else
 				{
-					htmltext = npc.getNpcId() + "-t" + castle.getFunction(Castle.FUNC_TELEPORT).getLvl() + ".html";
+					htmltext = npc.getId() + "-t" + castle.getFunction(Castle.FUNC_TELEPORT).getLvl() + ".html";
 				}
 				break;
 			}
@@ -1038,9 +1038,9 @@ public class CastleChamberlain extends AbstractNpcAI
 					final L2TeleportLocation list = TeleportLocationTable.getInstance().getTemplate(locId);
 					if (list != null)
 					{
-						if (takeItems(player, list.getItemId(), list.getPrice()))
+						if (takeItems(player, list.getId(), list.getPrice()))
 						{
-							player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ());
+							player.teleToLocation(list.getX(), list.getY(), list.getZ());
 						}
 					}
 				}
@@ -1171,7 +1171,7 @@ public class CastleChamberlain extends AbstractNpcAI
 				if (isOwner(player, npc) && player.hasClanPrivilege(L2Clan.CP_CS_USE_FUNCTIONS))
 				{
 					final NpcHtmlMessage html = getHtmlPacket(player, npc, "chamberlain-22.html");
-					html.replace("%npcId%", Integer.toString(npc.getNpcId()));
+					html.replace("%npcId%", Integer.toString(npc.getId()));
 					player.sendPacket(html);
 				}
 				else

@@ -33,7 +33,7 @@ public class Q00693_DefeatingDragonkinRemnants extends Quest
 		{
 			return htmltext;
 		}
-		if (npc.getNpcId() == EDRIC)
+		if (npc.getId() == EDRIC)
 		{
 			if (event.equalsIgnoreCase("32527-05.htm"))
 			{
@@ -55,7 +55,7 @@ public class Q00693_DefeatingDragonkinRemnants extends Quest
 		{
 			return htmltext;
 		}
-		if (npc.getNpcId() == EDRIC)
+		if (npc.getId() == EDRIC)
 		{
 			if (player.getLevel() < 75)
 			{

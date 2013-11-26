@@ -68,7 +68,7 @@ public class NoMovingNpcs extends AbstractNpcAI
 		// set mobs not random walk on start server
 		for (L2Object obj : L2World.getInstance().getAllVisibleObjectsArray())
 		{
-			if ((obj instanceof L2Npc) && contains(NO_MOVING_NPCS_LIST, ((L2Npc) obj).getNpcId()))
+			if ((obj instanceof L2Npc) && contains(NO_MOVING_NPCS_LIST, ((L2Npc) obj).getId()))
 			{
 				((L2Npc) obj).setIsImmobilized(true);
 			}
@@ -80,7 +80,7 @@ public class NoMovingNpcs extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (contains(NO_MOVING_NPCS_LIST, npc.getNpcId()))
+		if (contains(NO_MOVING_NPCS_LIST, npc.getId()))
 		{
 			npc.setIsImmobilized(true);
 		}

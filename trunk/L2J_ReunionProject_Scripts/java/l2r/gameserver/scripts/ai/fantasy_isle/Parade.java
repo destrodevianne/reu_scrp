@@ -22,7 +22,7 @@ import javolution.util.FastList;
 import l2r.gameserver.GameTimeController;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -430,7 +430,7 @@ public class Parade extends AbstractNpcAI
 					int[] start = START[route][i];
 					int[] goal = GOAL[route][i];
 					L2Npc actor = addSpawn(npcId, start[0], start[1], start[2], start[3], false, 0);
-					actor.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(goal[0], goal[1], goal[2], goal[3]));
+					actor.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(goal[0], goal[1], goal[2], goal[3]));
 					spawns.add(actor);// TODO:NPE
 				}
 			}
@@ -456,9 +456,9 @@ public class Parade extends AbstractNpcAI
 						}
 						else if (!actor.isMoving())
 						{
-							actor.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(actor.getXdestination(), actor.getYdestination(), actor.getZdestination(), actor.getHeading()));
-							_log.info("__BASENAME__:__LINE__: " + actor.getNpcId() + " " + actor.getX() + "," + actor.getY() + "," + actor.getZ() + "," + actor.getHeading() + " -> " + actor.getXdestination() + "," + actor.getYdestination() + "," + actor.getZdestination() + " " + (actor.hasAI() ? actor.getAI().getIntention().name() : "NOAI"));
-							actor.broadcastPacket(new NpcSay(actor.getObjectId(), 0, actor.getNpcId(), actor.getNpcId() + "/" + actor.getXdestination() + "," + actor.getYdestination() + "," + actor.getZdestination()));
+							actor.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(actor.getXdestination(), actor.getYdestination(), actor.getZdestination(), actor.getHeading()));
+							_log.info("__BASENAME__:__LINE__: " + actor.getId() + " " + actor.getX() + "," + actor.getY() + "," + actor.getZ() + "," + actor.getHeading() + " -> " + actor.getXdestination() + "," + actor.getYdestination() + "," + actor.getZdestination() + " " + (actor.hasAI() ? actor.getAI().getIntention().name() : "NOAI"));
+							actor.broadcastPacket(new NpcSay(actor.getObjectId(), 0, actor.getId(), actor.getId() + "/" + actor.getXdestination() + "," + actor.getYdestination() + "," + actor.getZdestination()));
 						}
 					}
 					if (spawns.size() == 0)

@@ -25,6 +25,7 @@ import l2r.Config;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GrandBossManager;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.StatsSet;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
@@ -59,6 +60,10 @@ public class QueenAnt extends AbstractNpcAI
 		GUARD,
 		ROYAL
 	};
+	
+	private static final Location OUST_LOC_1 = new Location(-19480, 187344, -5600);
+	private static final Location OUST_LOC_2 = new Location(-17928, 180912, -5520);
+	private static final Location OUST_LOC_3 = new Location(-23808, 182368, -5600);
 	
 	private static final int QUEEN_X = -21610;
 	private static final int QUEEN_Y = 181594;
@@ -131,15 +136,15 @@ public class QueenAnt extends AbstractNpcAI
 		GrandBossManager.getInstance().addBoss(npc);
 		if (getRandom(100) < 33)
 		{
-			_zone.movePlayersTo(-19480, 187344, -5600);
+			_zone.movePlayersTo(OUST_LOC_1);
 		}
 		else if (getRandom(100) < 50)
 		{
-			_zone.movePlayersTo(-17928, 180912, -5520);
+			_zone.movePlayersTo(OUST_LOC_2);
 		}
 		else
 		{
-			_zone.movePlayersTo(-23808, 182368, -5600);
+			_zone.movePlayersTo(OUST_LOC_3);
 		}
 		GrandBossManager.getInstance().addBoss(npc);
 		startQuestTimer("action", 10000, npc, null, true);
@@ -222,7 +227,7 @@ public class QueenAnt extends AbstractNpcAI
 	public String onSpawn(L2Npc npc)
 	{
 		final L2MonsterInstance mob = (L2MonsterInstance) npc;
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case LARVA:
 				mob.setIsImmobilized(true);
@@ -322,7 +327,7 @@ public class QueenAnt extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == QUEEN)
 		{
 			npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));

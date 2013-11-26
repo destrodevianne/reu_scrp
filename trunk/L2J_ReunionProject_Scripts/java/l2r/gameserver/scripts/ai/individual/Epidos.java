@@ -93,7 +93,7 @@ public class Epidos extends AbstractNpcAI
 				
 				for (int i = 0; i < minionsCount; i++)
 				{
-					MinionList.spawnMinion((L2MonsterInstance) npc, MINIONS[Arrays.binarySearch(EPIDOSES, npc.getNpcId())]);
+					MinionList.spawnMinion((L2MonsterInstance) npc, MINIONS[Arrays.binarySearch(EPIDOSES, npc.getId())]);
 				}
 				
 				_lastHp.put(npc.getObjectId(), npc.getCurrentHp());

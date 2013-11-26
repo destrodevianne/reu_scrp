@@ -83,7 +83,7 @@ public class Q10271_TheEnvelopingDarkness extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case ORBYU:
 				switch (st.getState())

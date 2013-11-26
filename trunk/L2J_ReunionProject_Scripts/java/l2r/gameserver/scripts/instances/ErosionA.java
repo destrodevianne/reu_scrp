@@ -1096,7 +1096,7 @@ public class ErosionA extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
@@ -1119,7 +1119,7 @@ public class ErosionA extends Quest
 		{
 			final HEWorld world = (HEWorld) tmpworld;
 			
-			if (npc.getNpcId() == 18668)
+			if (npc.getId() == 18668)
 			{
 				for (int i = 0; i < Rnd.get(1, 4); i++)
 				{
@@ -1164,7 +1164,7 @@ public class ErosionA extends Quest
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (Util.contains(NOTMOVE, npc.getNpcId()))
+		if (Util.contains(NOTMOVE, npc.getId()))
 		{
 			npc.setIsNoRndWalk(true);
 			npc.setIsImmobilized(true);
@@ -1174,7 +1174,7 @@ public class ErosionA extends Quest
 		if (tmpworld instanceof HEWorld)
 		{
 			HEWorld world = (HEWorld) tmpworld;
-			if (npc.getNpcId() == TUMOR)
+			if (npc.getId() == TUMOR)
 			{
 				world.addTumorCount(1);
 				if ((world.tumorCount == 4) && (world.cohemenes != null))
@@ -1187,7 +1187,7 @@ public class ErosionA extends Quest
 				}
 			}
 			
-			if (npc.getNpcId() == DEADTUMOR)
+			if (npc.getId() == DEADTUMOR)
 			{
 				world.addTag(1);
 			}
@@ -1203,7 +1203,7 @@ public class ErosionA extends Quest
 		{
 			HEWorld world = (HEWorld) tmpworld;
 			Location loc = npc.getLocation();
-			if (npc.getNpcId() == TUMOR)
+			if (npc.getId() == TUMOR)
 			{
 				world.addTumorCount(-1);
 				((L2MonsterInstance) npc).dropItem(player, 13797, Rnd.get(2, 5));
@@ -1222,13 +1222,13 @@ public class ErosionA extends Quest
 					broadCastPacket(world, new ExShowScreenMessage(NpcStringId.ALL_THE_TUMORS_INSIDE_S1_HAVE_BEEN_DESTROYED_DRIVEN_INTO_A_CORNER_COHEMENES_APPEARS_CLOSE_BY, 2, 8000));
 					int[] spawn = COHEMENES_SPAWN[Rnd.get(0, COHEMENES_SPAWN.length - 1)];
 					L2Npc n = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
-					n.broadcastPacket(new NpcSay(n.getObjectId(), Say2.SHOUT, n.getNpcId(), NpcStringId.CMON_CMON_SHOW_YOUR_FACE_YOU_LITTLE_RATS_LET_ME_SEE_WHAT_THE_DOOMED_WEAKLINGS_ARE_SCHEMING));
+					n.broadcastPacket(new NpcSay(n.getObjectId(), Say2.SHOUT, n.getId(), NpcStringId.CMON_CMON_SHOW_YOUR_FACE_YOU_LITTLE_RATS_LET_ME_SEE_WHAT_THE_DOOMED_WEAKLINGS_ARE_SCHEMING));
 					world.cohemenes = n;
 				}
 			}
-			if (npc.getNpcId() == COHEMENES)
+			if (npc.getId() == COHEMENES)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getNpcId(), NpcStringId.KEU_I_WILL_LEAVE_FOR_NOW_BUT_DONT_THINK_THIS_IS_OVER_THE_SEED_OF_INFINITY_CAN_NEVER_DIE));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getId(), NpcStringId.KEU_I_WILL_LEAVE_FOR_NOW_BUT_DONT_THINK_THIS_IS_OVER_THE_SEED_OF_INFINITY_CAN_NEVER_DIE));
 				for (int objId : world.getAllowed())
 				{
 					L2PcInstance pl = L2World.getInstance().getPlayer(objId);
@@ -1246,7 +1246,7 @@ public class ErosionA extends Quest
 				SoIManager.notifyCohemenesKill();
 			}
 			
-			if (npc.getNpcId() == 18711)
+			if (npc.getId() == 18711)
 			{
 				tumorRespawnTime += 10 * 1000;
 			}

@@ -56,8 +56,8 @@ public class HolyBrazier extends AbstractNpcAI
 	public String onSpawn(L2Npc npc)
 	{
 		System.out.println("******* onSpawn *******");
-		System.out.println("npc = " + npc.getNpcId());
-		if (npc.getNpcId() == HolyBrazier)
+		System.out.println("npc = " + npc.getId());
+		if (npc.getId() == HolyBrazier)
 		{
 			System.out.println("******* HolyBrazier *******");
 			_brazier = npc;
@@ -72,7 +72,7 @@ public class HolyBrazier extends AbstractNpcAI
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (npc.getNpcId() == GuardianOfTheGrail && !npc.isInCombat() && npc.getTarget() == null)
+		if (npc.getId() == GuardianOfTheGrail && !npc.isInCombat() && npc.getTarget() == null)
 		{
 			npc.setIsNoRndWalk(true);
 		}
@@ -82,12 +82,12 @@ public class HolyBrazier extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == GuardianOfTheGrail)
+		if (npc.getId() == GuardianOfTheGrail)
 		{
 			_guard = null;
 			spawnGuard(npc);
 		}
-		else if (npc.getNpcId() == HolyBrazier)
+		else if (npc.getId() == HolyBrazier)
 		{
 			if (_guard != null)
 			{

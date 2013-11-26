@@ -271,7 +271,7 @@ public class Q00702_ATrapForRevenge extends Quest
 		}
 		final QuestState st = partyMember.getQuestState(getName());
 		final int chance = getRandom(1000);
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case 22612:
 				if (chance < 413)
@@ -368,7 +368,7 @@ public class Q00702_ATrapForRevenge extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == PLENOS)
+		if (npc.getId() == PLENOS)
 		{
 			switch (st.getState())
 			{
@@ -383,7 +383,7 @@ public class Q00702_ATrapForRevenge extends Quest
 		}
 		if (st.getState() == State.STARTED)
 		{
-			if (npc.getNpcId() == LEKON)
+			if (npc.getId() == LEKON)
 			{
 				switch (st.getCond())
 				{
@@ -395,7 +395,7 @@ public class Q00702_ATrapForRevenge extends Quest
 						break;
 				}
 			}
-			else if (npc.getNpcId() == TENIUS)
+			else if (npc.getId() == TENIUS)
 			{
 				switch (st.getCond())
 				{

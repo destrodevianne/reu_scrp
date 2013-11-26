@@ -31,7 +31,7 @@ public class Darnel extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == DARNEL)
 			addSpawn(32279, 152761, 145950, -12588, 0, false, 0, false, player.getInstanceId());

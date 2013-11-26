@@ -70,7 +70,7 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 			}
 			return null;
 		}
-		else if (npc.getNpcId() == Wood)
+		else if (npc.getId() == Wood)
 		{
 			if (event.equalsIgnoreCase("32593-05.htm"))
 			{
@@ -79,7 +79,7 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 				st.playSound("ItemSound.quest_accept");
 			}
 		}
-		else if (npc.getNpcId() == Franz)
+		else if (npc.getId() == Franz)
 		{
 			if (event.equalsIgnoreCase("32597-08.htm"))
 			{
@@ -87,7 +87,7 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 		}
-		else if (npc.getNpcId() == Hardin)
+		else if (npc.getId() == Hardin)
 		{
 			if (event.equalsIgnoreCase("30832-02.html"))
 			{
@@ -95,7 +95,7 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 		}
-		else if (npc.getNpcId() == Elcadia)
+		else if (npc.getId() == Elcadia)
 		{
 			if (event.equalsIgnoreCase("32784-03.html"))
 			{
@@ -141,7 +141,7 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 		{
 			return htmltext;
 		}
-		else if (npc.getNpcId() == Wood)
+		else if (npc.getId() == Wood)
 		{
 			if (st.getState() == State.COMPLETED)
 				htmltext = "32593-02.htm";
@@ -154,14 +154,14 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 			else if (st.getInt("cond") >= 1)
 				htmltext = "32593-07.html";
 		}
-		else if (npc.getNpcId() == Franz)
+		else if (npc.getId() == Franz)
 		{
 			if (st.getInt("cond") == 1)
 				htmltext = "32597-01.htm";
 			else if (st.getInt("cond") == 2)
 				htmltext = "32597-03.html";
 		}
-		else if (npc.getNpcId() == Elcadia)
+		else if (npc.getId() == Elcadia)
 		{
 			if (st.getInt("cond") == 2)
 			{
@@ -202,7 +202,7 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 				}
 			}
 		}
-		else if (npc.getNpcId() == Hardin)
+		else if (npc.getId() == Hardin)
 		{
 			if (st.getInt("cond") == 7)
 				htmltext = "30832-01.html";
@@ -217,18 +217,18 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 	{
 		QuestState st = player.getQuestState(getName());
 		
-		if (st != null && st.getInt("cond") == 3 && Util.contains(Mobs, npc.getNpcId()) && st.getQuestItemsCount(Elcadias_Mark) < 10 && st.getQuestItemsCount(Elcadias_Mark) != 9)
+		if (st != null && st.getInt("cond") == 3 && Util.contains(Mobs, npc.getId()) && st.getQuestItemsCount(Elcadias_Mark) < 10 && st.getQuestItemsCount(Elcadias_Mark) != 9)
 		{
 			st.giveItems(Elcadias_Mark, 1);
 			st.playSound("ItemSound.quest_middle");
 		}
-		else if (st != null && st.getInt("cond") == 3 && Util.contains(Mobs, npc.getNpcId()) && st.getQuestItemsCount(Elcadias_Mark) >= 9)
+		else if (st != null && st.getInt("cond") == 3 && Util.contains(Mobs, npc.getId()) && st.getQuestItemsCount(Elcadias_Mark) >= 9)
 		{
 			st.giveItems(Elcadias_Mark, 1);
 			st.playSound("ItemSound.quest_middle");
 			st.set("cond", "4");
 		}
-		else if (st != null && st.getInt("cond") == 5 && npc.getNpcId() == 27422)
+		else if (st != null && st.getInt("cond") == 5 && npc.getId() == 27422)
 		{
 			int instanceid = npc.getInstanceId();
 			InstanceHolder holder = instanceWorlds.get(instanceid);

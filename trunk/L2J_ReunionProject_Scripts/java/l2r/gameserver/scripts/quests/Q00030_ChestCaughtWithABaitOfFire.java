@@ -93,7 +93,7 @@ public class Q00030_ChestCaughtWithABaitOfFire extends Quest
 			return htmltext;
 		}
 		
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		
 		switch (st.getState())
 		{

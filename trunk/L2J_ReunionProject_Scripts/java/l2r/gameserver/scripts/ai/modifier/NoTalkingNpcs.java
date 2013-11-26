@@ -27,7 +27,7 @@ public class NoTalkingNpcs extends AbstractNpcAI
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (contains(NO_TALKING_LIST, npc.getNpcId()))
+		if (contains(NO_TALKING_LIST, npc.getId()))
 		{
 			return "skipNextAction";
 		}

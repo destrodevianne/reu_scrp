@@ -43,7 +43,7 @@ public class WarriorMonk extends AbstractNpcAI
 		{
 			if (Rnd.get(100) > 50)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Brother " + player.getName() + ", move your weapon away!!"));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Brother " + player.getName() + ", move your weapon away!!"));
 			}
 		}
 		else
@@ -62,7 +62,7 @@ public class WarriorMonk extends AbstractNpcAI
 			{
 				if (player.getActiveWeaponItem() != null)
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Brother " + player.getName() + ", move your weapon away!!"));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Brother " + player.getName() + ", move your weapon away!!"));
 					((L2Attackable) npc).addDamageHate(player, 0, 999);
 					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 				}
@@ -81,7 +81,7 @@ public class WarriorMonk extends AbstractNpcAI
 	{
 		if (player.getActiveWeaponItem() != null)
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Brother " + player.getName() + ", move your weapon away!!"));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Brother " + player.getName() + ", move your weapon away!!"));
 			((L2Attackable) npc).addDamageHate(player, 0, 999);
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 		}

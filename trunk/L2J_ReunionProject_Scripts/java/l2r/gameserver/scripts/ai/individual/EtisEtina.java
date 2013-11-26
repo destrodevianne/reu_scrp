@@ -40,7 +40,7 @@ public class EtisEtina extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == ETIS)
+		if (npc.getId() == ETIS)
 		{
 			int maxHp = npc.getMaxHp();
 			double nowHp = npc.getStatus().getCurrentHp();

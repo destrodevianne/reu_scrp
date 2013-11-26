@@ -33,7 +33,7 @@ public class DeluLizardmanSpecialCommander extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == DELU_LIZARDMAN_SPECIAL_COMMANDER)
+		if (npc.getId() == DELU_LIZARDMAN_SPECIAL_COMMANDER)
 		{
 			if (npc.getAI().getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
 			{

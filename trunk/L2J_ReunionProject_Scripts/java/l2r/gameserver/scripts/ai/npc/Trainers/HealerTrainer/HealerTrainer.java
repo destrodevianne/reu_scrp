@@ -77,7 +77,7 @@ public class HealerTrainer extends AbstractNpcAI
 			{
 				if (!npc.getTemplate().canTeach(player.getClassId()))
 				{
-					htmltext = npc.getNpcId() + "-noteach.html";
+					htmltext = npc.getId() + "-noteach.html";
 					break;
 				}
 				if ((player.getLevel() < MIN_LEVEL) || (player.getClassId().level() < MIN_CLASS_LEVEL))

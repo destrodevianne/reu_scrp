@@ -62,7 +62,7 @@ public class Q00423_TakeYourBestShot extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == _johnny)
+		if (npc.getId() == _johnny)
 		{
 			if (event.equalsIgnoreCase("32744-04.htm"))
 			{
@@ -88,7 +88,7 @@ public class Q00423_TakeYourBestShot extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == _johnny)
+		if (npc.getId() == _johnny)
 		{
 			switch (st.getState())
 			{
@@ -122,7 +122,7 @@ public class Q00423_TakeYourBestShot extends Quest
 					break;
 			}
 		}
-		else if (npc.getNpcId() == _batracos)
+		else if (npc.getId() == _batracos)
 		{
 			if (st.getState() == State.CREATED)
 			{
@@ -160,7 +160,7 @@ public class Q00423_TakeYourBestShot extends Quest
 			st = newQuestState(player);
 		}
 		
-		if (npc.isInsideRadius(96782, 85918, 100, true))
+		if (npc.isInsideRadius(96782, 85918, 0, 100, false, true))
 		{
 			return "32740-ugoros.htm";
 		}
@@ -176,12 +176,12 @@ public class Q00423_TakeYourBestShot extends Quest
 			return null;
 		}
 		
-		if (Util.contains(_mobs, npc.getNpcId()) && (getRandom(1000) <= _spawn_chance))
+		if (Util.contains(_mobs, npc.getId()) && (getRandom(1000) <= _spawn_chance))
 		{
 			L2Npc guard = addSpawn(_tanta_guard, npc, false);
 			attackPlayer((L2Attackable) guard, player);
 		}
-		else if ((npc.getNpcId() == _tanta_guard) && (st.getInt("cond") == 1))
+		else if ((npc.getId() == _tanta_guard) && (st.getInt("cond") == 1))
 		{
 			st.set("cond", "2");
 			st.playSound("ItemSound.quest_middle");

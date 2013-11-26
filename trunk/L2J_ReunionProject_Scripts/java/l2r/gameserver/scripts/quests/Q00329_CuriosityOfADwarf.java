@@ -104,7 +104,7 @@ public final class Q00329_CuriosityOfADwarf extends Quest
 		if ((st != null) && Util.checkIfInRange(1500, npc, killer, true))
 		{
 			final int rnd = getRandom(100);
-			for (ItemHolder drop : MONSTER_DROPS.get(npc.getNpcId()))
+			for (ItemHolder drop : MONSTER_DROPS.get(npc.getId()))
 			{
 				if (rnd < drop.getCount())
 				{

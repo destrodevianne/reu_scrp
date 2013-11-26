@@ -71,14 +71,13 @@ public final class Q00512_BladeUnderFoot extends Quest
 		
 		public long getReEnterTime()
 		{
-			String tmp = GlobalVariablesManager.getInstance().getStoredVariable("Castle_dungeon_" + Integer.toString(_wardenId));
-			
-			return tmp == null ? 0 : Long.parseLong(tmp);
+			long tmp = GlobalVariablesManager.getInstance().getLong("Castle_dungeon_" + Integer.toString(_wardenId), 0);
+			return tmp;
 		}
 		
 		public void setReEnterTime(long time)
 		{
-			GlobalVariablesManager.getInstance().storeVariable("Castle_dungeon_" + Integer.toString(_wardenId), Long.toString(time));
+			GlobalVariablesManager.getInstance().set("Castle_dungeon_" + Integer.toString(_wardenId), time);
 		}
 	}
 	
@@ -268,7 +267,7 @@ public final class Q00512_BladeUnderFoot extends Quest
 	private String checkCastleCondition(L2PcInstance player, L2Npc npc, boolean isEnter)
 	{
 		Castle castle = npc.getCastle();
-		CastleDungeon dungeon = _castleDungeons.get(npc.getNpcId());
+		CastleDungeon dungeon = _castleDungeons.get(npc.getId());
 		boolean haveContract = false;
 		
 		if ((player == null) || (castle == null) || (dungeon == null))
@@ -352,7 +351,7 @@ public final class Q00512_BladeUnderFoot extends Quest
 			tele[0] = 12188;
 			tele[1] = -48770;
 			tele[2] = -3008;
-			return enterInstance(player, "castledungeon.xml", tele, _castleDungeons.get(npc.getNpcId()), checkCastleCondition(player, npc, true));
+			return enterInstance(player, "castledungeon.xml", tele, _castleDungeons.get(npc.getId()), checkCastleCondition(player, npc, true));
 		}
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
@@ -390,7 +389,7 @@ public final class Q00512_BladeUnderFoot extends Quest
 		}
 		else if (st != null)
 		{
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			int cond = 0;
 			if (st.getState() == State.CREATED)
 			{
@@ -463,15 +462,15 @@ public final class Q00512_BladeUnderFoot extends Quest
 		if (tmpworld instanceof CAUWorld)
 		{
 			CAUWorld world = (CAUWorld) tmpworld;
-			if (Util.contains(RAIDS3, npc.getNpcId()))
+			if (Util.contains(RAIDS3, npc.getId()))
 			{
 				if (player.getParty() != null)
 				{
-					rewardParty(player.getParty(), npc.getNpcId());
+					rewardParty(player.getParty(), npc.getId());
 				}
 				else
 				{
-					rewardPlayer(player, npc.getNpcId());
+					rewardPlayer(player, npc.getId());
 				}
 				
 				Instance instanceObj = InstanceManager.getInstance().getInstance(world.getInstanceId());

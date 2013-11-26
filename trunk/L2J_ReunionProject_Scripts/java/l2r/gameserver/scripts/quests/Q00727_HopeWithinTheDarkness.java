@@ -77,14 +77,13 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 		
 		public long getReEnterTime()
 		{
-			String tmp = GlobalVariablesManager.getInstance().getStoredVariable("Castle_dungeon_" + Integer.toString(_wardenId));
-			
-			return tmp == null ? 0 : Long.parseLong(tmp);
+			long tmp = GlobalVariablesManager.getInstance().getLong("Castle_dungeon_" + Integer.toString(_wardenId), 0);
+			return tmp;
 		}
 		
 		public void setReEnterTime(long time)
 		{
-			GlobalVariablesManager.getInstance().storeVariable("Castle_dungeon_" + Integer.toString(_wardenId), Long.toString(time));
+			GlobalVariablesManager.getInstance().set("Castle_dungeon_" + Integer.toString(_wardenId), time);
 		}
 	}
 	
@@ -430,7 +429,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 		}
 		
 		Castle castle = npc.getCastle();
-		CastleDungeon dungeon = _castleDungeons.get(npc.getNpcId());
+		CastleDungeon dungeon = _castleDungeons.get(npc.getId());
 		boolean haveContract = false;
 		
 		if ((player == null) || (castle == null) || (dungeon == null))
@@ -703,14 +702,14 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 					for (L2Npc _npc : inst.getNpcs())
 					{
 						
-						if ((_npc != null) && ((_npc.getNpcId() >= NPC_KNIGHT) && (_npc.getNpcId() <= NPC_WARRIOR)))
+						if ((_npc != null) && ((_npc.getId() >= NPC_KNIGHT) && (_npc.getId() <= NPC_WARRIOR)))
 						{
 							cancelQuestTimer("check_for_foes", _npc, null);
 							cancelQuestTimer("buff", _npc, null);
 							
-							if (_npc.getNpcId() == NPC_KNIGHT)
+							if (_npc.getId() == NPC_KNIGHT)
 							{
-								_npc.broadcastPacket(new NpcSay(_npc.getObjectId(), Say2.SHOUT, _npc.getNpcId(), NPC_WIN_FSTRINGID));
+								_npc.broadcastPacket(new NpcSay(_npc.getObjectId(), Say2.SHOUT, _npc.getId(), NPC_WIN_FSTRINGID));
 							}
 						}
 					}
@@ -762,7 +761,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 			
 			// htmltext = checkEnterConditions(player, npc);
 			
-			return enterInstance(player, "Castlepailaka.xml", tele, _castleDungeons.get(npc.getNpcId()), checkEnterConditions(player, npc));
+			return enterInstance(player, "Castlepailaka.xml", tele, _castleDungeons.get(npc.getId()), checkEnterConditions(player, npc));
 		}
 		
 		else if (event.equalsIgnoreCase("suicide"))
@@ -774,7 +773,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 			{
 				for (L2Npc _npc : inst.getNpcs())
 				{
-					if ((_npc != null) && ((_npc.getNpcId() >= NPC_KNIGHT) && (_npc.getNpcId() <= NPC_WARRIOR)))
+					if ((_npc != null) && ((_npc.getId() >= NPC_KNIGHT) && (_npc.getId() <= NPC_WARRIOR)))
 					{
 						cancelQuestTimer("check_for_foes", _npc, null);
 						cancelQuestTimer("buff", _npc, null);
@@ -799,10 +798,10 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 			Collection<L2PcInstance> players = npc.getKnownList().getKnownPlayers().values();
 			for (L2PcInstance pl : players)
 			{
-				if ((pl != null) && Util.checkIfInRange(75, npc, pl, false) && (NPC_BUFFS.get(npc.getNpcId()) != null))
+				if ((pl != null) && Util.checkIfInRange(75, npc, pl, false) && (NPC_BUFFS.get(npc.getId()) != null))
 				{
 					npc.setTarget(pl);
-					npc.doCast(NPC_BUFFS.get(npc.getNpcId()).getSkill());
+					npc.doCast(NPC_BUFFS.get(npc.getId()).getSkill());
 				}
 			}
 			startQuestTimer("buff", 120000, npc, null);
@@ -882,7 +881,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 		String htmltext = Quest.getNoQuestMsg(player);
 		QuestState st = player.getQuestState(getName());
 		
-		if ((npc.getNpcId() >= NPC_KNIGHT) && (npc.getNpcId() <= NPC_WARRIOR))
+		if ((npc.getId() >= NPC_KNIGHT) && (npc.getId() <= NPC_WARRIOR))
 		{
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
 			if ((tmpworld != null) && (tmpworld instanceof CAUWorld))
@@ -902,7 +901,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 		}
 		else if (st != null)
 		{
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			int cond = 0;
 			if (st.getState() == State.CREATED)
 			{
@@ -945,15 +944,15 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
-		if ((npc.getNpcId() >= NPC_KNIGHT) && (npc.getNpcId() <= NPC_WARRIOR))
+		if ((npc.getId() >= NPC_KNIGHT) && (npc.getId() <= NPC_WARRIOR))
 		{
 			if (npc.getCurrentHp() <= (npc.getMaxHp() * 0.1))
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), NPC_INJURED_FSTRINGID[1]));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), NPC_INJURED_FSTRINGID[1]));
 			}
 			else if (npc.getCurrentHp() <= (npc.getMaxHp() * 0.4))
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), NPC_INJURED_FSTRINGID[0]));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), NPC_INJURED_FSTRINGID[0]));
 			}
 			
 			return null;
@@ -988,9 +987,9 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if ((npc.getNpcId() >= NPC_KNIGHT) && (npc.getNpcId() <= NPC_WARRIOR))
+		if ((npc.getId() >= NPC_KNIGHT) && (npc.getId() <= NPC_WARRIOR))
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), NPC_DIE_FSTRINGID[npc.getNpcId() - 36562]));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), NPC_DIE_FSTRINGID[npc.getId() - 36562]));
 			
 			// All other friendly NPC's do suicide - start timer
 			startQuestTimer("suicide", 1500, npc, null);
@@ -1003,12 +1002,12 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 		if (tmpworld instanceof CAUWorld)
 		{
 			CAUWorld world = (CAUWorld) tmpworld;
-			if (Util.contains(BOSSES, npc.getNpcId()))
+			if (Util.contains(BOSSES, npc.getId()))
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), BOSS_DIE_FSTRINGID));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), BOSS_DIE_FSTRINGID));
 			}
 			
-			if ((tmpworld.getStatus() == 3) && (Util.contains(BOSSES, npc.getNpcId()) || Util.contains(MONSTERS, npc.getNpcId())))
+			if ((tmpworld.getStatus() == 3) && (Util.contains(BOSSES, npc.getId()) || Util.contains(MONSTERS, npc.getId())))
 			{
 				world.allMonstersDead = true;
 				Instance inst = InstanceManager.getInstance().getInstance(tmpworld.getInstanceId());
@@ -1017,7 +1016,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 				{
 					for (L2Npc _npc : inst.getNpcs())
 					{
-						if ((_npc != null) && !_npc.isDead() && (Util.contains(BOSSES, _npc.getNpcId()) || Util.contains(MONSTERS, _npc.getNpcId())))
+						if ((_npc != null) && !_npc.isDead() && (Util.contains(BOSSES, _npc.getId()) || Util.contains(MONSTERS, _npc.getId())))
 						{
 							world.allMonstersDead = false;
 							break;
@@ -1045,20 +1044,20 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 	public final String onSpawn(L2Npc npc)
 	{
 		// buff players every two minutes, check for foes in aggro range
-		if ((npc.getNpcId() >= NPC_KNIGHT) && (npc.getNpcId() <= NPC_WARRIOR))
+		if ((npc.getId() >= NPC_KNIGHT) && (npc.getId() <= NPC_WARRIOR))
 		{
 			startQuestTimer("buff", 120000, npc, null);
 			startQuestTimer("check_for_foes", 120000, npc, null);
 			
-			if (npc.getNpcId() == NPC_KNIGHT)
+			if (npc.getId() == NPC_KNIGHT)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), NpcStringId.WARRIORS_HAVE_YOU_COME_TO_HELP_THOSE_WHO_ARE_IMPRISONED_HERE));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), NpcStringId.WARRIORS_HAVE_YOU_COME_TO_HELP_THOSE_WHO_ARE_IMPRISONED_HERE));
 			}
 		}
 		
-		else if (Arrays.binarySearch(BOSSES, npc.getNpcId()) >= 0)
+		else if (Arrays.binarySearch(BOSSES, npc.getId()) >= 0)
 		{
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), BOSS_SPAWN_FSTRINGID[Arrays.binarySearch(BOSSES, npc.getNpcId())]));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), BOSS_SPAWN_FSTRINGID[Arrays.binarySearch(BOSSES, npc.getId())]));
 		}
 		
 		return null;

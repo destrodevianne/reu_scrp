@@ -104,7 +104,7 @@ public final class Q00190_LostDream extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case HEAD_BLACKSMITH_KUSTO:
 			{

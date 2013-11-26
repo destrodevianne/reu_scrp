@@ -99,7 +99,7 @@ public final class Q00695_DefendtheHallofSuffering extends Quest
 				}
 				break;
 			case State.STARTED:
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case TEPIOS:
 						htmltext = "32603-01a.htm";

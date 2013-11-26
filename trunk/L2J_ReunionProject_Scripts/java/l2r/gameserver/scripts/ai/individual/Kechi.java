@@ -23,7 +23,7 @@ public class Kechi extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == KECHI)
+		if (npc.getId() == KECHI)
 		{
 			keshiStatus = 0;
 		}
@@ -45,7 +45,7 @@ public class Kechi extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == 25532)
+		if (npc.getId() == 25532)
 		{
 			int maxHp = npc.getMaxHp();
 			double nowHp = npc.getStatus().getCurrentHp();
@@ -117,7 +117,7 @@ public class Kechi extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == 25532)
+		if (npc.getId() == 25532)
 		{
 			addSpawn(32279, 154077, 149527, -12159, 0, false, 0L, false, killer.getInstanceId());
 		}

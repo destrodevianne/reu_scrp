@@ -53,7 +53,7 @@ public class HatuOtis extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int maxHp = npc.getMaxHp();
 		int nowHp = (int) npc.getStatus().getCurrentHp();
 		
@@ -81,7 +81,7 @@ public class HatuOtis extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == OTIS)
 			cancelQuestTimer("time_to_skill", npc, player);

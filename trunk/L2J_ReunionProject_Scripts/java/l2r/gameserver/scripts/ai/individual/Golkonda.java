@@ -22,7 +22,7 @@ public class Golkonda extends AbstractNpcAI
 	
 	public String onAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == GOLKONDA)
 		{
 			int z = npc.getZ();

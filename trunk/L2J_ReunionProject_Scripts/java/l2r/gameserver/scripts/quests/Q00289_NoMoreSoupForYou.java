@@ -175,7 +175,7 @@ public class Q00289_NoMoreSoupForYou extends Quest
 		int b = getRandom(18);
 		int c = getRandom(7);
 		
-		if (npc.getNpcId() == STAN)
+		if (npc.getId() == STAN)
 		{
 			if (event.equalsIgnoreCase("30200-03.htm"))
 			{
@@ -217,7 +217,7 @@ public class Q00289_NoMoreSoupForYou extends Quest
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
 		QuestState st = player.getQuestState(getName());
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if ((st == null) || (st.getState() != State.STARTED))
 		{
 			return null;
@@ -240,7 +240,7 @@ public class Q00289_NoMoreSoupForYou extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == STAN)
+		if (npc.getId() == STAN)
 		{
 			switch (st.getState())
 			{

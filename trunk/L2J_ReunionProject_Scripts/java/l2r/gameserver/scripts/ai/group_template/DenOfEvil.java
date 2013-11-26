@@ -120,7 +120,7 @@ public class DenOfEvil extends AbstractNpcAI
 			_log.warn("NPC " + npc + " spawned outside of L2EffectZone, check your zone coords! X:" + npc.getX() + " Y:" + npc.getY() + " Z:" + npc.getZ());
 			return null;
 		}
-		int skillId = getSkillIdByNpcId(npc.getNpcId());
+		int skillId = getSkillIdByNpcId(npc.getId());
 		int skillLevel = zone.getSkillLevel(skillId);
 		zone.addSkill(skillId, skillLevel + 1);
 		if (skillLevel == 3) // 3+1=4
@@ -145,7 +145,7 @@ public class DenOfEvil extends AbstractNpcAI
 			_log.warn("NPC " + npc + " killed outside of L2EffectZone, check your zone coords! X:" + npc.getX() + " Y:" + npc.getY() + " Z:" + npc.getZ());
 			return null;
 		}
-		int skillId = getSkillIdByNpcId(npc.getNpcId());
+		int skillId = getSkillIdByNpcId(npc.getId());
 		int skillLevel = zone.getSkillLevel(skillId);
 		zone.addSkill(skillId, skillLevel - 1);
 		return super.onKill(npc, killer, isSummon);
@@ -219,7 +219,7 @@ public class DenOfEvil extends AbstractNpcAI
 						{
 							// respawn eye
 							L2Npc npc = (L2Npc) character;
-							if (Util.contains(EYE_IDS, npc.getNpcId()))
+							if (Util.contains(EYE_IDS, npc.getId()))
 							{
 								ThreadPoolManager.getInstance().scheduleAi(new RespawnNewEye(npc.getLocation()), 15000);
 							}

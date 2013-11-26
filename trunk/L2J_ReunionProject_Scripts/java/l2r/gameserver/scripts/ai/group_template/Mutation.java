@@ -94,7 +94,7 @@ public class Mutation extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		if (Rnd.get(100) <= CHANCE)
 		{
 			int arrId = getContainsId(MUTATION_IDS[0], npcId);

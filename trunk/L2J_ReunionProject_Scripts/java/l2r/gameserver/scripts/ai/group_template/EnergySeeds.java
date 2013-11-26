@@ -1563,7 +1563,7 @@ public class EnergySeeds extends AbstractNpcAI
 			{
 				int itemId = 0;
 				
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case 18678:
 						itemId = 14016;
@@ -1654,7 +1654,7 @@ public class EnergySeeds extends AbstractNpcAI
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == TEMPORARY_TELEPORTER)
+		if (npc.getId() == TEMPORARY_TELEPORTER)
 		{
 			player.teleToLocation(SOD_EXIT_POINT[0], SOD_EXIT_POINT[1], SOD_EXIT_POINT[2]);
 		}
@@ -4393,9 +4393,9 @@ public class EnergySeeds extends AbstractNpcAI
 			{
 				L2Spawn spawn = new L2Spawn(template);
 				spawn.setHeading(head);
-				spawn.setLocx(X);
-				spawn.setLocy(Y);
-				spawn.setLocz(Z + 20);
+				spawn.setX(X);
+				spawn.setY(Y);
+				spawn.setZ(Z + 20);
 				spawn.setAmount(spawn.getAmount() + 1);
 				return spawn.doSpawn();
 			}

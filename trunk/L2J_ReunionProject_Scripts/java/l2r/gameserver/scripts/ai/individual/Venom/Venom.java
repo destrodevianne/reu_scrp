@@ -84,9 +84,7 @@ public final class Venom extends AbstractNpcAI
 	private L2Npc _venom;
 	private final L2Npc _massymore;
 	
-	private int _venomX;
-	private int _venomY;
-	private int _venomZ;
+	private final Location _loc;
 	
 	private boolean _aggroMode = false;
 	private boolean _prisonIsOpen = false;
@@ -116,9 +114,7 @@ public final class Venom extends AbstractNpcAI
 		
 		_massymore = SpawnTable.getInstance().getFirstSpawn(DUNGEON_KEEPER).getLastSpawn();
 		_venom = SpawnTable.getInstance().getFirstSpawn(VENOM).getLastSpawn();
-		_venomX = _venom.getX();
-		_venomY = _venom.getY();
-		_venomZ = _venom.getZ();
+		_loc = _venom.getLocation();
 		_venom.disableSkill(VENOM_TELEPORT.getSkill(), 0);
 		_venom.disableSkill(RANGE_TELEPORT.getSkill(), 0);
 		_venom.doRevive();
@@ -140,7 +136,7 @@ public final class Venom extends AbstractNpcAI
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance talker)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case TELEPORT_CUBE:
 			{
@@ -151,7 +147,7 @@ public final class Venom extends AbstractNpcAI
 			{
 				if (_prisonIsOpen)
 				{
-					talker.teleToLocation(TELEPORT, 0);
+					talker.teleToLocation(TELEPORT);
 				}
 				else
 				{
@@ -180,7 +176,7 @@ public final class Venom extends AbstractNpcAI
 			case "raid_check":
 				if (!npc.isInsideZone(ZoneIdType.SIEGE) && !npc.isTeleporting())
 				{
-					npc.teleToLocation(new Location(_venomX, _venomY, _venomZ), false);
+					npc.teleToLocation(_loc);
 				}
 				break;
 			case "cube_despawn":
@@ -256,7 +252,7 @@ public final class Venom extends AbstractNpcAI
 		switch (skill.getId())
 		{
 			case 4222:
-				npc.teleToLocation(new Location(_venomX, _venomY, _venomZ), false);
+				npc.teleToLocation(_loc);
 				break;
 			case 4995:
 				teleportTarget(player);
@@ -307,7 +303,7 @@ public final class Venom extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		final double distance = Math.sqrt(npc.getPlanDistanceSq(attacker.getX(), attacker.getY()));
+		final double distance = npc.calculateDistance(attacker, false, false);
 		if (_aggroMode && (getRandom(100) < 25))
 		{
 			npc.setTarget(attacker);
@@ -369,9 +365,7 @@ public final class Venom extends AbstractNpcAI
 				cancelQuestTimer("tower_check", _venom, null);
 				break;
 		}
-		_venomX = _venom.getX();
-		_venomY = _venom.getY();
-		_venomZ = _venom.getZ();
+		_loc.setLocation(_venom.getLocation());
 	}
 	
 	private void teleportTarget(L2PcInstance player)
@@ -391,13 +385,13 @@ public final class Venom extends AbstractNpcAI
 	private int checkStatus()
 	{
 		int checkStatus = ALIVE;
-		if (GlobalVariablesManager.getInstance().isVariableStored("VenomStatus"))
+		if (GlobalVariablesManager.getInstance().hasVariable("VenomStatus"))
 		{
-			checkStatus = Integer.parseInt(GlobalVariablesManager.getInstance().getStoredVariable("VenomStatus"));
+			checkStatus = GlobalVariablesManager.getInstance().getInteger("VenomStatus");
 		}
 		else
 		{
-			GlobalVariablesManager.getInstance().storeVariable("VenomStatus", "0");
+			GlobalVariablesManager.getInstance().set("VenomStatus", 0);
 		}
 		return checkStatus;
 	}
@@ -408,7 +402,7 @@ public final class Venom extends AbstractNpcAI
 	 */
 	private void updateStatus(int status)
 	{
-		GlobalVariablesManager.getInstance().storeVariable("VenomStatus", Integer.toString(status));
+		GlobalVariablesManager.getInstance().set("VenomStatus", Integer.toString(status));
 	}
 	
 	private enum MoveTo

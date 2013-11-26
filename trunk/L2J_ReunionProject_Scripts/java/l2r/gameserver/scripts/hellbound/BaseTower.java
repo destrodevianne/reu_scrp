@@ -88,11 +88,11 @@ public class BaseTower extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case GUZEN:
 				// Should Kendal be despawned before Guzen's spawn? Or it will be crowd of Kendal's
-				addSpawn(KENDAL, npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), 0, false, npc.getSpawn().getRespawnDelay(), false);
+				addSpawn(KENDAL, npc.getSpawn().getX(), npc.getSpawn().getY(), npc.getSpawn().getZ(), 0, false, npc.getSpawn().getRespawnDelay(), false);
 				DoorTable.getInstance().getDoor(20260003).openMe();
 				DoorTable.getInstance().getDoor(20260004).openMe();
 				startQuestTimer("close", 60000, npc, null, false);

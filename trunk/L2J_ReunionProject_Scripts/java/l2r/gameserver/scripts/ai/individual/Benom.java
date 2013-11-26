@@ -30,7 +30,7 @@ public class Benom extends AbstractNpcAI
 		{
 			return super.onAttack(npc, attacker, damage, isPet);
 		}
-		if ((npc.getNpcId() == BENOM) && !npc.isCastingNow() && attacker.getClassId().isMage() && (Rnd.get(1000) < 15))
+		if ((npc.getId() == BENOM) && !npc.isCastingNow() && attacker.getClassId().isMage() && (Rnd.get(1000) < 15))
 		{
 			SkillTable.getInstance().getInfo(4996, 1);
 			try
@@ -50,7 +50,7 @@ public class Benom extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if ((npc != null) && (npc.getNpcId() == BENOM))
+		if ((npc != null) && (npc.getId() == BENOM))
 		{
 			npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 0, "\u0411\u0435\u043D\u043E\u043C", "\u041D\u0430 \u0441\u0435\u0439 \u0440\u0430\u0437 \u044F \u0432\u044B\u0445\u043E\u0436\u0443 \u0438\u0437 \u0441\u0432\u043E\u0435\u0433\u043E \u0434\u043E\u043C\u0430."));
 			npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 0, "\u0411\u0435\u043D\u043E\u043C", "\u041D\u043E \u0412\u044B \u043D\u0435 \u043C\u043E\u0436\u0435\u0442\u0435 \u0437\u0430\u0431\u0440\u0430\u0442\u044C \u044D\u0442\u043E \u0432 \u0440\u0430\u0439."));

@@ -105,7 +105,7 @@ public class Q00376_ExplorationOfTheGiantsCavePart1 extends Quest
 		final QuestState qs = getRandomPartyMemberState(player, -1, 3, npc);
 		if (qs != null)
 		{
-			giveItemRandomly(qs.getPlayer(), npc, ANCIENT_PARCHMENT, 1, 0, MOBS.get(npc.getNpcId()), true);
+			giveItemRandomly(qs.getPlayer(), npc, ANCIENT_PARCHMENT, 1, 0, MOBS.get(npc.getId()), true);
 		}
 		return super.onKill(npc, player, isSummon);
 	}

@@ -11,7 +11,6 @@ import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -171,7 +170,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (isOfficer(npc.getNpcId()))
+		if (isOfficer(npc.getId()))
 		{
 			startQuestTimer("Animate", 15000L, npc, null, true);
 		}
@@ -182,7 +181,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
 		Camp camp = null;
-		if ((isRecruit(npc.getNpcId())) || (isOfficer(npc.getNpcId())))
+		if ((isRecruit(npc.getId())) || (isOfficer(npc.getId())))
 		{
 			camp = camps.get(getCampId(npc));
 			if ((camp.officer != null) && (!camp.officer.isDead()))
@@ -226,7 +225,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (isOfficer(npcId))
 		{
@@ -247,14 +246,14 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 			for (Object element : camp.recruits)
 			{
 				mob = (L2Npc) element;
-				if (mob.getNpcId() != npcId)
+				if (mob.getId() != npcId)
 				{
 					int fearLocX = mob.getX() + (Rnd.get(800, 1200) - Rnd.get(1200));
 					int fearLocY = mob.getY() + (Rnd.get(800, 1200) - Rnd.get(1200));
 					int fearHeading = Util.calculateHeadingFrom(mob.getX(), mob.getY(), fearLocX, fearLocY);
 					mob.startFear();
 					mob.setRunning();
-					mob.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(fearLocX, fearLocY, mob.getZ(), fearHeading));
+					mob.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(fearLocX, fearLocY, mob.getZ(), fearHeading));
 					startQuestTimer("LineUpRank", 30000, mob, null);
 				}
 			}
@@ -320,7 +319,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 			if (!npc.isDead())
 			{
 				npc.setHeading(npc.getSpawn().getHeading());
-				npc.teleToLocation(npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz());
+				npc.teleToLocation(npc.getSpawn().getX(), npc.getSpawn().getY(), npc.getSpawn().getZ());
 				npc.getAttackByList().clear();
 				npc.setWalking();
 			}

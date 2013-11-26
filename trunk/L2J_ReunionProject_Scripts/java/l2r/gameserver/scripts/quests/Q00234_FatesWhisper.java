@@ -185,7 +185,7 @@ public class Q00234_FatesWhisper extends Quest
 				break;
 			case State.STARTED:
 				int cond = st.getInt("cond");
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case 31002:
 						if (cond == 1)
@@ -439,7 +439,7 @@ public class Q00234_FatesWhisper extends Quest
 		
 		if (st.getInt("cond") == 7)
 		{
-			if ((attacker.getActiveWeaponItem() != null) && (attacker.getActiveWeaponItem().getItemId() == PIPETTE_KNIFE) && (st.getQuestItemsCount(RED_PIPETTE_KNIFE) == 0))
+			if ((attacker.getActiveWeaponItem() != null) && (attacker.getActiveWeaponItem().getId() == PIPETTE_KNIFE) && (st.getQuestItemsCount(RED_PIPETTE_KNIFE) == 0))
 			{
 				st.giveItems(RED_PIPETTE_KNIFE, 1);
 				st.takeItems(PIPETTE_KNIFE, 1);
@@ -458,7 +458,7 @@ public class Q00234_FatesWhisper extends Quest
 			return null;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (CHEST_SPAWN.containsKey(Integer.valueOf(npcId)))
 		{
 			addSpawn(CHEST_SPAWN.get(Integer.valueOf(npcId)).intValue(), npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), true, 60000L, false);

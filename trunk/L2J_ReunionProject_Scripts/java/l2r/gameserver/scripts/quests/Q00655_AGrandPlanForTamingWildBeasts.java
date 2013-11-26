@@ -57,7 +57,7 @@ public class Q00655_AGrandPlanForTamingWildBeasts extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == MESSENGER)
+		if (npc.getId() == MESSENGER)
 		{
 			switch (st.getState())
 			{

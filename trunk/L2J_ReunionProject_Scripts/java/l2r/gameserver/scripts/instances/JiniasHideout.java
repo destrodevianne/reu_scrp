@@ -162,7 +162,7 @@ public class JiniasHideout extends Quest
 	{
 		String htmltext = null;
 		
-		if (event.startsWith("enterInstance_") && npc.getNpcId() == RAFFORTY)
+		if (event.startsWith("enterInstance_") && npc.getId() == RAFFORTY)
 		{
 			int questId = -1;
 			String tmpl = null;
@@ -219,7 +219,7 @@ public class JiniasHideout extends Quest
 			}
 		}
 		
-		else if (event.equalsIgnoreCase("leaveInstance") && npc.getNpcId() == JINIA)
+		else if (event.equalsIgnoreCase("leaveInstance") && npc.getId() == JINIA)
 		{
 			QuestState hostQuest = null;
 			InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
@@ -267,7 +267,7 @@ public class JiniasHideout extends Quest
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == SIRRA)
+		if (npc.getId() == SIRRA)
 		{
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 			if (tmpworld != null && tmpworld instanceof JiniasWorld)
@@ -283,7 +283,7 @@ public class JiniasHideout extends Quest
 				}
 				
 				if (msg != null)
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), msg));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), msg));
 			}
 		}
 		return null;

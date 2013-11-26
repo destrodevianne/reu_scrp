@@ -259,7 +259,7 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 				break;
 			case State.STARTED:
 				int cond = st.getInt("cond");
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case GABRIELLE:
 						if (cond == 1)
@@ -551,7 +551,7 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 			return null;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		for (int[] npcInfo : DROP_ON_ATTACK)
 		{
@@ -664,7 +664,7 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 		}
 		
 		int cond = st.getInt("cond");
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		switch (npcId)
 		{

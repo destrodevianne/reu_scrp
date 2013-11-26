@@ -154,7 +154,7 @@ public class StatusHandler implements ITelnetHandler
 			}
 			if (obj instanceof L2ItemInstance)
 			{
-				if (((L2ItemInstance) obj).getLocation() == ItemLocation.VOID)
+				if (((L2ItemInstance) obj).getItemLocation() == ItemLocation.VOID)
 				{
 					itemVoidCount++;
 				}

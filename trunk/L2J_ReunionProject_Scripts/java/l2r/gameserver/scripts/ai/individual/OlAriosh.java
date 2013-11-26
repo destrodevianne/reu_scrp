@@ -49,7 +49,7 @@ public class OlAriosh extends AbstractNpcAI
 			int objId = npc.getObjectId();
 			if (!this._spawnedGuards.containsValue(objId))
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.WHAT_ARE_YOU_DOING_HURRY_UP_AND_HELP_ME));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHAT_ARE_YOU_DOING_HURRY_UP_AND_HELP_ME));
 				_guard = addSpawn(GUARD, npc.getX() + 100, npc.getY() + 100, npc.getZ(), 0, false, 0L, false, npc.getInstanceId());
 				this._lockedSpawns.remove(Integer.valueOf(objId));
 				this._spawnedGuards.put(_guard.getObjectId(), Integer.valueOf(objId));
@@ -61,7 +61,7 @@ public class OlAriosh extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == ARIOSH)
+		if (npc.getId() == ARIOSH)
 		{
 			int objId = npc.getObjectId();
 			if (!this._spawnedGuards.containsValue(objId))
@@ -79,7 +79,7 @@ public class OlAriosh extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case GUARD:
 				this._spawnedGuards.remove(npc.getObjectId());

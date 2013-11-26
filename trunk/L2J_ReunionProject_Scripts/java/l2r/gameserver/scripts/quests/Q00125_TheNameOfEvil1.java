@@ -252,7 +252,7 @@ public class Q00125_TheNameOfEvil1 extends Quest
 		}
 		
 		final QuestState st = partyMember.getQuestState(getName());
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (ORNITHOMIMUS.containsKey(npcId))
 		{
 			if (st.getQuestItemsCount(ORNITHOMIMUS_CLAW) < 2)
@@ -295,7 +295,7 @@ public class Q00125_TheNameOfEvil1 extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case MUSHIKA:
 				switch (st.getState())

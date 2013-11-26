@@ -29,7 +29,7 @@ public class AioItemBuff implements IItemHandler
 		
 		player = (L2PcInstance) playable;
 		
-		int itemId = item.getItemId();
+		int itemId = item.getId();
 		if (itemId == AioBufferConfigs.BUFF_ITEM_ID)
 		{
 			String htmFile = "data/html/ItemBuffer/main.htm";

@@ -50,7 +50,7 @@ public class HellboundCore extends AbstractNpcAI
 		{
 			for (L2Character naia : npc.getKnownList().getKnownCharactersInRadius(900))
 			{
-				if ((naia != null) && naia.isMonster() && (((L2MonsterInstance) naia).getNpcId() == NAIA) && !naia.isDead())
+				if ((naia != null) && naia.isMonster() && (((L2MonsterInstance) naia).getId() == NAIA) && !naia.isDead())
 				{
 					naia.setTarget(npc);
 					naia.doSimultaneousCast(BEAM.getSkill());

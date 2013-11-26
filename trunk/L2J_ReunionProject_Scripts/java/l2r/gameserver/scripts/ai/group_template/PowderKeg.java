@@ -37,7 +37,7 @@ public class PowderKeg extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (Util.contains(NPC_IDS, npcId))
 		{

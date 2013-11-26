@@ -45,7 +45,7 @@ public class PaganKeys implements IItemHandler
 			return false;
 		}
 		
-		final int itemId = item.getItemId();
+		final int itemId = item.getId();
 		final L2PcInstance activeChar = (L2PcInstance) playable;
 		final L2Object target = activeChar.getTarget();
 		
@@ -79,11 +79,11 @@ public class PaganKeys implements IItemHandler
 		switch (itemId)
 		{
 			case 9698:
-				if (door.getDoorId() == 24220020)
+				if (door.getId() == 24220020)
 				{
 					if (activeChar.getInstanceId() != door.getInstanceId())
 					{
-						final L2DoorInstance instanceDoor = InstanceManager.getInstance().getInstance(activeChar.getInstanceId()).getDoor(door.getDoorId());
+						final L2DoorInstance instanceDoor = InstanceManager.getInstance().getInstance(activeChar.getInstanceId()).getDoor(door.getId());
 						if (instanceDoor != null)
 						{
 							instanceDoor.openMe();
@@ -100,11 +100,11 @@ public class PaganKeys implements IItemHandler
 				}
 				break;
 			case 9699:
-				if (door.getDoorId() == 24220022)
+				if (door.getId() == 24220022)
 				{
 					if (activeChar.getInstanceId() != door.getInstanceId())
 					{
-						final L2DoorInstance instanceDoor = InstanceManager.getInstance().getInstance(activeChar.getInstanceId()).getDoor(door.getDoorId());
+						final L2DoorInstance instanceDoor = InstanceManager.getInstance().getInstance(activeChar.getInstanceId()).getDoor(door.getId());
 						if (instanceDoor != null)
 						{
 							instanceDoor.openMe();
@@ -121,7 +121,7 @@ public class PaganKeys implements IItemHandler
 				}
 				break;
 			case 8056:
-				if ((door.getDoorId() == 23150004) || (door.getDoorId() == 23150003))
+				if ((door.getId() == 23150004) || (door.getId() == 23150003))
 				{
 					DoorTable.getInstance().getDoor(23150003).openMe();
 					DoorTable.getInstance().getDoor(23150004).openMe();

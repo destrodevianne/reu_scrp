@@ -81,7 +81,7 @@ public class DelusionChamberTeleport extends Quest
 	{
 		QuestState st = player.getQuestState(getName());
 		
-		if (npc.getNpcId() == PATHFINDER_WORKER)
+		if (npc.getId() == PATHFINDER_WORKER)
 		{
 			int townId = 0;
 			L2TownZone town = TownManager.getTown(npc.getX(), npc.getY(), npc.getZ());
@@ -96,7 +96,7 @@ public class DelusionChamberTeleport extends Quest
 			player.teleToLocation(HALL_LOCATION[rand][0], HALL_LOCATION[rand][1], HALL_LOCATION[rand][2]);
 		}
 		
-		else if (npc.getNpcId() == GUARDIAN_OF_EASTERN_SEAL)
+		else if (npc.getId() == GUARDIAN_OF_EASTERN_SEAL)
 		{
 			int townId = 0;
 			
@@ -114,7 +114,7 @@ public class DelusionChamberTeleport extends Quest
 			
 			st.exitQuest(true);
 		}
-		else if (npc.getNpcId() == GUARDIAN_OF_WESTERN_SEAL)
+		else if (npc.getId() == GUARDIAN_OF_WESTERN_SEAL)
 		{
 			int townId = 0;
 			
@@ -132,7 +132,7 @@ public class DelusionChamberTeleport extends Quest
 			
 			st.exitQuest(true);
 		}
-		else if (npc.getNpcId() == GUARDIAN_OF_SOUTHERN_SEAL)
+		else if (npc.getId() == GUARDIAN_OF_SOUTHERN_SEAL)
 		{
 			int townId = 0;
 			
@@ -150,7 +150,7 @@ public class DelusionChamberTeleport extends Quest
 			
 			st.exitQuest(true);
 		}
-		else if (npc.getNpcId() == GUARDIAN_OF_NORTHERN_SEAL)
+		else if (npc.getId() == GUARDIAN_OF_NORTHERN_SEAL)
 		{
 			int townId = 0;
 			
@@ -168,7 +168,7 @@ public class DelusionChamberTeleport extends Quest
 			
 			st.exitQuest(true);
 		}
-		else if (npc.getNpcId() == GUARDIAN_OF_GREATER_SEAL)
+		else if (npc.getId() == GUARDIAN_OF_GREATER_SEAL)
 		{
 			int townId = 0;
 			
@@ -186,7 +186,7 @@ public class DelusionChamberTeleport extends Quest
 			
 			st.exitQuest(true);
 		}
-		else if (npc.getNpcId() == GUARDIAN_OF_TOWER_OF_SEAL)
+		else if (npc.getId() == GUARDIAN_OF_TOWER_OF_SEAL)
 		{
 			int townId = 0;
 			

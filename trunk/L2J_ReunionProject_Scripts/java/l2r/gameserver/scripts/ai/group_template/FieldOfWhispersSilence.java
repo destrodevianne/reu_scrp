@@ -36,7 +36,7 @@ public class FieldOfWhispersSilence extends AbstractNpcAI
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case BRAZIER_OF_PURITY:
 				npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), NpcStringId.THE_PURIFICATION_FIELD_IS_BEING_ATTACKED_GUARDIAN_SPIRITS_PROTECT_THE_MAGIC_FORCE));
