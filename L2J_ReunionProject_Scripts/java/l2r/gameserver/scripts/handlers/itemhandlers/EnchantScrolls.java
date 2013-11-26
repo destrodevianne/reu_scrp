@@ -49,7 +49,7 @@ public class EnchantScrolls implements IItemHandler
 		}
 		
 		activeChar.setActiveEnchantItem(item);
-		activeChar.sendPacket(new ChooseInventoryItem(item.getItemId()));
+		activeChar.sendPacket(new ChooseInventoryItem(item.getId()));
 		return true;
 	}
 }

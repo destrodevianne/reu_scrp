@@ -32,10 +32,10 @@ import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.instancemanager.MapRegionManager;
 import l2r.gameserver.instancemanager.RaidBossSpawnManager;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.L2World;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -134,7 +134,7 @@ public class AdminTeleport implements IAdminCommandHandler
 				int y = Integer.parseInt(y1);
 				String z1 = st.nextToken();
 				int z = Integer.parseInt(z1);
-				L2CharPosition pos = new L2CharPosition(x, y, z, 0);
+				Location pos = new Location(x, y, z, 0);
 				activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, pos);
 			}
 			catch (Exception e)
@@ -535,7 +535,7 @@ public class AdminTeleport implements IAdminCommandHandler
 		{
 			L2Npc target = (L2Npc) obj;
 			
-			int monsterTemplate = target.getTemplate().getNpcId();
+			int monsterTemplate = target.getTemplate().getId();
 			L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(monsterTemplate);
 			if (template1 == null)
 			{
@@ -566,9 +566,9 @@ public class AdminTeleport implements IAdminCommandHandler
 				{
 					spawn.setCustom(true);
 				}
-				spawn.setLocx(activeChar.getX());
-				spawn.setLocy(activeChar.getY());
-				spawn.setLocz(activeChar.getZ());
+				spawn.setX(activeChar.getX());
+				spawn.setY(activeChar.getY());
+				spawn.setZ(activeChar.getZ());
 				spawn.setAmount(1);
 				spawn.setHeading(activeChar.getHeading());
 				spawn.setRespawnDelay(respawnTime);
@@ -587,7 +587,7 @@ public class AdminTeleport implements IAdminCommandHandler
 				
 				if (Config.DEBUG)
 				{
-					_log.info("Spawn at X=" + spawn.getLocx() + " Y=" + spawn.getLocy() + " Z=" + spawn.getLocz());
+					_log.info("Spawn at X=" + spawn.getX() + " Y=" + spawn.getY() + " Z=" + spawn.getZ());
 					_log.warn("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") moved NPC " + target.getObjectId());
 				}
 			}
@@ -606,21 +606,21 @@ public class AdminTeleport implements IAdminCommandHandler
 			if (spawn == null)
 			{
 				activeChar.sendMessage("Incorrect raid spawn.");
-				_log.warn("ERROR: NPC Id" + target.getNpcId() + " has a 'null' spawn.");
+				_log.warn("ERROR: NPC Id" + target.getId() + " has a 'null' spawn.");
 				return;
 			}
 			RaidBossSpawnManager.getInstance().deleteSpawn(spawn, true);
 			try
 			{
-				L2NpcTemplate template = NpcTable.getInstance().getTemplate(target.getNpcId());
+				L2NpcTemplate template = NpcTable.getInstance().getTemplate(target.getId());
 				L2Spawn spawnDat = new L2Spawn(template);
 				if (Config.SAVE_GMSPAWN_ON_CUSTOM)
 				{
 					spawn.setCustom(true);
 				}
-				spawnDat.setLocx(activeChar.getX());
-				spawnDat.setLocy(activeChar.getY());
-				spawnDat.setLocz(activeChar.getZ());
+				spawnDat.setX(activeChar.getX());
+				spawnDat.setY(activeChar.getY());
+				spawnDat.setZ(activeChar.getZ());
 				spawnDat.setAmount(1);
 				spawnDat.setHeading(activeChar.getHeading());
 				spawnDat.setRespawnMinDelay(43200);

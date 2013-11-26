@@ -21,7 +21,7 @@ public class ValakasMinions extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == Valakas)
+		if (npc.getId() == Valakas)
 		{
 			ValakasStatus = 0;
 		}
@@ -45,7 +45,7 @@ public class ValakasMinions extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == Valakas)
+		if (npc.getId() == Valakas)
 		{
 			final int maxHp = npc.getMaxHp();
 			final double nowHp = npc.getStatus().getCurrentHp();

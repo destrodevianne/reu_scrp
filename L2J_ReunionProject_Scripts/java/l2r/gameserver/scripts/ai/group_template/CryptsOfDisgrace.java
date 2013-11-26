@@ -116,9 +116,9 @@ public class CryptsOfDisgrace extends AbstractNpcAI
 		try
 		{
 			spawn = new L2Spawn(template1);
-			spawn.setLocx(x);
-			spawn.setLocy(y);
-			spawn.setLocz(z);
+			spawn.setX(x);
+			spawn.setY(y);
+			spawn.setZ(z);
 			spawn.setAmount(1);
 			spawn.setHeading(-1);
 			spawn.setRespawnDelay(respTime);

@@ -43,7 +43,7 @@ public class ChristmasTree implements IItemHandler
 		L2PcInstance activeChar = playable.getActingPlayer();
 		L2NpcTemplate template1 = null;
 		
-		switch (item.getItemId())
+		switch (item.getId())
 		{
 			case 5560:
 				template1 = NpcTable.getInstance().getTemplate(13006);
@@ -67,16 +67,16 @@ public class ChristmasTree implements IItemHandler
 		try
 		{
 			L2Spawn spawn = new L2Spawn(template1);
-			spawn.setLocx(target.getX());
-			spawn.setLocy(target.getY());
-			spawn.setLocz(target.getZ());
+			spawn.setX(target.getX());
+			spawn.setY(target.getY());
+			spawn.setZ(target.getZ());
 			spawn.setInstanceId(activeChar.getInstanceId());
 			L2Npc npc = spawn.spawnOne(false);
 			npc.setSummoner(activeChar);
 			
 			activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
 			
-			activeChar.sendMessage("Created " + template1.getName() + " at x: " + spawn.getLocx() + " y: " + spawn.getLocy() + " z: " + spawn.getLocz());
+			activeChar.sendMessage("Created " + template1.getName() + " at x: " + spawn.getX() + " y: " + spawn.getY() + " z: " + spawn.getZ());
 			return true;
 		}
 		catch (Exception e)

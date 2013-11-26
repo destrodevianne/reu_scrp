@@ -105,7 +105,7 @@ public class ElcadiaTent extends Quest
 		if (st == null)
 			st = newQuestState(player);
 		
-		if (npc.getNpcId() == Gruff_looking_Man)
+		if (npc.getId() == Gruff_looking_Man)
 		{
 			if (player.getQuestState("Q10292_SevenSignsGirlofDoubt") != null && player.getQuestState("Q10292_SevenSignsGirlofDoubt").getState() == State.STARTED)
 			{
@@ -137,7 +137,7 @@ public class ElcadiaTent extends Quest
 				htmltext = "32862.html";
 			}
 		}
-		if (npc.getNpcId() == Elcadia)
+		if (npc.getId() == Elcadia)
 		{
 			teleportPlayer(player, TELEPORTS[EXIT], 0);
 			return null;

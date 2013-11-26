@@ -214,7 +214,7 @@ public class PinsAndPouchUnseal extends Quest
 					int rand = getRandom(100);
 					if (rand < CHANCES[0])
 					{
-						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), NpcStringId.WHAT_A_PREDICAMENT_MY_ATTEMPTS_WERE_UNSUCCESSFUL));
+						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.WHAT_A_PREDICAMENT_MY_ATTEMPTS_WERE_UNSUCCESSFUL));
 					}
 					else if (rand < CHANCES[1])
 					{
@@ -235,12 +235,12 @@ public class PinsAndPouchUnseal extends Quest
 				}
 				else
 				{
-					htmltext = npc.getNpcId() + "-low.htm";
+					htmltext = npc.getId() + "-low.htm";
 				}
 			}
 			else
 			{
-				htmltext = npc.getNpcId() + "-no.htm";
+				htmltext = npc.getId() + "-no.htm";
 			}
 			st.exitQuest(true);
 		}
@@ -252,7 +252,7 @@ public class PinsAndPouchUnseal extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = "";
-		htmltext = npc.getNpcId() + "-1.htm";
+		htmltext = npc.getId() + "-1.htm";
 		
 		return htmltext;
 	}

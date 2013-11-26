@@ -166,7 +166,7 @@ public class TheValentine extends Quest
 	{
 		String htmltext = QUEEN_OF_HEARTS + "-wrong.htm";
 		QuestState st = player.getQuestState(getName());
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == QUEEN_OF_HEARTS && st.isCompleted())
 			htmltext = QUEEN_OF_HEARTS + "-done.htm";
@@ -187,7 +187,7 @@ public class TheValentine extends Quest
 		if (st == null)
 			st = this.newQuestState(player);
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == QUEEN_OF_HEARTS && st.isCompleted())
 			htmltext = QUEEN_OF_HEARTS + "-done.htm";

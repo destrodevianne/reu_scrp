@@ -24,11 +24,11 @@ import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.L2World;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -596,7 +596,7 @@ public class IceQueenCastle2 extends Quest
 				world._freyaThrone.setIsInvul(false);
 				world._freyaThrone.setIsImmobilized(false);
 				world._freyaThrone.getAI();
-				world._freyaThrone.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114722, -114798, -11205, 15956));
+				world._freyaThrone.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114722, -114798, -11205, 15956));
 				
 				for (int i = 0; i < 5; i++)
 				{
@@ -767,14 +767,14 @@ public class IceQueenCastle2 extends Quest
 					world._freyaStand_hard = (L2Attackable) spawnNpc(freyaStand_hard, 114720, -117085, -11088, 15956, world.getInstanceId());
 					world._freyaStand_hard.setOnKillDelay(0);
 					world._freyaStand_hard.getAI();
-					world._freyaStand_hard.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114722, -114798, -11205, 15956));
+					world._freyaStand_hard.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114722, -114798, -11205, 15956));
 				}
 				else
 				{
 					world._freyaStand = (L2Attackable) spawnNpc(freyaStand, 114720, -117085, -11088, 15956, world.getInstanceId());
 					world._freyaStand.setOnKillDelay(0);
 					world._freyaStand.getAI();
-					world._freyaStand.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114722, -114798, -11205, 15956));
+					world._freyaStand.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114722, -114798, -11205, 15956));
 				}
 				for (int objId : world.getAllowed())
 				{
@@ -887,7 +887,7 @@ public class IceQueenCastle2 extends Quest
 				{
 					if (_isHard && !_isEasy)
 					{
-						if (mob.getNpcId() != freyaStand_hard)
+						if (mob.getId() != freyaStand_hard)
 						{
 							mob.deleteMe();
 							InstanceManager.getInstance().getInstance(instanceId).getNpcs().remove(mob);
@@ -895,7 +895,7 @@ public class IceQueenCastle2 extends Quest
 					}
 					else
 					{
-						if (mob.getNpcId() != freyaStand)
+						if (mob.getId() != freyaStand)
 						{
 							mob.deleteMe();
 							InstanceManager.getInstance().getInstance(instanceId).getNpcs().remove(mob);
@@ -992,7 +992,7 @@ public class IceQueenCastle2 extends Quest
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == archery_knight_hard)
 		{
 			if (npc.getDisplayEffect() == 1)
@@ -1051,7 +1051,7 @@ public class IceQueenCastle2 extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		FreyaWorld world = getWorld(killer);
 		
 		if (npcId == glacier)
@@ -1087,7 +1087,7 @@ public class IceQueenCastle2 extends Quest
 			else if (world._simple_knights.containsKey(npc.getObjectId()))
 			{
 				world._simple_knights.remove(npc.getObjectId());
-				startQuestTimer("spawndeco_" + npc.getSpawn().getLocx() + "_" + npc.getSpawn().getLocy() + "_" + npc.getSpawn().getLocz() + "_" + npc.getSpawn().getHeading() + "_" + npc.getInstanceId(), 20000, null, null);
+				startQuestTimer("spawndeco_" + npc.getSpawn().getX() + "_" + npc.getSpawn().getY() + "_" + npc.getSpawn().getZ() + "_" + npc.getSpawn().getHeading() + "_" + npc.getInstanceId(), 20000, null, null);
 			}
 		}
 		
@@ -1120,7 +1120,7 @@ public class IceQueenCastle2 extends Quest
 			else if (world._simple_knights.containsKey(npc.getObjectId()))
 			{
 				world._simple_knights.remove(npc.getObjectId());
-				startQuestTimer("spawndeco_" + npc.getSpawn().getLocx() + "_" + npc.getSpawn().getLocy() + "_" + npc.getSpawn().getLocz() + "_" + npc.getSpawn().getHeading() + "_" + npc.getInstanceId(), 20000, null, null);
+				startQuestTimer("spawndeco_" + npc.getSpawn().getX() + "_" + npc.getSpawn().getY() + "_" + npc.getSpawn().getZ() + "_" + npc.getSpawn().getHeading() + "_" + npc.getInstanceId(), 20000, null, null);
 			}
 		}
 		
@@ -1156,10 +1156,10 @@ public class IceQueenCastle2 extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance talker)
 	{
-		_log.info("id_talk = " + npc.getNpcId());
-		if ((npc.getNpcId() == Jinia) || (npc.getNpcId() == Superior_Knight))
+		_log.info("id_talk = " + npc.getId());
+		if ((npc.getId() == Jinia) || (npc.getId() == Superior_Knight))
 		{
-			return npc.getNpcId() + ".htm";
+			return npc.getId() + ".htm";
 		}
 		return null;
 	}
@@ -1168,7 +1168,7 @@ public class IceQueenCastle2 extends Quest
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		FreyaWorld world = getWorld(player);
-		if ((world != null) && (npc.getNpcId() == freya_controller))
+		if ((world != null) && (npc.getId() == freya_controller))
 		{
 			world._freya_controller.deleteMe();
 			world._freya_controller = null;
@@ -1181,10 +1181,10 @@ public class IceQueenCastle2 extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		_log.info("id = " + npc.getNpcId());
-		if ((npc.getNpcId() == Jinia) || (npc.getNpcId() == Superior_Knight))
+		_log.info("id = " + npc.getId());
+		if ((npc.getId() == Jinia) || (npc.getId() == Superior_Knight))
 		{
-			return npc.getNpcId() + ".htm";
+			return npc.getId() + ".htm";
 		}
 		return null;
 	}
@@ -1448,14 +1448,14 @@ public class IceQueenCastle2 extends Quest
 	{
 		if (event.equalsIgnoreCase("enter"))
 		{
-			if (npc.getNpcId() == Jinia)
+			if (npc.getId() == Jinia)
 			{
 				_isHard = false;
 				_isEasy = true;
 				enterInstance(player, "IceQueenCastle2.xml");
 			}
 			
-			if (npc.getNpcId() == Superior_Knight)
+			if (npc.getId() == Superior_Knight)
 			{
 				_isHard = true;
 				_isEasy = false;
@@ -1506,9 +1506,9 @@ public class IceQueenCastle2 extends Quest
 		try
 		{
 			L2Spawn npcSpawn = new L2Spawn(npcTemplate);
-			npcSpawn.setLocx(x);
-			npcSpawn.setLocy(y);
-			npcSpawn.setLocz(z);
+			npcSpawn.setX(x);
+			npcSpawn.setY(y);
+			npcSpawn.setZ(z);
 			npcSpawn.setHeading(heading);
 			npcSpawn.setAmount(1);
 			npcSpawn.setInstanceId(instId);
@@ -1629,7 +1629,7 @@ public class IceQueenCastle2 extends Quest
 				target = getRandomPlayer(world);
 			}
 			
-			if ((mob.getNpcId() != glacier) && !world._simple_knights.containsKey(mob.getObjectId()) && (mob instanceof L2Attackable))
+			if ((mob.getId() != glacier) && !world._simple_knights.containsKey(mob.getObjectId()) && (mob instanceof L2Attackable))
 			{
 				((L2Attackable) mob).addDamageHate((L2Character) target, 0, 9999);
 				mob.setRunning();

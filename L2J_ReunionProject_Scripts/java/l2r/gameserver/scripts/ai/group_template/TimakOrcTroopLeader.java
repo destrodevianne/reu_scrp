@@ -33,7 +33,7 @@ public class TimakOrcTroopLeader extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == TIMAK_ORC_TROOP_LEADER)
+		if (npc.getId() == TIMAK_ORC_TROOP_LEADER)
 		{
 			if (npc.getAI().getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
 			{

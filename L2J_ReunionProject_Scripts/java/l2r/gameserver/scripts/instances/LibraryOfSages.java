@@ -161,11 +161,11 @@ public class LibraryOfSages extends Quest
 			npc.getAI().stopFollow();
 			npc.setIsRunning(true);
 			npc.getAI().startFollow(player);
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), spam[Rnd.get(0, spam.length - 1)]));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), spam[Rnd.get(0, spam.length - 1)]));
 			startQuestTimer("check_follow", 20000, npc, player);
 			return "";
 		}
-		else if (npc.getNpcId() == Sophia)
+		else if (npc.getId() == Sophia)
 		{
 			if (event.equalsIgnoreCase("tele1"))
 			{
@@ -173,7 +173,7 @@ public class LibraryOfSages extends Quest
 				return null;
 			}
 		}
-		else if (npc.getNpcId() == Sophia2)
+		else if (npc.getId() == Sophia2)
 		{
 			if (event.equalsIgnoreCase("tele2"))
 			{
@@ -195,7 +195,7 @@ public class LibraryOfSages extends Quest
 				return null;
 			}
 		}
-		else if (npc.getNpcId() == Sophia3)
+		else if (npc.getId() == Sophia3)
 		{
 			if (event.equalsIgnoreCase("tele4"))
 			{

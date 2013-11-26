@@ -820,7 +820,7 @@ public class HallOfSuffering extends Quest
 		{
 			HSWorld world = (HSWorld) tmpworld;
 			
-			if (npc.getNpcId() == TUMOR_ALIVE)
+			if (npc.getId() == TUMOR_ALIVE)
 			{
 				addSpawn(TUMOR_DEAD, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0, false, npc.getInstanceId());
 			}
@@ -838,7 +838,7 @@ public class HallOfSuffering extends Quest
 					runTwins(world);
 				}
 			}
-			else if ((world.getStatus() == 6) && ((npc.getNpcId() == KLODEKUS) || (npc.getNpcId() == KLANIKUS)))
+			else if ((world.getStatus() == 6) && ((npc.getId() == KLODEKUS) || (npc.getId() == KLANIKUS)))
 			{
 				if (world.klanikus.isDead() && world.klodekus.isDead())
 				{
@@ -860,7 +860,7 @@ public class HallOfSuffering extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == TEPIOS)
+		if (npc.getId() == TEPIOS)
 		{
 			InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 			if (((HSWorld) world).rewardItemId == -1)
@@ -885,7 +885,7 @@ public class HallOfSuffering extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 		{

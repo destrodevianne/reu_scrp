@@ -237,7 +237,7 @@ public class OrenBloodAltar extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		
 		if (npcId == 25767)
 		{

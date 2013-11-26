@@ -47,7 +47,7 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 			return htmltext;
 		}
 		
-		else if (npc.getNpcId() == Elcadia)
+		else if (npc.getId() == Elcadia)
 		{
 			if (st.getState() == State.COMPLETED)
 				htmltext = "32784-02.html";
@@ -62,7 +62,7 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 			else if (st.getInt("cond") >= 8)
 				htmltext = "32784-07.html";
 		}
-		else if (npc.getNpcId() == Elcadia_Support)
+		else if (npc.getId() == Elcadia_Support)
 		{
 			switch (st.getInt("cond"))
 			{
@@ -96,7 +96,7 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 					break;
 			}
 		}
-		else if (npc.getNpcId() == Sophia1)
+		else if (npc.getId() == Sophia1)
 		{
 			switch (st.getInt("cond"))
 			{
@@ -114,7 +114,7 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 					break;
 			}
 		}
-		else if (npc.getNpcId() == Sophia2)
+		else if (npc.getId() == Sophia2)
 		{
 			switch (st.getInt("cond"))
 			{
@@ -142,27 +142,27 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 					break;
 			}
 		}
-		else if (npc.getNpcId() == Books)
+		else if (npc.getId() == Books)
 		{
 			if (st.getInt("cond") == 6)
 				htmltext = "32809-01.html";
 		}
-		else if (npc.getNpcId() == Books1)
+		else if (npc.getId() == Books1)
 		{
 			if (st.getInt("cond") == 6)
 				htmltext = "32810-01.html";
 		}
-		else if (npc.getNpcId() == Books2)
+		else if (npc.getId() == Books2)
 		{
 			if (st.getInt("cond") == 6)
 				htmltext = "32811-01.html";
 		}
-		else if (npc.getNpcId() == Books3)
+		else if (npc.getId() == Books3)
 		{
 			if (st.getInt("cond") == 6)
 				htmltext = "32812-01.html";
 		}
-		else if (npc.getNpcId() == Books4)
+		else if (npc.getId() == Books4)
 		{
 			if (st.getInt("cond") == 6)
 				htmltext = "32813-01.html";
@@ -181,7 +181,7 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == Sophia3)
+		if (npc.getId() == Sophia3)
 		{
 			switch (st.getInt("cond"))
 			{
@@ -212,7 +212,7 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == Elcadia)
+		if (npc.getId() == Elcadia)
 		{
 			if (event.equalsIgnoreCase("32784-04.html"))
 			{
@@ -235,7 +235,7 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 				}
 			}
 		}
-		else if (npc.getNpcId() == Sophia2)
+		else if (npc.getId() == Sophia2)
 		{
 			if (event.equalsIgnoreCase("32861-04.html"))
 			{
@@ -253,7 +253,7 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 		}
-		else if (npc.getNpcId() == Elcadia_Support)
+		else if (npc.getId() == Elcadia_Support)
 		{
 			if (event.equalsIgnoreCase("32785-07.html"))
 			{
@@ -261,7 +261,7 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 		}
-		else if (npc.getNpcId() == Books)
+		else if (npc.getId() == Books)
 		{
 			if (event.equalsIgnoreCase("32809-02.html"))
 			{

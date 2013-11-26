@@ -483,7 +483,7 @@ public class Q00230_TestOfSummoner extends Quest
 			return htmltext;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		switch (st.getState())
 		{
@@ -714,7 +714,7 @@ public class Q00230_TestOfSummoner extends Quest
 			return "";
 		}
 		
-		int npcId = ((L2Npc) killer).getNpcId();
+		int npcId = ((L2Npc) killer).getId();
 		
 		if ((victim == killer) || (victim == killer.getSummon()))
 		{
@@ -751,7 +751,7 @@ public class Q00230_TestOfSummoner extends Quest
 			return null;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if ((npcId >= 27102) && (npcId <= 27107))
 		{
@@ -798,7 +798,7 @@ public class Q00230_TestOfSummoner extends Quest
 			return null;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (DROPLIST_LARA.containsKey(npcId))
 		{
 			Integer[] i = DROPLIST_LARA.get(npcId);

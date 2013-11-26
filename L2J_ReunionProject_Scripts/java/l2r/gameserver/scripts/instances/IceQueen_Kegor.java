@@ -6,7 +6,6 @@ import javolution.util.FastList;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
@@ -176,7 +175,7 @@ public class IceQueen_Kegor extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == KEGOR_IN_CAVE)
+		if (npc.getId() == KEGOR_IN_CAVE)
 		{
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 			if ((tmpworld != null) && (tmpworld instanceof KegorWorld))
@@ -207,7 +206,7 @@ public class IceQueen_Kegor extends Quest
 							}
 							else
 							{
-								monster.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(npc.getX(), npc.getY(), npc.getZ(), 0));
+								monster.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(npc.getX(), npc.getY(), npc.getZ(), 0));
 							}
 						}
 						
@@ -238,7 +237,7 @@ public class IceQueen_Kegor extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		String htmltext = getNoQuestMsg(player);
 		
 		QuestState hostQuest = player.getQuestState(Q10284_AcquisitionOfDivineSword.class.getSimpleName());
@@ -269,7 +268,7 @@ public class IceQueen_Kegor extends Quest
 			}
 		}
 		
-		else if (npc.getNpcId() == KEGOR_IN_CAVE)
+		else if (npc.getId() == KEGOR_IN_CAVE)
 		{
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
 			if ((tmpworld != null) && (tmpworld instanceof KegorWorld))
@@ -311,7 +310,7 @@ public class IceQueen_Kegor extends Quest
 			return null;
 		}
 		
-		if (npc.getNpcId() == KEGOR_IN_CAVE)
+		if (npc.getId() == KEGOR_IN_CAVE)
 		{
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
 			if ((tmpworld != null) && (tmpworld instanceof KegorWorld))
@@ -362,7 +361,7 @@ public class IceQueen_Kegor extends Quest
 		{
 			KegorWorld world = (KegorWorld) tmpworld;
 			
-			if (npc.getNpcId() == MONSTER)
+			if (npc.getId() == MONSTER)
 			{
 				if (world.liveMobs != null)
 				{
@@ -373,7 +372,7 @@ public class IceQueen_Kegor extends Quest
 						world.liveMobs = null;
 						cancelQuestTimer("buff", world.KEGOR, null);
 						world.KEGOR.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, player, null);
-						NpcSay cs = new NpcSay(world.KEGOR.getObjectId(), Say2.ALL, world.KEGOR.getNpcId(), NpcStringId.I_CAN_FINALLY_TAKE_A_BREATHER_BY_THE_WAY_WHO_ARE_YOU_HMM_I_THINK_I_KNOW_WHO_SENT_YOU);
+						NpcSay cs = new NpcSay(world.KEGOR.getObjectId(), Say2.ALL, world.KEGOR.getId(), NpcStringId.I_CAN_FINALLY_TAKE_A_BREATHER_BY_THE_WAY_WHO_ARE_YOU_HMM_I_THINK_I_KNOW_WHO_SENT_YOU);
 						world.KEGOR.broadcastPacket(cs);
 						hostQuest.set("progress", "3");
 						hostQuest.set("cond", "6");
@@ -386,10 +385,10 @@ public class IceQueen_Kegor extends Quest
 					}
 				}
 				
-				else if (npc.getNpcId() == KEGOR_IN_CAVE)
+				else if (npc.getId() == KEGOR_IN_CAVE)
 				{
 					world.KEGOR = null;
-					NpcSay cs = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), NpcStringId.HOW_COULD_I_FALL_IN_A_PLACE_LIKE_THIS);
+					NpcSay cs = new NpcSay(npc.getObjectId(), Say2.ALL, npc.getId(), NpcStringId.HOW_COULD_I_FALL_IN_A_PLACE_LIKE_THIS);
 					npc.broadcastPacket(cs);
 					
 					// destroy instance after 1 min

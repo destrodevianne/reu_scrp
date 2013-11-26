@@ -62,7 +62,7 @@ public class Q10296_SevenSignsPowerOfTheSeal extends Quest
 			return htmltext;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int cond = st.getInt("cond");
 		if (npcId == ELCARDIA1)
 		{
@@ -117,7 +117,7 @@ public class Q10296_SevenSignsPowerOfTheSeal extends Quest
 			return htmltext;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int cond = st.getInt("cond");
 		int EtisKilled = st.getInt("EtisKilled");
 		
@@ -224,7 +224,7 @@ public class Q10296_SevenSignsPowerOfTheSeal extends Quest
 			return super.onKill(npc, player, isPet);
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == ETISETINA)
 		{
 			st.set("EtisKilled", "1");

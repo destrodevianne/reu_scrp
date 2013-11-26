@@ -189,7 +189,7 @@ public class Q00308_ReedFieldMaintenance extends Quest
 		final QuestState st = player.getQuestState(getName());
 		if ((st != null) && st.isCond(1))
 		{
-			if (npc.getNpcId() == CHANGED_MUCROKIAN)
+			if (npc.getId() == CHANGED_MUCROKIAN)
 			{
 				if (getRandom(100) < AWAKENED_HIDE_CHANCE)
 				{
@@ -197,7 +197,7 @@ public class Q00308_ReedFieldMaintenance extends Quest
 					st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 				}
 			}
-			else if (npc.getNpcId() == CONTAMINATED_MUCROKIAN)
+			else if (npc.getId() == CONTAMINATED_MUCROKIAN)
 			{
 				if (getRandom(100) < CONTAMINATED_HIDE_CHANCE)
 				{

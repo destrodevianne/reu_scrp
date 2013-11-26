@@ -113,7 +113,7 @@ public final class Q00659_IdRatherBeCollectingFairyBreath extends Quest
 		final QuestState st = getRandomPartyMemberState(player, -1, 3, npc);
 		if (st != null)
 		{
-			st.giveItemRandomly(npc, FAIRY_BREATH, 1, 0, MOBS.get(npc.getNpcId()), true);
+			st.giveItemRandomly(npc, FAIRY_BREATH, 1, 0, MOBS.get(npc.getId()), true);
 		}
 		return super.onKill(npc, player, isSummon);
 	}

@@ -1326,7 +1326,7 @@ public class HeartD extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 		{
@@ -1348,7 +1348,7 @@ public class HeartD extends Quest
 		{
 			final HIDWorld world = (HIDWorld) tmpworld;
 			
-			if (npc.getNpcId() == 18668)
+			if (npc.getId() == 18668)
 			{
 				for (int i = 0; i < Rnd.get(1, 4); i++)
 				{
@@ -1363,7 +1363,7 @@ public class HeartD extends Quest
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (Util.contains(NOTMOVE, npc.getNpcId()))
+		if (Util.contains(NOTMOVE, npc.getId()))
 		{
 			npc.setIsNoRndWalk(true);
 			npc.setIsImmobilized(true);
@@ -1372,7 +1372,7 @@ public class HeartD extends Quest
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 		if (tmpworld instanceof HIDWorld)
 		{
-			if (npc.getNpcId() == SOULWAGON)
+			if (npc.getId() == SOULWAGON)
 			{
 				((L2MonsterInstance) npc).setPassive(true);
 			}
@@ -1388,7 +1388,7 @@ public class HeartD extends Quest
 		{
 			final HIDWorld world = (HIDWorld) tmpworld;
 			final Location loc = npc.getLocation();
-			if (npc.getNpcId() == ALIVETUMOR)
+			if (npc.getId() == ALIVETUMOR)
 			{
 				((L2MonsterInstance) npc).dropItem(player, 13797, Rnd.get(2, 5));
 				npc.deleteMe();
@@ -1412,7 +1412,7 @@ public class HeartD extends Quest
 				}, tumorRespawnTime);
 			}
 			
-			if (npc.getNpcId() == 18711)
+			if (npc.getId() == 18711)
 			{
 				tumorRespawnTime += 5 * 1000;
 			}
@@ -1429,7 +1429,7 @@ public class HeartD extends Quest
 		}
 		else
 		{
-			NpcSay cs = new NpcSay(preawakenedEchmus.getObjectId(), Say2.SHOUT, preawakenedEchmus.getNpcId(), NpcStringId.BRING_MORE_MORE_SOULS);
+			NpcSay cs = new NpcSay(preawakenedEchmus.getObjectId(), Say2.SHOUT, preawakenedEchmus.getId(), NpcStringId.BRING_MORE_MORE_SOULS);
 			preawakenedEchmus.broadcastPacket(cs);
 			ExShowScreenMessage message = new ExShowScreenMessage(NpcStringId.THE_SOUL_COFFIN_HAS_AWAKENED_EKIMUS, 2, 8000);
 			message.addStringParameter(Integer.toString(maxCoffins - coffinsCreated));
@@ -1560,7 +1560,7 @@ public class HeartD extends Quest
 			if (tmpworld instanceof HIDWorld)
 			{
 				HIDWorld world = (HIDWorld) tmpworld;
-				if (npc.getNpcId() == SOULWAGON)
+				if (npc.getId() == SOULWAGON)
 				{
 					notifyWagonArrived(npc, world);
 					npc.deleteMe();

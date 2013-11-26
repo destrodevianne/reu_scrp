@@ -19,7 +19,7 @@
 package l2r.gameserver.scripts.ai.individual;
 
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -49,17 +49,17 @@ public class FleeNpc extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		if ((npc.getNpcId() >= 18150) && (npc.getNpcId() <= 18157))
+		if ((npc.getId() >= 18150) && (npc.getId() <= 18157))
 		{
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition((npc.getX() + getRandom(-40, 40)), (npc.getY() + getRandom(-40, 40)), npc.getZ(), npc.getHeading()));
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location((npc.getX() + getRandom(-40, 40)), (npc.getY() + getRandom(-40, 40)), npc.getZ(), npc.getHeading()));
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
 			return null;
 		}
-		else if ((npc.getNpcId() == 20432) || (npc.getNpcId() == 22228))
+		else if ((npc.getId() == 20432) || (npc.getId() == 22228))
 		{
 			if (getRandom(3) == 2)
 			{
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition((npc.getX() + getRandom(-200, 200)), (npc.getY() + getRandom(-200, 200)), npc.getZ(), npc.getHeading()));
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location((npc.getX() + getRandom(-200, 200)), (npc.getY() + getRandom(-200, 200)), npc.getZ(), npc.getHeading()));
 			}
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
 			return null;

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import javolution.util.FastMap;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.L2CharPosition;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -212,7 +212,7 @@ public class NPC_Walk extends AbstractNpcAI
 			int y = ((Integer) ((Object[]) walks99.get(event))[1]).intValue();
 			int z = ((Integer) ((Object[]) walks99.get(event))[2]).intValue();
 			String nextEvent = (String) ((Object[]) walks99.get(event))[3];
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(x, y, z, 0));
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(x, y, z, 0));
 			if (npc.getX() - 100 <= x && npc.getX() + 100 >= x && npc.getY() - 100 <= y && npc.getY() + 100 >= y)
 				startQuestTimer(nextEvent, 1000L, npc, null);
 			else

@@ -22,7 +22,7 @@ import java.util.List;
 
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.HellboundManager;
-import l2r.gameserver.model.L2CharPosition;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -43,7 +43,7 @@ public class Slaves extends AbstractNpcAI
 		22320,
 		22321
 	};
-	private static final L2CharPosition MOVE_TO = new L2CharPosition(-25451, 252291, -3252, 3500);
+	private static final Location MOVE_TO = new Location(-25451, 252291, -3252, 3500);
 	private static final int TRUST_REWARD = 10;
 	
 	private Slaves()
@@ -80,7 +80,7 @@ public class Slaves extends AbstractNpcAI
 					slave.clearAggroList();
 					slave.abortAttack();
 					slave.abortCast();
-					slave.broadcastPacket(new NpcSay(slave.getObjectId(), Say2.NPC_ALL, slave.getNpcId(), NpcStringId.THANK_YOU_FOR_SAVING_ME_FROM_THE_CLUTCHES_OF_EVIL));
+					slave.broadcastPacket(new NpcSay(slave.getObjectId(), Say2.NPC_ALL, slave.getId(), NpcStringId.THANK_YOU_FOR_SAVING_ME_FROM_THE_CLUTCHES_OF_EVIL));
 					
 					if ((HellboundManager.getInstance().getLevel() >= 1) && (HellboundManager.getInstance().getLevel() <= 2))
 					{

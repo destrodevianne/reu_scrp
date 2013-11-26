@@ -152,7 +152,7 @@ public final class Q00633_InTheForgottenVillage extends Quest
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
 		if (qs != null)
 		{
-			final ItemChanceHolder info = MOBS_DROP_CHANCES.get(npc.getNpcId());
+			final ItemChanceHolder info = MOBS_DROP_CHANCES.get(npc.getId());
 			switch (info.getId())
 			{
 				case RIB_BONE_OF_A_BLACK_MAGUS:

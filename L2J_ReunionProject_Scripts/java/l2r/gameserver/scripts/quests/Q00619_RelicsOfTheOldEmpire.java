@@ -257,7 +257,7 @@ public final class Q00619_RelicsOfTheOldEmpire extends Quest
 		final QuestState st = getRandomPartyMemberState(player, -1, 3, npc);
 		if (st != null)
 		{
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			if (Util.contains(ARCHON_OF_HALISHA, npcId))
 			{
 				final int itemCount = ((getRandom(100) < 79) ? 4 : 3);

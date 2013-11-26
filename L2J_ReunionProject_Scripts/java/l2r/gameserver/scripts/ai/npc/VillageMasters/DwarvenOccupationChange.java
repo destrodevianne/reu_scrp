@@ -204,7 +204,7 @@ public class DwarvenOccupationChange extends Quest
 			return null;
 		}
 		
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		final int race = player.getRace().ordinal();
 		final int classid = player.getClassId().getId();
 		final int level = player.getLevel();
@@ -310,7 +310,7 @@ public class DwarvenOccupationChange extends Quest
 		}
 		
 		String key = "";
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		final int race = player.getRace().ordinal();
 		final int classid = player.getClassId().getId();
 		if (player.isSubClassActive())

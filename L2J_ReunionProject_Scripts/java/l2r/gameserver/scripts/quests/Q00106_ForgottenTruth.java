@@ -119,7 +119,7 @@ public final class Q00106_ForgottenTruth extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case THIFIELL:
 			{

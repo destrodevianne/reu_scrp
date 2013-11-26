@@ -64,7 +64,7 @@ public final class Q00694_BreakThroughTheHallOfSuffering extends Quest
 		{
 			htmltext = "32603-03.htm";
 		}
-		else if ((state == State.CREATED) && (npc.getNpcId() == TEPIOS))
+		else if ((state == State.CREATED) && (npc.getId() == TEPIOS))
 		{
 			if ((player.getLevel() >= 75) && (player.getLevel() <= 82))
 			{
@@ -84,7 +84,7 @@ public final class Q00694_BreakThroughTheHallOfSuffering extends Quest
 		}
 		else if (state == State.STARTED)
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case MOUTHOFEKIMUS:
 					htmltext = "32537-01.htm";

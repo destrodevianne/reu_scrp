@@ -266,7 +266,7 @@ public final class KamaelOccupationChange extends Quest
 		{
 			ClassId classId = player.getClassId();
 			int id = classId.getId();
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			if (classId.level() >= 2)
 			{
 				htmltext += "-32.htm";

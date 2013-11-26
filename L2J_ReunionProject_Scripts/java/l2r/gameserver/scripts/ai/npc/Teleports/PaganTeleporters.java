@@ -66,7 +66,7 @@ public class PaganTeleporters extends AbstractNpcAI
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case TRIOLS_MIRROR_1:
 			{
@@ -85,7 +85,7 @@ public class PaganTeleporters extends AbstractNpcAI
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case 32034:
 			{

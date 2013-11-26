@@ -102,7 +102,7 @@ public final class Q00031_SecretBuriedInTheSwamp extends Quest
 			case "31663-02.html":
 			case "31664-02.html":
 			{
-				if (MONUMENTS.contains(npc.getNpcId()) && st.isCond(MONUMENTS.indexOf(npc.getNpcId()) + 3))
+				if (MONUMENTS.contains(npc.getId()) && st.isCond(MONUMENTS.indexOf(npc.getId()) + 3))
 				{
 					st.setCond(st.getCond() + 1, true);
 					htmltext = event;
@@ -133,7 +133,7 @@ public final class Q00031_SecretBuriedInTheSwamp extends Quest
 		{
 			return htmltext;
 		}
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case ABERCROMBIE:
 			{
@@ -204,14 +204,14 @@ public final class Q00031_SecretBuriedInTheSwamp extends Quest
 			case FORGOTTEN_MONUMENT_3:
 			case FORGOTTEN_MONUMENT_4:
 			{
-				final int loc = MONUMENTS.indexOf(npc.getNpcId()) + 3;
+				final int loc = MONUMENTS.indexOf(npc.getId()) + 3;
 				if (st.isCond(loc))
 				{
-					htmltext = npc.getNpcId() + "-01.html";
+					htmltext = npc.getId() + "-01.html";
 				}
 				else if (st.isCond(loc + 1))
 				{
-					htmltext = npc.getNpcId() + "-03.html";
+					htmltext = npc.getId() + "-03.html";
 				}
 				break;
 			}

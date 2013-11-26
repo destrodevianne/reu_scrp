@@ -117,7 +117,7 @@ public final class Q00026_TiredOfWaiting extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case ISAEL_SILVERSHADOW:
 				if (st.isCreated())

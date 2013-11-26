@@ -1106,7 +1106,7 @@ public class HeartA extends Quest
 		InstanceManager.getInstance().getInstance(world.getInstanceId()).getDoor(14240102).openMe();
 		broadCastPacket(world, new ExShowScreenMessage(NpcStringId.YOU_CAN_HEAR_THE_UNDEAD_OF_EKIMUS_RUSHING_TOWARD_YOU_S1_S2_IT_HAS_NOW_BEGUN, 2, 8000));
 		world.ekimus = addSpawn(EKIMUS, -179537, 208854, -15504, 16384, false, 0, false, world.getInstanceId());
-		NpcSay cs = new NpcSay(world.ekimus.getObjectId(), Say2.SHOUT, world.ekimus.getNpcId(), NpcStringId.I_SHALL_ACCEPT_YOUR_CHALLENGE_S1_COME_AND_DIE_IN_THE_ARMS_OF_IMMORTALITY);
+		NpcSay cs = new NpcSay(world.ekimus.getObjectId(), Say2.SHOUT, world.ekimus.getId(), NpcStringId.I_SHALL_ACCEPT_YOUR_CHALLENGE_S1_COME_AND_DIE_IN_THE_ARMS_OF_IMMORTALITY);
 		world.ekimus.broadcastPacket(cs);
 		world.hounds.add(addSpawn(HOUND, -179224, 209624, -15504, 16384, false, 0, false, world.getInstanceId()));
 		world.hounds.add(addSpawn(HOUND, -179880, 209464, -15504, 16384, false, 0, false, world.getInstanceId()));
@@ -1176,7 +1176,7 @@ public class HeartA extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 		{
@@ -1198,7 +1198,7 @@ public class HeartA extends Quest
 		{
 			final HIAWorld world = (HIAWorld) tmpworld;
 			
-			if (npc.getNpcId() == 18668)
+			if (npc.getId() == 18668)
 			{
 				for (int i = 0; i < Rnd.get(1, 4); i++)
 				{
@@ -1237,7 +1237,7 @@ public class HeartA extends Quest
 				}
 			}
 			
-			if (npc.getNpcId() == EKIMUS)
+			if (npc.getId() == EKIMUS)
 			{
 				for (L2Npc mob : world.hounds)
 				{
@@ -1253,13 +1253,13 @@ public class HeartA extends Quest
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (Util.contains(NOTMOVE, npc.getNpcId()))
+		if (Util.contains(NOTMOVE, npc.getId()))
 		{
 			npc.setIsNoRndWalk(true);
 			npc.setIsImmobilized(true);
 		}
 		
-		if (npc.getNpcId() == HOUND)
+		if (npc.getId() == HOUND)
 		{
 			npc.setIsNoRndWalk(true);
 			npc.setIsImmobilized(true);
@@ -1269,13 +1269,13 @@ public class HeartA extends Quest
 		if (tmpworld instanceof HIAWorld)
 		{
 			HIAWorld world = (HIAWorld) tmpworld;
-			if (npc.getNpcId() == ALIVETUMOR)
+			if (npc.getId() == ALIVETUMOR)
 			{
 				world.addTumorCount(1);
 				handleEkimusStats(world);
 			}
 			
-			if (npc.getNpcId() == DEADTUMOR)
+			if (npc.getId() == DEADTUMOR)
 			{
 				world.addTag(1);
 			}
@@ -1291,7 +1291,7 @@ public class HeartA extends Quest
 		{
 			HIAWorld world = (HIAWorld) tmpworld;
 			Location loc = npc.getLocation();
-			if (npc.getNpcId() == ALIVETUMOR)
+			if (npc.getId() == ALIVETUMOR)
 			{
 				world.addTumorCount(-1);
 				((L2MonsterInstance) npc).dropItem(player, 13797, Rnd.get(2, 5));
@@ -1316,13 +1316,13 @@ public class HeartA extends Quest
 				handleEkimusStats(world);
 			}
 			
-			if (npc.getNpcId() == EKIMUS)
+			if (npc.getId() == EKIMUS)
 			{
 				conquestConclusion(world);
 				SoIManager.notifyEkimusKill();
 			}
 			
-			if (npc.getNpcId() == 18711)
+			if (npc.getId() == 18711)
 			{
 				tumorRespawnTime += 8 * 1000;
 			}

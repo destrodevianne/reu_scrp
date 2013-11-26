@@ -33,9 +33,9 @@ import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GrandBossManager;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.L2World;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.StatsSet;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -137,9 +137,9 @@ public class Antharas extends AbstractNpcAI
 			// Old Antharas
 			template1 = NpcTable.getInstance().getTemplate(ANTHARAS_OLD_ID);
 			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setLocx(181323);
-			tempSpawn.setLocy(114850);
-			tempSpawn.setLocz(-7623);
+			tempSpawn.setX(181323);
+			tempSpawn.setY(114850);
+			tempSpawn.setZ(-7623);
 			tempSpawn.setHeading(32542);
 			tempSpawn.setAmount(1);
 			tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
@@ -149,9 +149,9 @@ public class Antharas extends AbstractNpcAI
 			// Weak Antharas
 			template1 = NpcTable.getInstance().getTemplate(ANTHARAS_WEAK_ID);
 			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setLocx(181323);
-			tempSpawn.setLocy(114850);
-			tempSpawn.setLocz(-7623);
+			tempSpawn.setX(181323);
+			tempSpawn.setY(114850);
+			tempSpawn.setZ(-7623);
 			tempSpawn.setHeading(32542);
 			tempSpawn.setAmount(1);
 			tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
@@ -161,9 +161,9 @@ public class Antharas extends AbstractNpcAI
 			// Normal Antharas
 			template1 = NpcTable.getInstance().getTemplate(ANTHARAS_NORMAL_ID);
 			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setLocx(181323);
-			tempSpawn.setLocy(114850);
-			tempSpawn.setLocz(-7623);
+			tempSpawn.setX(181323);
+			tempSpawn.setY(114850);
+			tempSpawn.setZ(-7623);
 			tempSpawn.setHeading(32542);
 			tempSpawn.setAmount(1);
 			tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
@@ -173,9 +173,9 @@ public class Antharas extends AbstractNpcAI
 			// Strong Antharas
 			template1 = NpcTable.getInstance().getTemplate(ANTHARAS_STRONG_ID);
 			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setLocx(181323);
-			tempSpawn.setLocy(114850);
-			tempSpawn.setLocz(-7623);
+			tempSpawn.setX(181323);
+			tempSpawn.setY(114850);
+			tempSpawn.setZ(-7623);
 			tempSpawn.setHeading(32542);
 			tempSpawn.setAmount(1);
 			tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
@@ -196,12 +196,12 @@ public class Antharas extends AbstractNpcAI
 			{
 				spawnDat = new L2Spawn(Cube);
 				spawnDat.setAmount(1);
-				spawnDat.setLocx(element[0]);
-				spawnDat.setLocy(element[1]);
-				spawnDat.setLocz(element[2]);
+				spawnDat.setX(element[0]);
+				spawnDat.setY(element[1]);
+				spawnDat.setZ(element[2]);
 				spawnDat.setHeading(element[3]);
 				spawnDat.setRespawnDelay(60);
-				spawnDat.setLocation(0);
+				spawnDat.setLocationId(0);
 				SpawnTable.getInstance().addNewSpawn(spawnDat, false);
 				_teleportCubeSpawn.add(spawnDat);
 			}
@@ -513,7 +513,7 @@ public class Antharas extends AbstractNpcAI
 					// Move at random.
 					if (FWA_MOVEATRANDOM)
 					{
-						L2CharPosition pos = new L2CharPosition(getRandom(175000, 178500), getRandom(112400, 116000), -7707, 0);
+						Location pos = new Location(getRandom(175000, 178500), getRandom(112400, 116000), -7707, 0);
 						_moveAtRandomTask = ThreadPoolManager.getInstance().scheduleGeneral(new MoveAtRandom(_antharas, pos), 500);
 					}
 					
@@ -600,9 +600,9 @@ public class Antharas extends AbstractNpcAI
 							}
 						}
 					}
-					tempSpawn.setLocx(x);
-					tempSpawn.setLocy(y);
-					tempSpawn.setLocz(-7704);
+					tempSpawn.setX(x);
+					tempSpawn.setY(y);
+					tempSpawn.setZ(-7704);
 					tempSpawn.setHeading(0);
 					tempSpawn.setAmount(1);
 					tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
@@ -621,7 +621,7 @@ public class Antharas extends AbstractNpcAI
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case 29070:
 			case 29071:
@@ -653,7 +653,7 @@ public class Antharas extends AbstractNpcAI
 		public void run()
 		{
 			L2Skill skill = null;
-			switch (_bomber.getNpcId())
+			switch (_bomber.getId())
 			{
 				case 29070:
 				case 29071:
@@ -686,7 +686,7 @@ public class Antharas extends AbstractNpcAI
 		}
 		else if ((skill != null) && ((skill.getId() == 5097) || (skill.getId() == 5094)))
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case 29070:
 				case 29071:
@@ -711,7 +711,7 @@ public class Antharas extends AbstractNpcAI
 			Long temp = (System.currentTimeMillis() - _LastAction);
 			if (temp > FWA_INACTIVITYTIME)
 			{
-				GrandBossManager.getInstance().setBossStatus(_antharas.getNpcId(), DORMANT);
+				GrandBossManager.getInstance().setBossStatus(_antharas.getId(), DORMANT);
 				setUnspawn();
 			}
 		}
@@ -859,9 +859,9 @@ public class Antharas extends AbstractNpcAI
 	private static class MoveAtRandom implements Runnable
 	{
 		private final L2Npc _npc;
-		private final L2CharPosition _pos;
+		private final Location _pos;
 		
-		public MoveAtRandom(L2Npc npc, L2CharPosition pos)
+		public MoveAtRandom(L2Npc npc, Location pos)
 		{
 			_npc = npc;
 			_pos = pos;
@@ -877,22 +877,22 @@ public class Antharas extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		if ((npc.getNpcId() == 29019) || (npc.getNpcId() == 29066) || (npc.getNpcId() == 29067) || (npc.getNpcId() == 29068))
+		if ((npc.getId() == 29019) || (npc.getId() == 29066) || (npc.getId() == 29067) || (npc.getId() == 29068))
 		{
 			_LastAction = System.currentTimeMillis();
-			if (GrandBossManager.getInstance().getBossStatus(_antharas.getNpcId()) != FIGHTING)
+			if (GrandBossManager.getInstance().getBossStatus(_antharas.getId()) != FIGHTING)
 			{
 				_Zone.oustAllPlayers();
 			}
 			else if (!FWA_OLDANTHARAS && (_mobsSpawnTask == null))
 			{
-				startMinionSpawns(npc.getNpcId());
+				startMinionSpawns(npc.getId());
 			}
 		}
-		else if ((npc.getNpcId() > 29069) && (npc.getNpcId() < 29077) && (npc.getCurrentHp() <= damage))
+		else if ((npc.getId() > 29069) && (npc.getId() < 29077) && (npc.getCurrentHp() <= damage))
 		{
 			L2Skill skill = null;
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case 29070:
 				case 29071:
@@ -915,23 +915,23 @@ public class Antharas extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		if ((npc.getNpcId() == 29019) || (npc.getNpcId() == 29066) || (npc.getNpcId() == 29067) || (npc.getNpcId() == 29068))
+		if ((npc.getId() == 29019) || (npc.getId() == 29066) || (npc.getId() == 29067) || (npc.getId() == 29068))
 		{
 			broadcastPacket(new SpecialCamera(_antharas.getObjectId(), 1200, 20, -10, 0, 13000, 0, 0, 1, 0));
 			npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 			_cubeSpawnTask = ThreadPoolManager.getInstance().scheduleGeneral(new CubeSpawn(0), 10000);
-			GrandBossManager.getInstance().setBossStatus(npc.getNpcId(), DEAD);
+			GrandBossManager.getInstance().setBossStatus(npc.getId(), DEAD);
 			// Calculate Min and Max respawn times randomly.
 			long respawnTime = Config.ANTHARAS_SPAWN_INTERVAL + getRandom(-Config.ANTHARAS_SPAWN_RANDOM, Config.ANTHARAS_SPAWN_RANDOM);
 			respawnTime *= 3600000;
 			
-			ThreadPoolManager.getInstance().scheduleGeneral(new UnlockAntharas(npc.getNpcId()), respawnTime);
+			ThreadPoolManager.getInstance().scheduleGeneral(new UnlockAntharas(npc.getId()), respawnTime);
 			// also save the respawn time so that the info is maintained past reboots
-			StatsSet info = GrandBossManager.getInstance().getStatsSet(npc.getNpcId());
+			StatsSet info = GrandBossManager.getInstance().getStatsSet(npc.getId());
 			info.set("respawn_time", (System.currentTimeMillis() + respawnTime));
-			GrandBossManager.getInstance().setStatsSet(npc.getNpcId(), info);
+			GrandBossManager.getInstance().setStatsSet(npc.getId(), info);
 		}
-		else if (npc.getNpcId() == 29069)
+		else if (npc.getId() == 29069)
 		{
 			int countHPHerb = getRandom(6, 18);
 			int countMPHerb = getRandom(6, 18);

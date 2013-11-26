@@ -103,7 +103,7 @@ public class GatekeeperSpirit extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case ANAKIM:
 			{

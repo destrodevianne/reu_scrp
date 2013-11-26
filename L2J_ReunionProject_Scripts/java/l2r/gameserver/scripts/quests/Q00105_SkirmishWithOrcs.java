@@ -120,14 +120,14 @@ public final class Q00105_SkirmishWithOrcs extends Quest
 		final QuestState st = killer.getQuestState(getName());
 		if ((st != null) && Util.checkIfInRange(1500, npc, killer, true))
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case 27059:
 				case 27060:
 				case 27061:
 				case 27062:
 				{
-					if (st.isCond(1) && st.hasQuestItems(MONSTER_DROP.get(npc.getNpcId())))
+					if (st.isCond(1) && st.hasQuestItems(MONSTER_DROP.get(npc.getId())))
 					{
 						st.giveItems(KABOO_CHIEFS_1ST_TORQUE, 1);
 						st.setCond(2, true);
@@ -139,7 +139,7 @@ public final class Q00105_SkirmishWithOrcs extends Quest
 				case 27067:
 				case 27068:
 				{
-					if (st.isCond(3) && st.hasQuestItems(MONSTER_DROP.get(npc.getNpcId())))
+					if (st.isCond(3) && st.hasQuestItems(MONSTER_DROP.get(npc.getId())))
 					{
 						st.giveItems(KABOO_CHIEFS_2ST_TORQUE, 1);
 						st.setCond(4, true);

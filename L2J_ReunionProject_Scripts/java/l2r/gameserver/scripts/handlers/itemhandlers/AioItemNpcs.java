@@ -29,7 +29,7 @@ public class AioItemNpcs implements IItemHandler
 		
 		player = (L2PcInstance) playable;
 		
-		int itemId = item.getItemId();
+		int itemId = item.getId();
 		if (itemId == AioItemsConfigs.AIO_ITEM_ID)
 		{
 			String htmFile = "data/html/AioItemNpcs/main.htm";

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -100,29 +100,14 @@ public final class Alexandria extends AbstractNpcAI
 				chance3 += agathion.getChance();
 				if ((chance >= chance2) && (chance2 < chance3))
 				{
-					boolean hasAllItems = true;
-					for (ItemHolder item : REQUIRED_ITEMS)
+					if (takeAllItems(player, REQUIRED_ITEMS))
 					{
-						if (getQuestItemsCount(player, item.getId()) < item.getCount())
-						{
-							hasAllItems = false;
-							break;
-						}
-					}
-					if (hasAllItems)
-					{
-						for (ItemHolder item : REQUIRED_ITEMS)
-						{
-							takeItems(player, item);
-						}
-						
-						giveItems(player, agathion.getId(), 1);
+						giveItems(player, agathion);
 						htmltext = "30098-03.html";
 						
 						if (agathion instanceof AdditionalQuestItemHolder)
 						{
-							final AdditionalQuestItemHolder addAgathion = (AdditionalQuestItemHolder) agathion;
-							giveItems(player, addAgathion.getAdditionalId(), 1);
+							giveItems(player, ((AdditionalQuestItemHolder) agathion).getAdditionalId(), 1);
 							htmltext = "30098-03a.html";
 						}
 					}

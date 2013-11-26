@@ -149,7 +149,7 @@ public final class Q00108_JumbleTumbleDiamondFuss extends Quest
 		{
 			return htmltext;
 		}
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case COLLECTOR_GOUPH:
 			{
@@ -509,14 +509,14 @@ public final class Q00108_JumbleTumbleDiamondFuss extends Quest
 		final QuestState st = killer.getQuestState(getName());
 		if ((st != null) && Util.checkIfInRange(1500, npc, killer, true))
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case GOBLIN_BRIGAND_LEADER:
 				case GOBLIN_BRIGAND_LIEUTENANT:
 				{
 					if (st.isCond(5) && st.hasQuestItems(BRUNONS_CONTRACT))
 					{
-						final double dropChance = GOBLIN_DROP_CHANCES.get(npc.getNpcId());
+						final double dropChance = GOBLIN_DROP_CHANCES.get(npc.getId());
 						boolean playSound = false;
 						if (st.giveItemRandomly(npc, AQUAMARINE, 1, MAX_GEM_COUNT, dropChance, false))
 						{

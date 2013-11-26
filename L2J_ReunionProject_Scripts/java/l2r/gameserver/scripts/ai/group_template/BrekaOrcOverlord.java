@@ -40,21 +40,21 @@ public class BrekaOrcOverlord extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == BREKA)
+		if (npc.getId() == BREKA)
 		{
 			if (_FirstAttacked)
 			{
 				if (Rnd.get(100) == 50)
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Ultimate strength!!!"));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Ultimate strength!!!"));
 				}
 				if (Rnd.get(100) == 50)
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Now it is truly the beginning of the duel!!"));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Now it is truly the beginning of the duel!!"));
 				}
 				if (Rnd.get(100) == 50)
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Did not think could even use it on the callow kid trick!"));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Did not think could even use it on the callow kid trick!"));
 				}
 			}
 			_FirstAttacked = true;
@@ -65,7 +65,7 @@ public class BrekaOrcOverlord extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == BREKA)
 		{
 			_FirstAttacked = false;

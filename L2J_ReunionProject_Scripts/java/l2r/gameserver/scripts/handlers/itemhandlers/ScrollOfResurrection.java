@@ -53,7 +53,7 @@ public class ScrollOfResurrection implements IItemHandler
 			return false;
 		}
 		
-		final int itemId = item.getItemId();
+		final int itemId = item.getId();
 		final boolean petScroll = (itemId == 6387);
 		final SkillHolder[] skills = item.getItem().getSkills();
 		

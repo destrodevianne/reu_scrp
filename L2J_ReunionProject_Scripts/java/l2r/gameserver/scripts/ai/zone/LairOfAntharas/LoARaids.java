@@ -33,7 +33,7 @@ public class LoARaids extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == 25725)
+		if (npc.getId() == 25725)
 		{
 			if (this.DrakeLord != null)
 			{
@@ -41,7 +41,7 @@ public class LoARaids extends AbstractNpcAI
 			}
 		}
 		
-		if (npc.getNpcId() == 25726)
+		if (npc.getId() == 25726)
 		{
 			if (this.BehemothLeader != null)
 			{
@@ -49,7 +49,7 @@ public class LoARaids extends AbstractNpcAI
 			}
 		}
 		
-		if (npc.getNpcId() == 25727)
+		if (npc.getId() == 25727)
 		{
 			if (this.DragonBeast != null)
 			{
@@ -70,17 +70,17 @@ public class LoARaids extends AbstractNpcAI
 			}
 		}
 		
-		if (npc.getNpcId() == 25725)
+		if (npc.getId() == 25725)
 		{
 			this.DragonBeast = addSpawn(32884, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 300000L, true);
 		}
 		
-		if (npc.getNpcId() == 25726)
+		if (npc.getId() == 25726)
 		{
 			this.BehemothLeader = addSpawn(32885, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 300000L, true);
 		}
 		
-		if (npc.getNpcId() == 25727)
+		if (npc.getId() == 25727)
 		{
 			this.DrakeLord = addSpawn(32886, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 300000L, true);
 		}

@@ -67,7 +67,7 @@ public class Q00611_AllianceWithVarkaSilenos extends Quest
 			return _chance;
 		}
 		
-		public int getItemId()
+		public int getId()
 		{
 			return _itemId;
 		}
@@ -269,10 +269,10 @@ public class Q00611_AllianceWithVarkaSilenos extends Quest
 		if (member != null)
 		{
 			final QuestState st = member.getQuestState(getName());
-			final DropInfo info = MOBS.get(npc.getNpcId());
-			if ((st.getCond() >= info.getMinCond()) && canGetItem(st, info.getItemId()) && (getRandom(1000) < info.getChance()))
+			final DropInfo info = MOBS.get(npc.getId());
+			if ((st.getCond() >= info.getMinCond()) && canGetItem(st, info.getId()) && (getRandom(1000) < info.getChance()))
 			{
-				st.giveItems(info.getItemId(), 1);
+				st.giveItems(info.getId(), 1);
 			}
 		}
 		return super.onKill(npc, killer, isSummon);

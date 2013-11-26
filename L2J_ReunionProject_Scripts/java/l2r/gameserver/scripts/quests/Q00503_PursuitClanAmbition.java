@@ -276,11 +276,11 @@ public class Q00503_PursuitClanAmbition extends Quest
 		{
 			st.set("cond", "9");
 			L2Npc spawnedNpc = addSpawn(30766, 160622, 21230, -3710, 0, false, 90000);
-			spawnedNpc.broadcastPacket(new NpcSay(spawnedNpc.getObjectId(), 0, spawnedNpc.getNpcId(), NpcStringId.BLOOD_AND_HONOR));
+			spawnedNpc.broadcastPacket(new NpcSay(spawnedNpc.getObjectId(), 0, spawnedNpc.getId(), NpcStringId.BLOOD_AND_HONOR));
 			spawnedNpc = st.addSpawn(30759, 160665, 21209, -3710, 0, false, 90000);
-			spawnedNpc.broadcastPacket(new NpcSay(spawnedNpc.getObjectId(), 0, spawnedNpc.getNpcId(), NpcStringId.AMBITION_AND_POWER));
+			spawnedNpc.broadcastPacket(new NpcSay(spawnedNpc.getObjectId(), 0, spawnedNpc.getId(), NpcStringId.AMBITION_AND_POWER));
 			spawnedNpc = st.addSpawn(30758, 160665, 21291, -3710, 0, false, 90000);
-			spawnedNpc.broadcastPacket(new NpcSay(spawnedNpc.getObjectId(), 0, spawnedNpc.getNpcId(), NpcStringId.WAR_AND_DEATH));
+			spawnedNpc.broadcastPacket(new NpcSay(spawnedNpc.getObjectId(), 0, spawnedNpc.getId(), NpcStringId.WAR_AND_DEATH));
 		}
 		else if (event.equalsIgnoreCase("30766-08.htm"))
 		{
@@ -301,7 +301,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 		}
 		
 		boolean isLeader = player.isClanLeader();
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		int kurtz = st.getInt("Kurtz");
 		int lutz = st.getInt("Lutz");
@@ -685,7 +685,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		QuestState leader_st = null;
 		if (player.isClanLeader())
@@ -737,7 +737,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 					if (npcId == 27181)
 					{
 						L2Npc spawnedNpc = leader_st.addSpawn(30765, 120000);
-						npc.broadcastPacket(new NpcSay(spawnedNpc.getObjectId(), 0, spawnedNpc.getNpcId(), NpcStringId.CURSE_OF_THE_GODS_ON_THE_ONE_THAT_DEFILES_THE_PROPERTY_OF_THE_EMPIRE));
+						npc.broadcastPacket(new NpcSay(spawnedNpc.getObjectId(), 0, spawnedNpc.getId(), NpcStringId.CURSE_OF_THE_GODS_ON_THE_ONE_THAT_DEFILES_THE_PROPERTY_OF_THE_EMPIRE));
 						leader_st.set("ImpGraveKeeper", "3");
 						ImpGraveKepperStat = 1;
 					}
@@ -793,7 +793,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 	
 	private void offlineMemberExit(QuestState st)
 	{
-		int clan = st.getPlayer().getClan().getClanId();
+		int clan = st.getPlayer().getClan().getId();
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement offline = con.prepareStatement("DELETE FROM character_quests WHERE name = ? and charId IN (SELECT charId FROM characters WHERE clanId =? AND online=0)"))
@@ -810,7 +810,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 	
 	private void suscribeMembers(QuestState st)
 	{
-		int clan = st.getPlayer().getClan().getClanId();
+		int clan = st.getPlayer().getClan().getId();
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement offline = con.prepareStatement("SELECT charId FROM characters WHERE clanid=? AND online=0"))

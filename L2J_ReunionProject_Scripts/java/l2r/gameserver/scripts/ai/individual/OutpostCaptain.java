@@ -65,7 +65,7 @@ public class OutpostCaptain extends AbstractNpcAI
 	{
 		if (HellboundManager.getInstance().getLevel() == 8)
 		{
-			addSpawn(DOORKEEPER, npc.getSpawn().getSpawnLocation(), false, 0, false);
+			addSpawn(DOORKEEPER, npc.getSpawn().getLocation(), false, 0, false);
 		}
 		
 		return super.onKill(npc, killer, isSummon);
@@ -76,7 +76,7 @@ public class OutpostCaptain extends AbstractNpcAI
 	{
 		npc.setIsNoRndWalk(true);
 		
-		if (npc.getNpcId() == CAPTAIN)
+		if (npc.getId() == CAPTAIN)
 		{
 			L2DoorInstance door = DoorTable.getInstance().getDoor(20250001);
 			if (door != null)
@@ -84,7 +84,7 @@ public class OutpostCaptain extends AbstractNpcAI
 				door.closeMe();
 			}
 		}
-		else if (npc.getNpcId() == DOORKEEPER)
+		else if (npc.getId() == DOORKEEPER)
 		{
 			startQuestTimer("level_up", 3000, npc, null);
 		}

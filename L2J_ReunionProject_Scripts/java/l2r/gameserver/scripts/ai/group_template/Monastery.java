@@ -103,7 +103,7 @@ public class Monastery extends AbstractNpcAI
 		{
 			for (L2Character character : npc.getKnownList().getKnownCharactersInRadius(300))
 			{
-				if (character.isNpc() && (((L2Npc) character).getNpcId() == SCARECROW))
+				if (character.isNpc() && (((L2Npc) character).getId() == SCARECROW))
 				{
 					for (L2Skill skill : npc.getAllSkills())
 					{
@@ -150,7 +150,7 @@ public class Monastery extends AbstractNpcAI
 			final double distance = Math.sqrt(npc.getPlanDistanceSq(player.getX(), player.getY()));
 			if (((distance < 500) && !player.isDead() && GeoData.getInstance().canSeeTarget(npc, player)))
 			{
-				switch (npc.getNpcId())
+				switch (npc.getId())
 				{
 					case CAPTAIN:
 					case KNIGHT:
@@ -212,7 +212,7 @@ public class Monastery extends AbstractNpcAI
 			{
 				if (obj.equals(npc))
 				{
-					NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getNpcId(), DIVINITY_MSG[getRandom(1)]);
+					NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), DIVINITY_MSG[getRandom(1)]);
 					packet.addStringParameter(caster.getName());
 					npc.broadcastPacket(packet);
 					((L2Attackable) npc).addDamageHate(caster, 0, 999);

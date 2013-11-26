@@ -139,7 +139,7 @@ public class Q00726_LightwithintheDarkness extends Quest
 			tele[0] = 48200;
 			tele[1] = -12232;
 			tele[2] = -9128;
-			return enterInstance(player, "RimPailakaCastle.xml", tele, _fortDungeons.get(npc.getNpcId()), checkFortCondition(player, npc, true));
+			return enterInstance(player, "RimPailakaCastle.xml", tele, _fortDungeons.get(npc.getId()), checkFortCondition(player, npc, true));
 		}
 		return htmltext;
 	}
@@ -204,7 +204,7 @@ public class Q00726_LightwithintheDarkness extends Quest
 			return null;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 		if (tmpworld instanceof PAWORLD)
@@ -333,7 +333,7 @@ public class Q00726_LightwithintheDarkness extends Quest
 	private String checkFortCondition(L2PcInstance player, L2Npc npc, boolean isEnter)
 	{
 		Fort fort = npc.getFort();
-		FortDungeon dungeon = _fortDungeons.get(npc.getNpcId());
+		FortDungeon dungeon = _fortDungeons.get(npc.getId());
 		if ((player == null) || (fort == null) || (dungeon == null))
 		{
 			return "FortWarden-01a.htm";

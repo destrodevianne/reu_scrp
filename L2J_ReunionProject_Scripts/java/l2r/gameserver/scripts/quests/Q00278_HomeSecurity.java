@@ -144,7 +144,7 @@ public class Q00278_HomeSecurity extends Quest
 		final QuestState st = getRandomPartyMemberState(player, 1, 3, npc);
 		if (st != null)
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case 18905: // Farm Ravager (Crazy)
 				{

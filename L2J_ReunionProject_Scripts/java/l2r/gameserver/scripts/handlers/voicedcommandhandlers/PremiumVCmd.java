@@ -18,11 +18,11 @@ package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 import java.text.SimpleDateFormat;
 
 import javolution.text.TextBuilder;
-import l2r.gameserver.Prem;
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import gr.reunion.configsEngine.PremiumServiceConfigs;
+import gr.reunion.premiumEngine.PremiumHandler;
 
 public class PremiumVCmd implements IVoicedCommandHandler
 {
@@ -69,7 +69,7 @@ public class PremiumVCmd implements IVoicedCommandHandler
 			else
 			{
 				long _end_prem_date;
-				_end_prem_date = Prem.getInstance().getPremServiceData(activeChar.getAccountName());
+				_end_prem_date = PremiumHandler.getPremServiceData(activeChar.getAccountName());
 				NpcHtmlMessage preReply = new NpcHtmlMessage(5);
 				
 				TextBuilder html3 = new TextBuilder("<html><body><title>Premium Account Details</title><center>");

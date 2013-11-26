@@ -450,7 +450,7 @@ public class Q00348_ArrogantSearch extends Quest
 			return htmltext;
 		}
 		
-		if ((npc.getNpcId() != HANELLIN) & (st.getState() != State.STARTED))
+		if ((npc.getId() != HANELLIN) & (st.getState() != State.STARTED))
 		{
 			return htmltext;
 		}
@@ -458,7 +458,7 @@ public class Q00348_ArrogantSearch extends Quest
 		int cond = st.getInt("cond");
 		int reward1 = st.getInt("reward1");
 		
-		if (npc.getNpcId() == HANELLIN)
+		if (npc.getId() == HANELLIN)
 		{
 			if (st.getState() == State.CREATED)
 			{
@@ -612,12 +612,12 @@ public class Q00348_ArrogantSearch extends Quest
 		}
 		else if (cond == 5)
 		{
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			if (ARK_OWNERS.containsKey(npcId))
 			{
-				if (st.getQuestItemsCount((Integer) ARK_OWNERS.get(npc.getNpcId())[0]) == 1)
+				if (st.getQuestItemsCount((Integer) ARK_OWNERS.get(npc.getId())[0]) == 1)
 				{
-					st.takeItems((Integer) ARK_OWNERS.get(npc.getNpcId())[0], 1);
+					st.takeItems((Integer) ARK_OWNERS.get(npc.getId())[0], 1);
 					htmltext = (String) ARK_OWNERS.get(npcId)[2];
 					int[] i = (int[]) ARK_OWNERS.get(npcId)[5];
 					st.addRadar(i[0], i[1], i[2]);
@@ -674,7 +674,7 @@ public class Q00348_ArrogantSearch extends Quest
 		}
 		else if (cond == 27)
 		{
-			int npcId = npc.getNpcId();
+			int npcId = npc.getId();
 			if (BLOODY_OWNERS.containsKey(npcId))
 			{
 				if (st.getInt((String) BLOODY_OWNERS.get(npcId)[1]) < 1)
@@ -713,7 +713,7 @@ public class Q00348_ArrogantSearch extends Quest
 			return null;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (ATTACK_DROPS_24.containsKey(npcId))
 		{
@@ -764,7 +764,7 @@ public class Q00348_ArrogantSearch extends Quest
 			return null;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (DROPS.containsKey(npcId))
 		{

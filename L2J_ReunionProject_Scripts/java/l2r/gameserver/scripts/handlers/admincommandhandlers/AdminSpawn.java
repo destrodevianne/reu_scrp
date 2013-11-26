@@ -294,7 +294,7 @@ public class AdminSpawn implements IAdminCommandHandler
 				else
 				{
 					params[1] = params[1].replace('_', ' ');
-					npcId = NpcTable.getInstance().getTemplateByName(params[1]).getNpcId();
+					npcId = NpcTable.getInstance().getTemplateByName(params[1]).getId();
 				}
 				if (params.length > 2)
 				{
@@ -347,7 +347,7 @@ public class AdminSpawn implements IAdminCommandHandler
 					}
 					else
 					{
-						activeChar.teleToLocation(spawn.getLocx(), spawn.getLocy(), spawn.getLocz(), true);
+						activeChar.teleToLocation(spawn.getX(), spawn.getY(), spawn.getZ(), true);
 					}
 				}
 			}
@@ -359,7 +359,7 @@ public class AdminSpawn implements IAdminCommandHandler
 				}
 				else
 				{
-					activeChar.sendMessage(index + " - " + spawn.getTemplate().getName() + " (" + spawn + "): " + spawn.getLocx() + " " + spawn.getLocy() + " " + spawn.getLocz());
+					activeChar.sendMessage(index + " - " + spawn.getTemplate().getName() + " (" + spawn + "): " + spawn.getX() + " " + spawn.getY() + " " + spawn.getZ());
 				}
 			}
 		}
@@ -372,10 +372,10 @@ public class AdminSpawn implements IAdminCommandHandler
 	
 	private void printSpawn(L2Npc target, int type)
 	{
-		int i = target.getNpcId();
-		int x = target.getSpawn().getLocx();
-		int y = target.getSpawn().getLocy();
-		int z = target.getSpawn().getLocz();
+		int i = target.getId();
+		int x = target.getSpawn().getX();
+		int y = target.getSpawn().getY();
+		int z = target.getSpawn().getZ();
 		int h = target.getSpawn().getHeading();
 		switch (type)
 		{
@@ -421,9 +421,9 @@ public class AdminSpawn implements IAdminCommandHandler
 			{
 				spawn.setCustom(true);
 			}
-			spawn.setLocx(target.getX());
-			spawn.setLocy(target.getY());
-			spawn.setLocz(target.getZ());
+			spawn.setX(target.getX());
+			spawn.setY(target.getY());
+			spawn.setZ(target.getZ());
 			spawn.setAmount(mobCount);
 			spawn.setHeading(activeChar.getHeading());
 			spawn.setRespawnDelay(respawnTime);
@@ -437,13 +437,13 @@ public class AdminSpawn implements IAdminCommandHandler
 				spawn.setInstanceId(0);
 			}
 			// TODO add checks for GrandBossSpawnManager
-			if (RaidBossSpawnManager.getInstance().isDefined(spawn.getNpcid()))
+			if (RaidBossSpawnManager.getInstance().isDefined(spawn.getId()))
 			{
 				activeChar.sendMessage("You cannot spawn another instance of " + template1.getName() + ".");
 			}
 			else
 			{
-				if (RaidBossSpawnManager.getInstance().getValidTemplate(spawn.getNpcid()) != null)
+				if (RaidBossSpawnManager.getInstance().getValidTemplate(spawn.getId()) != null)
 				{
 					spawn.setRespawnMinDelay(43200);
 					spawn.setRespawnMaxDelay(129600);
@@ -477,7 +477,7 @@ public class AdminSpawn implements IAdminCommandHandler
 		int i = from;
 		for (int j = 0; (i < mobsCount) && (j < 50); i++, j++)
 		{
-			StringUtil.append(tb, "<a action=\"bypass -h admin_spawn_monster ", Integer.toString(mobs.get(i).getNpcId()), "\">", mobs.get(i).getName(), "</a><br1>");
+			StringUtil.append(tb, "<a action=\"bypass -h admin_spawn_monster ", Integer.toString(mobs.get(i).getId()), "\">", mobs.get(i).getName(), "</a><br1>");
 		}
 		
 		if (i == mobsCount)
@@ -502,7 +502,7 @@ public class AdminSpawn implements IAdminCommandHandler
 		int i = from;
 		for (int j = 0; (i < mobsCount) && (j < 50); i++, j++)
 		{
-			StringUtil.append(tb, "<a action=\"bypass -h admin_spawn_monster ", Integer.toString(mobs.get(i).getNpcId()), "\">", mobs.get(i).getName(), "</a><br1>");
+			StringUtil.append(tb, "<a action=\"bypass -h admin_spawn_monster ", Integer.toString(mobs.get(i).getId()), "\">", mobs.get(i).getName(), "</a><br1>");
 		}
 		
 		if (i == mobsCount)

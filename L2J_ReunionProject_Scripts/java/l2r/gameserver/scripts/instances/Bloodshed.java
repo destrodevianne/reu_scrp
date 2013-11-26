@@ -186,7 +186,7 @@ public class Bloodshed extends Quest
 	@Override
 	public final String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		if (npcId == ROSE)
 		{
 			final teleCoord tele = new teleCoord();
@@ -231,7 +231,7 @@ public class Bloodshed extends Quest
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		switch (npcId)
 		{
 			case SENTRY1:

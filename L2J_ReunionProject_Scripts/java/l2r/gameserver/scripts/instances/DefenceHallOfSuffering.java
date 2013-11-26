@@ -817,7 +817,7 @@ public class DefenceHallOfSuffering extends Quest
 					runTwins(world);
 				}
 			}
-			else if ((world.getStatus() == 6) && ((npc.getNpcId() == KLODEKUS) || (npc.getNpcId() == KLANIKUS)))
+			else if ((world.getStatus() == 6) && ((npc.getId() == KLODEKUS) || (npc.getId() == KLANIKUS)))
 			{
 				if (world.klanikus.isDead() && world.klodekus.isDead())
 				{
@@ -839,7 +839,7 @@ public class DefenceHallOfSuffering extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 		{

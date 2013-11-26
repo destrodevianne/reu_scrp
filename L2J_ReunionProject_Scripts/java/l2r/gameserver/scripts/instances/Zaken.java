@@ -22,7 +22,7 @@ import java.util.List;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.Config;
-import l2r.gameserver.GeoEngine;
+import l2r.gameserver.GeoData;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.enums.MountType;
 import l2r.gameserver.enums.PcCondOverride;
@@ -671,7 +671,7 @@ public class Zaken extends Quest
 			{
 				for (L2Character obj : world._playersInZakenZone)
 				{
-					if (!(GeoEngine.getInstance().canSeeTarget(obj, npc)))
+					if (!(GeoData.getInstance().canSeeTarget(obj, npc)))
 					{
 						continue;
 					}
@@ -846,7 +846,7 @@ public class Zaken extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
@@ -1048,7 +1048,7 @@ public class Zaken extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if ((npcId == ZAKEN_DAY) || (npcId == ZAKEN_DAY83) || (npcId == ZAKEN_NIGHT))
 		{
@@ -1074,7 +1074,7 @@ public class Zaken extends Quest
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if ((npcId == ZAKEN_DAY) || (npcId == ZAKEN_DAY83) || (npcId == ZAKEN_NIGHT))
 		{
 			int skillId = 0;
@@ -1170,7 +1170,7 @@ public class Zaken extends Quest
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if ((npcId == ZAKEN_DAY) || (npcId == ZAKEN_DAY83) || (npcId == ZAKEN_NIGHT))
 		{
 			if (attacker.getMountType() == MountType.STRIDER)
@@ -1279,7 +1279,7 @@ public class Zaken extends Quest
 	@Override
 	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if ((npcId == ZAKEN_DAY) || (npcId == ZAKEN_DAY83) || (npcId == ZAKEN_NIGHT))
 		{
 			if (skill.getAggroPoints() > 0)

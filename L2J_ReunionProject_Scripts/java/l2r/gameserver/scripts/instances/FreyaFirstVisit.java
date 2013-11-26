@@ -18,8 +18,8 @@ import javolution.util.FastList;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.L2Object;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -96,7 +96,7 @@ public class FreyaFirstVisit extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 		{
@@ -308,7 +308,7 @@ public class FreyaFirstVisit extends Quest
 			}
 			else if (event.equalsIgnoreCase("go_guards"))
 			{
-				NpcSay cs = new NpcSay(world._jinia_guard1.getObjectId(), Say2.ALL, world._jinia_guard1.getNpcId(), NpcStringId.S1_MAY_THE_PROTECTION_OF_THE_GODS_BE_UPON_YOU);
+				NpcSay cs = new NpcSay(world._jinia_guard1.getObjectId(), Say2.ALL, world._jinia_guard1.getId(), NpcStringId.S1_MAY_THE_PROTECTION_OF_THE_GODS_BE_UPON_YOU);
 				cs.addStringParameter(player.getAppearance().getVisibleName());
 				player.sendPacket(cs);
 				
@@ -318,29 +318,29 @@ public class FreyaFirstVisit extends Quest
 				world._jinia_guard4.setRunning();
 				world._jinia_guard5.setRunning();
 				world._jinia_guard6.setRunning();
-				world._jinia_guard1.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114673, -113374, -11200, 0));
-				world._jinia_guard4.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114745, -113383, -11200, 0));
-				world._jinia_guard2.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114711, -113382, -11200, 0));
-				world._jinia_guard5.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114662, -113382, -11200, 0));
+				world._jinia_guard1.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114673, -113374, -11200, 0));
+				world._jinia_guard4.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114745, -113383, -11200, 0));
+				world._jinia_guard2.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114711, -113382, -11200, 0));
+				world._jinia_guard5.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114662, -113382, -11200, 0));
 				
 				startQuestTimer("go_fight", 3000, null, player);
 			}
 			else if (event.equalsIgnoreCase("go_fight"))
 			{
-				world._jinia_guard1.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114673, -114324, -11200, 0));
-				world._jinia_guard4.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114745, -114324, -11200, 0));
-				world._jinia_guard2.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114711, -114324, -11200, 0));
-				world._jinia_guard5.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114662, -114324, -11200, 0));
-				world._jinia_guard3.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(115041, -114324, -11200, 0));
-				world._jinia_guard6.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114446, -114324, -11200, 0));
+				world._jinia_guard1.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114673, -114324, -11200, 0));
+				world._jinia_guard4.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114745, -114324, -11200, 0));
+				world._jinia_guard2.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114711, -114324, -11200, 0));
+				world._jinia_guard5.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114662, -114324, -11200, 0));
+				world._jinia_guard3.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(115041, -114324, -11200, 0));
+				world._jinia_guard6.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114446, -114324, -11200, 0));
 				
-				world._freya_guard1.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114713, -114920, -11200, 0));
-				world._freya_guard2.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114008, -114920, -11200, 0));
-				world._freya_guard3.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114422, -114920, -11200, 0));
-				world._freya_guard4.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(115023, -114920, -11200, 0));
-				world._freya_guard5.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(115459, -114920, -11200, 0));
+				world._freya_guard1.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114713, -114920, -11200, 0));
+				world._freya_guard2.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114008, -114920, -11200, 0));
+				world._freya_guard3.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114422, -114920, -11200, 0));
+				world._freya_guard4.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(115023, -114920, -11200, 0));
+				world._freya_guard5.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(115459, -114920, -11200, 0));
 				world._freya.setRunning();
-				world._freya.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(114722, -114798, -11205, 15956));
+				world._freya.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(114722, -114798, -11205, 15956));
 				startQuestTimer("freya", 17000, null, player);
 				startQuestTimer("go_fight2", 7000, null, player);
 			}
@@ -379,7 +379,7 @@ public class FreyaFirstVisit extends Quest
 				world._freya.setTarget(player);
 				world._freya.doCast(SkillTable.getInstance().getInfo(6275, 1));
 				startQuestTimer("movie", 7000, null, player);
-				NpcSay cs = new NpcSay(world._freya.getObjectId(), Say2.ALL, world._freya.getNpcId(), NpcStringId.I_CAN_NO_LONGER_STAND_BY);
+				NpcSay cs = new NpcSay(world._freya.getObjectId(), Say2.ALL, world._freya.getId(), NpcStringId.I_CAN_NO_LONGER_STAND_BY);
 				player.sendPacket(cs);
 			}
 			else if (event.equalsIgnoreCase("movie"))
@@ -463,7 +463,7 @@ public class FreyaFirstVisit extends Quest
 		if (tmpworld instanceof IQWorld)
 		{
 			IQWorld world = (IQWorld) tmpworld;
-			if (npc.getNpcId() == _freya_controller)
+			if (npc.getId() == _freya_controller)
 			{
 				world._jinia_guard1.setIsImmobilized(false);
 				world._jinia_guard2.setIsImmobilized(false);
@@ -492,7 +492,7 @@ public class FreyaFirstVisit extends Quest
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if ((npcId == _jinia_guard1) || (npcId == _jinia_guard2) || (npcId == _jinia_guard3))
 		{
 			npc.setCurrentHp(npc.getCurrentHp() + damage);

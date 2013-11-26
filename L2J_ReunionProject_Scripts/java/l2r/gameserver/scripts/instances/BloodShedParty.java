@@ -176,7 +176,7 @@ public class BloodShedParty extends Quest
 		world.setStatus(0);
 		for (L2DoorInstance door : InstanceManager.getInstance().getInstance(instanceId).getDoors())
 		{
-			if (Util.contains(DOOR, door.getDoorId()))
+			if (Util.contains(DOOR, door.getId()))
 			{
 				door.setIsAttackableDoor(true);
 			}
@@ -225,7 +225,7 @@ public class BloodShedParty extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		if (npcId == ROSE)
 		{
 			final teleCoord tele = new teleCoord();
@@ -293,7 +293,7 @@ public class BloodShedParty extends Quest
 		final InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 		final BSPWorld world = (BSPWorld) tmpworld;
 		
-		if (npc.getNpcId() == MOBS)
+		if (npc.getId() == MOBS)
 		{
 			if (GetKilledMobs(MOBS) == 6)
 			{
@@ -304,7 +304,7 @@ public class BloodShedParty extends Quest
 				openDoor(20240001, world.getInstanceId());
 			}
 		}
-		if (npc.getNpcId() == PROTECTOR)
+		if (npc.getId() == PROTECTOR)
 		{
 			player.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Master, Forgive Me!"));
 			player.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "I failed, give me another chance to protect you"));
@@ -313,7 +313,7 @@ public class BloodShedParty extends Quest
 			addSpawn(BELETH, 16344, 213091, -9356, 0, false, 0, false, world.getInstanceId());
 			player.sendPacket(new Earthquake(16344, 213091, -9356, 20, 5));
 		}
-		if (npc.getNpcId() == BELETH)
+		if (npc.getId() == BELETH)
 		{
 			player.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "My world....."));
 			player.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Baylorrrrr"));
@@ -323,7 +323,7 @@ public class BloodShedParty extends Quest
 			addSpawn(BAYLOR, 16344, 213091, -9356, 0, false, 0, false, world.getInstanceId());
 			player.sendPacket(new Earthquake(16344, 213091, -9356, 20, 5));
 		}
-		if (npc.getNpcId() == BAYLOR)
+		if (npc.getId() == BAYLOR)
 		{
 			player.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "My death is nothing, your end is near"));
 			player.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "You fools ....Aha ha ha ha"));
@@ -333,7 +333,7 @@ public class BloodShedParty extends Quest
 			addSpawn(TIAT, 16344, 213091, -9356, 0, false, 0, false, world.getInstanceId());
 			player.sendPacket(new Earthquake(16344, 213091, -9356, 80, 5));
 		}
-		if (npc.getNpcId() == TIAT)
+		if (npc.getId() == TIAT)
 		{
 			player.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Ugh.... Defeated.. How!?"));
 			player.sendPacket(new ExShowScreenMessage("Congratulations! You Have Defeated Demonic Lord.", 12000));

@@ -162,7 +162,7 @@ public class Q00421_LittleWingAdventures extends Quest
 			st = newQuestState(player);
 		}
 		
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		final L2Summon summon = player.getSummon();
 		switch (st.getState())
 		{
@@ -379,7 +379,7 @@ public class Q00421_LittleWingAdventures extends Quest
 			return null;
 		}
 		
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		for (int id : killedTrees.keySet())
 		{
 			if ((id == attacker.getObjectId()) && (killedTrees.get(id) == npcId))

@@ -139,7 +139,7 @@ public final class Q00040_ASpecialOrder extends Quest
 		{
 			return htmltext;
 		}
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case HELVETIA:
 			{

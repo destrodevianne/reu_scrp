@@ -58,7 +58,7 @@ public class SeerFlouros extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (npc.getNpcId() == SeerFlourosId)
+		if (npc.getId() == SeerFlourosId)
 		{
 			_LastAttack = System.currentTimeMillis();
 			startQuestTimer("despawn", 60000L, npc, null, true);
@@ -82,13 +82,13 @@ public class SeerFlouros extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == SeerFlourosId)
+		if (npc.getId() == SeerFlourosId)
 		{
 			cancelQuestTimer("despawn", npc, null);
 			if (Follower != null)
 				Follower.deleteMe();
 		}
-		else if (npc.getNpcId() == FollowerId && SeerFlouros != null)
+		else if (npc.getId() == FollowerId && SeerFlouros != null)
 			startQuestTimer("respMinion", 30000L, npc, null);
 		return null;
 	}

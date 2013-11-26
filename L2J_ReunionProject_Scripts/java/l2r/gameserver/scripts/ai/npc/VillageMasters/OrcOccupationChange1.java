@@ -107,7 +107,7 @@ public class OrcOccupationChange1 extends Quest
 						st.exitQuest(false);
 					}
 				}
-				event = npc.getNpcId() + "-" + suffix + ".htm";
+				event = npc.getId() + "-" + suffix + ".htm";
 			}
 		}
 		return event;
@@ -135,30 +135,30 @@ public class OrcOccupationChange1 extends Quest
 			{
 				case orcFighter:
 				{
-					htmltext = npc.getNpcId() + "-01.htm";
+					htmltext = npc.getId() + "-01.htm";
 					break;
 				}
 				case orcMage:
 				{
-					htmltext = npc.getNpcId() + "-06.htm";
+					htmltext = npc.getId() + "-06.htm";
 					break;
 				}
 				default:
 				{
 					if (cid.level() == 1)
 					{
-						return npc.getNpcId() + "-21.htm";
+						return npc.getId() + "-21.htm";
 					}
 					else if (cid.level() >= 2)
 					{
-						return npc.getNpcId() + "-22.htm";
+						return npc.getId() + "-22.htm";
 					}
 				}
 			}
 		}
 		else
 		{
-			htmltext = npc.getNpcId() + "-23.htm";
+			htmltext = npc.getId() + "-23.htm";
 		}
 		return htmltext;
 	}

@@ -69,7 +69,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (npc.getNpcId() == Elcadia)
+		if (npc.getId() == Elcadia)
 		{
 			if (event.equalsIgnoreCase("32784-05.html"))
 			{
@@ -78,7 +78,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				st.playSound("ItemSound.quest_accept");
 			}
 		}
-		else if (npc.getNpcId() == ErisEvilThoughts)
+		else if (npc.getId() == ErisEvilThoughts)
 		{
 			if (event.equalsIgnoreCase("32792-03.html"))
 			{
@@ -89,7 +89,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			}
 		}
 		
-		else if (npc.getNpcId() == GoodBook1)
+		else if (npc.getId() == GoodBook1)
 		{
 			if (event.equalsIgnoreCase("good.html"))
 			{
@@ -102,7 +102,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				addSpawn(22125, 88655, -250591, -8320, 144, false, 0, false, player.getInstanceId());
 			}
 		}
-		else if (npc.getNpcId() == GoodBook2)
+		else if (npc.getId() == GoodBook2)
 		{
 			if (event.equalsIgnoreCase("good.html"))
 			{
@@ -113,7 +113,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				npc.doCast(skill);
 			}
 		}
-		else if (npc.getNpcId() == GoodBook3)
+		else if (npc.getId() == GoodBook3)
 		{
 			if (event.equalsIgnoreCase("good.html"))
 			{
@@ -125,7 +125,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				support.doCast(skill);
 			}
 		}
-		else if (npc.getNpcId() == GoodBook4)
+		else if (npc.getId() == GoodBook4)
 		{
 			if (event.equalsIgnoreCase("good.html"))
 			{
@@ -137,7 +137,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				support.doCast(skill);
 			}
 		}
-		else if (npc.getNpcId() == RelicWatcher)
+		else if (npc.getId() == RelicWatcher)
 		{
 			if (event.equalsIgnoreCase("truexit"))
 			{
@@ -147,7 +147,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 					htmltext = "32804-03.html";
 			}
 		}
-		else if (npc.getNpcId() == RelicWatcher1)
+		else if (npc.getId() == RelicWatcher1)
 		{
 			if (event.equalsIgnoreCase("truexit"))
 			{
@@ -157,7 +157,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 					htmltext = "32805-03.html";
 			}
 		}
-		else if (npc.getNpcId() == RelicWatcher2)
+		else if (npc.getId() == RelicWatcher2)
 		{
 			if (event.equalsIgnoreCase("truexit"))
 			{
@@ -167,7 +167,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 					htmltext = "32806-03.html";
 			}
 		}
-		else if (npc.getNpcId() == RelicWatcher3)
+		else if (npc.getId() == RelicWatcher3)
 		{
 			if (event.equalsIgnoreCase("truexit"))
 			{
@@ -190,14 +190,14 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 		{
 			return htmltext;
 		}
-		if (npc.getNpcId() == WEST_DEVICE)
+		if (npc.getId() == WEST_DEVICE)
 		{
 			if (st.getInt("good2") != 1 || st.getInt("good3") != 1 || st.getInt("good4") != 1)
 				htmltext = "passnotdone.html";
 			else
 				htmltext = "32816.html";
 		}
-		else if (npc.getNpcId() == EAST_DEVICE)
+		else if (npc.getId() == EAST_DEVICE)
 		{
 			if (st.getInt("good2") == 1)
 			{
@@ -208,21 +208,21 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				htmltext = "32817.html";
 			}
 		}
-		else if (npc.getNpcId() == NORTH_DEVICE)
+		else if (npc.getId() == NORTH_DEVICE)
 		{
 			if (st.getInt("good4") == 1)
 				htmltext = "passdone.html";
 			else
 				htmltext = "32819.html";
 		}
-		else if (npc.getNpcId() == SOUTH_DEVICE)
+		else if (npc.getId() == SOUTH_DEVICE)
 		{
 			if (st.getInt("good3") == 1)
 				htmltext = "passdone.html";
 			else
 				htmltext = "32818.html";
 		}
-		else if (npc.getNpcId() == Elcadia)
+		else if (npc.getId() == Elcadia)
 		{
 			if (st.getState() == State.COMPLETED)
 				htmltext = "32784-02.html";
@@ -235,7 +235,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			else if (st.getInt("cond") == 1)
 				htmltext = "32784-06.html";
 		}
-		else if (npc.getNpcId() == Elcadia_Support)
+		else if (npc.getId() == Elcadia_Support)
 		{
 			if (!(player.getQuestState(getName()).isCompleted()))
 			{
@@ -296,7 +296,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			}
 			return null;
 		}
-		else if (npc.getNpcId() == ErisEvilThoughts)
+		else if (npc.getId() == ErisEvilThoughts)
 		{
 			if (player.getLevel() < 81)
 			{
@@ -332,7 +332,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			else
 				htmltext = "32784-02.html";
 		}
-		else if (npc.getNpcId() == RelicGuardian)
+		else if (npc.getId() == RelicGuardian)
 		{
 			if (st.getInt("cond") == 2 && st.getInt("good1") == 1 && st.getInt("good2") == 1 && st.getInt("good3") == 1 && st.getInt("good4") == 1)
 			{
@@ -347,12 +347,12 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			else
 				htmltext = "32803-01.html";
 		}
-		else if (npc.getNpcId() == Odd_Globe)
+		else if (npc.getId() == Odd_Globe)
 		{
 			if (st.getInt("cond") < 3)
 				htmltext = "32815-01.html";
 		}
-		else if (npc.getNpcId() == Elcadia_Support)
+		else if (npc.getId() == Elcadia_Support)
 		{
 			switch (st.getInt("cond"))
 			{
@@ -364,63 +364,63 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 					break;
 			}
 		}
-		else if (Util.contains(WrongBook, npc.getNpcId()))
+		else if (Util.contains(WrongBook, npc.getId()))
 		{
 			if (st.getInt("cond") == 2)
 				htmltext = "wrong.html";
 		}
-		else if (npc.getNpcId() == GoodBook1)
+		else if (npc.getId() == GoodBook1)
 		{
 			if (st.getInt("good1") == 1)
 				htmltext = "already.html";
 			else
 				htmltext = "32821-01.html";
 		}
-		else if (npc.getNpcId() == GoodBook2)
+		else if (npc.getId() == GoodBook2)
 		{
 			if (st.getInt("good2") == 1)
 				htmltext = "already.html";
 			else
 				htmltext = "32825-01.html";
 		}
-		else if (npc.getNpcId() == GoodBook3)
+		else if (npc.getId() == GoodBook3)
 		{
 			if (st.getInt("good3") == 1)
 				htmltext = "already.html";
 			else
 				htmltext = "32829-01.html";
 		}
-		else if (npc.getNpcId() == GoodBook4)
+		else if (npc.getId() == GoodBook4)
 		{
 			if (st.getInt("good4") == 1)
 				htmltext = "already.html";
 			else
 				htmltext = "32833-01.html";
 		}
-		else if (npc.getNpcId() == SolinaEvilThoughts)
+		else if (npc.getId() == SolinaEvilThoughts)
 		{
 			htmltext = "32793-01.html";
 		}
-		else if (npc.getNpcId() == JudeVanEtins)
+		else if (npc.getId() == JudeVanEtins)
 		{
 			htmltext = "32797-01.html";
 		}
-		else if (npc.getNpcId() == RelicWatcher)
+		else if (npc.getId() == RelicWatcher)
 		{
 			if (st.getInt("cond") < 3)
 				htmltext = "32804-01.html";
 		}
-		else if (npc.getNpcId() == RelicWatcher1)
+		else if (npc.getId() == RelicWatcher1)
 		{
 			if (st.getInt("cond") < 3)
 				htmltext = "32805-01.html";
 		}
-		else if (npc.getNpcId() == RelicWatcher2)
+		else if (npc.getId() == RelicWatcher2)
 		{
 			if (st.getInt("cond") < 3)
 				htmltext = "32806-01.html";
 		}
-		else if (npc.getNpcId() == RelicWatcher3)
+		else if (npc.getId() == RelicWatcher3)
 		{
 			if (st.getInt("cond") < 3)
 				htmltext = "32807-01.html";

@@ -203,7 +203,7 @@ public final class Q00325_GrimCollector extends Quest
 		}
 		
 		final int rnd = getRandom(100);
-		for (ItemHolder drop : MONSTER_DROPS.get(npc.getNpcId()))
+		for (ItemHolder drop : MONSTER_DROPS.get(npc.getId()))
 		{
 			if (rnd < drop.getCount())
 			{
@@ -224,7 +224,7 @@ public final class Q00325_GrimCollector extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case GUARD_CURTIZ:
 			{

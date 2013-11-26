@@ -123,7 +123,7 @@ public final class WyvernManager extends AbstractNpcAI
 	
 	private boolean isOwnerClan(L2Npc npc, L2PcInstance player)
 	{
-		switch (MANAGERS.get(npc.getNpcId()))
+		switch (MANAGERS.get(npc.getId()))
 		{
 			case CASTLE:
 			{
@@ -146,7 +146,7 @@ public final class WyvernManager extends AbstractNpcAI
 				final Fort fort = npc.getFort();
 				if ((player.getClan() != null) && (fort != null) && (fort.getOwnerClan() != null))
 				{
-					return (player.isClanLeader() && (player.getClanId() == npc.getFort().getOwnerClan().getClanId()));
+					return (player.isClanLeader() && (player.getClanId() == npc.getFort().getOwnerClan().getId()));
 				}
 				return false;
 			}
@@ -159,7 +159,7 @@ public final class WyvernManager extends AbstractNpcAI
 	
 	private boolean isInSiege(L2Npc npc)
 	{
-		switch (MANAGERS.get(npc.getNpcId()))
+		switch (MANAGERS.get(npc.getId()))
 		{
 			case CASTLE:
 			{
@@ -183,7 +183,7 @@ public final class WyvernManager extends AbstractNpcAI
 	
 	private String getResidenceName(L2Npc npc)
 	{
-		switch (MANAGERS.get(npc.getNpcId()))
+		switch (MANAGERS.get(npc.getId()))
 		{
 			case CASTLE:
 			{
@@ -230,7 +230,7 @@ public final class WyvernManager extends AbstractNpcAI
 				{
 					htmltext = replaceAll(npc, player.getHtmlPrefix());
 				}
-				else if ((MANAGERS.get(npc.getNpcId()) == ManagerType.CASTLE) && SevenSigns.getInstance().isSealValidationPeriod() && (SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE) == SevenSigns.CABAL_DUSK))
+				else if ((MANAGERS.get(npc.getId()) == ManagerType.CASTLE) && SevenSigns.getInstance().isSealValidationPeriod() && (SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE) == SevenSigns.CABAL_DUSK))
 				{
 					htmltext = "wyvernmanager-dusk.html";
 				}
@@ -242,7 +242,7 @@ public final class WyvernManager extends AbstractNpcAI
 			}
 			case "Help":
 			{
-				htmltext = MANAGERS.get(npc.getNpcId()) == ManagerType.CASTLE ? replacePart(player.getHtmlPrefix(), "wyvernmanager-03.html") : replacePart(player.getHtmlPrefix(), "wyvernmanager-03b.html");
+				htmltext = MANAGERS.get(npc.getId()) == ManagerType.CASTLE ? replacePart(player.getHtmlPrefix(), "wyvernmanager-03.html") : replacePart(player.getHtmlPrefix(), "wyvernmanager-03b.html");
 				break;
 			}
 			case "RideWyvern":
@@ -254,7 +254,7 @@ public final class WyvernManager extends AbstractNpcAI
 						player.sendMessage("You cannot summon wyvern while in siege.");
 						return null;
 					}
-					if ((MANAGERS.get(npc.getNpcId()) == ManagerType.CASTLE) && SevenSigns.getInstance().isSealValidationPeriod() && ((SevenSigns.getInstance()).getSealOwner(SevenSigns.SEAL_STRIFE) == SevenSigns.CABAL_DUSK))
+					if ((MANAGERS.get(npc.getId()) == ManagerType.CASTLE) && SevenSigns.getInstance().isSealValidationPeriod() && ((SevenSigns.getInstance()).getSealOwner(SevenSigns.SEAL_STRIFE) == SevenSigns.CABAL_DUSK))
 					{
 						htmltext = "wyvernmanager-dusk.html";
 					}
@@ -289,7 +289,7 @@ public final class WyvernManager extends AbstractNpcAI
 			}
 			else
 			{
-				if ((MANAGERS.get(npc.getNpcId()) == ManagerType.CASTLE) && SevenSigns.getInstance().isSealValidationPeriod() && (SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE) == SevenSigns.CABAL_DUSK))
+				if ((MANAGERS.get(npc.getId()) == ManagerType.CASTLE) && SevenSigns.getInstance().isSealValidationPeriod() && (SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE) == SevenSigns.CABAL_DUSK))
 				{
 					htmltext = "wyvernmanager-dusk.html";
 				}

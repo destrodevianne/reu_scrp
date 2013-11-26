@@ -62,7 +62,7 @@ public class HotSpringDisease extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (Util.contains(disease1mobs, npc.getNpcId()))
+		if (Util.contains(disease1mobs, npc.getId()))
 		{
 			if (Rnd.get(100) < DISEASE_CHANCE)
 			{
@@ -70,7 +70,7 @@ public class HotSpringDisease extends AbstractNpcAI
 				npc.doCast(SkillTable.getInstance().getInfo(4554, Rnd.get(10) + 1));
 			}
 		}
-		if (Util.contains(disease2mobs, npc.getNpcId()))
+		if (Util.contains(disease2mobs, npc.getId()))
 		{
 			if (Rnd.get(100) < DISEASE_CHANCE)
 			{
@@ -78,7 +78,7 @@ public class HotSpringDisease extends AbstractNpcAI
 				npc.doCast(SkillTable.getInstance().getInfo(4553, Rnd.get(10) + 1));
 			}
 		}
-		if (Util.contains(disease3mobs, npc.getNpcId()))
+		if (Util.contains(disease3mobs, npc.getId()))
 		{
 			if (Rnd.get(100) < DISEASE_CHANCE)
 			{
@@ -86,7 +86,7 @@ public class HotSpringDisease extends AbstractNpcAI
 				npc.doCast(SkillTable.getInstance().getInfo(4552, Rnd.get(10) + 1));
 			}
 		}
-		if (Util.contains(disease4mobs, npc.getNpcId()))
+		if (Util.contains(disease4mobs, npc.getId()))
 		{
 			if (Rnd.get(100) < DISEASE_CHANCE)
 			{

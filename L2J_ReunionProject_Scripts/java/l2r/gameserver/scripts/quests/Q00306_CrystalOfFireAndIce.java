@@ -105,7 +105,7 @@ public final class Q00306_CrystalOfFireAndIce extends Quest
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
 		QuestState qs = killer.getQuestState(getName());
-		if ((qs != null) && qs.isStarted() && ((npc.getNpcId() == UNDINE_NOBLE) || !killer.isInParty()))
+		if ((qs != null) && qs.isStarted() && ((npc.getId() == UNDINE_NOBLE) || !killer.isInParty()))
 		{
 			giveKillReward(killer, npc);
 			return super.onKill(npc, killer, isSummon);
@@ -179,7 +179,7 @@ public final class Q00306_CrystalOfFireAndIce extends Quest
 	{
 		if (Util.checkIfInRange(1500, npc, player, false))
 		{
-			final ItemHolder item = MONSTER_DROPS.get(npc.getNpcId());
+			final ItemHolder item = MONSTER_DROPS.get(npc.getId());
 			giveItemRandomly(player, npc, item.getId(), 1, 0, 1000.0 / item.getCount(), true);
 		}
 	}

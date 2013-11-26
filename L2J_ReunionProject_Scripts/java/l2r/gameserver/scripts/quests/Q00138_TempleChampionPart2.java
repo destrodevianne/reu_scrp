@@ -141,7 +141,7 @@ public class Q00138_TempleChampionPart2 extends Quest
 		{
 			return htmltext;
 		}
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case SYLVAIN:
 				switch (st.getCond())

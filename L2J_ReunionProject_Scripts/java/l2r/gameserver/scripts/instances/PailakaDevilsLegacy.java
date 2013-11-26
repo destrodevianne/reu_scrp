@@ -190,7 +190,7 @@ public class PailakaDevilsLegacy extends Quest
 	
 	private static final void dropItem(L2Npc mob, L2PcInstance player)
 	{
-		final int npcId = mob.getNpcId();
+		final int npcId = mob.getId();
 		final int chance = getRandom(100);
 		for (int[] drop : DROPLIST)
 		{
@@ -252,7 +252,7 @@ public class PailakaDevilsLegacy extends Quest
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		// Must be here, because of player == null
-		if ((npc.getNpcId() == FOLLOWERS) && event.equals("follower_cast"))
+		if ((npc.getId() == FOLLOWERS) && event.equals("follower_cast"))
 		{
 			if (!npc.isCastingNow() && !npc.isDead() && !_lematanNpc.isDead())
 			{
@@ -262,7 +262,7 @@ public class PailakaDevilsLegacy extends Quest
 			startQuestTimer("follower_cast", 2000 + getRandom(100, 1000), npc, null);
 			return null;
 		}
-		else if ((npc.getNpcId() == POWDER_KEG) && event.equalsIgnoreCase("keg_trigger"))
+		else if ((npc.getId() == POWDER_KEG) && event.equalsIgnoreCase("keg_trigger"))
 		{
 			onAttack(npc, player, 600, false);
 		}
@@ -318,7 +318,7 @@ public class PailakaDevilsLegacy extends Quest
 		}
 		else if (event.equalsIgnoreCase("lematan_teleport"))
 		{
-			if ((npc.getNpcId() == LEMATAN) && !npc.isMovementDisabled() && !_isOnShip)
+			if ((npc.getId() == LEMATAN) && !npc.isMovementDisabled() && !_isOnShip)
 			{
 				// Reduce Hate
 				((L2Attackable) npc).reduceHate(player, 9999);
@@ -335,16 +335,16 @@ public class PailakaDevilsLegacy extends Quest
 			}
 			return null;
 		}
-		else if ((npc.getNpcId() == LEMATAN) && event.equalsIgnoreCase("lematan_finish_teleport") && !_isOnShip)
+		else if ((npc.getId() == LEMATAN) && event.equalsIgnoreCase("lematan_finish_teleport") && !_isOnShip)
 		{
 			// Teleport Lematan
 			npc.teleToLocation(84973, -208721, -3340);
 			// Set onShip
 			_isOnShip = true;
 			// Set Spawn loc to ship. If he loose aggro he should stay on board ;)
-			npc.getSpawn().setLocx(84973);
-			npc.getSpawn().setLocy(-208721);
-			npc.getSpawn().setLocz(-3340);
+			npc.getSpawn().setX(84973);
+			npc.getSpawn().setY(-208721);
+			npc.getSpawn().setZ(-3340);
 			// To be sure, reduce again
 			((L2Attackable) npc).reduceHate(player, 9999);
 			// Spawn followers
@@ -366,9 +366,9 @@ public class PailakaDevilsLegacy extends Quest
 	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		final QuestState st = player.getQuestState(getName());
-		if ((npc.getNpcId() != ADVENTURER2) || (st == null) || !st.isCompleted())
+		if ((npc.getId() != ADVENTURER2) || (st == null) || !st.isCompleted())
 		{
-			return npc.getNpcId() + ".htm";
+			return npc.getId() + ".htm";
 		}
 		return "32511-03.htm";
 	}
@@ -382,7 +382,7 @@ public class PailakaDevilsLegacy extends Quest
 			return getNoQuestMsg(player);
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case SURVIVOR:
 				switch (st.getState())
@@ -476,7 +476,7 @@ public class PailakaDevilsLegacy extends Quest
 	@Override
 	public final String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		if ((npc.getNpcId() == POWDER_KEG) && !npc.isDead())
+		if ((npc.getId() == POWDER_KEG) && !npc.isDead())
 		{
 			npc.doCast(boom_skill);
 			
@@ -488,7 +488,7 @@ public class PailakaDevilsLegacy extends Quest
 					
 					if (target instanceof L2MonsterInstance)
 					{
-						if (((L2MonsterInstance) target).getNpcId() == POWDER_KEG)
+						if (((L2MonsterInstance) target).getId() == POWDER_KEG)
 						{
 							startQuestTimer("keg_trigger", 500, (L2Npc) target, attacker);
 						}
@@ -511,11 +511,11 @@ public class PailakaDevilsLegacy extends Quest
 				npc.doDie(attacker);
 			}
 		}
-		else if ((npc.getNpcId() == LEMATAN) && (npc.getCurrentHp() < (npc.getMaxHp() / 2)) && !_isTeleportScheduled)
+		else if ((npc.getId() == LEMATAN) && (npc.getCurrentHp() < (npc.getMaxHp() / 2)) && !_isTeleportScheduled)
 		{
 			startQuestTimer("lematan_teleport", 1000, npc, attacker);
 		}
-		else if (npc.getNpcId() == TREASURE_BOX)
+		else if (npc.getId() == TREASURE_BOX)
 		{
 			dropItem(npc, attacker);
 			npc.doDie(attacker);
@@ -530,7 +530,7 @@ public class PailakaDevilsLegacy extends Quest
 		final QuestState st = player.getQuestState(getName());
 		if ((st != null) && st.isStarted())
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case KAMS:
 					if (hasQuestItems(player, SWORD))

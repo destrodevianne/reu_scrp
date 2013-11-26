@@ -51,13 +51,13 @@ public class CannibalisticStakatoChief extends AbstractNpcAI
 	@Override
 	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if ((Util.contains(BIZARRE_COCOONS, npcId)) && (skill.getId() == 2905) && (caster.getTarget() == npc))
 		{
 			npc.getSpawn().stopRespawn();
 			npc.doDie(npc);
-			L2Npc captain = addSpawn(CANNIBALISTIC_CHIEF, npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), 0, false, 0L);
-			_captainSpawn.put(captain.getObjectId(), Integer.valueOf(npc.getNpcId()));
+			L2Npc captain = addSpawn(CANNIBALISTIC_CHIEF, npc.getSpawn().getX(), npc.getSpawn().getY(), npc.getSpawn().getZ(), 0, false, 0L);
+			_captainSpawn.put(captain.getObjectId(), Integer.valueOf(npc.getId()));
 			caster.getInventory().destroyItemByItemId("removeAccelerator", 14832, 1L, caster, caster);
 		}
 		return super.onSkillSee(npc, caster, skill, targets, isPet);
@@ -89,7 +89,7 @@ public class CannibalisticStakatoChief extends AbstractNpcAI
 			killer.addItem("SMALL_COCOON", SMALL_COCOON, 1L, npc, true);
 		}
 		
-		addSpawn(_captainSpawn.get(npc.getObjectId()).intValue(), npc.getSpawn().getLocx(), npc.getSpawn().getLocy(), npc.getSpawn().getLocz(), 0, false, 0L);
+		addSpawn(_captainSpawn.get(npc.getObjectId()).intValue(), npc.getSpawn().getX(), npc.getSpawn().getY(), npc.getSpawn().getZ(), 0, false, 0L);
 		_captainSpawn.remove(npc.getObjectId());
 		
 		return super.onKill(npc, killer, isPet);

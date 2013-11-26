@@ -118,7 +118,7 @@ public class ElvenHumanMystics1 extends Quest
 						st.exitQuest(false);
 					}
 				}
-				event = npc.getNpcId() + "-" + suffix + ".htm";
+				event = npc.getId() + "-" + suffix + ".htm";
 			}
 		}
 		return event;
@@ -146,30 +146,30 @@ public class ElvenHumanMystics1 extends Quest
 			{
 				case elvenMage:
 				{
-					htmltext = npc.getNpcId() + "-01.htm";
+					htmltext = npc.getId() + "-01.htm";
 					break;
 				}
 				case mage:
 				{
-					htmltext = npc.getNpcId() + "-08.htm";
+					htmltext = npc.getId() + "-08.htm";
 					break;
 				}
 				default:
 				{
 					if (cid.level() == 1)
 					{
-						return npc.getNpcId() + "-31.htm";
+						return npc.getId() + "-31.htm";
 					}
 					else if (cid.level() >= 2)
 					{
-						return npc.getNpcId() + "-32.htm";
+						return npc.getId() + "-32.htm";
 					}
 				}
 			}
 		}
 		else
 		{
-			htmltext = npc.getNpcId() + "-33.htm";
+			htmltext = npc.getId() + "-33.htm";
 		}
 		return htmltext;
 	}

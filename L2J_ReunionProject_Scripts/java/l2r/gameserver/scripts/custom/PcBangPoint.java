@@ -1074,7 +1074,7 @@ public class PcBangPoint extends Quest
 		}
 		else if (event.equalsIgnoreCase("tele"))
 		{
-			htmltext = npc.getNpcId() + "-tele.htm";
+			htmltext = npc.getId() + "-tele.htm";
 		}
 		else if (event.equalsIgnoreCase("wyvern"))
 		{

@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.handlers.itemhandlers;
 
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.instancemanager.HandysBlockCheckerManager;
-import l2r.gameserver.instancemanager.HandysBlockCheckerManager.ArenaParticipantsHolder;
+import l2r.gameserver.model.ArenaParticipantsHolder;
 import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2BlockInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -49,7 +49,7 @@ public class EventItem implements IItemHandler
 		
 		final L2PcInstance activeChar = playable.getActingPlayer();
 		
-		final int itemId = item.getItemId();
+		final int itemId = item.getId();
 		switch (itemId)
 		{
 			case 13787: // Handy's Block Checker Bond

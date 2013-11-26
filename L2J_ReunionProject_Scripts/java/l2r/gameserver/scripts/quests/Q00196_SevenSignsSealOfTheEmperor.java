@@ -183,45 +183,45 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
 		if (tmpworld instanceof SIGNSWorld)
 		{
-			if (npc.getNpcId() == 27371)
+			if (npc.getId() == 27371)
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
 				npc.setIsRunning(true);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.THIS_PLACE_ONCE_BELONGED_TO_LORD_SHILEN));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.THIS_PLACE_ONCE_BELONGED_TO_LORD_SHILEN));
 			}
-			if (npc.getNpcId() == 27372)
+			if (npc.getId() == 27372)
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
 				npc.setIsRunning(true);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.WHO_DARES_ENTER_THIS_PLACE));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHO_DARES_ENTER_THIS_PLACE));
 			}
-			if ((npc.getNpcId() == 27373) || (npc.getNpcId() == 27379))
+			if ((npc.getId() == 27373) || (npc.getId() == 27379))
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
 				npc.setIsRunning(true);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.THOSE_WHO_ARE_AFRAID_SHOULD_GET_AWAY_AND_THOSE_WHO_ARE_BRAVE_SHOULD_FIGHT));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.THOSE_WHO_ARE_AFRAID_SHOULD_GET_AWAY_AND_THOSE_WHO_ARE_BRAVE_SHOULD_FIGHT));
 			}
-			if (npc.getNpcId() == 27377)
+			if (npc.getId() == 27377)
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
 				npc.setIsRunning(true);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.LEAVE_NOW));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.LEAVE_NOW));
 			}
-			if (npc.getNpcId() == 27378)
+			if (npc.getId() == 27378)
 			{
 				((L2Attackable) npc).abortAttack();
 				npc.setTarget(player);
 				npc.setIsRunning(true);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.WHO_DARES_ENTER_THIS_PLACE));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHO_DARES_ENTER_THIS_PLACE));
 			}
 		}
 		return null;
@@ -746,7 +746,7 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		{
 			SIGNSWorld world = (SIGNSWorld) tmpworld;
 			
-			if ((world.getStatus() == 6) && (npc.getNpcId() == SEALDEVICE))
+			if ((world.getStatus() == 6) && (npc.getId() == SEALDEVICE))
 			{
 				npc.doCast(SkillTable.getInstance().getInfo(5980, 3));
 			}
@@ -762,7 +762,7 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		{
 			SIGNSWorld world = (SIGNSWorld) tmpworld;
 			
-			if ((skill.getId() == EINHASAD_STRIKE) && (world.getStatus() == 6) && (npc.getNpcId() == SEALDEVICE))
+			if ((skill.getId() == EINHASAD_STRIKE) && (world.getStatus() == 6) && (npc.getId() == SEALDEVICE))
 			{
 				npc.doCast(SkillTable.getInstance().getInfo(5980, 3));
 			}
@@ -838,7 +838,7 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 			{
 				mammonst = 1;
 				L2Npc mammon = addSpawn(MAMMON, 109742, 219978, -3520, 0, false, 120000, true);
-				mammon.broadcastPacket(new NpcSay(mammon.getObjectId(), 0, mammon.getNpcId(), NpcStringId.WHO_DARES_SUMMON_THE_MERCHANT_OF_MAMMON));
+				mammon.broadcastPacket(new NpcSay(mammon.getObjectId(), 0, mammon.getId(), NpcStringId.WHO_DARES_SUMMON_THE_MERCHANT_OF_MAMMON));
 				st.startQuestTimer("despawn", 120000, mammon);
 			}
 			else
@@ -849,7 +849,7 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		else if (event.equalsIgnoreCase("despawn"))
 		{
 			mammonst = 0;
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.THE_ANCIENT_PROMISE_TO_THE_EMPEROR_HAS_BEEN_FULFILLED));
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.THE_ANCIENT_PROMISE_TO_THE_EMPEROR_HAS_BEEN_FULFILLED));
 			return null;
 		}
 		else if (event.equalsIgnoreCase("DOORS"))
@@ -893,7 +893,7 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		}
 		
 		int cond = st.getInt("cond");
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case HEINE:
 				switch (st.getState())
@@ -1042,29 +1042,29 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 		if (tmpworld instanceof SIGNSWorld)
 		{
 			world = (SIGNSWorld) tmpworld;
-			if (npc.getNpcId() == 27371)
+			if (npc.getId() == 27371)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.FOR_SHILEN));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.FOR_SHILEN));
 			}
-			else if (npc.getNpcId() == 27372)
+			else if (npc.getId() == 27372)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.LORD_SHILEN_SOME_DAY_YOU_WILL_ACCOMPLISH_THIS_MISSION));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.LORD_SHILEN_SOME_DAY_YOU_WILL_ACCOMPLISH_THIS_MISSION));
 			}
-			else if (npc.getNpcId() == 27373)
+			else if (npc.getId() == 27373)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.WHY_ARE_YOU_GETTING_IN_OUR_WAY));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHY_ARE_YOU_GETTING_IN_OUR_WAY));
 			}
-			else if (npc.getNpcId() == 27377)
+			else if (npc.getId() == 27377)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.FOR_SHILEN));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.FOR_SHILEN));
 			}
-			else if (npc.getNpcId() == 27378)
+			else if (npc.getId() == 27378)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.LORD_SHILEN_SOME_DAY_YOU_WILL_ACCOMPLISH_THIS_MISSION));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.LORD_SHILEN_SOME_DAY_YOU_WILL_ACCOMPLISH_THIS_MISSION));
 			}
-			else if (npc.getNpcId() == 27379)
+			else if (npc.getId() == 27379)
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.WHY_ARE_YOU_GETTING_IN_OUR_WAY));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHY_ARE_YOU_GETTING_IN_OUR_WAY));
 			}
 			
 			if (world.getStatus() == 1)
@@ -1109,7 +1109,7 @@ public class Q00196_SevenSignsSealOfTheEmperor extends Quest
 			else if (world.getStatus() == 6)
 			{
 				_numAtk++;
-				if (npc.getNpcId() == SEALDEVICE)
+				if (npc.getId() == SEALDEVICE)
 				{
 					if (_numAtk < 4)
 					{

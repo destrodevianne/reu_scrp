@@ -53,7 +53,7 @@ public class VenomousStorace extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == VENOMOUS)
 		{
 			if (_isAlreadySpawned == false)
@@ -74,7 +74,7 @@ public class VenomousStorace extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == GUARD)
 			_isLockSpawned = 1;
 		else if (npcId == VENOMOUS)

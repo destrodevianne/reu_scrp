@@ -325,7 +325,7 @@ public class Q10295_SevenSignsSolinasTomb extends Quest
 		}
 		
 		int cond = st.getInt("cond");
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		int solina = st.getInt("solina");
 		
 		if (player.getClassId().getId() != player.getBaseClass())
@@ -393,7 +393,7 @@ public class Q10295_SevenSignsSolinasTomb extends Quest
 				htmltext = "teleport_device_q10295_2.htm";
 			}
 		}
-		else if (npc.getNpcId() == Odd_Globe)
+		else if (npc.getId() == Odd_Globe)
 		{
 			if (!player.getQuestState(getName()).isCompleted())
 			{
@@ -465,7 +465,7 @@ public class Q10295_SevenSignsSolinasTomb extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		QuestState st = player.getQuestState(getName());
 		int solina = st.getInt("solina");
 		int tomb = st.getInt("tomb");

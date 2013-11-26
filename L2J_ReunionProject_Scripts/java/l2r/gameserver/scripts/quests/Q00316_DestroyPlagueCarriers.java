@@ -67,7 +67,7 @@ public final class Q00316_DestroyPlagueCarriers extends Quest
 	@Override
 	public boolean checkPartyMember(QuestState qs, L2Npc npc)
 	{
-		return ((npc.getNpcId() != VAROOL_FOULCLAW) || !qs.hasQuestItems(VAROOL_FOULCLAW_FANG));
+		return ((npc.getId() != VAROOL_FOULCLAW) || !qs.hasQuestItems(VAROOL_FOULCLAW_FANG));
 	}
 	
 	@Override
@@ -123,8 +123,8 @@ public final class Q00316_DestroyPlagueCarriers extends Quest
 		final QuestState qs = getRandomPartyMemberState(killer, -1, 3, npc);
 		if (qs != null)
 		{
-			final ItemHolder item = MONSTER_DROPS.get(npc.getNpcId());
-			final int limit = (npc.getNpcId() == VAROOL_FOULCLAW ? 1 : 0);
+			final ItemHolder item = MONSTER_DROPS.get(npc.getId());
+			final int limit = (npc.getId() == VAROOL_FOULCLAW ? 1 : 0);
 			giveItemRandomly(qs.getPlayer(), npc, item.getId(), 1, limit, 10.0 / item.getCount(), true);
 		}
 		return super.onKill(npc, killer, isSummon);

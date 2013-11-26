@@ -32,8 +32,8 @@ import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GlobalVariablesManager;
 import l2r.gameserver.instancemanager.ZoneManager;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.L2Party;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -837,7 +837,7 @@ public class TowerOfNaia extends Quest
 	@Override
 	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == CONTROLLER)
 		{
@@ -922,7 +922,7 @@ public class TowerOfNaia extends Quest
 					while (it.hasNext())
 					{
 						L2Npc spore = it.next();
-						if ((spore != null) && !spore.isDead() && (spore.getX() == spore.getSpawn().getLocx()) && (spore.getY() == spore.getSpawn().getLocy()))
+						if ((spore != null) && !spore.isDead() && (spore.getX() == spore.getSpawn().getX()) && (spore.getY() == spore.getSpawn().getY()))
 						{
 							spore.deleteMe();
 							it.remove();
@@ -940,7 +940,7 @@ public class TowerOfNaia extends Quest
 			return null;
 		}
 		
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (event.equalsIgnoreCase("despawn_spore") && !npc.isDead() && (_challengeState == STATE_SPORE_CHALLENGE_IN_PROGRESS))
 		{
@@ -1065,7 +1065,7 @@ public class TowerOfNaia extends Quest
 					MinionList.spawnMinion(_lock, 18493);
 				}
 				
-				_controller.broadcastPacket(new NpcSay(_controller.getObjectId(), Say2.NPC_ALL, _controller.getNpcId(), NpcStringId.EMERGENCY_EMERGENCY_THE_OUTER_WALL_IS_WEAKENING_RAPIDLY));
+				_controller.broadcastPacket(new NpcSay(_controller.getObjectId(), Say2.NPC_ALL, _controller.getId(), NpcStringId.EMERGENCY_EMERGENCY_THE_OUTER_WALL_IS_WEAKENING_RAPIDLY));
 				_counter -= 10;
 			}
 		}
@@ -1076,7 +1076,7 @@ public class TowerOfNaia extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if (npcId == LOCK)
 		{
@@ -1168,9 +1168,9 @@ public class TowerOfNaia extends Quest
 						String el = ELEMENTS_NAME[Arrays.binarySearch(ELEMENTS, npcId)];
 						for (L2Npc spore : _sporeSpawn)
 						{
-							if ((spore != null) && !spore.isDead() && (spore.getNpcId() == npcId))
+							if ((spore != null) && !spore.isDead() && (spore.getId() == npcId))
 							{
-								NpcSay ns = new NpcSay(spore.getObjectId(), Say2.NPC_ALL, spore.getNpcId(), SPORES_NPCSTRING_ID[getRandom(4)]);
+								NpcSay ns = new NpcSay(spore.getObjectId(), Say2.NPC_ALL, spore.getId(), SPORES_NPCSTRING_ID[getRandom(4)]);
 								ns.addStringParameter(el);
 								spore.broadcastPacket(ns);
 							}
@@ -1215,7 +1215,7 @@ public class TowerOfNaia extends Quest
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		
 		if ((npcId == MUTATED_ELPY) && !npc.isTeleporting())
 		{
@@ -1229,10 +1229,10 @@ public class TowerOfNaia extends Quest
 			_sporeSpawn.add(npc);
 			npc.setIsRunning(false);
 			int[] coord = SPORES_MOVE_POINTS[getRandom(SPORES_MOVE_POINTS.length)];
-			npc.getSpawn().setLocx(coord[0]);
-			npc.getSpawn().setLocy(coord[1]);
-			npc.getSpawn().setLocz(coord[2]);
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(coord[0], coord[1], coord[2], 0));
+			npc.getSpawn().setX(coord[0]);
+			npc.getSpawn().setY(coord[1]);
+			npc.getSpawn().setZ(coord[2]);
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(coord[0], coord[1], coord[2], 0));
 			startQuestTimer("despawn_spore", 60000, npc, null);
 		}
 		return super.onSpawn(npc);
@@ -1300,7 +1300,7 @@ public class TowerOfNaia extends Quest
 	private void markElpyRespawn()
 	{
 		final long respawnTime = (getRandom(43200, 216000) * 1000) + System.currentTimeMillis();
-		GlobalVariablesManager.getInstance().storeVariable("elpy_respawn_time", Long.toString(respawnTime));
+		GlobalVariablesManager.getInstance().set("elpy_respawn_time", respawnTime);
 	}
 	
 	private int moveTo(L2Npc npc, int[] coords)
@@ -1314,18 +1314,17 @@ public class TowerOfNaia extends Quest
 			npc.setIsRunning(false);
 			npc.disableCoreAI(true);
 			npc.setIsNoRndWalk(true);
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(coords[0], coords[1], coords[2], heading));
-			npc.getSpawn().setLocx(coords[0]);
-			npc.getSpawn().setLocy(coords[1]);
-			npc.getSpawn().setLocz(coords[2]);
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(coords[0], coords[1], coords[2], heading));
+			npc.getSpawn().setX(coords[0]);
+			npc.getSpawn().setY(coords[1]);
+			npc.getSpawn().setZ(coords[2]);
 		}
 		return time == 0 ? 100 : time;
 	}
 	
 	private void spawnElpy()
 	{
-		final String tmp = GlobalVariablesManager.getInstance().getStoredVariable("elpy_respawn_time");
-		final long respawnTime = tmp == null ? 0 : Long.parseLong(tmp);
+		final long respawnTime = GlobalVariablesManager.getInstance().getLong("elpy_respawn_time", 0);
 		if (respawnTime <= System.currentTimeMillis())
 		{
 			addSpawn(MUTATED_ELPY, -45474, 247450, -13994, 49152, false, 0, false);

@@ -37,7 +37,7 @@ public class DragonGuards extends AbstractNpcAI
 		{
 			for (int mobId : WALL_MONSTERS)
 			{
-				if (mobId == npc.getNpcId())
+				if (mobId == npc.getId())
 				{
 					final L2MonsterInstance monster = (L2MonsterInstance) npc;
 					monster.setIsImmobilized(true);
@@ -68,7 +68,7 @@ public class DragonGuards extends AbstractNpcAI
 		{
 			for (int mobId : WALL_MONSTERS)
 			{
-				if (mobId == npc.getNpcId())
+				if (mobId == npc.getId())
 				{
 					final L2MonsterInstance monster = (L2MonsterInstance) npc;
 					monster.setIsImmobilized(false);

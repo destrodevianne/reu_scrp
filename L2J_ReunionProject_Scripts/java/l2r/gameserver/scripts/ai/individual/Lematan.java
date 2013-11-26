@@ -62,7 +62,7 @@ public class Lematan extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == LEMATAN)
+		if (npc.getId() == LEMATAN)
 		{
 			int maxHp = npc.getMaxHp();
 			double nowHp = npc.getStatus().getCurrentHp();
@@ -83,7 +83,7 @@ public class Lematan extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == LEMATAN)
 			status = 0;
 		else if (npcId == MINION && status == 1)
@@ -94,7 +94,7 @@ public class Lematan extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == MINION)
 			startQuestTimer("first_anim", 1000L, npc, null);
 		return super.onSpawn(npc);

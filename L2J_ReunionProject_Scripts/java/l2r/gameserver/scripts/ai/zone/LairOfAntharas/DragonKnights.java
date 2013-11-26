@@ -28,12 +28,12 @@ public class DragonKnights extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		if (npc.getNpcId() == DRAGON_KNIGHT_1)
+		if (npc.getId() == DRAGON_KNIGHT_1)
 		{
 			if (getRandom(1000) < 400)
 			{
 				final L2Npc warrior = addSpawn(DRAGON_KNIGHT_2, npc.getX() + getRandom(10, 50), npc.getY() + getRandom(10, 50), npc.getZ(), 0, false, 240000, true);
-				warrior.broadcastPacket(new NpcSay(warrior.getObjectId(), 0, warrior.getNpcId(), NpcStringId.THOSE_WHO_SET_FOOT_IN_THIS_PLACE_SHALL_NOT_LEAVE_ALIVE));
+				warrior.broadcastPacket(new NpcSay(warrior.getObjectId(), 0, warrior.getId(), NpcStringId.THOSE_WHO_SET_FOOT_IN_THIS_PLACE_SHALL_NOT_LEAVE_ALIVE));
 				warrior.setRunning();
 				((L2Attackable) warrior).addDamageHate(killer, 1, 99999);
 				warrior.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, killer);
@@ -45,12 +45,12 @@ public class DragonKnights extends AbstractNpcAI
 			}
 		}
 		
-		if (npc.getNpcId() == DRAGON_KNIGHT_2)
+		if (npc.getId() == DRAGON_KNIGHT_2)
 		{
 			if (getRandom(1000) < 350)
 			{
 				final L2Npc knight = addSpawn(ELITE_DRAGON_KNIGHT, npc.getX() + getRandom(10, 50), npc.getY() + getRandom(10, 50), npc.getZ(), 0, false, 240000, true);
-				knight.broadcastPacket(new NpcSay(knight.getObjectId(), 0, knight.getNpcId(), NpcStringId.IF_YOU_WISH_TO_SEE_HELL_I_WILL_GRANT_YOU_YOUR_WISH));
+				knight.broadcastPacket(new NpcSay(knight.getObjectId(), 0, knight.getId(), NpcStringId.IF_YOU_WISH_TO_SEE_HELL_I_WILL_GRANT_YOU_YOUR_WISH));
 				knight.setRunning();
 				((L2Attackable) knight).addDamageHate(killer, 1, 99999);
 				knight.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, killer);
@@ -59,7 +59,7 @@ public class DragonKnights extends AbstractNpcAI
 			if (getRandom(1000) < 350)
 			{
 				final L2Npc warior = addSpawn(DRAGON_KNIGHT_WARRIOR, npc.getX() + getRandom(10, 50), npc.getY() + getRandom(10, 50), npc.getZ(), 0, false, 240000, true);
-				warior.broadcastPacket(new NpcSay(warior.getObjectId(), 0, warior.getNpcId(), NpcStringId.IF_YOU_WISH_TO_SEE_HELL_I_WILL_GRANT_YOU_YOUR_WISH));
+				warior.broadcastPacket(new NpcSay(warior.getObjectId(), 0, warior.getId(), NpcStringId.IF_YOU_WISH_TO_SEE_HELL_I_WILL_GRANT_YOU_YOUR_WISH));
 				warior.setRunning();
 				((L2Attackable) warior).addDamageHate(killer, 1, 99999);
 				warior.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, killer);

@@ -124,7 +124,7 @@ public final class Q00300_HuntingLetoLizardman extends Quest
 		if (partyMember != null)
 		{
 			final QuestState st = partyMember.getQuestState(getName());
-			if (st.isCond(1) && (getRandom(1000) < MOBS_SAC.get(npc.getNpcId())))
+			if (st.isCond(1) && (getRandom(1000) < MOBS_SAC.get(npc.getId())))
 			{
 				st.giveItems(BRACELET_OF_LIZARDMAN, 1);
 				if (st.getQuestItemsCount(BRACELET_OF_LIZARDMAN) == REQUIRED_BRACELET_COUNT)

@@ -60,7 +60,7 @@ public class Q10285_MeetingSirra extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			if (event.equalsIgnoreCase("32020-05.htm"))
 			{
@@ -71,7 +71,7 @@ public class Q10285_MeetingSirra extends Quest
 				st.playSound("ItemSound.quest_accept");
 			}
 		}
-		else if (npc.getNpcId() == _jinia)
+		else if (npc.getId() == _jinia)
 		{
 			if (event.equalsIgnoreCase("32760-02.htm"))
 			{
@@ -104,7 +104,7 @@ public class Q10285_MeetingSirra extends Quest
 				inst.setEmptyDestroyTime(0);
 			}
 		}
-		else if (npc.getNpcId() == _kegor)
+		else if (npc.getId() == _kegor)
 		{
 			if (event.equalsIgnoreCase("32761-02.htm"))
 			{
@@ -113,7 +113,7 @@ public class Q10285_MeetingSirra extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 		}
-		else if (npc.getNpcId() == _sirra)
+		else if (npc.getId() == _sirra)
 		{
 			if (event.equalsIgnoreCase("32762-08.htm"))
 			{
@@ -122,7 +122,7 @@ public class Q10285_MeetingSirra extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 		}
-		else if (npc.getNpcId() == _steward)
+		else if (npc.getId() == _steward)
 		{
 			if (event.equalsIgnoreCase("go"))
 			{
@@ -149,7 +149,7 @@ public class Q10285_MeetingSirra extends Quest
 			return htmltext;
 		}
 		
-		if (npc.getNpcId() == _rafforty)
+		if (npc.getId() == _rafforty)
 		{
 			switch (st.getState())
 			{
@@ -179,7 +179,7 @@ public class Q10285_MeetingSirra extends Quest
 					break;
 			}
 		}
-		else if (npc.getNpcId() == _jinia && st.getInt("progress") == 1)
+		else if (npc.getId() == _jinia && st.getInt("progress") == 1)
 		{
 			switch (st.getInt("Ex"))
 			{
@@ -197,7 +197,7 @@ public class Q10285_MeetingSirra extends Quest
 					return "32760-13.htm";
 			}
 		}
-		else if (npc.getNpcId() == _kegor && st.getInt("progress") == 1)
+		else if (npc.getId() == _kegor && st.getInt("progress") == 1)
 		{
 			switch (st.getInt("Ex"))
 			{
@@ -209,7 +209,7 @@ public class Q10285_MeetingSirra extends Quest
 					return "32761-04.htm";
 			}
 		}
-		else if (npc.getNpcId() == _sirra && st.getInt("progress") == 1)
+		else if (npc.getId() == _sirra && st.getInt("progress") == 1)
 		{
 			switch (st.getInt("Ex"))
 			{
@@ -219,13 +219,13 @@ public class Q10285_MeetingSirra extends Quest
 					return "32762-09.htm";
 			}
 		}
-		else if (npc.getNpcId() == _steward && st.getInt("progress") == 2)
+		else if (npc.getId() == _steward && st.getInt("progress") == 2)
 		{
 			htmltext = "32029-01.htm";
 			st.set("cond", "8");
 			st.playSound("ItemSound.quest_middle");
 		}
-		else if (npc.getNpcId() == _jinia2 && st.getInt("progress") == 2)
+		else if (npc.getId() == _jinia2 && st.getInt("progress") == 2)
 		{
 			htmltext = "32781-01.htm";
 			st.playSound("ItemSound.quest_middle");
@@ -237,7 +237,7 @@ public class Q10285_MeetingSirra extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getNpcId() == _sirra)
+		if (npc.getId() == _sirra)
 			QuestLink.showQuestWindow(player, npc);
 		
 		return null;

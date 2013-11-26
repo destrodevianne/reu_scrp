@@ -248,7 +248,7 @@ public class DionBloodAltar extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		
 		if (npcId == 25753)
 		{

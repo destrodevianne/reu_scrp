@@ -133,7 +133,7 @@ public class Q00456_DontKnowDontCare extends Quest
 		}
 		else if (event.equalsIgnoreCase("reward"))
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case DRAKE_LEADER_NPC:
 					if (st.hasQuestItems(DRAKE_LORD_ESSENCE))
@@ -196,7 +196,7 @@ public class Q00456_DontKnowDontCare extends Quest
 			BEHEMOTH_LEADER_NPC,
 			DRAGON_BEAST_NPC,
 			DRAKE_LEADER_NPC
-		}, npc.getNpcId()))
+		}, npc.getId()))
 		{
 			if (st.getInt("cond") == 1)
 			{
@@ -207,7 +207,7 @@ public class Q00456_DontKnowDontCare extends Quest
 				htmltext = "notakereward.htm";
 			}
 		}
-		else if (Util.contains(SEPARATED_SOUL, npc.getNpcId()))
+		else if (Util.contains(SEPARATED_SOUL, npc.getId()))
 		{
 			switch (st.getState())
 			{
@@ -313,19 +313,19 @@ public class Q00456_DontKnowDontCare extends Quest
 		{
 			/** Location loc = npc.getLocation(); handled by script */
 			
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case DRAKE_LEADER:
 					/** npc.addSpawn(DRAKE_LEADER_NPC, loc, false, 60000, true); */
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Take you reward stranger!"));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Take you reward stranger!"));
 					break;
 				case BEHEMOTH_LEADER:
 					/** addSpawn(BEHEMOTH_LEADER_NPC, loc, false, 60000, true); */
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Take you reward stranger!"));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Take you reward stranger!"));
 					break;
 				case DRAGON_BEAST:
 					/** addSpawn(DRAGON_BEAST_NPC, loc, false, 60000, true); */
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Take you reward stranger!"));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Take you reward stranger!"));
 					break;
 			}
 		}

@@ -189,7 +189,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 		String htmltext = null;
 		if (qs == null)
 		{
-			switch (npc.getNpcId())
+			switch (npc.getId())
 			{
 				case ABERCROMBIE:
 				{
@@ -207,7 +207,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 		
 		final boolean itemRecruit = hasQuestItems(player, BADGE_RECRUIT);
 		final boolean itemSolder = hasQuestItems(player, BADGE_SOLDIER);
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case ABERCROMBIE:
 			{
@@ -257,7 +257,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 		QuestState qs = getRandomPartyMemberState(killer, -1, 1, npc);
 		if (qs != null)
 		{
-			final ItemChanceHolder item = MOBS_DROP_CHANCES.get(npc.getNpcId());
+			final ItemChanceHolder item = MOBS_DROP_CHANCES.get(npc.getId());
 			if ((item.getCount() <= qs.getCond()) && !qs.isCond(3))
 			{
 				giveItemRandomly(qs.getPlayer(), npc, item.getId(), 1, REQUIRED_ITEM_COUNT, item.getChance(), true);
@@ -276,7 +276,7 @@ public final class Q00628_HuntGoldenRam extends Quest
 			return htmltext;
 		}
 		
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case KAHMAN:
 			{

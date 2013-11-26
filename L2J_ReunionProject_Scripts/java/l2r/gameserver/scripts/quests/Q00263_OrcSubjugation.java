@@ -99,7 +99,7 @@ public final class Q00263_OrcSubjugation extends Quest
 		final QuestState st = killer.getQuestState(getName());
 		if ((st != null) && (getRandom(10) > 4))
 		{
-			st.giveItems(MONSTERS.get(npc.getNpcId()), 1);
+			st.giveItems(MONSTERS.get(npc.getId()), 1);
 			st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
 		}
 		return super.onKill(npc, killer, isSummon);

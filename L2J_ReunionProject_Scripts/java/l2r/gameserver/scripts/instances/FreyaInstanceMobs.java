@@ -85,7 +85,7 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if ((npcId == jinia) || (npcId == kegor))
 		{
 			((L2Attackable) npc).reduceHate(attacker, 999999999);
@@ -117,7 +117,7 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 	@Override
 	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
 	{
-		if ((npc.getNpcId() == freyaStand) || (npc.getNpcId() == freyaThrone))
+		if ((npc.getId() == freyaStand) || (npc.getId() == freyaThrone))
 		{
 			callSkillAI(npc);
 		}
@@ -127,7 +127,7 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == glacier)
 		{
 			npc.setDisplayEffect(1);
@@ -136,7 +136,7 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 			startQuestTimer("setDisplayEffect2", 1000, npc, null);
 			startQuestTimer("cast", 10000, npc, null);
 		}
-		else if (npc.getNpcId() == freyaSpelling)
+		else if (npc.getId() == freyaSpelling)
 		{
 			npc.setIsImmobilized(true);
 		}
@@ -161,7 +161,7 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == glacier)
 		{
 			npc.setDisplayEffect(3);
@@ -252,7 +252,7 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 	{
 		for (L2Npc mob : InstanceManager.getInstance().getInstance(instanceId).getNpcs())
 		{
-			if ((mob.getNpcId() == freyaStand) && !mob.isDead())
+			if ((mob.getId() == freyaStand) && !mob.isDead())
 			{
 				return mob;
 			}
@@ -263,7 +263,7 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if ((npc.getNpcId() == archer_breathe) || (npc.getNpcId() == archer_knight))
+		if ((npc.getId() == archer_breathe) || (npc.getId() == archer_knight))
 		{
 			if (npc.isImmobilized())
 			{
@@ -283,9 +283,9 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 		try
 		{
 			L2Spawn npcSpawn = new L2Spawn(npcTemplate);
-			npcSpawn.setLocx(x);
-			npcSpawn.setLocy(y);
-			npcSpawn.setLocz(z);
+			npcSpawn.setX(x);
+			npcSpawn.setY(y);
+			npcSpawn.setZ(z);
 			npcSpawn.setHeading(heading);
 			npcSpawn.setAmount(1);
 			npcSpawn.setInstanceId(instId);

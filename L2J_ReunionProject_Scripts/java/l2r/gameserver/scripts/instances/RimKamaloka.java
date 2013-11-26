@@ -1083,9 +1083,9 @@ public class RimKamaloka extends Quest
 				final int[] loc = spawnlist[i];
 				spawn = new L2Spawn(mob1);
 				spawn.setInstanceId(world.getInstanceId());
-				spawn.setLocx(loc[0]);
-				spawn.setLocy(loc[1]);
-				spawn.setLocz(loc[2]);
+				spawn.setX(loc[0]);
+				spawn.setY(loc[1]);
+				spawn.setZ(loc[2]);
 				spawn.setHeading(-1);
 				spawn.setRespawnDelay(RESPAWN_DELAY);
 				spawn.setAmount(1);
@@ -1111,7 +1111,7 @@ public class RimKamaloka extends Quest
 		{
 			for (L2MonsterInstance mob : world.spawnedMobs)
 			{
-				if ((mob == null) || !mob.isDecayed() || (mob.getNpcId() != npcId))
+				if ((mob == null) || !mob.isDecayed() || (mob.getId() != npcId))
 				{
 					continue;
 				}
@@ -1384,7 +1384,7 @@ public class RimKamaloka extends Quest
 			return null;
 		}
 		
-		if (npc.getNpcId() == caller.getNpcId())
+		if (npc.getId() == caller.getId())
 		{
 			return null;
 		}
@@ -1400,7 +1400,7 @@ public class RimKamaloka extends Quest
 			return null;
 		}
 		
-		final int npcId = npc.getNpcId();
+		final int npcId = npc.getId();
 		if (npcId == START_NPC)
 		{
 			return npc.getCastle().getName() + ".htm";
@@ -1440,7 +1440,7 @@ public class RimKamaloka extends Quest
 	@Override
 	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		return String.valueOf(npc.getNpcId()) + ".htm";
+		return String.valueOf(npc.getId()) + ".htm";
 	}
 	
 	@Override
@@ -1465,7 +1465,7 @@ public class RimKamaloka extends Quest
 			{
 				if (((damage * 100) / maxHp) > 40)
 				{
-					final int npcId = npc.getNpcId();
+					final int npcId = npc.getId();
 					final int chance = Rnd.get(100);
 					int nextId = 0;
 					
@@ -1523,7 +1523,7 @@ public class RimKamaloka extends Quest
 				world.lastAttack.remove(npc.getObjectId());
 			}
 			
-			final int npcId = npc.getNpcId();
+			final int npcId = npc.getId();
 			final int chance = Rnd.get(100);
 			int nextId = 0;
 			

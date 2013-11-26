@@ -43,7 +43,7 @@ public class NoRandomAnimation extends AbstractNpcAI
 		
 		for (L2Object obj : L2World.getInstance().getAllVisibleObjectsArray())
 		{
-			if ((obj instanceof L2Npc) && contains(NO_ANIMATION_MOBS_LIST, ((L2Npc) obj).getNpcId()))
+			if ((obj instanceof L2Npc) && contains(NO_ANIMATION_MOBS_LIST, ((L2Npc) obj).getId()))
 			{
 				((L2Npc) obj).setRandomAnimationEnabled(false);
 			}
@@ -55,7 +55,7 @@ public class NoRandomAnimation extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (contains(NO_ANIMATION_MOBS_LIST, npc.getNpcId()))
+		if (contains(NO_ANIMATION_MOBS_LIST, npc.getId()))
 		{
 			npc.setRandomAnimationEnabled(false);
 		}

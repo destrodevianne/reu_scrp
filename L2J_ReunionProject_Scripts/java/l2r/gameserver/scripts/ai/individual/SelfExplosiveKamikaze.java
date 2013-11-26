@@ -47,8 +47,8 @@ public class SelfExplosiveKamikaze extends AbstractNpcAI
 	{
 		if (player != null)
 		{
-			if ((MONSTERS.containsKey(Integer.valueOf(npc.getNpcId()))) && (!npc.isDead()) && (Util.checkIfInRange(MONSTERS.get(Integer.valueOf(npc.getNpcId())).getSkill().getAffectRange(), player, npc, true)))
-				npc.doCast(MONSTERS.get(Integer.valueOf(npc.getNpcId())).getSkill());
+			if ((MONSTERS.containsKey(Integer.valueOf(npc.getId()))) && (!npc.isDead()) && (Util.checkIfInRange(MONSTERS.get(Integer.valueOf(npc.getId())).getSkill().getAffectRange(), player, npc, true)))
+				npc.doCast(MONSTERS.get(Integer.valueOf(npc.getId())).getSkill());
 		}
 		return super.onAttack(npc, player, damage, isPet, skil);
 	}
@@ -56,7 +56,7 @@ public class SelfExplosiveKamikaze extends AbstractNpcAI
 	@Override
 	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
 	{
-		if ((MONSTERS.containsKey(Integer.valueOf(npc.getNpcId()))) && (!npc.isDead()) && ((skill.getId() == 4614) || (skill.getId() == 5376)))
+		if ((MONSTERS.containsKey(Integer.valueOf(npc.getId()))) && (!npc.isDead()) && ((skill.getId() == 4614) || (skill.getId() == 5376)))
 		{
 			npc.doDie(null);
 		}

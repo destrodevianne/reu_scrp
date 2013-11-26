@@ -94,7 +94,7 @@ public final class Q00368_TrespassingIntoTheHolyGround extends Quest
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
 		final int i;
-		switch (npc.getNpcId())
+		switch (npc.getId())
 		{
 			case 20795:
 			case 20797:
@@ -112,7 +112,7 @@ public final class Q00368_TrespassingIntoTheHolyGround extends Quest
 		final QuestState st = getRandomPartyMemberState(player, -1, i, npc);
 		if (st != null)
 		{
-			giveItemRandomly(player, npc, BLADE_STAKATO_FANG, 1, 0, MOBS.get(npc.getNpcId()), true);
+			giveItemRandomly(player, npc, BLADE_STAKATO_FANG, 1, 0, MOBS.get(npc.getId()), true);
 		}
 		return super.onKill(npc, player, isSummon);
 	}

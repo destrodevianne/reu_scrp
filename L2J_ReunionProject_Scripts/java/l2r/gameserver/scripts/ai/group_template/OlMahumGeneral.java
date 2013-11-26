@@ -46,17 +46,17 @@ public class OlMahumGeneral extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (npc.getNpcId() == Ol_Mahum_General)
+		if (npc.getId() == Ol_Mahum_General)
 		{
 			if (_FirstAttacked)
 			{
 				if (Rnd.get(100) == 50)
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.I_WILL_DEFINITELY_REPAY_THIS_HUMILIATION));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.I_WILL_DEFINITELY_REPAY_THIS_HUMILIATION));
 				}
 				if (Rnd.get(100) == 50)
 				{
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), NpcStringId.WE_SHALL_SEE_ABOUT_THAT));
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WE_SHALL_SEE_ABOUT_THAT));
 				}
 			}
 			_FirstAttacked = true;
@@ -67,7 +67,7 @@ public class OlMahumGeneral extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		int npcId = npc.getId();
 		if (npcId == Ol_Mahum_General)
 		{
 			_FirstAttacked = false;

@@ -21,7 +21,6 @@ package l2r.gameserver.scripts.conquerablehalls;
 import java.util.Collection;
 
 import l2r.gameserver.instancemanager.ZoneManager;
-import l2r.gameserver.model.L2CharPosition;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.zone.type.L2ResidenceHallTeleportZone;
 
@@ -85,7 +84,7 @@ public final class WildBeastReserve extends FlagWar
 		}
 		
 		QUEST_REWARD = 0;
-		CENTER = new L2CharPosition(57762, -92696, -1359, 0);
+		CENTER = new Location(57762, -92696, -1359, 0);
 	}
 	
 	public WildBeastReserve(int questId, String name, String descr, int hallId)

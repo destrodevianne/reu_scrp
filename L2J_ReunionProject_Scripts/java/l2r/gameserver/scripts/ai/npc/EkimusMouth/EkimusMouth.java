@@ -80,7 +80,7 @@ public class EkimusMouth extends AbstractNpcAI
 			st = newQuestState(player);
 		}
 		
-		if (npc.getNpcId() == 32537)
+		if (npc.getId() == 32537)
 		{
 			return "32537.htm";
 		}
