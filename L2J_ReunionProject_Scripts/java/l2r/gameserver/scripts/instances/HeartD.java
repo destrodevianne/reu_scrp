@@ -1390,7 +1390,7 @@ public class HeartD extends Quest
 			final Location loc = npc.getLocation();
 			if (npc.getId() == ALIVETUMOR)
 			{
-				((L2MonsterInstance) npc).dropItem(player, 13797, Rnd.get(2, 5));
+				npc.dropItem(player, 13797, Rnd.get(2, 5));
 				npc.deleteMe();
 				world.deadTumor = spawnNpc(DEADTUMOR, loc, 0, world.getInstanceId());
 				world.deadTumors.add(world.deadTumor);

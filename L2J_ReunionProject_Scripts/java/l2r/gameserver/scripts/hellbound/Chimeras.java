@@ -22,7 +22,6 @@ import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.instancemanager.HellboundManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.Location;
-import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -104,17 +103,17 @@ public class Chimeras extends AbstractNpcAI
 					npc.setIsDead(true);
 					if (npc.getId() == CELTUS)
 					{
-						((L2Attackable) npc).dropItem(caster, CONTAINED_LIFE_FORCE, 1);
+						npc.dropItem(caster, CONTAINED_LIFE_FORCE, 1);
 					}
 					else
 					{
 						if (getRandom(100) < 80)
 						{
-							((L2Attackable) npc).dropItem(caster, DIM_LIFE_FORCE, 1);
+							npc.dropItem(caster, DIM_LIFE_FORCE, 1);
 						}
 						else if (getRandom(100) < 80)
 						{
-							((L2Attackable) npc).dropItem(caster, LIFE_FORCE, 1);
+							npc.dropItem(caster, LIFE_FORCE, 1);
 						}
 					}
 					npc.onDecay();

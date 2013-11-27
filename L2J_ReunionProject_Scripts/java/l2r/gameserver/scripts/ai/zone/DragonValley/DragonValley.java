@@ -107,7 +107,7 @@ public class DragonValley extends AbstractNpcAI
 		L2Attackable mob = (L2Attackable) npc;
 		if (Util.contains(HERB_DROP, npc.getId()) && mob.isSweepActive())
 		{
-			((L2Attackable) npc).dropItem(killer, getRandom(8604, 8605), 1);
+			npc.dropItem(killer, getRandom(8604, 8605), 1);
 		}
 		
 		if (npc.getId() == NECROMANCER_OF_THE_VALLEY)

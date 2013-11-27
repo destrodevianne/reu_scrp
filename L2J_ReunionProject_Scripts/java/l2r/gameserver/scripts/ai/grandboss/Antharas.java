@@ -40,7 +40,6 @@ import l2r.gameserver.model.StatsSet;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
-import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.templates.L2NpcTemplate;
 import l2r.gameserver.model.skills.L2Skill;
@@ -937,11 +936,11 @@ public class Antharas extends AbstractNpcAI
 			int countMPHerb = getRandom(6, 18);
 			for (int i = 0; i < countHPHerb; i++)
 			{
-				((L2MonsterInstance) npc).dropItem(killer, 8602, 1);
+				npc.dropItem(killer, 8602, 1);
 			}
 			for (int i = 0; i < countMPHerb; i++)
 			{
-				((L2MonsterInstance) npc).dropItem(killer, 8605, 1);
+				npc.dropItem(killer, 8605, 1);
 			}
 		}
 		if (_monsters.contains(npc))

@@ -20,7 +20,6 @@ package l2r.gameserver.scripts.ai.individual;
 
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.Location;
-import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
@@ -107,7 +106,7 @@ public final class FrightenedRagnaOrc extends AbstractNpcAI
 						npc.doCast(SKILL.getSkill());
 						for (int i = 0; i < 10; i++)
 						{
-							((L2Attackable) npc).dropItem(player, PcInventory.ADENA_ID, ADENA2);
+							npc.dropItem(player, PcInventory.ADENA_ID, ADENA2);
 						}
 					}
 					else if (getRandom(100000) < CHANCE)
@@ -118,7 +117,7 @@ public final class FrightenedRagnaOrc extends AbstractNpcAI
 						npc.doCast(SKILL.getSkill());
 						for (int i = 0; i < 10; i++)
 						{
-							((L2Attackable) npc).dropItem(player, PcInventory.ADENA_ID, ADENA);
+							npc.dropItem(player, PcInventory.ADENA_ID, ADENA);
 						}
 					}
 					else
