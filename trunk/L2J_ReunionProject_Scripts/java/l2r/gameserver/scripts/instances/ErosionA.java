@@ -29,7 +29,6 @@ import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
-import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.instancezone.InstanceWorld;
@@ -1206,7 +1205,7 @@ public class ErosionA extends Quest
 			if (npc.getId() == TUMOR)
 			{
 				world.addTumorCount(-1);
-				((L2MonsterInstance) npc).dropItem(player, 13797, Rnd.get(2, 5));
+				npc.dropItem(player, 13797, Rnd.get(2, 5));
 				npc.deleteMe();
 				world.deadTumor = spawnNpc(DEADTUMOR, loc, 0, world.getInstanceId());
 				world.deadTumors.add(world.deadTumor);

@@ -30,7 +30,6 @@ import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
-import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2QuestGuardInstance;
 import l2r.gameserver.model.entity.Instance;
@@ -1193,7 +1192,7 @@ public class ErosionD extends Quest
 			final HEDWorld world = (HEDWorld) tmpworld;
 			if (npc.getId() == TUMOR_ALIVE)
 			{
-				((L2MonsterInstance) npc).dropItem(player, 13797, Rnd.get(2, 5));
+				npc.dropItem(player, 13797, Rnd.get(2, 5));
 				npc.deleteMe();
 				notifyTumorDeath(npc, world);
 				world.deadTumor = spawnNpc(TUMOR_DEAD, npc.getLocation(), 0, world.getInstanceId());

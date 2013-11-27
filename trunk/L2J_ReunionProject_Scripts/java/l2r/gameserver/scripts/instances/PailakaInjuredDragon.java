@@ -311,7 +311,7 @@ public class PailakaInjuredDragon extends Quest
 		{
 			if (chance < element[2])
 			{
-				((L2MonsterInstance) mob).dropItem(player, element[0], element[1]);
+				mob.dropItem(player, element[0], element[1]);
 				return;
 			}
 		}
@@ -325,7 +325,7 @@ public class PailakaInjuredDragon extends Quest
 		{
 			if (Rnd.get(100) < pd.getChance())
 			{
-				((L2MonsterInstance) mob).dropItem(player, pd.getId(), Rnd.get(1, 6));
+				mob.dropItem(player, pd.getId(), Rnd.get(1, 6));
 				return;
 			}
 		}
