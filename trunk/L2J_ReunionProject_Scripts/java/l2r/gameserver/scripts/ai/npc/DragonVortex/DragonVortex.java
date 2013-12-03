@@ -81,6 +81,37 @@ public class DragonVortex extends Quest
 				return "32871-02.htm";
 			}
 			
+			final int random = getRandom(1000);
+			int raid = 0;
+			if (random < 292)
+			{
+				raid = RAIDS[0]; // Emerald Horn 29.2%
+			}
+			else if (random < 516)
+			{
+				raid = RAIDS[1]; // Dust Rider 22.4%
+			}
+			else if (random < 692)
+			{
+				raid = RAIDS[2]; // Bleeding Fly 17.6%
+			}
+			else if (random < 808)
+			{
+				raid = RAIDS[3]; // Blackdagger Wing 11.6%
+			}
+			else if (random < 900)
+			{
+				raid = RAIDS[4]; // Spike Slasher 9.2%
+			}
+			else if (random < 956)
+			{
+				raid = RAIDS[5]; // Shadow Summoner 5.6%
+			}
+			else
+			{
+				raid = RAIDS[6]; // Muscle Bomber 4.4%
+			}
+			
 			if (npc.getId() == VORTEX_1)
 			{
 				if (progress1)
@@ -89,7 +120,7 @@ public class DragonVortex extends Quest
 				}
 				
 				takeItems(player, LARGE_DRAGON_BONE, 1);
-				boss1 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+				boss1 = addSpawn(raid, new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
 				progress1 = true;
 				if (boss1 != null)
 				{
@@ -108,7 +139,7 @@ public class DragonVortex extends Quest
 				}
 				
 				takeItems(player, LARGE_DRAGON_BONE, 1);
-				boss2 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+				boss2 = addSpawn(raid, new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
 				progress2 = true;
 				if (boss2 != null)
 				{
@@ -127,7 +158,7 @@ public class DragonVortex extends Quest
 				}
 				
 				takeItems(player, LARGE_DRAGON_BONE, 1);
-				boss3 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+				boss3 = addSpawn(raid, new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
 				progress3 = true;
 				if (boss3 != null)
 				{
@@ -146,7 +177,7 @@ public class DragonVortex extends Quest
 				}
 				
 				takeItems(player, LARGE_DRAGON_BONE, 1);
-				boss4 = addSpawn(RAIDS[getRandom(RAIDS.length)], new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
+				boss4 = addSpawn(raid, new Location(player.getX() - 300, player.getY() - 100, player.getZ() - 2, player.getHeading()), false, 0);
 				progress4 = true;
 				if (boss4 != null)
 				{

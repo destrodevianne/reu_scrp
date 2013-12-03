@@ -998,6 +998,34 @@ public class PcBangPoint extends Quest
 			-3648,
 			120
 		}); // Timak Outpost 110 points
+		TELEPORTERS.put("TELE_93", new int[]
+		{
+			-122425,
+			73348,
+			-2872,
+			40
+		}); // Stronghold 1 40 points
+		TELEPORTERS.put("TELE_94", new int[]
+		{
+			-116934,
+			46616,
+			368,
+			80
+		}); // Stronghold 2 80 points
+		TELEPORTERS.put("TELE_95", new int[]
+		{
+			-85800,
+			37066,
+			-2053,
+			50
+		}); // Stronghold 3 50 points
+		TELEPORTERS.put("TELE_96", new int[]
+		{
+			-74045,
+			51984,
+			-3681,
+			70
+		}); // Isle of Soul Harbor 70 points
 	}
 	
 	@Override

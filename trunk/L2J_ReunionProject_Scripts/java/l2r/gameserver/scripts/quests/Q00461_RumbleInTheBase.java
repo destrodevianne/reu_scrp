@@ -40,6 +40,7 @@ public class Q00461_RumbleInTheBase extends Quest
 	private static final int SHINY_SALMON = 15503;
 	private static final int SHOES_STRING_OF_SEL_MAHUM = 16382;
 	// Mobs
+	private static final int SELMAHUM_CHEF = 18908;
 	private static final Map<Integer, Integer> MONSTERS = new HashMap<>();
 	
 	static
@@ -50,7 +51,7 @@ public class Q00461_RumbleInTheBase extends Quest
 		MONSTERS.put(22783, 563);
 		MONSTERS.put(22784, 581);
 		MONSTERS.put(22785, 271);
-		MONSTERS.put(18908, 782);
+		MONSTERS.put(SELMAHUM_CHEF, 782);
 	}
 	
 	public Q00461_RumbleInTheBase(int questId, String name, String descr)
@@ -59,6 +60,7 @@ public class Q00461_RumbleInTheBase extends Quest
 		addStartNpc(STAN);
 		addTalkId(STAN);
 		addKillId(MONSTERS.keySet());
+		addKillId(SELMAHUM_CHEF);
 		registerQuestItems(SHINY_SALMON, SHOES_STRING_OF_SEL_MAHUM);
 	}
 	
@@ -93,7 +95,7 @@ public class Q00461_RumbleInTheBase extends Quest
 			return super.onKill(npc, player, isSummon);
 		}
 		
-		if (npc.getId() == 18908)
+		if (npc.getId() == SELMAHUM_CHEF)
 		{
 			st = player.getQuestState(getName());
 			if ((st != null) && st.isCond(1) && (st.getQuestItemsCount(SHINY_SALMON) < 5))

@@ -37,115 +37,48 @@ public class CcpVCmd implements IVoicedCommandHandler
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.equalsIgnoreCase("ccp"))
+		switch (command)
 		{
-			sendHtml(activeChar);
-		}
-		else if (command.equalsIgnoreCase("tradeprot"))
-		{
-			if (activeChar.getTradeRefusal())
-			{
-				activeChar.setTradeRefusal(false);
-				activeChar.sendMessage("Trade refusal mode disabled.");
-			}
-			else
-			{
-				activeChar.setTradeRefusal(true);
-				activeChar.sendMessage("Trade refusal mode enabled.");
-			}
-			sendHtml(activeChar);
-		}
-		else if (command.equalsIgnoreCase("changeexp"))
-		{
-			if (CustomServerConfigs.ALLOW_EXP_GAIN_COMMAND)
-			{
-				if (activeChar.getExpOn())
+			case "ccp":
+				break;
+			case "tradeprot":
+				activeChar.setTradeRefusal(!activeChar.getTradeRefusal());
+				activeChar.sendMessage("Trade refusal mode changed.");
+				break;
+			case "changeexp":
+				if (CustomServerConfigs.ALLOW_EXP_GAIN_COMMAND)
 				{
-					activeChar.setExpOn(false);
-					activeChar.sendMessage("Experience gain disabled.");
+					activeChar.setExpOn(!activeChar.getExpOn());
+					activeChar.sendMessage("Experience gain mode changed.");
 				}
 				else
 				{
-					activeChar.setExpOn(true);
-					activeChar.sendMessage("Experience gain enabled.");
+					activeChar.sendMessage("Experience command disabled by a gm.");
 				}
-			}
-			else
-			{
-				activeChar.sendMessage("Experience command disabled by a gm.");
-			}
-			sendHtml(activeChar);
+				break;
+			case "nobuff":
+				activeChar.setProtectedPlayer(!activeChar.isProtected());
+				activeChar.sendMessage("The grief-buff protection mode changed.");
+				break;
+			case "enchantanime":
+				activeChar.setEnchantAnimation(!activeChar.isEnchantAnimation());
+				activeChar.sendMessage("Enchant animation mode changed.");
+				break;
+			case "hidestores":
+				activeChar.getAppearance().setHideStores(!activeChar.getAppearance().isHideStores());
+				activeChar.sendMessage("Stores visibility mode changed, please restart.");
+				break;
+			case "shotsonenter":
+				activeChar.setOnEnterLoadSS(!activeChar.isOnEnterLoadSS());
+				activeChar.sendMessage("On enter auto load shots mode changed.");
+				break;
+			case "blockshotsanime":
+				activeChar.setSsAnimation(!activeChar.isSsAnimationBlocked());
+				activeChar.sendMessage("Broadcast shots animation mode changed.");
+				break;
 		}
-		else if (command.equalsIgnoreCase("nobuff"))
-		{
-			if (activeChar.isProtected())
-			{
-				activeChar.sendMessage("The grief-buff protection disabled.");
-				activeChar.setProtectedPlayer(false);
-			}
-			else
-			{
-				activeChar.sendMessage("The grief-buff protection enabled.");
-				activeChar.setProtectedPlayer(true);
-			}
-			sendHtml(activeChar);
-		}
-		else if (command.equalsIgnoreCase("enchantanime"))
-		{
-			if (activeChar.isEnchantAnimation())
-			{
-				activeChar.setEnchantAnimation(false);
-				activeChar.sendMessage("Enchant animation disabled.");
-			}
-			else
-			{
-				activeChar.setEnchantAnimation(true);
-				activeChar.sendMessage("Enchant animation enabled.");
-			}
-			sendHtml(activeChar);
-		}
-		else if (command.equalsIgnoreCase("hidestores"))
-		{
-			if (activeChar.getAppearance().isHideStores())
-			{
-				activeChar.getAppearance().setHideStores(false);
-				activeChar.sendMessage("All stores are visible, please restart.");
-			}
-			else
-			{
-				activeChar.getAppearance().setHideStores(true);
-				activeChar.sendMessage("All stores are invisible, please restart.");
-			}
-			sendHtml(activeChar);
-		}
-		else if (command.equalsIgnoreCase("shotsonenter"))
-		{
-			if (activeChar.isOnEnterLoadSS())
-			{
-				activeChar.setOnEnterLoadSS(false);
-				activeChar.sendMessage("On enter auto load shots disabled.");
-			}
-			else
-			{
-				activeChar.setOnEnterLoadSS(true);
-				activeChar.sendMessage("On enter auto load shots enabled.");
-			}
-			sendHtml(activeChar);
-		}
-		else if (command.equalsIgnoreCase("blockshotsanime"))
-		{
-			if (activeChar.isSsAnimationBlocked())
-			{
-				activeChar.setSsAnimation(false);
-				activeChar.sendMessage("Broadcast shots animation disabled.");
-			}
-			else
-			{
-				activeChar.setSsAnimation(true);
-				activeChar.sendMessage("Broadcast shots animation enabled.");
-			}
-			sendHtml(activeChar);
-		}
+		
+		sendHtml(activeChar);
 		
 		return true;
 	}
