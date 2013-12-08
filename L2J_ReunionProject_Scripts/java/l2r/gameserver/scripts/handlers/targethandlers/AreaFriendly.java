@@ -135,6 +135,11 @@ public class AreaFriendly implements ITargetTypeHandler
 			{
 				return false;
 			}
+			
+			if ((target != activeChar) && (target.getActingPlayer().getKarma() > 0))
+			{
+				return false;
+			}
 		}
 		return true;
 	}

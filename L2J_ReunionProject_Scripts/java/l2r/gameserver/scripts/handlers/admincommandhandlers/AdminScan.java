@@ -70,7 +70,7 @@ public class AdminScan implements IAdminCommandHandler
 					sb.append("<tr>");
 					sb.append("<td width=\"54\">" + ((L2Npc) character).getId() + "</td>");
 					sb.append("<td width=\"54\">" + character.getName() + "</td>");
-					sb.append("<td width=\"54\">" + Math.round(Util.calculateDistance(activeChar, character, false)) + "</td>");
+					sb.append("<td width=\"54\">" + Math.round(activeChar.calculateDistance(character, false, false)) + "</td>");
 					sb.append("<td width=\"54\"><a action=\"bypass -h admin_deleteNpcByObjectId " + character.getObjectId() + "\"><font color=\"LEVEL\">Delete</font></a></td>");
 					sb.append("<td width=\"54\"><a action=\"bypass -h admin_move_to " + character.getX() + " " + character.getY() + " " + character.getZ() + "\"><font color=\"LEVEL\">Go to</font></a></td>");
 					sb.append("</tr>");
