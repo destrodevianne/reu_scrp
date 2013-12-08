@@ -1156,7 +1156,6 @@ public class IceQueenCastle2 extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance talker)
 	{
-		_log.info("id_talk = " + npc.getId());
 		if ((npc.getId() == Jinia) || (npc.getId() == Superior_Knight))
 		{
 			return npc.getId() + ".htm";
@@ -1181,7 +1180,6 @@ public class IceQueenCastle2 extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		_log.info("id = " + npc.getId());
 		if ((npc.getId() == Jinia) || (npc.getId() == Superior_Knight))
 		{
 			return npc.getId() + ".htm";
