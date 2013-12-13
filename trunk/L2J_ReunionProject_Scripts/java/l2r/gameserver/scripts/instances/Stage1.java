@@ -44,10 +44,10 @@ import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
-import l2r.gameserver.model.actor.L2Trap;
 import l2r.gameserver.model.actor.instance.L2DoorInstance;
 import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.actor.instance.L2TrapInstance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.Quest;
@@ -74,7 +74,7 @@ import org.w3c.dom.Node;
  * Please maintain consistency between the Seed scripts.
  * @author Gigiikun
  */
-public class Stage1 extends Quest
+public final class Stage1 extends Quest
 {
 	protected class SOD1World extends InstanceWorld
 	{
@@ -96,7 +96,6 @@ public class Stage1 extends Quest
 		public int count = 0;
 	}
 	
-	private static final String qn = "SoDStage1";
 	private static final int INSTANCEID = 110; // this is the client number
 	private static final int MIN_PLAYERS = 36;
 	private static final int MAX_PLAYERS = 45;
@@ -209,13 +208,41 @@ public class Stage1 extends Quest
 	private static final int FORTRESS_DOOR = 12240030;
 	private static final int THRONE_DOOR = 12240031;
 	
-	// spawns
-	
 	// Initialization at 6:30 am on Wednesday and Saturday
 	private static final int RESET_HOUR = 6;
 	private static final int RESET_MIN = 30;
 	private static final int RESET_DAY_1 = 4;
 	private static final int RESET_DAY_2 = 7;
+	
+	private Stage1()
+	{
+		// TODO change name to use actual class name
+		super(-1, "SoDStage1", "instances");
+		load();
+		addStartNpc(ALENOS);
+		addTalkId(ALENOS);
+		addStartNpc(TELEPORT);
+		addTalkId(TELEPORT);
+		addAttackId(OBELISK);
+		addSpawnId(OBELISK);
+		addKillId(OBELISK);
+		addSpawnId(POWERFUL_DEVICE);
+		addKillId(POWERFUL_DEVICE);
+		addSpawnId(THRONE_POWERFUL_DEVICE);
+		addKillId(THRONE_POWERFUL_DEVICE);
+		addAttackId(TIAT);
+		addKillId(TIAT);
+		addKillId(SPAWN_DEVICE);
+		addSpawnId(TIAT_GUARD);
+		addKillId(TIAT_GUARD);
+		addAggroRangeEnterId(TIAT_VIDEO_NPC);
+		// registering spawn traps which handled in this script
+		for (int i = 18771; i <= 18774; i++)
+		{
+			addTrapActionId(i);
+		}
+		addKillId(_mustKillMobsId);
+	}
 	
 	private void load()
 	{
@@ -855,7 +882,7 @@ public class Stage1 extends Quest
 				L2PcInstance target = L2World.getInstance().getPlayer(world.getAllowed().get(getRandom(world.getAllowed().size())));
 				if ((world.deviceSpawnedMobCount < MAX_DEVICESPAWNEDMOBCOUNT) && (target != null) && (target.getInstanceId() == npc.getInstanceId()) && !target.isDead())
 				{
-					L2Attackable mob = (L2Attackable) addSpawn(SPAWN_MOB_IDS[getRandom(SPAWN_MOB_IDS.length)], npc.getSpawn().getX(), npc.getSpawn().getY(), npc.getSpawn().getZ(), npc.getSpawn().getHeading(), false, 0, false, world.getInstanceId());
+					L2Attackable mob = (L2Attackable) addSpawn(SPAWN_MOB_IDS[getRandom(SPAWN_MOB_IDS.length)], npc.getSpawn().getLocation(), false, 0, false, world.getInstanceId());
 					world.deviceSpawnedMobCount++;
 					mob.setSeeThroughSilentMove(true);
 					mob.setRunning();
@@ -989,7 +1016,7 @@ public class Stage1 extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		int npcId = npc.getId();
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			st = newQuestState(player);
@@ -1014,7 +1041,7 @@ public class Stage1 extends Quest
 	}
 	
 	@Override
-	public String onTrapAction(L2Trap trap, L2Character trigger, TrapAction action)
+	public String onTrapAction(L2TrapInstance trap, L2Character trigger, TrapAction action)
 	{
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(trap.getInstanceId());
 		if (tmpworld instanceof SOD1World)
@@ -1043,42 +1070,9 @@ public class Stage1 extends Quest
 		return null;
 	}
 	
-	public Stage1(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		load();
-		addStartNpc(ALENOS);
-		addTalkId(ALENOS);
-		addStartNpc(TELEPORT);
-		addTalkId(TELEPORT);
-		addAttackId(OBELISK);
-		addSpawnId(OBELISK);
-		addKillId(OBELISK);
-		addSpawnId(POWERFUL_DEVICE);
-		addKillId(POWERFUL_DEVICE);
-		addSpawnId(THRONE_POWERFUL_DEVICE);
-		addKillId(THRONE_POWERFUL_DEVICE);
-		addAttackId(TIAT);
-		addKillId(TIAT);
-		addKillId(SPAWN_DEVICE);
-		addSpawnId(TIAT_GUARD);
-		addKillId(TIAT_GUARD);
-		addAggroRangeEnterId(TIAT_VIDEO_NPC);
-		// registering spawn traps which handled in this script
-		for (int i = 18771; i <= 18774; i++)
-		{
-			addTrapActionId(i);
-		}
-		for (int mobId : _mustKillMobsId)
-		{
-			addKillId(mobId);
-		}
-	}
-	
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the)
-		new Stage1(-1, qn, "instances");
+		new Stage1();
 	}
 }
