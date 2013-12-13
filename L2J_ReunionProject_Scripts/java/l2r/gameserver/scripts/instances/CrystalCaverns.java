@@ -36,9 +36,9 @@ import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.L2Summon;
-import l2r.gameserver.model.actor.L2Trap;
 import l2r.gameserver.model.actor.instance.L2DoorInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.actor.instance.L2TrapInstance;
 import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
@@ -62,8 +62,11 @@ import l2r.gameserver.util.Util;
 
 /**
  * Crystal Caverns instance zone.<br>
- * TODO: 1. Kechi's Henchmans spawn animation is missing. 2. NPC related Traps are not supported by core, so Darnels and Lahm door trap is not working. 3. Need retail spawn for Coral Garden (EmeraldSteam/Square - done). 4. Baylor Raid is missing a lot of things This script takes the best elements of
- * different versions and combines them into one script to get the most optimal and retail-like experience. Original sources: theone, L2JEmu, L2JOfficial, L2JFree Contributing authors: TGS, Lantoc, Janiii, Gigiikun, RosT Please maintain consistency between the Crystal Caverns scripts.
+ * TODO: 1. Kechi's Henchmans spawn animation is missing.<br>
+ * 2. NPC related Traps are not supported by core, so Darnels and Lahm door trap is not working.<br>
+ * 3. Need retail spawn for Coral Garden (EmeraldSteam/Square - done).<br>
+ * 4. Baylor Raid is missing a lot of things This script takes the best elements of different versions and combines them into one script to get the most optimal and retail-like experience.<br>
+ * Original sources: theone, L2JEmu, L2JOfficial, L2JFree Contributing authors: TGS, Lantoc, Janiii, Gigiikun, RosT Please maintain consistency between the Crystal Caverns scripts.
  */
 public class CrystalCaverns extends Quest
 {
@@ -71,7 +74,7 @@ public class CrystalCaverns extends Quest
 	{
 		public L2ItemInstance foodItem = null;
 		public boolean isAtDestination = false;
-		public Location oldpos = null;
+		public Location oldLoc = null;
 	}
 	
 	private class CCWorld extends InstanceWorld
@@ -2376,7 +2379,7 @@ public class CrystalCaverns extends Quest
 				int dy;
 				if ((cryGolem.foodItem == null) || !cryGolem.foodItem.isVisible())
 				{
-					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, cryGolem.oldpos);
+					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, cryGolem.oldLoc);
 					cancelQuestTimers("reachFood");
 					startQuestTimer("backFood", 2000, npc, null, true);
 					return "";
@@ -2415,9 +2418,9 @@ public class CrystalCaverns extends Quest
 			else if (event.equalsIgnoreCase("getFood"))
 			{
 				CrystalGolem cryGolem = world.crystalGolems.get(npc);
-				Location newpos = new Location(cryGolem.foodItem.getX(), cryGolem.foodItem.getY(), cryGolem.foodItem.getZ(), 0);
-				cryGolem.oldpos = new Location(npc.getX(), npc.getY(), npc.getZ(), npc.getHeading());
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, newpos);
+				Location newLoc = new Location(cryGolem.foodItem.getX(), cryGolem.foodItem.getY(), cryGolem.foodItem.getZ(), 0);
+				cryGolem.oldLoc = new Location(npc.getX(), npc.getY(), npc.getZ(), npc.getHeading());
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, newLoc);
 				startQuestTimer("reachFood", 2000, npc, null, true);
 				cancelQuestTimers("getFood");
 			}
@@ -2892,11 +2895,11 @@ public class CrystalCaverns extends Quest
 				{
 					int x = (int) (radius * Math.cos((i * 2 * Math.PI) / members));
 					int y = (int) (radius * Math.sin((i++ * 2 * Math.PI) / members));
-					p.teleToLocation(153571 + x, 142075 + y, -12737);
+					p.teleToLocation(new Location(153571 + x, 142075 + y, -12737));
 					L2Summon pet = p.getSummon();
 					if (pet != null)
 					{
-						pet.teleToLocation(153571 + x, 142075 + y, -12737, true);
+						pet.teleToLocation(new Location(153571 + x, 142075 + y, -12737), true);
 						pet.broadcastPacket(new ValidateLocation(pet));
 					}
 					p.setIsParalyzed(true);
@@ -2913,7 +2916,7 @@ public class CrystalCaverns extends Quest
 	}
 	
 	@Override
-	public String onTrapAction(L2Trap trap, L2Character trigger, TrapAction action)
+	public String onTrapAction(L2TrapInstance trap, L2Character trigger, TrapAction action)
 	{
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(trap.getInstanceId());
 		if (tmpworld instanceof CCWorld)
