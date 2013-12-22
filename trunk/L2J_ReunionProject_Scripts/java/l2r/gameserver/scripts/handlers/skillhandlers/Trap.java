@@ -18,6 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
@@ -97,9 +98,9 @@ public class Trap implements ISkillHandler
 						continue;
 					}
 					
-					if (trap.getTemplate().getEventQuests(Quest.QuestEventType.ON_TRAP_ACTION) != null)
+					if (trap.getTemplate().getEventQuests(QuestEventType.ON_TRAP_ACTION) != null)
 					{
-						for (Quest quest : trap.getTemplate().getEventQuests(Quest.QuestEventType.ON_TRAP_ACTION))
+						for (Quest quest : trap.getTemplate().getEventQuests(QuestEventType.ON_TRAP_ACTION))
 						{
 							quest.notifyTrapAction(trap, activeChar, TrapAction.TRAP_DISARMED);
 						}

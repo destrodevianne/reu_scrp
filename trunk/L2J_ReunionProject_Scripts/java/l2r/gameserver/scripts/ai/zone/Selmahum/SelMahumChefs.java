@@ -13,6 +13,7 @@ import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;

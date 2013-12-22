@@ -14,9 +14,9 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -35,10 +35,10 @@ public class OlMahumGeneral extends AbstractNpcAI
 		{
 			Ol_Mahum_General
 		};
-		registerMobs(mobs, new Quest.QuestEventType[]
+		registerMobs(mobs, new QuestEventType[]
 		{
-			Quest.QuestEventType.ON_ATTACK,
-			Quest.QuestEventType.ON_KILL
+			QuestEventType.ON_ATTACK,
+			QuestEventType.ON_KILL
 		});
 		_FirstAttacked = false;
 	}

@@ -24,6 +24,7 @@ import javolution.util.FastList;
 import l2r.Config;
 import l2r.gameserver.datatables.SkillTable;
 import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.StatsSet;

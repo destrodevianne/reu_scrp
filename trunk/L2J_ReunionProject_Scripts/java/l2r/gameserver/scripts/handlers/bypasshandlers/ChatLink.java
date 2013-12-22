@@ -20,12 +20,12 @@ package l2r.gameserver.scripts.handlers.bypasshandlers;
 
 import java.util.List;
 
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
-import l2r.gameserver.model.quest.Quest.QuestEventType;
 
 public class ChatLink implements IBypassHandler
 {
