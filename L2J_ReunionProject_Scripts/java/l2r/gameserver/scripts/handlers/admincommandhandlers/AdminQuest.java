@@ -26,12 +26,12 @@ import java.util.Set;
 
 import javax.script.ScriptException;
 
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
-import l2r.gameserver.model.quest.Quest.QuestEventType;
 import l2r.gameserver.model.quest.QuestTimer;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.scripting.L2ScriptEngineManager;

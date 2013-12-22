@@ -21,6 +21,7 @@ package l2r.gameserver.scripts.ai.group_template;
 import java.util.List;
 
 import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.instancemanager.HellboundManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;

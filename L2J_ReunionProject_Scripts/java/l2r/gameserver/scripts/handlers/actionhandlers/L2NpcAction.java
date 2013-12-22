@@ -23,13 +23,13 @@ import java.util.List;
 import l2r.Config;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.InstanceType;
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.handler.IActionHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
-import l2r.gameserver.model.quest.Quest.QuestEventType;
 import l2r.gameserver.network.serverpackets.ActionFailed;
 import l2r.util.Rnd;
 

@@ -22,12 +22,12 @@ import java.util.Set;
 
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.QuestType;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
-import l2r.gameserver.model.quest.QuestState.QuestType;
 import l2r.gameserver.model.quest.State;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;

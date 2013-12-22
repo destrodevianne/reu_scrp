@@ -23,13 +23,13 @@ import java.util.List;
 import javolution.util.FastList;
 import l2r.Config;
 import l2r.gameserver.cache.HtmCache;
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
-import l2r.gameserver.model.quest.Quest.QuestEventType;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
 import l2r.gameserver.network.SystemMessageId;
@@ -174,7 +174,7 @@ public class QuestLink implements IBypassHandler
 					}
 				}
 				// check for start point
-				List<Quest> qlst = npc.getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
+				List<Quest> qlst = npc.getTemplate().getEventQuests(QuestEventType.QUEST_START);
 				
 				if ((qlst != null) && !qlst.isEmpty())
 				{

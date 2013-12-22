@@ -14,6 +14,7 @@
  */
 package l2r.gameserver.scripts.ai.modifier;
 
+import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.actor.L2Npc;

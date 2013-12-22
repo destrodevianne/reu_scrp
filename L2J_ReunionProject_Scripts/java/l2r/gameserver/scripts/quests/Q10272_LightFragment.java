@@ -19,6 +19,7 @@
 package l2r.gameserver.scripts.quests;
 
 import l2r.Config;
+import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.itemcontainer.PcInventory;
