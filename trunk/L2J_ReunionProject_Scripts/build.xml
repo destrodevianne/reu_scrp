@@ -41,7 +41,7 @@
 		<java classname="ru.catssoftware.CatsByteGuard">
 			<arg value="${build.classes}" />
 			<classpath>
-				<path location="${lib}/CatsByteGuard.jar"/>
+				<path location="CatsByteGuard.jar"/>
 			</classpath>
 		</java>
 		<echo message="Protecting Reunion Scripts Done...." />
