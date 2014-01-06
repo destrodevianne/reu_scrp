@@ -80,9 +80,9 @@ public class TarBeetleSpawn extends DocumentParser
 					if (r.getNodeName().equals("zone"))
 					{
 						NamedNodeMap attrs = r.getAttributes();
-						int id = parseInt(attrs, "id");
-						int minZ = parseInt(attrs, "minZ");
-						int maxZ = parseInt(attrs, "maxZ");
+						int id = parseInteger(attrs, "id");
+						int minZ = parseInteger(attrs, "minZ");
+						int maxZ = parseInteger(attrs, "maxZ");
 						String type = parseString(attrs, "type");
 						if (type.equals("upper"))
 						{
@@ -94,7 +94,7 @@ public class TarBeetleSpawn extends DocumentParser
 						}
 						
 						int[] bZones = null;
-						String bZonesStr = parseString(attrs, "bZones");
+						String bZonesStr = parseString(attrs, "bZones", "");
 						if (!bZonesStr.isEmpty())
 						{
 							String[] str = bZonesStr.split(";");
@@ -111,8 +111,8 @@ public class TarBeetleSpawn extends DocumentParser
 							if (c.getNodeName().equals("point"))
 							{
 								attrs = c.getAttributes();
-								int x = parseInt(attrs, "x");
-								int y = parseInt(attrs, "y");
+								int x = parseInteger(attrs, "x");
+								int y = parseInteger(attrs, "y");
 								zone.add(x, y, minZ, maxZ, 0);
 							}
 						}
