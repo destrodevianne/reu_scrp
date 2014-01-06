@@ -22,6 +22,7 @@ import java.util.StringTokenizer;
 
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.instancemanager.SiegeManager;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -98,7 +99,7 @@ public class Observation implements IBypassHandler
 		if (player.reduceAdena("Broadcast", cost, npc, true))
 		{
 			// enter mode
-			player.enterObserverMode(x, y, z);
+			player.enterObserverMode(new Location(x, y, z));
 			player.sendPacket(new ItemList(player, false));
 		}
 		player.sendPacket(ActionFailed.STATIC_PACKET);
