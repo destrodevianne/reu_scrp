@@ -363,7 +363,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			adminReply.replace("%level%", String.valueOf(npc.getLevel()));
 			adminReply.replace("%sex%", String.valueOf(npc.getSex()));
 			adminReply.replace("%type%", String.valueOf(npc.getType()));
-			adminReply.replace("%attackRange%", String.valueOf(npc.getBaseAtkRange()));
+			adminReply.replace("%attackRange%", String.valueOf(npc.getBaseAttackRange()));
 			adminReply.replace("%hp%", String.valueOf(npc.getBaseHpMax()));
 			adminReply.replace("%mp%", String.valueOf(npc.getBaseMpMax()));
 			adminReply.replace("%hpRegen%", String.valueOf(npc.getBaseHpReg()));
