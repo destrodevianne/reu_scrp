@@ -19,9 +19,9 @@
 package l2r.gameserver.scripts.quests.TerritoryWarScripts;
 
 import java.util.Calendar;
-import java.util.StringTokenizer;
 
-import l2r.gameserver.SevenSigns;
+import l2r.gameserver.instancemanager.CastleManager;
+import l2r.gameserver.instancemanager.GlobalVariablesManager;
 import l2r.gameserver.instancemanager.TerritoryWarManager;
 import l2r.gameserver.instancemanager.TerritoryWarManager.TerritoryNPCSpawn;
 import l2r.gameserver.model.L2Object;
@@ -75,45 +75,33 @@ public class TerritoryWarSuperClass extends Quest
 			addSkillSeeId(36590);
 			
 			// Calculate next TW date
-			Calendar startTWDate = Calendar.getInstance();
-			if (loadGlobalQuestVar("nextTWStartDate").equalsIgnoreCase(""))
+			final Calendar cal = Calendar.getInstance();
+			
+			final long nextSiegeDate = GlobalVariablesManager.getInstance().getLong("nextTWStartDate", 0);
+			if (nextSiegeDate > System.currentTimeMillis())
 			{
-				startTWDate.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-				startTWDate.set(Calendar.HOUR_OF_DAY, 20);
-				startTWDate.set(Calendar.MINUTE, 0);
-				startTWDate.set(Calendar.SECOND, 0);
-				if (startTWDate.getTimeInMillis() < System.currentTimeMillis())
-				{
-					startTWDate.add(Calendar.DAY_OF_MONTH, 7);
-				}
-				if (!SevenSigns.getInstance().isDateInSealValidPeriod(startTWDate))
-				{
-					startTWDate.add(Calendar.DAY_OF_MONTH, 7);
-				}
-				saveGlobalQuestVar("nextTWStartDate", String.valueOf(startTWDate.getTimeInMillis()));
+				cal.setTimeInMillis(nextSiegeDate);
 			}
 			else
 			{
-				startTWDate.setTimeInMillis(Long.parseLong(loadGlobalQuestVar("nextTWStartDate")));
-				if ((startTWDate.getTimeInMillis() < System.currentTimeMillis()) && SevenSigns.getInstance().isSealValidationPeriod() && (SevenSigns.getInstance().getMilliToPeriodChange() > 172800000))
+				// Let's check if territory war date was in the past
+				if (cal.before(Calendar.getInstance()))
 				{
-					startTWDate.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-					startTWDate.set(Calendar.HOUR_OF_DAY, 20);
-					startTWDate.set(Calendar.MINUTE, 0);
-					startTWDate.set(Calendar.SECOND, 0);
-					if (startTWDate.getTimeInMillis() < System.currentTimeMillis())
-					{
-						startTWDate.add(Calendar.DAY_OF_MONTH, 7);
-					}
-					if (!SevenSigns.getInstance().isDateInSealValidPeriod(startTWDate))
-					{
-						startTWDate.add(Calendar.DAY_OF_MONTH, 7);
-					}
-					saveGlobalQuestVar("nextTWStartDate", String.valueOf(startTWDate.getTimeInMillis()));
+					cal.setTimeInMillis(System.currentTimeMillis());
+				}
+				
+				boolean hasOwnedCastle = CastleManager.getInstance().hasOwnedCastle();
+				cal.set(Calendar.DAY_OF_WEEK, hasOwnedCastle ? Calendar.SATURDAY : Calendar.SUNDAY);
+				cal.set(Calendar.HOUR_OF_DAY, hasOwnedCastle ? 20 : 22);
+				cal.set(Calendar.MINUTE, 0);
+				cal.set(Calendar.SECOND, 0);
+				if (cal.before(Calendar.getInstance()))
+				{
+					cal.add(Calendar.WEEK_OF_YEAR, 2);
 				}
 			}
-			TerritoryWarManager.getInstance().setTWStartTimeInMillis(startTWDate.getTimeInMillis());
-			_log.info("Next TerritoryWarTime: " + startTWDate.getTime());
+			TerritoryWarManager.getInstance().setTWStartTimeInMillis(cal.getTimeInMillis());
+			_log.info(getClass().getSimpleName() + ": Siege date: " + cal.getTime());
 		}
 	}
 	
@@ -193,44 +181,6 @@ public class TerritoryWarSuperClass extends Quest
 			message.addStringParameter(String.valueOf(kill));
 			player.sendPacket(message);
 		}
-	}
-	
-	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-	{
-		if ((npc != null) || (player != null))
-		{
-			return null;
-		}
-		StringTokenizer st = new StringTokenizer(event, " ");
-		event = st.nextToken(); // Get actual command
-		if (event.equalsIgnoreCase("setNextTWDate"))
-		{
-			Calendar startTWDate = Calendar.getInstance();
-			startTWDate.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-			startTWDate.set(Calendar.HOUR_OF_DAY, 20);
-			startTWDate.set(Calendar.MINUTE, 0);
-			startTWDate.set(Calendar.SECOND, 0);
-			if (startTWDate.getTimeInMillis() < System.currentTimeMillis())
-			{
-				startTWDate.add(Calendar.DAY_OF_MONTH, 7);
-			}
-			if (!SevenSigns.getInstance().isDateInSealValidPeriod(startTWDate))
-			{
-				startTWDate.add(Calendar.DAY_OF_MONTH, 7);
-			}
-			saveGlobalQuestVar("nextTWStartDate", String.valueOf(startTWDate.getTimeInMillis()));
-			TerritoryWarManager.getInstance().setTWStartTimeInMillis(startTWDate.getTimeInMillis());
-			_log.info("Next TerritoryWarTime: " + startTWDate.getTime());
-		}
-		else if (event.equalsIgnoreCase("setTWDate") && st.hasMoreTokens())
-		{
-			Calendar startTWDate = Calendar.getInstance();
-			startTWDate.setTimeInMillis(Long.parseLong(st.nextToken()));
-			saveGlobalQuestVar("nextTWStartDate", String.valueOf(startTWDate.getTimeInMillis()));
-			TerritoryWarManager.getInstance().setTWStartTimeInMillis(startTWDate.getTimeInMillis());
-		}
-		return null;
 	}
 	
 	@Override
