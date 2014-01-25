@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -34,7 +34,7 @@ import l2r.gameserver.network.serverpackets.NpcSay;
  * Seven Signs, The Sacred Book of Seal (197)
  * @author Adry_85
  */
-public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
+public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 {
 	// NPCs
 	private static final int SHILENS_EVIL_THOUGHTS = 27396;
@@ -50,9 +50,9 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 	private static final int MIN_LEVEL = 79;
 	private boolean isBusy = false;
 	
-	public Q00197_SevenSignsTheSacredBookOfSeal(int questId, String name, String descr)
+	private Q00197_SevenSignsTheSacredBookOfSeal()
 	{
-		super(questId, name, descr);
+		super(197, Q00197_SevenSignsTheSacredBookOfSeal.class.getSimpleName(), "Seven Signs, the Sacred Book of Seal");
 		addStartNpc(WOOD);
 		addTalkId(WOOD, ORVEN, LEOPARD, LAWRENCE, SOPHIA);
 		addKillId(SHILENS_EVIL_THOUGHTS);
@@ -73,7 +73,7 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 			return super.onAdvEvent(event, npc, player);
 		}
 		
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, false);
 		if (st == null)
 		{
 			return null;
@@ -96,7 +96,7 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 			}
 			case "32593-08.html":
 			{
-				if (st.isCond(6) && st.hasQuestItems(MYSTERIOUS_HAND_WRITTEN_TEXT) && st.hasQuestItems(SCULPTURE_OF_DOUBT))
+				if (st.isCond(6) && st.hasQuestItems(MYSTERIOUS_HAND_WRITTEN_TEXT, SCULPTURE_OF_DOUBT))
 				{
 					htmltext = event;
 				}
@@ -168,10 +168,8 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 				if (st.isCond(3))
 				{
 					isBusy = true;
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_THAT_STRANGER_MUST_BE_DEFEATED_HERE_IS_THE_ULTIMATE_HELP);
-					ns.addStringParameter(player.getName());
-					npc.broadcastPacket(ns);
-					L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, 152520, -57502, -3408, 0, false, 0, false);
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_THAT_STRANGER_MUST_BE_DEFEATED_HERE_IS_THE_ULTIMATE_HELP).addStringParameter(player.getName()));
+					final L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, 152520, -57502, -3408, 0, false, 0, false);
 					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getId(), NpcStringId.YOU_ARE_NOT_THE_OWNER_OF_THAT_ITEM));
 					monster.setRunning();
 					monster.addDamageHate(player, 0, 999);
@@ -231,9 +229,8 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 			return null;
 		}
 		
-		final QuestState st = partyMember.getQuestState(getName());
-		
-		if (npc.isInsideRadius(player, 1500, true, false))
+		final QuestState st = getQuestState(partyMember, false);
+		if (npc.isInsideRadius(partyMember, 1500, true, false))
 		{
 			st.giveItems(SCULPTURE_OF_DOUBT, 1);
 			st.playSound(QuestSound.ITEMSOUND_QUEST_FINISH);
@@ -242,22 +239,15 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 		
 		isBusy = false;
 		cancelQuestTimers("despawn");
-		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_YOU_MAY_HAVE_WON_THIS_TIME_BUT_NEXT_TIME_I_WILL_SURELY_CAPTURE_YOU);
-		ns.addStringParameter(player.getName());
-		npc.broadcastPacket(ns);
+		npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_YOU_MAY_HAVE_WON_THIS_TIME_BUT_NEXT_TIME_I_WILL_SURELY_CAPTURE_YOU).addStringParameter(partyMember.getName()));
 		return super.onKill(npc, player, isSummon);
 	}
 	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		if (st == null)
-		{
-			return htmltext;
-		}
-		
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -269,7 +259,7 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 			{
 				if (npc.getId() == WOOD)
 				{
-					st = player.getQuestState("Q00196_SevenSignsSealOfTheEmperor");
+					st = player.getQuestState(Q00196_SevenSignsSealOfTheEmperor.class.getSimpleName());
 					htmltext = ((player.getLevel() >= MIN_LEVEL) && (st != null) && (st.isCompleted())) ? "32593-01.htm" : "32593-05.html";
 				}
 				break;
@@ -286,7 +276,7 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 						}
 						else if (st.isCond(6))
 						{
-							if (st.hasQuestItems(MYSTERIOUS_HAND_WRITTEN_TEXT) && st.hasQuestItems(SCULPTURE_OF_DOUBT))
+							if (st.hasQuestItems(MYSTERIOUS_HAND_WRITTEN_TEXT, SCULPTURE_OF_DOUBT))
 							{
 								htmltext = "32593-07.html";
 							}
@@ -357,7 +347,7 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 						}
 						else if (st.getCond() >= 6)
 						{
-							if (st.hasQuestItems(SCULPTURE_OF_DOUBT) && st.hasQuestItems(MYSTERIOUS_HAND_WRITTEN_TEXT))
+							if (st.hasQuestItems(SCULPTURE_OF_DOUBT, MYSTERIOUS_HAND_WRITTEN_TEXT))
 							{
 								htmltext = "32596-05.html";
 							}
@@ -373,6 +363,6 @@ public class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 	
 	public static void main(String args[])
 	{
-		new Q00197_SevenSignsTheSacredBookOfSeal(197, Q00197_SevenSignsTheSacredBookOfSeal.class.getSimpleName(), "Seven Signs, the Sacred Book of Seal");
+		new Q00197_SevenSignsTheSacredBookOfSeal();
 	}
 }

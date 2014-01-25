@@ -18,6 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
+import l2r.Config;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
@@ -54,11 +55,13 @@ public class DeluxeKey implements ISkillHandler
 			return;
 		}
 		
-		_log.info("Delux key casting succeded.");
+		if (Config.DEBUG)
+		{
+			_log.info("Delux key casting succeded.");
+		}
 		
 		// This is just a dummy skill handler for the golden food and crystal food skills,
 		// since the AI responce onSkillUse handles the rest.
-		
 	}
 	
 	@Override

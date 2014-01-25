@@ -18,9 +18,10 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.actor.L2Attackable;
+import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
+import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -140,10 +141,10 @@ public class VarkaKetra extends AbstractNpcAI
 	private VarkaKetra()
 	{
 		super(VarkaKetra.class.getSimpleName(), "ai/group_template");
-		addAggroRangeEnterId(KETRA);
-		addAggroRangeEnterId(VARKA);
 		addKillId(KETRA);
 		addKillId(VARKA);
+		addNpcHateId(KETRA);
+		addNpcHateId(VARKA);
 	}
 	
 	@Override
@@ -164,7 +165,7 @@ public class VarkaKetra extends AbstractNpcAI
 		}
 	}
 	
-	private void decreaseAlliance(L2PcInstance player, int[] marks)
+	private final void decreaseAlliance(L2PcInstance player, int[] marks)
 	{
 		for (int i = 0; i < marks.length; i++)
 		{
@@ -180,7 +181,7 @@ public class VarkaKetra extends AbstractNpcAI
 		}
 	}
 	
-	private void exitQuests(L2PcInstance player, String[] quests)
+	private final void exitQuests(L2PcInstance player, String[] quests)
 	{
 		for (String quest : quests)
 		{
@@ -193,24 +194,21 @@ public class VarkaKetra extends AbstractNpcAI
 	}
 	
 	@Override
-	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isSummon)
-	{
-		if ((Util.contains(KETRA, npc.getId()) && hasAtLeastOneQuestItem(player, KETRA_MARKS)) || (Util.contains(VARKA, npc.getId()) && hasAtLeastOneQuestItem(player, VARKA_MARKS)))
-		{
-			if (((L2Attackable) npc).containsTarget(player))
-			{
-				((L2Attackable) npc).getAggroList().get(player).stopHate();
-			}
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-		}
-		return super.onAggroRangeEnter(npc, player, isSummon);
-	}
-	
-	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
 		executeForEachPlayer(killer, npc, isSummon, true, false);
 		return super.onKill(npc, killer, isSummon);
+	}
+	
+	@Override
+	public boolean onNpcHate(L2Attackable mob, L2Playable playable)
+	{
+		return stopAttack(playable.getActingPlayer(), mob) ? false : super.onNpcHate(mob, playable);
+	}
+	
+	private final boolean stopAttack(L2PcInstance player, L2Character monster)
+	{
+		return (Util.contains(KETRA, monster.getId()) && hasAtLeastOneQuestItem(player, KETRA_MARKS)) || (Util.contains(VARKA, monster.getId()) && hasAtLeastOneQuestItem(player, VARKA_MARKS));
 	}
 	
 	public static void main(String[] args)

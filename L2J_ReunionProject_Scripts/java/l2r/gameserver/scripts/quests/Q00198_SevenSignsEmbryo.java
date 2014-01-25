@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -35,7 +35,7 @@ import l2r.gameserver.network.serverpackets.NpcSay;
  * Seven Signs, Embryo (198)
  * @author Adry_85
  */
-public class Q00198_SevenSignsEmbryo extends Quest
+public final class Q00198_SevenSignsEmbryo extends Quest
 {
 	// NPCs
 	private static final int SHILENS_EVIL_THOUGHTS = 27346;
@@ -51,9 +51,9 @@ public class Q00198_SevenSignsEmbryo extends Quest
 	// Skill
 	private static SkillHolder NPC_HEAL = new SkillHolder(4065, 8);
 	
-	public Q00198_SevenSignsEmbryo(int questId, String name, String descr)
+	private Q00198_SevenSignsEmbryo()
 	{
-		super(questId, name, descr);
+		super(198, Q00198_SevenSignsEmbryo.class.getSimpleName(), "Seven Signs, Embryo");
 		addFirstTalkId(JAINA);
 		addStartNpc(WOOD);
 		addTalkId(WOOD, FRANZ);
@@ -75,7 +75,7 @@ public class Q00198_SevenSignsEmbryo extends Quest
 			return super.onAdvEvent(event, npc, player);
 		}
 		
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, false);
 		if (st == null)
 		{
 			return null;
@@ -106,9 +106,7 @@ public class Q00198_SevenSignsEmbryo extends Quest
 				if (st.isCond(1))
 				{
 					isBusy = true;
-					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_THAT_STRANGER_MUST_BE_DEFEATED_HERE_IS_THE_ULTIMATE_HELP);
-					ns.addStringParameter(player.getName());
-					npc.broadcastPacket(ns);
+					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_THAT_STRANGER_MUST_BE_DEFEATED_HERE_IS_THE_ULTIMATE_HELP).addStringParameter(player.getName()));
 					startQuestTimer("heal", 30000 - getRandom(20000), npc, player);
 					L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, -23734, -9184, -5384, 0, false, 0, false, npc.getInstanceId());
 					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getId(), NpcStringId.YOU_ARE_NOT_THE_OWNER_OF_THAT_ITEM));
@@ -168,13 +166,6 @@ public class Q00198_SevenSignsEmbryo extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
-		String htmltext = getNoQuestMsg(player);
-		if (st == null)
-		{
-			return htmltext;
-		}
-		
 		return "32617-01.html";
 	}
 	
@@ -187,9 +178,8 @@ public class Q00198_SevenSignsEmbryo extends Quest
 			return null;
 		}
 		
-		final QuestState st = partyMember.getQuestState(getName());
-		
-		if (npc.isInsideRadius(player, 1500, true, false))
+		final QuestState st = getQuestState(partyMember, false);
+		if (npc.isInsideRadius(partyMember, 1500, true, false))
 		{
 			st.giveItems(SCULPTURE_OF_DOUBT, 1);
 			st.setCond(2, true);
@@ -198,24 +188,17 @@ public class Q00198_SevenSignsEmbryo extends Quest
 		isBusy = false;
 		cancelQuestTimers("despawn");
 		cancelQuestTimers("heal");
-		NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_YOU_MAY_HAVE_WON_THIS_TIME_BUT_NEXT_TIME_I_WILL_SURELY_CAPTURE_YOU);
-		ns.addStringParameter(player.getName());
-		npc.broadcastPacket(ns);
+		npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_YOU_MAY_HAVE_WON_THIS_TIME_BUT_NEXT_TIME_I_WILL_SURELY_CAPTURE_YOU).addStringParameter(partyMember.getName()));
 		npc.deleteMe();
-		player.showQuestMovie(14);
+		partyMember.showQuestMovie(14);
 		return super.onKill(npc, player, isSummon);
 	}
 	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		if (st == null)
-		{
-			return htmltext;
-		}
-		
 		switch (st.getState())
 		{
 			case State.COMPLETED:
@@ -288,6 +271,6 @@ public class Q00198_SevenSignsEmbryo extends Quest
 	
 	public static void main(String args[])
 	{
-		new Q00198_SevenSignsEmbryo(198, Q00198_SevenSignsEmbryo.class.getSimpleName(), "Seven Signs, Embryo");
+		new Q00198_SevenSignsEmbryo();
 	}
 }
