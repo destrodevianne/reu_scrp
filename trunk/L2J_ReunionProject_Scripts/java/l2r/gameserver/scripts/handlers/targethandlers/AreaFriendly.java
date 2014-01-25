@@ -26,9 +26,11 @@ import java.util.List;
 
 import l2r.Config;
 import l2r.gameserver.GeoData;
+import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.ITargetTypeHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
+import l2r.gameserver.model.actor.instance.L2GuardInstance;
 import l2r.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.targets.L2TargetType;
@@ -77,6 +79,12 @@ public class AreaFriendly implements ITargetTypeHandler
 			for (L2Character obj : objs)
 			{
 				if (!checkTarget(activeChar, obj) || (obj == activeChar))
+				{
+					continue;
+				}
+				
+				// TODO: check if this is retail like
+				if ((obj instanceof L2GuardInstance) && (skill.getId() == 1553) && (obj.isInsideZone(ZoneIdType.CASTLE) || obj.isInsideZone(ZoneIdType.FORT)))
 				{
 					continue;
 				}

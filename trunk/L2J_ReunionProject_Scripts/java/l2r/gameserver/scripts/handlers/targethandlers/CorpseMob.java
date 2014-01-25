@@ -39,9 +39,15 @@ public class CorpseMob implements ITargetTypeHandler
 	@Override
 	public L2Object[] getTargetList(L2Skill skill, L2Character activeChar, boolean onlyFirst, L2Character target)
 	{
+		if ((target == null) || !target.isL2Attackable() || !target.isDead())
+		{
+			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
+			return _emptyTargetList;
+		}
+		
 		List<L2Character> targetList = new ArrayList<>();
 		final boolean isSummon = target.isServitor();
-		if (!(isSummon || target.isL2Attackable()) || !target.isDead())
+		if (!isSummon)
 		{
 			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			return _emptyTargetList;

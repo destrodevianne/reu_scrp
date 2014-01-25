@@ -955,6 +955,7 @@ public class Zaken extends Quest
 				{
 					int[] position = ZoneManager.getInstance().getZoneById(world._zakenZone).getZone().getRandomPoint();
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_DAY, position[0], position[1], position[2], 32768, false, 0, false, world.getInstanceId());
+					_log.warn("Zaken Day:  spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
 					world._zaken.addSkill(SkillTable.getInstance().getInfo(4216, 1));
 					world._zaken.addSkill(SkillTable.getInstance().getInfo(4217, 1));
 					world._zaken.addSkill(SkillTable.getInstance().getInfo(4218, 1));
@@ -970,6 +971,7 @@ public class Zaken extends Quest
 				{
 					int[] position = ZoneManager.getInstance().getZoneById(world._zakenZone).getZone().getRandomPoint();
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_DAY83, position[0], position[1], position[2], 32768, false, 0, false, world.getInstanceId());
+					_log.warn("Zaken Day 83:  spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
 					world._zaken.addSkill(SkillTable.getInstance().getInfo(4216, 1));
 					world._zaken.addSkill(SkillTable.getInstance().getInfo(4217, 1));
 					world._zaken.addSkill(SkillTable.getInstance().getInfo(6689, 1));
@@ -985,6 +987,7 @@ public class Zaken extends Quest
 				{
 					Location loc = _spawnsZaken.get(Rnd.get(_spawnsZaken.size()));
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_NIGHT, loc.getX(), loc.getY(), loc.getZ(), 32768, false, 0, false, world.getInstanceId());
+					_log.warn("Zaken Night:  spawned at: X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
 					world._zaken.addSkill(SkillTable.getInstance().getInfo(4216, 1));
 					world._zaken.addSkill(SkillTable.getInstance().getInfo(4217, 1));
 					world._zaken.addSkill(SkillTable.getInstance().getInfo(4218, 1));

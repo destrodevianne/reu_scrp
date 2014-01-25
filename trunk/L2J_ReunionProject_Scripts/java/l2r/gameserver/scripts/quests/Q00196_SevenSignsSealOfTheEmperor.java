@@ -1,1175 +1,377 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.quests;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
-import l2r.gameserver.datatables.SkillTable;
-import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.instancemanager.InstanceManager;
-import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.L2World;
-import l2r.gameserver.model.actor.L2Attackable;
-import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.effects.L2Effect;
-import l2r.gameserver.model.entity.Instance;
-import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
-import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.SystemMessageId;
+import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
 
 /**
- * update by pmq 16-05-2011
+ * Seven Signs, Seal of the Emperor (196)
+ * @author Adry_85
  */
-public class Q00196_SevenSignsSealOfTheEmperor extends Quest
+public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 {
-	public static class SIGNSNpc
-	{
-		public L2Npc npc;
-		
-		public boolean isDead = false;
-	}
-	
-	public static class SIGNSRoom
-	{
-		public FastList<SIGNSNpc> npcList = new FastList<>();
-	}
-	
-	private class SIGNSWorld extends InstanceWorld
-	{
-		public FastMap<String, SIGNSRoom> rooms = new FastMap<>();
-		public long[] storeTime =
-		{
-			0,
-			0
-		};
-		
-		public SIGNSWorld()
-		{
-		}
-	}
-	
-	private static boolean debug = false;
-	private static boolean noRndWalk = true;
-	
-	private static final int INSTANCE_ID = 112;
-	
 	// NPCs
-	private static final int HEINE = 30969;
-	private static final int MAMMON = 32584;
+	private static final int IASON_HEINE = 30969;
+	private static final int MERCHANT_OF_MAMMON = 32584;
 	private static final int SHUNAIMAN = 32586;
-	private static final int MAGICAN = 32598;
 	private static final int WOOD = 32593;
-	private static final int LEON = 32587;
-	private static final int PROMICE_OF_MAMMON = 32585;
-	private static final int DISCIPLES_GK = 32657;
+	private static final int COURT_MAGICIAN = 32598;
+	// Items
+	private static final int ELMOREDEN_HOLY_WATER = 13808;
+	private static final int COURT_MAGICIANS_MAGIC_STAFF = 13809;
+	private static final int SEAL_OF_BINDING = 13846;
+	private static final int SACRED_SWORD_OF_EINHASAD = 15310;
+	// Misc
+	private static final int MIN_LEVEL = 79;
+	private boolean isBusy = false;
 	
-	// FIGHTING NPCS
-	private static final int LILITH = 32715;
-	private static final int LILITH_GUARD0 = 32716;
-	private static final int LILITH_GUARD1 = 32717;
-	private static final int ANAKIM = 32718;
-	private static final int ANAKIM_GUARD0 = 32719;
-	private static final int ANAKIM_GUARD1 = 32720;
-	private static final int ANAKIM_GUARD2 = 32721;
-	
-	// DOOR
-	// private static final int DOOR1 = 17240101;
-	private static final int DOOR2 = 17240102;
-	// private static final int DOOR3 = 17240103;
-	private static final int DOOR4 = 17240104;
-	// private static final int DOOR5 = 17240105;
-	private static final int DOOR6 = 17240106;
-	// private static final int DOOR7 = 17240107;
-	private static final int DOOR8 = 17240108;
-	// private static final int DOOR9 = 17240109;
-	private static final int DOOR10 = 17240110;
-	private static final int DOOR = 17240111;
-	// INSTANCE TP
-	private static final int[] TELEPORT =
+	private Q00196_SevenSignsSealOfTheEmperor()
 	{
-		-89559,
-		216030,
-		-7488
-	};
-	
-	private static final int[] NPCS =
-	{
-		HEINE,
-		WOOD,
-		MAMMON,
-		MAGICAN,
-		SHUNAIMAN,
-		LEON,
-		PROMICE_OF_MAMMON,
-		DISCIPLES_GK
-	};
-	
-	// MOBs
-	private static final int SEALDEVICE = 27384;
-	private static final int[] TOKILL =
-	{
-		27371,
-		27372,
-		27373,
-		27374,
-		27375,
-		27377,
-		27378,
-		27379,
-		27384
-	};
-	private static final int[] TOCHAT =
-	{
-		27371,
-		27372,
-		27373,
-		27377,
-		27378,
-		27379
-	};
-	
-	// QUEST ITEMS
-	private static final int WATER = 13808;
-	private static final int SWORD = 15310;
-	private static final int SEAL = 13846;
-	private static final int STAFF = 13809;
-	
-	// Skills
-	private static final int EINHASAD_STRIKE = 8357;
-	
-	private int mammonst = 0;
-	
-	private int _numAtk = 0;
-	
-	private static final void removeBuffs(L2Character ch)
-	{
-		for (L2Effect e : ch.getAllEffects())
-		{
-			if (e == null)
-			{
-				continue;
-			}
-			L2Skill skill = e.getSkill();
-			if (skill.isDebuff() || skill.isStayAfterDeath())
-			{
-				continue;
-			}
-			e.exit();
-		}
-	}
-	
-	@Override
-	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
-	{
-		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
-		if (tmpworld instanceof SIGNSWorld)
-		{
-			if (npc.getId() == 27371)
-			{
-				((L2Attackable) npc).abortAttack();
-				npc.setTarget(player);
-				npc.setIsRunning(true);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.THIS_PLACE_ONCE_BELONGED_TO_LORD_SHILEN));
-			}
-			if (npc.getId() == 27372)
-			{
-				((L2Attackable) npc).abortAttack();
-				npc.setTarget(player);
-				npc.setIsRunning(true);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHO_DARES_ENTER_THIS_PLACE));
-			}
-			if ((npc.getId() == 27373) || (npc.getId() == 27379))
-			{
-				((L2Attackable) npc).abortAttack();
-				npc.setTarget(player);
-				npc.setIsRunning(true);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.THOSE_WHO_ARE_AFRAID_SHOULD_GET_AWAY_AND_THOSE_WHO_ARE_BRAVE_SHOULD_FIGHT));
-			}
-			if (npc.getId() == 27377)
-			{
-				((L2Attackable) npc).abortAttack();
-				npc.setTarget(player);
-				npc.setIsRunning(true);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.LEAVE_NOW));
-			}
-			if (npc.getId() == 27378)
-			{
-				((L2Attackable) npc).abortAttack();
-				npc.setTarget(player);
-				npc.setIsRunning(true);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHO_DARES_ENTER_THIS_PLACE));
-			}
-		}
-		return null;
-	}
-	
-	protected void runStartRoom(SIGNSWorld world)
-	{
-		world.setStatus(0);
-		SIGNSRoom StartRoom = new SIGNSRoom();
-		SIGNSNpc thisnpc;
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(SHUNAIMAN, -89456, 216184, -7504, 40960, false, 0, false, world.getInstanceId());
-		StartRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(LEON, -89400, 216125, -7504, 40960, false, 0, false, world.getInstanceId());
-		StartRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(DISCIPLES_GK, -84385, 216117, -7497, 0, false, 0, false, world.getInstanceId());
-		StartRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(MAGICAN, -84945, 220643, -7495, 0, false, 0, false, world.getInstanceId());
-		StartRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(MAGICAN, -89563, 220647, -7491, 0, false, 0, false, world.getInstanceId());
-		StartRoom.npcList.add(thisnpc);
-		
-		world.rooms.put("StartRoom", StartRoom);
-		if (debug)
-		{
-			_log.info("SevenSignSealOfTheEmperor: first room spawned in instance " + world.getInstanceId());
-		}
-	}
-	
-	/**
-	 * Room1 Mobs 27371 27372 27373 27374
-	 * @param world
-	 */
-	protected void runFirstRoom(SIGNSWorld world)
-	{
-		SIGNSRoom FirstRoom = new SIGNSRoom();
-		SIGNSNpc thisnpc;
-		thisnpc = new SIGNSNpc();
-		thisnpc.isDead = false;
-		thisnpc.npc = addSpawn(27371, -89049, 217979, -7495, 0, false, 0, false, world.getInstanceId());
-		FirstRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27372, -89049, 217979, -7495, 0, false, 0, false, world.getInstanceId());
-		FirstRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27373, -89049, 217979, -7495, 0, false, 0, false, world.getInstanceId());
-		FirstRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27374, -89049, 217979, -7495, 0, false, 0, false, world.getInstanceId());
-		FirstRoom.npcList.add(thisnpc);
-		
-		world.rooms.put("FirstRoom", FirstRoom);
-		world.setStatus(1);
-		
-		if (debug)
-		{
-			_log.info("SevenSignSealOfTheEmperor: spawned First room");
-		}
-	}
-	
-	/**
-	 * Room2 Mobs 27371 27371 27372 27373 27373 27374
-	 * @param world
-	 */
-	protected void runSecondRoom(SIGNSWorld world)
-	{
-		SIGNSRoom SecondRoom = new SIGNSRoom();
-		SIGNSNpc thisnpc;
-		thisnpc = new SIGNSNpc();
-		thisnpc.isDead = false;
-		thisnpc.npc = addSpawn(27371, -88599, 220071, -7495, 0, false, 0, false, world.getInstanceId());
-		SecondRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27371, -88599, 220071, -7495, 0, false, 0, false, world.getInstanceId());
-		SecondRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27372, -88599, 220071, -7495, 0, false, 0, false, world.getInstanceId());
-		SecondRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27373, -88599, 220071, -7495, 0, false, 0, false, world.getInstanceId());
-		SecondRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27373, -88599, 220071, -7495, 0, false, 0, false, world.getInstanceId());
-		SecondRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27374, -88599, 220071, -7495, 0, false, 0, false, world.getInstanceId());
-		SecondRoom.npcList.add(thisnpc);
-		
-		world.rooms.put("SecondRoom", SecondRoom);
-		world.setStatus(2);
-		
-		if (debug)
-		{
-			_log.info("SevenSignSealOfTheEmperor: spawned second room");
-		}
-	}
-	
-	/**
-	 * Room3 Mobs 27371 27371 27372 27372 27373 27373 27374 27374
-	 * @param world
-	 */
-	protected void runThirdRoom(SIGNSWorld world)
-	{
-		SIGNSRoom ThirdRoom = new SIGNSRoom();
-		SIGNSNpc thisnpc;
-		thisnpc = new SIGNSNpc();
-		thisnpc.isDead = false;
-		thisnpc.npc = addSpawn(27371, -86846, 220639, -7495, 0, false, 0, false, world.getInstanceId());
-		ThirdRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27371, -86846, 220639, -7495, 0, false, 0, false, world.getInstanceId());
-		ThirdRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27372, -86846, 220639, -7495, 0, false, 0, false, world.getInstanceId());
-		ThirdRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27372, -86846, 220639, -7495, 0, false, 0, false, world.getInstanceId());
-		ThirdRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27373, -86846, 220639, -7495, 0, false, 0, false, world.getInstanceId());
-		ThirdRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27373, -86846, 220639, -7495, 0, false, 0, false, world.getInstanceId());
-		ThirdRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27374, -86846, 220639, -7495, 0, false, 0, false, world.getInstanceId());
-		ThirdRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27374, -86846, 220639, -7495, 0, false, 0, false, world.getInstanceId());
-		ThirdRoom.npcList.add(thisnpc);
-		
-		world.rooms.put("ThirdRoom", ThirdRoom);
-		world.setStatus(3);
-		
-		if (debug)
-		{
-			_log.info("SevenSignSealOfTheEmperor: spawned Third room");
-		}
-	}
-	
-	/**
-	 * Room4 Mobs 27371 27372 27373 27374 27375 27377 27378 27379
-	 * @param world
-	 */
-	protected void runForthRoom(SIGNSWorld world)
-	{
-		SIGNSRoom ForthRoom = new SIGNSRoom();
-		SIGNSNpc thisnpc;
-		thisnpc = new SIGNSNpc();
-		thisnpc.isDead = false;
-		thisnpc.npc = addSpawn(27371, -85463, 219227, -7495, 0, false, 0, false, world.getInstanceId());
-		ForthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27372, -85463, 219227, -7495, 0, false, 0, false, world.getInstanceId());
-		ForthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27373, -85463, 219227, -7495, 0, false, 0, false, world.getInstanceId());
-		ForthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27374, -85463, 219227, -7495, 0, false, 0, false, world.getInstanceId());
-		ForthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27375, -85463, 219227, -7495, 0, false, 0, false, world.getInstanceId());
-		ForthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27377, -85463, 219227, -7495, 0, false, 0, false, world.getInstanceId());
-		ForthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27378, -85463, 219227, -7495, 0, false, 0, false, world.getInstanceId());
-		ForthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27379, -85463, 219227, -7495, 0, false, 0, false, world.getInstanceId());
-		ForthRoom.npcList.add(thisnpc);
-		
-		world.rooms.put("ForthRoom", ForthRoom);
-		world.setStatus(4);
-		
-		if (debug)
-		{
-			_log.info("SevenSignSealOfTheEmperor: spawned Forth room");
-		}
-	}
-	
-	/**
-	 * Room5 Mobs 27371 27372 27373 27374 27375 27375 27377 27377 27378 27378 27379 27379
-	 * @param world
-	 */
-	protected void runFifthRoom(SIGNSWorld world)
-	{
-		SIGNSRoom FifthRoom = new SIGNSRoom();
-		SIGNSNpc thisnpc;
-		thisnpc = new SIGNSNpc();
-		thisnpc.isDead = false;
-		thisnpc.npc = addSpawn(27371, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27372, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27373, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27374, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27375, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27375, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27377, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27377, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27378, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27378, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27379, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(27379, -87441, 217623, -7495, 0, false, 0, false, world.getInstanceId());
-		FifthRoom.npcList.add(thisnpc);
-		
-		world.rooms.put("FifthRoom", FifthRoom);
-		world.setStatus(5);
-		
-		if (debug)
-		{
-			_log.info("SevenSignSealOfTheEmperor: spawned Fifth room");
-		}
-	}
-	
-	protected void runBossRoom(SIGNSWorld world)
-	{
-		SIGNSRoom BossRoom = new SIGNSRoom();
-		SIGNSNpc thisnpc;
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(LILITH, -83175, 217021, -7504, 0, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(LILITH_GUARD0, -83127, 217056, -7504, 0, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(LILITH_GUARD1, -83222, 217055, -7504, 0, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(ANAKIM, -83179, 216479, -7504, 0, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(ANAKIM_GUARD0, -83227, 216443, -7504, 0, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(ANAKIM_GUARD1, -83134, 216443, -7504, 0, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(ANAKIM_GUARD2, -83179, 216432, -7504, 0, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(SEALDEVICE, -83177, 217353, -7520, 32768, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(SEALDEVICE, -83177, 216137, -7520, 32768, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(SEALDEVICE, -82588, 216754, -7520, 32768, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(SEALDEVICE, -83804, 216754, -7520, 32768, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(32592, -83176, 216753, -7497, 0, false, 0, false, world.getInstanceId());
-		BossRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		
-		world.rooms.put("BossRoom", BossRoom);
-		world.setStatus(6);
-		
-		if (debug)
-		{
-			_log.info("SevenSignSealOfTheEmperor: spawned Boss room");
-		}
-	}
-	
-	protected void runSDRoom(SIGNSWorld world)
-	{
-		SIGNSRoom SDRoom = new SIGNSRoom();
-		SIGNSNpc thisnpc;
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(SEALDEVICE, -83177, 217353, -7520, 32768, false, 0, false, world.getInstanceId());
-		SDRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		thisnpc.npc.setIsImmobilized(true);
-		thisnpc.npc.setIsMortal(false);
-		thisnpc.npc.setRHandId(15281);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(SEALDEVICE, -83177, 216137, -7520, 32768, false, 0, false, world.getInstanceId());
-		SDRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		thisnpc.npc.setIsImmobilized(true);
-		thisnpc.npc.setIsMortal(false);
-		thisnpc.npc.setRHandId(15281);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(SEALDEVICE, -82588, 216754, -7520, 32768, false, 0, false, world.getInstanceId());
-		SDRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		thisnpc.npc.setIsImmobilized(true);
-		thisnpc.npc.setIsMortal(false);
-		thisnpc.npc.setRHandId(15281);
-		
-		thisnpc = new SIGNSNpc();
-		thisnpc.npc = addSpawn(SEALDEVICE, -83804, 216754, -7520, 32768, false, 0, false, world.getInstanceId());
-		SDRoom.npcList.add(thisnpc);
-		if (noRndWalk)
-		{
-			thisnpc.npc.setIsNoRndWalk(true);
-		}
-		thisnpc.npc.setIsImmobilized(true);
-		thisnpc.npc.setIsMortal(false);
-		thisnpc.npc.setRHandId(15281);
-		
-		world.rooms.put("SDRoom", SDRoom);
-		
-		if (debug)
-		{
-			_log.info("SevenSignSealOfTheEmperor: spawned SD room");
-		}
-	}
-	
-	protected boolean checkKillProgress(L2Npc npc, SIGNSRoom room)
-	{
-		boolean cont = true;
-		for (SIGNSNpc npcobj : room.npcList)
-		{
-			if (npcobj.npc == npc)
-			{
-				npcobj.isDead = true;
-			}
-			if (npcobj.isDead == false)
-			{
-				cont = false;
-			}
-		}
-		
-		return cont;
-	}
-	
-	private static final void teleportPlayer(L2PcInstance player, int[] coords, int instanceId)
-	{
-		removeBuffs(player);
-		if (player.getSummon() != null)
-		{
-			removeBuffs(player.getSummon());
-		}
-		player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-		player.setInstanceId(instanceId);
-		player.teleToLocation(coords[0], coords[1], coords[2], true);
-	}
-	
-	private final synchronized void enterInstance(L2PcInstance player)
-	{
-		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
-		if (world != null)
-		{
-			if (world.getTemplateId() != INSTANCE_ID)
-			{
-				player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-				return;
-			}
-			Instance inst = InstanceManager.getInstance().getInstance(world.getInstanceId());
-			if (inst != null)
-			{
-				teleportPlayer(player, TELEPORT, world.getInstanceId());
-			}
-			return;
-		}
-		final int instanceId = InstanceManager.getInstance().createDynamicInstance("SanctumSealOfTheEmperor.xml");
-		
-		_numAtk = 0;
-		world = new SIGNSWorld();
-		world.setInstanceId(instanceId);
-		world.setTemplateId(INSTANCE_ID);
-		InstanceManager.getInstance().addWorld(world);
-		((SIGNSWorld) world).storeTime[0] = System.currentTimeMillis();
-		runStartRoom((SIGNSWorld) world);
-		runFirstRoom((SIGNSWorld) world);
-		world.addAllowed(player.getObjectId());
-		teleportPlayer(player, TELEPORT, instanceId);
-		
-		_log.info("SevenSigns 5th epic quest " + instanceId + " created by player: " + player.getName());
-	}
-	
-	protected void exitInstance(L2PcInstance player)
-	{
-		player.setInstanceId(0);
-		player.teleToLocation(171782, -17612, -4901);
-	}
-	
-	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
-	{
-		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-		if (tmpworld instanceof SIGNSWorld)
-		{
-			SIGNSWorld world = (SIGNSWorld) tmpworld;
-			
-			if ((world.getStatus() == 6) && (npc.getId() == SEALDEVICE))
-			{
-				npc.doCast(SkillTable.getInstance().getInfo(5980, 3));
-			}
-		}
-		return super.onAttack(npc, attacker, damage, isPet, skill);
-	}
-	
-	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
-	{
-		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-		if (tmpworld instanceof SIGNSWorld)
-		{
-			SIGNSWorld world = (SIGNSWorld) tmpworld;
-			
-			if ((skill.getId() == EINHASAD_STRIKE) && (world.getStatus() == 6) && (npc.getId() == SEALDEVICE))
-			{
-				npc.doCast(SkillTable.getInstance().getInfo(5980, 3));
-			}
-		}
-		return super.onSkillSee(npc, caster, skill, targets, isPet);
+		super(196, Q00196_SevenSignsSealOfTheEmperor.class.getSimpleName(), "Seven Signs, Seal of the Emperor");
+		addFirstTalkId(MERCHANT_OF_MAMMON);
+		addStartNpc(IASON_HEINE);
+		addTalkId(IASON_HEINE, MERCHANT_OF_MAMMON, SHUNAIMAN, WOOD, COURT_MAGICIAN);
+		registerQuestItems(ELMOREDEN_HOLY_WATER, COURT_MAGICIANS_MAGIC_STAFF, SEAL_OF_BINDING, SACRED_SWORD_OF_EINHASAD);
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		String htmltext = event;
-		QuestState st = player.getQuestState(getName());
+		if ((npc.getId() == MERCHANT_OF_MAMMON) && "DESPAWN".equals(event))
+		{
+			isBusy = false;
+			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.THE_ANCIENT_PROMISE_TO_THE_EMPEROR_HAS_BEEN_FULFILLED));
+			npc.deleteMe();
+			return super.onAdvEvent(event, npc, player);
+		}
 		
+		final QuestState st = getQuestState(player, false);
 		if (st == null)
 		{
-			return htmltext;
+			return null;
 		}
 		
-		if (event.equalsIgnoreCase("30969-05.htm"))
+		String htmltext = null;
+		switch (event)
 		{
-			st.set("cond", "1");
-			st.setState(State.STARTED);
-			st.playSound("ItemSound.quest_accept");
-		}
-		else if (event.equalsIgnoreCase("32598-02.htm"))
-		{
-			st.giveItems(STAFF, 1);
-			player.sendPacket(SystemMessageId.USING_COURT_MAGICIANS_STAFF_TO_OPEN_DOOR);
-			st.playSound("ItemSound.quest_middle");
-		}
-		else if (event.equalsIgnoreCase("30969-11.htm"))
-		{
-			st.set("cond", "6");
-			st.playSound("ItemSound.quest_middle");
-			
-		}
-		else if (event.equalsIgnoreCase("32584-05.htm"))
-		{
-			st.set("cond", "2");
-			st.playSound("ItemSound.quest_middle");
-			npc.deleteMe();
-			mammonst = 0;
-		}
-		else if (event.equalsIgnoreCase("32586-06.htm"))
-		{
-			// player.sendPacket(SystemMessageId._3031);
-			player.sendPacket(SystemMessageId.USING_EINHASAD_HOLY_WATER_TO_OPEN_DOOR);
-			st.playSound("ItemSound.quest_middle");
-			st.set("cond", "4");
-			st.giveItems(SWORD, 1);
-			st.giveItems(WATER, 1);
-		}
-		else if (event.equalsIgnoreCase("32586-12.htm"))
-		{
-			st.playSound("ItemSound.quest_middle");
-			st.set("cond", "5");
-			st.takeItems(SEAL, -1);
-			st.takeItems(SWORD, 1);
-			st.takeItems(WATER, 1);
-			st.takeItems(STAFF, 1);
-		}
-		else if (event.equalsIgnoreCase("32593-02.htm"))
-		{
-			st.addExpAndSp(25000000, 2500000);
-			st.unset("cond");
-			st.setState(State.COMPLETED);
-			st.exitQuest(false);
-			st.playSound("ItemSound.quest_finish");
-		}
-		else if (event.equalsIgnoreCase("30969-06.htm"))
-		{
-			if (mammonst == 0)
+			case "30969-02.htm":
+			case "30969-03.htm":
+			case "30969-04.htm":
 			{
-				mammonst = 1;
-				L2Npc mammon = addSpawn(MAMMON, 109742, 219978, -3520, 0, false, 120000, true);
-				mammon.broadcastPacket(new NpcSay(mammon.getObjectId(), 0, mammon.getId(), NpcStringId.WHO_DARES_SUMMON_THE_MERCHANT_OF_MAMMON));
-				st.startQuestTimer("despawn", 120000, mammon);
+				htmltext = event;
+				break;
 			}
-			else
+			case "30969-05.html":
 			{
-				return "30969-06a.htm";
+				st.startQuest();
+				htmltext = event;
+				break;
 			}
-		}
-		else if (event.equalsIgnoreCase("despawn"))
-		{
-			mammonst = 0;
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.THE_ANCIENT_PROMISE_TO_THE_EMPEROR_HAS_BEEN_FULFILLED));
-			return null;
-		}
-		else if (event.equalsIgnoreCase("DOORS"))
-		{
-			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-			if (tmpworld instanceof SIGNSWorld)
+			case "ssq_mammon":
 			{
-				SIGNSWorld world = (SIGNSWorld) tmpworld;
-				openDoor(DOOR, world.getInstanceId());
-				for (int objId : world.getAllowed())
+				if (st.isCond(1))
 				{
-					L2PcInstance pl = L2World.getInstance().getPlayer(objId);
-					if (pl != null)
+					if (!isBusy)
 					{
-						pl.showQuestMovie(12);
+						isBusy = true;
+						npc.setScriptValue(1);
+						final L2Npc merchant = addSpawn(MERCHANT_OF_MAMMON, 109743, 219975, -3512, 0, false, 0, false);
+						merchant.broadcastPacket(new NpcSay(merchant.getObjectId(), Say2.NPC_ALL, merchant.getId(), NpcStringId.WHO_DARES_SUMMON_THE_MERCHANT_OF_MAMMON));
+						htmltext = "30969-06.html";
+						startQuestTimer("DESPAWN", 120000, merchant, null);
 					}
-					runBossRoom(world);
-					// player.sendPacket(SystemMessageId._3032);
+					else
+					{
+						htmltext = "30969-07.html";
+					}
 				}
-				return null;
+				break;
 			}
-		}
-		else if (event.equalsIgnoreCase("Tele"))
-		{
-			player.teleToLocation(-89528, 216056, -7516);
-			return null;
+			case "30969-13.html":
+			{
+				if (st.isCond(5))
+				{
+					htmltext = event;
+				}
+				break;
+			}
+			case "30969-14.html":
+			{
+				if (st.isCond(5))
+				{
+					st.setCond(6, true);
+					htmltext = event;
+				}
+				break;
+			}
+			case "32584-02.html":
+			case "32584-03.html":
+			case "32584-04.html":
+			{
+				if (st.isCond(1))
+				{
+					htmltext = event;
+				}
+				break;
+			}
+			case "32584-05.html":
+			{
+				if (st.isCond(1))
+				{
+					st.setCond(2, true);
+					htmltext = event;
+					cancelQuestTimers("DESPAWN");
+					npc.deleteMe();
+					isBusy = false;
+				}
+				break;
+			}
+			case "32586-02.html":
+			case "32586-03.html":
+			case "32586-04.html":
+			case "32586-06.html":
+			{
+				if (st.isCond(3))
+				{
+					htmltext = event;
+				}
+				break;
+			}
+			case "32586-07.html":
+			{
+				if (st.isCond(3))
+				{
+					giveItems(player, ELMOREDEN_HOLY_WATER, 1);
+					giveItems(player, SACRED_SWORD_OF_EINHASAD, 1);
+					st.setCond(4, true);
+					player.sendPacket(SystemMessageId.USING_EINHASAD_HOLY_SWORD_DEFEAT_LILIMS);
+					player.sendPacket(SystemMessageId.USING_EINHASAD_HOLY_WATER_TO_OPEN_DOOR);
+					htmltext = event;
+				}
+				break;
+			}
+			case "32586-11.html":
+			case "32586-12.html":
+			case "32586-13.html":
+			{
+				if (st.isCond(4) && (getQuestItemsCount(player, SEAL_OF_BINDING) >= 4))
+				{
+					htmltext = event;
+				}
+				break;
+			}
+			case "32586-14.html":
+			{
+				if (st.isCond(4) && (getQuestItemsCount(player, SEAL_OF_BINDING) >= 4))
+				{
+					takeItems(player, -1, ELMOREDEN_HOLY_WATER, COURT_MAGICIANS_MAGIC_STAFF, SEAL_OF_BINDING, SACRED_SWORD_OF_EINHASAD);
+					st.setCond(5, true);
+					htmltext = event;
+				}
+				break;
+			}
+			case "finish":
+			{
+				if (st.isCond(6))
+				{
+					if (player.getLevel() >= MIN_LEVEL)
+					{
+						addExpAndSp(player, 52518015, 5817677);
+						st.exitQuest(false, true);
+						htmltext = "32593-02.html";
+					}
+					else
+					{
+						htmltext = "level_check.html";
+					}
+				}
+				break;
+			}
+			case "32598-02.html":
+			{
+				if (st.isCond(3) || st.isCond(4))
+				{
+					giveItems(player, COURT_MAGICIANS_MAGIC_STAFF, 1);
+					htmltext = event;
+				}
+				break;
+			}
 		}
 		return htmltext;
+	}
+	
+	@Override
+	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	{
+		return "32584.htm";
 	}
 	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
+		QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
-		QuestState qs = player.getQuestState(Q00195_SevenSignsSecretRitualOfThePriests.class.getSimpleName());
-		
-		if ((st == null) || (qs == null))
+		switch (st.getState())
 		{
-			return htmltext;
-		}
-		
-		int cond = st.getInt("cond");
-		switch (npc.getId())
-		{
-			case HEINE:
-				switch (st.getState())
+			case State.COMPLETED:
+			{
+				htmltext = getAlreadyCompletedMsg(player);
+				break;
+			}
+			case State.CREATED:
+			{
+				if (npc.getId() == IASON_HEINE)
 				{
-					case State.CREATED:
-						if ((cond == 0) && (player.getLevel() >= 79) && (qs.getState() == State.COMPLETED))
-						{
-							return "30969-01.htm";
-						}
-						st.exitQuest(true);
-						return "30969-00.htm";
-					case State.STARTED:
-						switch (st.getInt("cond"))
+					st = player.getQuestState(Q00195_SevenSignsSecretRitualOfThePriests.class.getSimpleName());
+					htmltext = ((player.getLevel() >= MIN_LEVEL) && (st != null) && (st.isCompleted())) ? "30969-01.htm" : "30969-08.html";
+				}
+				break;
+			}
+			case State.STARTED:
+			{
+				switch (npc.getId())
+				{
+					case IASON_HEINE:
+					{
+						switch (st.getCond())
 						{
 							case 1:
-								return "30969-05.htm";
+							{
+								htmltext = "30969-09.html";
+								break;
+							}
 							case 2:
-								st.set("cond", "3");
-								st.playSound("ItemSound.quest_middle");
-								return "30969-07.htm";
+							{
+								st.setCond(3, true);
+								npc.setScriptValue(0);
+								htmltext = "30969-10.html";
+								break;
+							}
 							case 3:
-								return "30969-08.htm";
 							case 4:
-								return "30969-08.htm";
+							{
+								htmltext = "30969-11.html";
+								break;
+							}
 							case 5:
-								return "30969-09.htm";
+							{
+								htmltext = "30969-12.html";
+								break;
+							}
 							case 6:
-								return "30969-12.htm";
+							{
+								htmltext = "30969-15.html";
+								break;
+							}
 						}
-					case State.COMPLETED:
-						return getAlreadyCompletedMsg(player);
-				}
-			case WOOD:
-				if (cond == 6)
-				{
-					return "32593-01.htm";
-				}
-				else if (st.getState() == State.COMPLETED)
-				{
-					return getAlreadyCompletedMsg(player);
-				}
-			case MAMMON:
-				switch (st.getInt("cond"))
-				{
-					case 1:
-						return "32584-01.htm";
-				}
-			case PROMICE_OF_MAMMON:
-				switch (st.getInt("cond"))
-				{
-					case 0:
-					case 1:
-					case 2:
-						return null;
-					case 3:
-						enterInstance(player);
-						return null;
-					case 4:
-						enterInstance(player);
-						return null;
-					case 5:
-					case 6:
-						return null;
-				}
-			case MAGICAN:
-				switch (st.getInt("cond"))
-				{
-					case 4:
-						if (!st.hasQuestItems(STAFF))
+						break;
+					}
+					case MERCHANT_OF_MAMMON:
+					{
+						if (st.isCond(1))
 						{
-							// player.sendPacket(SystemMessageId._3040);
-							return "32598-01.htm";
+							if (npc.isScriptValue(0))
+							{
+								npc.setScriptValue(player.getObjectId());
+							}
+							htmltext = (npc.isScriptValue(player.getObjectId())) ? "32584-01.html" : "32584-06.html";
 						}
-						// player.sendPacket(SystemMessageId._3040);
-						return "32598-03.htm";
-				}
-			case SHUNAIMAN:
-				switch (st.getInt("cond"))
-				{
-					case 3:
-						return "32586-01.htm";
-					case 4:
-						if (!st.hasQuestItems(SWORD))
+						break;
+					}
+					case SHUNAIMAN:
+					{
+						switch (st.getCond())
 						{
-							// player.sendPacket(SystemMessageId._3031);
-							// player.sendPacket(SystemMessageId._3039);
-							st.giveItems(SWORD, 1);
-							return "32586-14.htm";
+							case 3:
+							{
+								htmltext = "32586-01.html";
+								break;
+							}
+							case 4:
+							{
+								if (getQuestItemsCount(player, SEAL_OF_BINDING) < 4)
+								{
+									if (hasQuestItems(player, ELMOREDEN_HOLY_WATER, SACRED_SWORD_OF_EINHASAD))
+									{
+										htmltext = "32586-08.html";
+									}
+									else if (!hasQuestItems(player, ELMOREDEN_HOLY_WATER) && hasQuestItems(player, SACRED_SWORD_OF_EINHASAD))
+									{
+										htmltext = "32586-09.html";
+										giveItems(player, ELMOREDEN_HOLY_WATER, 1);
+									}
+									else if (hasQuestItems(player, ELMOREDEN_HOLY_WATER) && !hasQuestItems(player, SACRED_SWORD_OF_EINHASAD))
+									{
+										htmltext = "32586-09.html";
+										giveItems(player, SACRED_SWORD_OF_EINHASAD, 1);
+									}
+									player.sendPacket(SystemMessageId.USING_EINHASAD_HOLY_SWORD_DEFEAT_LILIMS);
+									player.sendPacket(SystemMessageId.USING_EINHASAD_HOLY_WATER_TO_OPEN_DOOR);
+								}
+								else
+								{
+									htmltext = "32586-10.html";
+								}
+								break;
+							}
+							case 5:
+							{
+								htmltext = "32586-15.html";
+								break;
+							}
 						}
-						if (!st.hasQuestItems(WATER))
+						break;
+					}
+					case WOOD:
+					{
+						if (st.isCond(6))
 						{
-							// player.sendPacket(SystemMessageId._3031);
-							// player.sendPacket(SystemMessageId._3039);
-							st.giveItems(WATER, 1);
-							return "32586-14.htm";
+							htmltext = "32593-01.html";
 						}
-						if ((_numAtk >= 4) && (st.getQuestItemsCount(SEAL) >= 4))
+						break;
+					}
+					case COURT_MAGICIAN:
+					{
+						if (st.isCond(3) || st.isCond(4))
 						{
-							return "32586-08.htm";
+							htmltext = (!hasQuestItems(player, COURT_MAGICIANS_MAGIC_STAFF)) ? "32598-01.html" : "32598-03.html";
+							player.sendPacket(SystemMessageId.USING_COURT_MAGICIANS_STAFF_TO_OPEN_DOOR);
 						}
-						// player.sendPacket(SystemMessageId._3031);
-						// player.sendPacket(SystemMessageId._3039);
-						return "32586-07.htm";
-					case 5:
-						return "32586-13.htm";
+						break;
+					}
 				}
-			case DISCIPLES_GK:
-				switch (st.getInt("cond"))
-				{
-					case 4:
-						return "32657-01.htm";
-				}
-			case LEON:
-				switch (st.getInt("cond"))
-				{
-					case 3:
-						exitInstance(player);
-						return "32587-02.htm";
-					case 4:
-						exitInstance(player);
-						return "32587-02.htm";
-					case 5:
-						InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
-						world.removeAllowed(player.getObjectId());
-						exitInstance(player);
-						return "32587-02.htm";
-				}
-				
+				break;
+			}
 		}
 		return htmltext;
 	}
 	
-	@Override
-	public final String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public static void main(String args[])
 	{
-		QuestState st = player.getQuestState(getName());
-		
-		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-		SIGNSWorld world;
-		
-		if (st == null)
-		{
-			return null;
-		}
-		
-		if (tmpworld instanceof SIGNSWorld)
-		{
-			world = (SIGNSWorld) tmpworld;
-			if (npc.getId() == 27371)
-			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.FOR_SHILEN));
-			}
-			else if (npc.getId() == 27372)
-			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.LORD_SHILEN_SOME_DAY_YOU_WILL_ACCOMPLISH_THIS_MISSION));
-			}
-			else if (npc.getId() == 27373)
-			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHY_ARE_YOU_GETTING_IN_OUR_WAY));
-			}
-			else if (npc.getId() == 27377)
-			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.FOR_SHILEN));
-			}
-			else if (npc.getId() == 27378)
-			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.LORD_SHILEN_SOME_DAY_YOU_WILL_ACCOMPLISH_THIS_MISSION));
-			}
-			else if (npc.getId() == 27379)
-			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHY_ARE_YOU_GETTING_IN_OUR_WAY));
-			}
-			
-			if (world.getStatus() == 1)
-			{
-				if (checkKillProgress(npc, world.rooms.get("FirstRoom")))
-				{
-					runSecondRoom(world);
-					openDoor(DOOR2, world.getInstanceId());
-				}
-			}
-			else if (world.getStatus() == 2)
-			{
-				if (checkKillProgress(npc, world.rooms.get("SecondRoom")))
-				{
-					runThirdRoom(world);
-					openDoor(DOOR4, world.getInstanceId());
-				}
-			}
-			else if (world.getStatus() == 3)
-			{
-				if (checkKillProgress(npc, world.rooms.get("ThirdRoom")))
-				{
-					runForthRoom(world);
-					openDoor(DOOR6, world.getInstanceId());
-				}
-			}
-			else if (world.getStatus() == 4)
-			{
-				if (checkKillProgress(npc, world.rooms.get("ForthRoom")))
-				{
-					runFifthRoom(world);
-					openDoor(DOOR8, world.getInstanceId());
-				}
-			}
-			else if (world.getStatus() == 5)
-			{
-				if (checkKillProgress(npc, world.rooms.get("FifthRoom")))
-				{
-					openDoor(DOOR10, world.getInstanceId());
-				}
-			}
-			else if (world.getStatus() == 6)
-			{
-				_numAtk++;
-				if (npc.getId() == SEALDEVICE)
-				{
-					if (_numAtk < 4)
-					{
-						// player.sendPacket(SystemMessageId._3060);
-						npc.setRHandId(15281);
-						st.playSound("ItemSound.quest_itemget");
-						st.giveItems(SEAL, 1);
-					}
-					else
-					{
-						// player.sendPacket(SystemMessageId._3060);
-						npc.setRHandId(15281);
-						st.giveItems(SEAL, 1);
-						st.playSound("ItemSound.quest_middle");
-						runSDRoom(world);
-						player.showQuestMovie(13);
-						startQuestTimer("Tele", 26000, null, player);
-					}
-				}
-			}
-		}
-		return null;
-	}
-	
-	public Q00196_SevenSignsSealOfTheEmperor(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		addStartNpc(HEINE);
-		addStartNpc(PROMICE_OF_MAMMON);
-		
-		addSkillSeeId(SEALDEVICE);
-		addAttackId(SEALDEVICE);
-		
-		for (int i : NPCS)
-		{
-			addTalkId(i);
-		}
-		
-		for (int mob : TOKILL)
-		{
-			addKillId(mob);
-		}
-		
-		for (int mob1 : TOCHAT)
-		{
-			addAggroRangeEnterId(mob1);
-		}
-		
-		questItemIds = new int[]
-		{
-			SWORD,
-			WATER,
-			SEAL,
-			STAFF
-		};
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00196_SevenSignsSealOfTheEmperor(196, Q00196_SevenSignsSealOfTheEmperor.class.getSimpleName(), "Seven Sign Seal Of The Emperor");
+		new Q00196_SevenSignsSealOfTheEmperor();
 	}
 }
