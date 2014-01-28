@@ -194,8 +194,8 @@ public class AdminBuffs implements IAdminCommandHandler
 			
 			try
 			{
-				player.getSkillReuseTimeStamps().clear();
-				player.getDisabledSkills().clear();
+				player.resetTimeStamps();
+				player.resetDisabledSkills();
 				player.sendPacket(new SkillCoolTime(player));
 				activeChar.sendMessage("Skill reuse was removed from " + player.getName() + ".");
 				return true;
