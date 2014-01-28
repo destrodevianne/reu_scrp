@@ -173,7 +173,7 @@ public class Disablers implements ISkillHandler
 				case CONFUSE_MOB_ONLY:
 				{
 					// do nothing if not on mob
-					if (target.isL2Attackable())
+					if (target.isAttackable())
 					{
 						if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, ss, sps, bss))
 						{
@@ -206,7 +206,7 @@ public class Disablers implements ISkillHandler
 				}
 				case AGGDAMAGE:
 				{
-					if (target.isL2Attackable())
+					if (target.isAttackable())
 					{
 						try
 						{
@@ -225,7 +225,7 @@ public class Disablers implements ISkillHandler
 				case AGGREDUCE:
 				{
 					// these skills needs to be rechecked
-					if (target.isL2Attackable())
+					if (target.isAttackable())
 					{
 						skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss));
 						
@@ -248,7 +248,7 @@ public class Disablers implements ISkillHandler
 					// these skills needs to be rechecked
 					if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, ss, sps, bss))
 					{
-						if (target.isL2Attackable())
+						if (target.isAttackable())
 						{
 							L2Attackable targ = (L2Attackable) target;
 							targ.stopHating(activeChar);
@@ -285,7 +285,7 @@ public class Disablers implements ISkillHandler
 				case AGGREMOVE:
 				{
 					// these skills needs to be rechecked
-					if (target.isL2Attackable() && !target.isRaid())
+					if (target.isAttackable() && !target.isRaid())
 					{
 						if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, ss, sps, bss))
 						{

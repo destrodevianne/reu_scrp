@@ -108,7 +108,7 @@ public class WarriorFishingBlock extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if ((npc == null) || !npc.isL2Attackable())
+		if ((npc == null) || !npc.isAttackable())
 		{
 			return null;
 		}

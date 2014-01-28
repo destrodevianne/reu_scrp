@@ -194,7 +194,7 @@ public class Continuous implements ISkillHandler
 				
 				if (skill.getSkillType() == L2SkillType.AGGDEBUFF)
 				{
-					if (target.isL2Attackable())
+					if (target.isAttackable())
 					{
 						try
 						{

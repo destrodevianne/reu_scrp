@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -31,12 +31,16 @@ import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
 import l2r.gameserver.model.zone.L2ZoneType;
+import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.SystemMessageId;
+import l2r.gameserver.network.clientpackets.Say2;
+import l2r.gameserver.network.serverpackets.NpcSay;
+import l2r.gameserver.util.Broadcast;
 
 /**
  * Pailaka (Forgotten Temple) instance zone.
  */
-public class PailakaSongOfIceAndFire extends Quest
+public final class PailakaSongOfIceAndFire extends Quest
 {
 	private static final int MIN_LEVEL = 36;
 	private static final int MAX_LEVEL = 42;
@@ -187,6 +191,20 @@ public class PailakaSongOfIceAndFire extends Quest
 		13129
 	};
 	
+	private PailakaSongOfIceAndFire()
+	{
+		// TODO change the script to use the actual class name
+		super(128, "128_PailakaSongOfIceAndFire", "Pailaka - Song of Ice and Fire");
+		addStartNpc(ADLER1);
+		addFirstTalkId(ADLER1, ADLER2, SINAI, INSPECTOR);
+		addTalkId(ADLER1, ADLER2, SINAI, INSPECTOR);
+		addAttackId(BOTTLE, BRAZIER);
+		addKillId(MONSTERS);
+		addExitZoneId(ZONE);
+		addSeeCreatureId(GARGOS);
+		registerQuestItems(ITEMS);
+	}
+	
 	private static final void dropHerb(L2Npc mob, L2PcInstance player, int[][] drop)
 	{
 		final int chance = getRandom(100);
@@ -326,6 +344,11 @@ public class PailakaSongOfIceAndFire extends Quest
 					}
 				}
 				break;
+			case "GARGOS_LAUGH":
+			{
+				Broadcast.toKnownPlayers(npc, new NpcSay(npc.getObjectId(), Say2.NPC_SHOUT, npc.getTemplate().getIdTemplate(), NpcStringId.OHHOHOH));
+				break;
+			}
 		}
 		return event;
 	}
@@ -506,6 +529,17 @@ public class PailakaSongOfIceAndFire extends Quest
 		return super.onExitZone(character, zone);
 	}
 	
+	@Override
+	public String onSeeCreature(L2Npc npc, L2Character creature, boolean isSummon)
+	{
+		if (npc.isScriptValue(0) && creature.isPlayer())
+		{
+			npc.setScriptValue(1);
+			startQuestTimer("GARGOS_LAUGH", 1000, npc, creature.getActingPlayer());
+		}
+		return super.onSeeCreature(npc, creature, isSummon);
+	}
+	
 	static final class Teleport implements Runnable
 	{
 		private final L2Character _char;
@@ -529,18 +563,6 @@ public class PailakaSongOfIceAndFire extends Quest
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	private PailakaSongOfIceAndFire()
-	{
-		super(128, "128_PailakaSongOfIceAndFire", "Pailaka - Song of Ice and Fire");
-		addStartNpc(ADLER1);
-		addFirstTalkId(ADLER1, ADLER2, SINAI, INSPECTOR);
-		addTalkId(ADLER1, ADLER2, SINAI, INSPECTOR);
-		addAttackId(BOTTLE, BRAZIER);
-		addKillId(MONSTERS);
-		addExitZoneId(ZONE);
-		registerQuestItems(ITEMS);
 	}
 	
 	public static void main(String[] args)

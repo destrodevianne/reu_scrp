@@ -48,7 +48,7 @@ public class ShiftTarget implements ISkillHandler
 		
 		for (L2Character obj : activeChar.getKnownList().getKnownCharactersInRadius(skill.getAffectRange()))
 		{
-			if (!obj.isL2Attackable() || obj.isDead())
+			if (!obj.isAttackable() || obj.isDead())
 			{
 				continue;
 			}
