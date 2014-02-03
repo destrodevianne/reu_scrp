@@ -140,8 +140,6 @@ public class Zaken extends Quest
 	// Teleports
 	private static final Location ENTER_TELEPORT = new Location(52680, 219088, -3232);
 	
-	private static List<L2PcInstance> _playersInside = new FastList<>();
-	
 	// Zones for rooms
 	// floor 1
 	private static int _room1_zone = 120111;
@@ -497,7 +495,6 @@ public class Zaken extends Quest
 				party.broadcastPacket(sm);
 				return false;
 			}
-			_playersInside.add(member);
 		}
 		return true;
 	}
@@ -518,11 +515,7 @@ public class Zaken extends Quest
 			teleportPlayer(player, loc, world.getInstanceId(), false);
 			return world.getInstanceId();
 		}
-		// new instance
-		if (!checkConditions(player, choice))
-		{
-			return 0;
-		}
+		
 		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
 		world = new ZWorld();
 		if (choice.equalsIgnoreCase("daytime"))
@@ -576,6 +569,12 @@ public class Zaken extends Quest
 		int count = 1;
 		for (L2PcInstance member : players)
 		{
+			// new instance
+			if (!checkConditions(member, choice))
+			{
+				return 0;
+			}
+			
 			_log.info("Zaken Party Member " + count + ", Member name is: " + member.getName());
 			count++;
 			teleportPlayer(member, loc, world.getInstanceId(), false);
