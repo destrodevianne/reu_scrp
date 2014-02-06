@@ -458,12 +458,15 @@ public class Zaken extends Quest
 		
 		for (L2PcInstance member : members)
 		{
-			if ((member == null) || (member.getLevel() < minLevel))
+			if (choice.equalsIgnoreCase("daytime") || (choice.equalsIgnoreCase("daytime83")))
 			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
-				sm.addPcName(member);
-				party.broadcastPacket(sm);
-				return false;
+				if ((member == null) || (member.getLevel() < minLevel))
+				{
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
+					sm.addPcName(member);
+					party.broadcastPacket(sm);
+					return false;
+				}
 			}
 			
 			if (!Util.checkIfInRange(1000, player, member, true))
