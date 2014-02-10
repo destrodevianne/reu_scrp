@@ -569,7 +569,6 @@ public class Zaken extends Quest
 			players = party.getMembers();
 		}
 		
-		int count = 1;
 		for (L2PcInstance member : players)
 		{
 			// new instance
@@ -577,7 +576,11 @@ public class Zaken extends Quest
 			{
 				return 0;
 			}
-			
+		}
+		
+		int count = 1;
+		for (L2PcInstance member : players)
+		{
 			_log.info("Zaken Party Member " + count + ", Member name is: " + member.getName());
 			count++;
 			teleportPlayer(member, loc, world.getInstanceId(), false);
