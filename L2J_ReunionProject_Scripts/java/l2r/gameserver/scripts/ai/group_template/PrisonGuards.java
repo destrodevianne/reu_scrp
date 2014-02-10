@@ -22,19 +22,20 @@ import java.util.Map;
 
 import javolution.util.FastMap;
 import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2Object;
+import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.QuestState;
+import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
-import l2r.gameserver.scripts.custom.IOPRace;
 
 /**
  * Prison Guards AI.
@@ -42,57 +43,37 @@ import l2r.gameserver.scripts.custom.IOPRace;
  */
 public class PrisonGuards extends AbstractNpcAI
 {
-	final private static int GUARD1 = 18367;
-	final private static int GUARD2 = 18368;
-	final private static int STAMP = 10013;
-	
-	final private static String[] GUARDVARS =
-	{
-		"1st",
-		"2nd",
-		"3rd",
-		"4th"
-	};
-	
+	// NPCs
+	private static final int GUARD_HEAD = 18367; // Prison Guard
+	private static final int GUARD = 18368; // Prison Guard
+	// Item
+	private static final int STAMP = 10013; // Race Stamp
+	// Skills
+	private static final SkillHolder STONE = new SkillHolder(4578, 1); // Petrification
+	private static final SkillHolder SILENCE = new SkillHolder(4098, 9); // Silence
 	private final static int SKILL_SILENCE = 4098;
 	private final static int SKILL_PERTIFICATION = 4578;
 	private final static int SKILL_EVENT_TIMER = 5239;
-	
-	private boolean _firstAttacked = false;
 	
 	private final Map<L2Npc, Integer> _guards = new FastMap<>();
 	
 	private PrisonGuards()
 	{
 		super(PrisonGuards.class.getSimpleName(), "ai/group_template");
-		registerMobs(GUARD1, GUARD2);
+		addAttackId(GUARD_HEAD, GUARD);
+		addSpawnId(GUARD_HEAD, GUARD);
+		addNpcHateId(GUARD);
+		addSkillSeeId(GUARD);
+		addSpellFinishedId(GUARD_HEAD, GUARD);
 		
-		// place 1
-		_guards.put(addSpawn(GUARD2, 160704, 184704, -3704, 49152, false, 0), 0);
-		_guards.put(addSpawn(GUARD2, 160384, 184704, -3704, 49152, false, 0), 0);
-		_guards.put(addSpawn(GUARD1, 160528, 185216, -3704, 49152, false, 0), 0);
-		// place 2
-		_guards.put(addSpawn(GUARD2, 135120, 171856, -3704, 49152, false, 0), 1);
-		_guards.put(addSpawn(GUARD2, 134768, 171856, -3704, 49152, false, 0), 1);
-		_guards.put(addSpawn(GUARD1, 134928, 172432, -3704, 49152, false, 0), 1);
-		// place 3
-		_guards.put(addSpawn(GUARD2, 146880, 151504, -2872, 49152, false, 0), 2);
-		_guards.put(addSpawn(GUARD2, 146366, 151506, -2872, 49152, false, 0), 2);
-		_guards.put(addSpawn(GUARD1, 146592, 151888, -2872, 49152, false, 0), 2);
-		// place 4
-		_guards.put(addSpawn(GUARD2, 155840, 160448, -3352, 0, false, 0), 3);
-		_guards.put(addSpawn(GUARD2, 155840, 159936, -3352, 0, false, 0), 3);
-		_guards.put(addSpawn(GUARD1, 155578, 160177, -3352, 0, false, 0), 3);
-		
-		for (L2Npc npc : _guards.keySet())
+		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GUARD_HEAD))
 		{
-			npc.setIsNoRndWalk(true);
-			npc.setIsImmobilized(true);
-			if (npc.getId() == GUARD1)
-			{
-				npc.setIsInvul(true);
-				npc.disableCoreAI(true);
-			}
+			onSpawn(spawn.getLastSpawn());
+		}
+		
+		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GUARD))
+		{
+			onSpawn(spawn.getLastSpawn());
 		}
 	}
 	
@@ -104,7 +85,7 @@ public class PrisonGuards extends AbstractNpcAI
 			L2Npc newGuard = addSpawn(npc.getId(), npc.getSpawn().getX(), npc.getSpawn().getY(), npc.getSpawn().getZ(), npc.getSpawn().getHeading(), false, 0);
 			newGuard.setIsNoRndWalk(true);
 			newGuard.setIsImmobilized(true);
-			if (npc.getId() == GUARD1)
+			if (npc.getId() == GUARD_HEAD)
 			{
 				newGuard.setIsInvul(true);
 				newGuard.disableCoreAI(true);
@@ -114,7 +95,7 @@ public class PrisonGuards extends AbstractNpcAI
 			_guards.remove(npc);
 			_guards.put(newGuard, place);
 		}
-		else if (event.equals("attackEnd") && (npc.getId() == GUARD2))
+		else if (event.equals("attackEnd") && (npc.getId() == GUARD))
 		{
 			if ((npc.getX() != npc.getSpawn().getX()) || (npc.getY() != npc.getSpawn().getY()))
 			{
@@ -123,6 +104,10 @@ public class PrisonGuards extends AbstractNpcAI
 			}
 			((L2Attackable) npc).getAggroList().clear();
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+		}
+		else if (event.equals("CLEAR_STATUS"))
+		{
+			npc.setScriptValue(0);
 		}
 		
 		return super.onAdvEvent(event, npc, player);
@@ -133,14 +118,12 @@ public class PrisonGuards extends AbstractNpcAI
 	{
 		L2Character caster = isSummon ? player.getSummon() : player;
 		
-		if (npc.getId() == GUARD2)
+		if ((caster.getFirstEffect(SKILL_EVENT_TIMER) == null))
 		{
-			if (_firstAttacked && (caster.getFirstEffect(SKILL_EVENT_TIMER) == null))
+			if (caster.getFirstEffect(SKILL_SILENCE) == null)
 			{
-				if (caster.getFirstEffect(SKILL_SILENCE) == null)
-				{
-					castDebuff(npc, caster, SKILL_SILENCE, isSummon, false, true);
-				}
+				npc.setTarget(caster);
+				npc.doCast(SILENCE.getSkill());
 			}
 		}
 		
@@ -148,11 +131,22 @@ public class PrisonGuards extends AbstractNpcAI
 	}
 	
 	@Override
+	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
+	{
+		if ((skill == SILENCE.getSkill()) || (skill == STONE.getSkill()))
+		{
+			((L2Attackable) npc).clearAggroList();
+			npc.setTarget(npc);
+		}
+		return super.onSpellFinished(npc, player, skill);
+	}
+	
+	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
 		L2Character target = isSummon ? player.getSummon() : player;
 		
-		if (npc.getId() == GUARD2)
+		if (npc.getId() == GUARD)
 		{
 			if (target.getFirstEffect(SKILL_EVENT_TIMER) != null)
 			{
@@ -186,8 +180,6 @@ public class PrisonGuards extends AbstractNpcAI
 	{
 		L2Character attacker = isSummon ? player.getSummon() : player;
 		
-		_firstAttacked = true;
-		
 		if (attacker.getFirstEffect(SKILL_EVENT_TIMER) == null)
 		{
 			if (attacker.getFirstEffect(SKILL_PERTIFICATION) == null)
@@ -203,7 +195,7 @@ public class PrisonGuards extends AbstractNpcAI
 			return null;
 		}
 		
-		if (npc.getId() == GUARD2)
+		if (npc.getId() == GUARD)
 		{
 			cancelQuestTimer("attackEnd", null, null);
 			startQuestTimer("attackEnd", 180000, npc, null);
@@ -214,13 +206,16 @@ public class PrisonGuards extends AbstractNpcAI
 			((L2Attackable) npc).addDamageHate(attacker, 0, 999);
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
 		}
-		else if ((npc.getId() == GUARD1) && (getRandom(100) < 5))
+		else if ((npc.getId() == GUARD_HEAD) && (getRandom(100) < 10) && (npc.calculateDistance(player, true, false) < 100))
 		{
-			final QuestState qs = player.getQuestState(IOPRace.class.getSimpleName());
-			if ((qs != null) && (qs.getInt(GUARDVARS[_guards.get(npc)]) != 1))
+			if ((getRandom(100) < 10) && (npc.calculateDistance(player, true, false) < 100))
 			{
-				qs.set(GUARDVARS[_guards.get(npc)], "1");
-				qs.giveItems(STAMP, 1);
+				if ((getQuestItemsCount(player, STAMP) <= 3) && npc.isScriptValue(0))
+				{
+					giveItems(player, STAMP, 1);
+					npc.setScriptValue(1);
+					startQuestTimer("CLEAR_STATUS", 600000, npc, null);
+				}
 			}
 		}
 		
@@ -242,7 +237,7 @@ public class PrisonGuards extends AbstractNpcAI
 	{
 		if (fromAttack)
 		{
-			NpcStringId npcString = (npc.getId() == GUARD1 ? NpcStringId.ITS_NOT_EASY_TO_OBTAIN : NpcStringId.YOURE_OUT_OF_YOUR_MIND_COMING_HERE);
+			NpcStringId npcString = (npc.getId() == GUARD_HEAD ? NpcStringId.ITS_NOT_EASY_TO_OBTAIN : NpcStringId.YOURE_OUT_OF_YOUR_MIND_COMING_HERE);
 			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), npcString));
 		}
 		
