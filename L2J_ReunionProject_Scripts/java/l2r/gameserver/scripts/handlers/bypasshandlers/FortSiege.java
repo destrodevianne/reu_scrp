@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.handlers.bypasshandlers;
 
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.instancemanager.TerritoryWarManager;
-import l2r.gameserver.model.L2Clan;
+import l2r.gameserver.model.ClanPrivilege;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2FortSiegeNpcInstance;
@@ -44,7 +44,7 @@ public class FortSiege implements IBypassHandler
 			return false;
 		}
 		
-		if ((activeChar.getClanId() > 0) && activeChar.hasClanPrivilege(L2Clan.CP_CS_MANAGE_SIEGE))
+		if ((activeChar.getClanId() > 0) && activeChar.hasClanPrivilege(ClanPrivilege.CS_MANAGE_SIEGE))
 		{
 			if (command.toLowerCase().startsWith(COMMANDS[0])) // register
 			{

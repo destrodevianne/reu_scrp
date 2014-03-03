@@ -1292,7 +1292,7 @@ public class IceQueenCastle2 extends Quest
 		{
 			if (player.getParty().getCommandChannel().getMemberCount() < Config.MIN_PLAYERS_TO_HARD)
 			{
-				player.getParty().getCommandChannel().broadcastPacket(SystemMessage.getSystemMessage(2793).addNumber(10));
+				player.getParty().getCommandChannel().broadcastPacket(SystemMessage.getSystemMessage(2793).addInt(10));
 				return false;
 			}
 			
@@ -1307,7 +1307,7 @@ public class IceQueenCastle2 extends Quest
 		{
 			if (player.getParty().getCommandChannel().getMemberCount() < Config.MIN_PLAYERS_TO_EASY)
 			{
-				player.getParty().getCommandChannel().broadcastPacket(SystemMessage.getSystemMessage(2793).addNumber(10));
+				player.getParty().getCommandChannel().broadcastPacket(SystemMessage.getSystemMessage(2793).addInt(10));
 				return false;
 			}
 			

@@ -27,6 +27,7 @@ import l2r.L2DatabaseFactory;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.ClanTable;
+import l2r.gameserver.model.ClanPrivilege;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.L2ClanMember;
 import l2r.gameserver.model.actor.L2Npc;
@@ -163,7 +164,7 @@ public class ClanSearcher extends Quest
 			}
 			L2PcInstance player = member.getPlayerInstance();
 			
-			if ((player.getClanPrivileges() & L2Clan.CP_CL_JOIN_CLAN) == L2Clan.CP_CL_JOIN_CLAN)
+			if (player.hasClanPrivilege(ClanPrivilege.CL_JOIN_CLAN))
 			{
 				player.sendPacket(new CreatureSay(player.getObjectId(), 2, player.getName(), text));
 				success = true;

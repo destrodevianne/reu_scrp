@@ -18,49 +18,55 @@
  */
 package l2r.gameserver.scripts.ai.npc.VillageMasters;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.actor.instance.L2VillageMasterFighterInstance;
-import l2r.gameserver.model.actor.instance.L2VillageMasterPriestInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
-/**
- * This script manages the dialogs of the headmasters of all newbie villages.<br>
- * None of them provide actual class transfers, they only talk about it.
- * @author jurchiks, xban1x
- */
 public final class FirstClassTransferTalk extends AbstractNpcAI
 {
-	private static final Map<Integer, PcRace> MASTERS = new HashMap<>();
-	static
-	{
-		MASTERS.put(30026, PcRace.Human); // Blitz, TI Fighter Guild Head Master
-		MASTERS.put(30031, PcRace.Human); // Biotin, TI Einhasad Temple High Priest
-		MASTERS.put(30154, PcRace.Elf); // Asterios, Elven Village Tetrarch
-		MASTERS.put(30358, PcRace.DarkElf); // Thifiell, Dark Elf Village Tetrarch
-		MASTERS.put(30565, PcRace.Orc); // Kakai, Orc Village Flame Lord
-		MASTERS.put(30520, PcRace.Dwarf); // Reed, Dwarven Village Warehouse Chief
-		MASTERS.put(30525, PcRace.Dwarf); // Bronk, Dwarven Village Head Blacksmith
-		// Kamael Village NPCs
-		MASTERS.put(32171, PcRace.Dwarf); // Hoffa, Warehouse Chief
-		MASTERS.put(32158, PcRace.Dwarf); // Fisler, Dwarf Guild Warehouse Chief
-		MASTERS.put(32157, PcRace.Dwarf); // Moka, Dwarf Guild Head Blacksmith
-		MASTERS.put(32160, PcRace.DarkElf); // Devon, Dark Elf Guild Grand Magister
-		MASTERS.put(32147, PcRace.Elf); // Rivian, Elf Guild Grand Master
-		MASTERS.put(32150, PcRace.Orc); // Took, Orc Guild High Prefect
-		MASTERS.put(32153, PcRace.Human); // Prana, Human Guild High Priest
-		MASTERS.put(32154, PcRace.Human); // Aldenia, Human Guild Grand Master
-	}
+	private static final int BITZ = 30026; // TI Fighter Guild Head Master
+	private static final int BIOTIN = 30031; // TI Einhasad Temple High Priest
+	private static final int ASTERIOS = 30154; // Elf Tetrarch
+	private static final int THIFIELL = 30358; // Dark Elf Tetrarch
+	private static final int KAKAI = 30565; // Orc Flame Lord
+	private static final int REED = 30520; // Dwarf Warehouse Chief
+	private static final int BRONK = 30525; // Dwarf Head Blacksmith
+	
+	private static final int HOFFA = 32171; // Kamael Warehouse Chief
+	private static final int FISLER = 32158; // Kamael Village Dwarf Guild Warehouse Chief
+	private static final int MOKA = 32157; // Kamael Village Dwarf Guild Head Blacksmith
+	private static final int DEVON = 32160; // Kamael Village Dark Elf Guild Grand Magister
+	private static final int RIVIAN = 32147; // Kamael Village Elf Guild Grand Master
+	private static final int TOOK = 32150; // Kamael Village Orc Guild High Prefect
+	private static final int PRANA = 32153; // Kamael Village Human Guild High Priest
+	private static final int ALDENIA = 32154; // Kamael Village Human Guild Grand Master
 	
 	private FirstClassTransferTalk(String name, String descr)
 	{
 		super(name, descr);
-		addStartNpc(MASTERS.keySet());
-		addTalkId(MASTERS.keySet());
+		for (int npc : new int[]
+		{
+			BITZ,
+			BIOTIN,
+			ASTERIOS,
+			THIFIELL,
+			KAKAI,
+			REED,
+			BRONK,
+			HOFFA,
+			FISLER,
+			MOKA,
+			DEVON,
+			RIVIAN,
+			TOOK,
+			PRANA,
+			ALDENIA
+		})
+		{
+			addStartNpc(npc);
+			addTalkId(npc);
+		}
 	}
 	
 	@Override
@@ -73,32 +79,18 @@ public final class FirstClassTransferTalk extends AbstractNpcAI
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = npc.getId() + "_";
-		
-		if (MASTERS.get(npc.getId()) != player.getRace())
+		switch (npc.getId())
 		{
-			return htmltext += "no.html";
-		}
-		
-		switch (MASTERS.get(npc.getId()))
-		{
-			case Human:
+			case BITZ:
+			case ALDENIA:
 			{
-				if (player.getClassId().level() == 0)
+				if ((player.getRace() != PcRace.Human) || player.getClassId().isMage())
 				{
-					if (player.isMageClass())
-					{
-						if (npc instanceof L2VillageMasterPriestInstance)
-						{
-							htmltext += "mystic.html";
-						}
-					}
-					else
-					{
-						if (npc instanceof L2VillageMasterFighterInstance)
-						{
-							htmltext += "fighter.html";
-						}
-					}
+					htmltext += "no.html";
+				}
+				else if (player.getClassId().level() == 0)
+				{
+					htmltext += "fighter.html";
 				}
 				else if (player.getClassId().level() == 1)
 				{
@@ -110,13 +102,37 @@ public final class FirstClassTransferTalk extends AbstractNpcAI
 				}
 				break;
 			}
-			case Elf:
-			case DarkElf:
-			case Orc:
+			case BIOTIN:
+			case PRANA:
 			{
-				if (player.getClassId().level() == 0)
+				if ((player.getRace() != PcRace.Human) || !player.getClassId().isMage())
 				{
-					if (player.isMageClass())
+					htmltext += "no.html";
+				}
+				else if (player.getClassId().level() == 0)
+				{
+					htmltext += "mystic.html";
+				}
+				else if (player.getClassId().level() == 1)
+				{
+					htmltext += "transfer_1.html";
+				}
+				else
+				{
+					htmltext += "transfer_2.html";
+				}
+				break;
+			}
+			case ASTERIOS:
+			case RIVIAN:
+			{
+				if (player.getRace() != PcRace.Elf)
+				{
+					htmltext += "no.html";
+				}
+				else if (player.getClassId().level() == 0)
+				{
+					if (player.getClassId().isMage())
 					{
 						htmltext += "mystic.html";
 					}
@@ -135,9 +151,71 @@ public final class FirstClassTransferTalk extends AbstractNpcAI
 				}
 				break;
 			}
-			case Dwarf:
+			case THIFIELL:
+			case DEVON:
 			{
-				if (player.getClassId().level() == 0)
+				if (player.getRace() != PcRace.DarkElf)
+				{
+					htmltext += "no.html";
+				}
+				else if (player.getClassId().level() == 0)
+				{
+					if (player.getClassId().isMage())
+					{
+						htmltext += "mystic.html";
+					}
+					else
+					{
+						htmltext += "fighter.html";
+					}
+				}
+				else if (player.getClassId().level() == 1)
+				{
+					htmltext += "transfer_1.html";
+				}
+				else
+				{
+					htmltext += "transfer_2.html";
+				}
+				break;
+			}
+			case KAKAI:
+			case TOOK:
+			{
+				if (player.getRace() != PcRace.Orc)
+				{
+					htmltext += "no.html";
+				}
+				else if (player.getClassId().level() == 0)
+				{
+					if (player.getClassId().isMage())
+					{
+						htmltext += "mystic.html";
+					}
+					else
+					{
+						htmltext += "fighter.html";
+					}
+				}
+				else if (player.getClassId().level() == 1)
+				{
+					htmltext += "transfer_1.html";
+				}
+				else
+				{
+					htmltext += "transfer_2.html";
+				}
+				break;
+			}
+			case REED:
+			case HOFFA:
+			case FISLER: // there are 2 warehouse chiefs in kamael village
+			{
+				if (player.getRace() != PcRace.Dwarf)
+				{
+					htmltext += "no.html";
+				}
+				else if (player.getClassId().level() == 0)
 				{
 					htmltext += "fighter.html";
 				}
@@ -151,9 +229,22 @@ public final class FirstClassTransferTalk extends AbstractNpcAI
 				}
 				break;
 			}
-			default:
+			case BRONK:
+			case MOKA:
 			{
-				htmltext += "no.html";
+				// no race restriction for blacksmiths (as weird as it may sound...)
+				if (player.getClassId().level() == 0)
+				{
+					htmltext += "fighter.html";
+				}
+				else if (player.getClassId().level() == 1)
+				{
+					htmltext += "transfer_1.html";
+				}
+				else
+				{
+					htmltext += "transfer_2.html";
+				}
 				break;
 			}
 		}
