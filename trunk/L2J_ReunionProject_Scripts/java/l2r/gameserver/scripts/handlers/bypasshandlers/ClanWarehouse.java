@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.handlers.bypasshandlers;
 
 import l2r.Config;
 import l2r.gameserver.handler.IBypassHandler;
-import l2r.gameserver.model.L2Clan;
+import l2r.gameserver.model.ClanPrivilege;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2ClanHallManagerInstance;
@@ -132,7 +132,7 @@ public class ClanWarehouse implements IBypassHandler
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		
-		if (!player.hasClanPrivilege(L2Clan.CP_CL_VIEW_WAREHOUSE))
+		if (!player.hasClanPrivilege(ClanPrivilege.CL_VIEW_WAREHOUSE))
 		{
 			player.sendPacket(SystemMessageId.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE);
 			return;

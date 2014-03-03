@@ -23,11 +23,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import l2r.gameserver.handler.IAdminCommandHandler;
-import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.instancemanager.TerritoryWarManager;
 import l2r.gameserver.model.TerritoryWard;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
@@ -76,12 +74,12 @@ public class AdminTerritoryWar implements IAdminCommandHandler
 				else if ("day".equals(val))
 				{
 					int day = Integer.parseInt(st.nextToken());
-					if ((cal.getActualMinimum(Calendar.DAY_OF_YEAR) > day) || (cal.getActualMaximum(Calendar.DAY_OF_YEAR) < day))
+					if ((cal.getActualMinimum(Calendar.DAY_OF_MONTH) > day) || (cal.getActualMaximum(Calendar.DAY_OF_MONTH) < day))
 					{
-						activeChar.sendMessage("Unable to change Siege Date - Incorrect day value only " + cal.getActualMinimum(Calendar.DAY_OF_YEAR) + "-" + cal.getActualMaximum(Calendar.DAY_OF_YEAR) + " is accepted!");
+						activeChar.sendMessage("Unable to change Siege Date - Incorrect day value only " + cal.getActualMinimum(Calendar.DAY_OF_MONTH) + "-" + cal.getActualMaximum(Calendar.DAY_OF_MONTH) + " is accepted!");
 						return false;
 					}
-					cal.set(Calendar.DAY_OF_YEAR, day);
+					cal.set(Calendar.DAY_OF_MONTH, day);
 				}
 				else if ("hour".equals(val))
 				{
@@ -117,27 +115,11 @@ public class AdminTerritoryWar implements IAdminCommandHandler
 		}
 		else if (command.equalsIgnoreCase("admin_territory_war_start"))
 		{
-			Quest twQuest = QuestManager.getInstance().getQuest(TerritoryWarManager.qn);
-			if (twQuest != null)
-			{
-				twQuest.onAdvEvent("setTWDate " + Calendar.getInstance().getTimeInMillis(), null, null);
-			}
-			else
-			{
-				activeChar.sendMessage("Missing Territory War Quest!");
-			}
+			TerritoryWarManager.getInstance().setTWStartTimeInMillis(System.currentTimeMillis());
 		}
 		else if (command.equalsIgnoreCase("admin_territory_war_end"))
 		{
-			Quest twQuest = QuestManager.getInstance().getQuest(TerritoryWarManager.qn);
-			if (twQuest != null)
-			{
-				twQuest.onAdvEvent("setTWDate " + (Calendar.getInstance().getTimeInMillis() - TerritoryWarManager.WARLENGTH), null, null);
-			}
-			else
-			{
-				activeChar.sendMessage("Missing Territory War Quest!");
-			}
+			TerritoryWarManager.getInstance().setTWStartTimeInMillis(System.currentTimeMillis() - TerritoryWarManager.WARLENGTH);
 		}
 		else if (command.equalsIgnoreCase("admin_territory_wards_list"))
 		{

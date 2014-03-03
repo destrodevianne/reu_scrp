@@ -1050,7 +1050,7 @@ public class PcBangPoint extends Quest
 				final int cost = player.getPcBangPoints() - (POINTSSKILL.get(event)[2]);
 				player.setPcBangPoints(cost);
 				SystemMessage smsgpc = SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT);
-				smsgpc.addNumber(POINTSSKILL.get(event)[2]);
+				smsgpc.addInt(POINTSSKILL.get(event)[2]);
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), POINTSSKILL.get(event)[2], false, false, 1));
 				npc.setTarget(player);
@@ -1073,7 +1073,7 @@ public class PcBangPoint extends Quest
 				final int cost = player.getPcBangPoints() - (PETSKILL.get(event)[2]);
 				player.setPcBangPoints(cost);
 				SystemMessage smsgpc = SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT);
-				smsgpc.addNumber(PETSKILL.get(event)[2]);
+				smsgpc.addInt(PETSKILL.get(event)[2]);
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), PETSKILL.get(event)[2], false, false, 1));
 				npc.setTarget(player.getSummon());
@@ -1092,7 +1092,7 @@ public class PcBangPoint extends Quest
 				final int cost = player.getPcBangPoints() - (TELEPORTERS.get(event)[3]);
 				player.setPcBangPoints(cost);
 				SystemMessage smsgpc = SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT);
-				smsgpc.addNumber(TELEPORTERS.get(event)[3]);
+				smsgpc.addInt(TELEPORTERS.get(event)[3]);
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), TELEPORTERS.get(event)[3], false, false, 1));
 				player.teleToLocation(TELEPORTERS.get(event)[0], TELEPORTERS.get(event)[1], TELEPORTERS.get(event)[2]);
@@ -1111,7 +1111,7 @@ public class PcBangPoint extends Quest
 				final int cost = player.getPcBangPoints() - (2500);
 				player.setPcBangPoints(cost);
 				SystemMessage smsgpc = SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT);
-				smsgpc.addNumber(2500);
+				smsgpc.addInt(2500);
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 2500, false, false, 1));
 				player.mount(12621, 0, true);
@@ -1131,7 +1131,7 @@ public class PcBangPoint extends Quest
 				final int cost = player.getPcBangPoints() - (5600);
 				player.setPcBangPoints(cost);
 				SystemMessage smsgpc = SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT);
-				smsgpc.addNumber(5600);
+				smsgpc.addInt(5600);
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 5600, false, false, 1));
 				npc.setTarget(player);
@@ -1166,7 +1166,7 @@ public class PcBangPoint extends Quest
 				final int cost = player.getPcBangPoints() - (4000);
 				player.setPcBangPoints(cost);
 				SystemMessage smsgpc = SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT);
-				smsgpc.addNumber(4000);
+				smsgpc.addInt(4000);
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 4000, false, false, 1));
 				npc.setTarget(player.getSummon());
@@ -1201,7 +1201,7 @@ public class PcBangPoint extends Quest
 				final int cost = player.getPcBangPoints() - (3000);
 				player.setPcBangPoints(cost);
 				SystemMessage smsgpc = SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT);
-				smsgpc.addNumber(3000);
+				smsgpc.addInt(3000);
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 3000, false, false, 1));
 				npc.setTarget(player);
@@ -1230,7 +1230,7 @@ public class PcBangPoint extends Quest
 				final int cost = player.getPcBangPoints() - (2100);
 				player.setPcBangPoints(cost);
 				SystemMessage smsgpc = SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT);
-				smsgpc.addNumber(2100);
+				smsgpc.addInt(2100);
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 2100, false, false, 1));
 				npc.setTarget(player.getSummon());

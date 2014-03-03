@@ -60,7 +60,7 @@ public class GiveReco implements ISkillHandler
 					target.setRecomHave(reco + power);
 					
 					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_OBTAINED_S1_RECOMMENDATIONS);
-					sm.addNumber(power);
+					sm.addInt(power);
 					target.sendPacket(sm);
 					target.sendPacket(new UserInfo(target));
 					target.sendPacket(new ExVoteSystemInfo(target));

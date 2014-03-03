@@ -439,7 +439,7 @@ public class Zaken extends Quest
 		if (members.size() < minMembers)
 		{
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_MUST_HAVE_MINIMUM_OF_S1_PEOPLE_TO_ENTER);
-			sm.addNumber(minMembers);
+			sm.addInt(minMembers);
 			if (party.isInCommandChannel())
 			{
 				party.getCommandChannel().broadcastPacket(sm);
@@ -583,6 +583,7 @@ public class Zaken extends Quest
 		{
 			_log.info("Zaken Party Member " + count + ", Member name is: " + member.getName());
 			count++;
+			((ZWorld) world)._playersInInstance.add(player);
 			teleportPlayer(member, loc, world.getInstanceId(), false);
 			world.addAllowed(member.getObjectId());
 			member.sendPacket(new PlaySound("BS01_A"));
@@ -750,7 +751,6 @@ public class Zaken extends Quest
 	
 	protected void npcUpdate(L2Npc npc)
 	{
-		
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 		if (tmpworld instanceof ZWorld)
 		{
@@ -1074,6 +1074,7 @@ public class Zaken extends Quest
 						player.sendPacket(new PlaySound("BS02_D"));
 					}
 				}
+				world._playersInInstance.clear();
 			}
 		}
 		return super.onKill(npc, killer, isPet);
