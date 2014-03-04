@@ -18,6 +18,7 @@ import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.clientpackets.RequestAcquireSkill;
 import l2r.gameserver.network.serverpackets.AcquireSkillList;
 import l2r.gameserver.network.serverpackets.SystemMessage;
+import l2r.gameserver.scripts.custom.SubClassSkills;
 import l2r.gameserver.util.Util;
 
 /**
@@ -165,10 +166,10 @@ public class AvantGarde extends AbstractNpcAI
 				}
 				else
 				{
-					QuestState st = player.getQuestState("SubClassSkills");
+					QuestState st = player.getQuestState(SubClassSkills.class.getSimpleName());
 					if (st == null)
 					{
-						st = QuestManager.getInstance().getQuest("SubClassSkills").newQuestState(player);
+						st = QuestManager.getInstance().getQuest(SubClassSkills.class.getSimpleName()).newQuestState(player);
 					}
 					
 					int activeCertifications = 0;

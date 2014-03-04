@@ -1002,24 +1002,15 @@ public class SagasSuperClass extends Quest
 	@Override
 	public boolean unload()
 	{
-		// if sub classes aren't loaded, just unload superclass
-		if (_scripts.size() == 0)
+		for (Quest script : _scripts)
 		{
-			return super.unload();
-		}
-		
-		// unload all subclasses
-		for (int index = 0; index < _scripts.size(); index++)
-		{
-			if (_scripts.get(index) == null)
+			if (script == null)
 			{
 				continue;
 			}
-			QuestManager.getInstance().removeQuest(_scripts.get(index));
+			QuestManager.getInstance().removeScript(script);
 		}
 		_scripts.clear();
-		
-		// now unload superclass
 		return super.unload();
 	}
 	
