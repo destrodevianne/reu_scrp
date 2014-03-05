@@ -41,7 +41,6 @@ import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.CameraMode;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.network.serverpackets.MagicSkillUse;
-import l2r.gameserver.network.serverpackets.SpecialCamera;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 /**
@@ -1849,11 +1848,13 @@ public class VanHalter extends Quest
 	 */
 	public void specialCamera(L2PcInstance player, L2Npc l2NpcInstance, int dist, int yaw, int pitch, int time, int duration)
 	{
-		player.sendPacket(new SpecialCamera(l2NpcInstance.getObjectId(), dist, yaw, pitch, time, duration));
+		// FIXME
+		// player.sendPacket(new SpecialCamera(l2NpcInstance.getObjectId(), dist, yaw, pitch, time, duration));
 	}
 	
 	public void specialCamera(L2PcInstance player, L2GrandBossInstance l2NpcInstance, int dist, int yaw, int pitch, int time, int duration)
 	{
-		player.sendPacket(new SpecialCamera(l2NpcInstance.getObjectId(), dist, yaw, pitch, time, duration));
+		// FIXME
+		// player.sendPacket(new SpecialCamera(l2NpcInstance.getObjectId(), dist, yaw, pitch, time, duration));
 	}
 }
