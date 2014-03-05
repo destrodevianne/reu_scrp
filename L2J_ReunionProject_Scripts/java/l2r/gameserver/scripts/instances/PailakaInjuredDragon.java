@@ -24,7 +24,6 @@ import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
 import l2r.gameserver.model.zone.L2ZoneType;
 import l2r.gameserver.network.SystemMessageId;
-import l2r.gameserver.network.serverpackets.SpecialCamera;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.util.Util;
 import l2r.util.Rnd;
@@ -552,7 +551,8 @@ public class PailakaInjuredDragon extends Quest
 				player.getSummon().stopMove(null);
 			}
 			
-			player.sendPacket(new SpecialCamera(npc.getObjectId(), 200, 0, 0, 1000, 11000, 1, 0, 1, 0));
+			// FIXME
+			// player.sendPacket(new SpecialCamera(npc.getObjectId(), 200, 0, 0, 1000, 11000, 1, 0, 1, 0));
 			startQuestTimer("latana_animation2", 1000, npc, player);
 			return null;
 		}

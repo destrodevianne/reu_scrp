@@ -54,7 +54,7 @@ import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
  * Antharas' AI.
  * @author L2J_JP SANDMAN
  */
-public class Antharas extends AbstractNpcAI
+public final class Antharas extends AbstractNpcAI
 {
 	// config
 	private static final int FWA_ACTIVITYTIMEOFANTHARAS = 120;
@@ -116,9 +116,9 @@ public class Antharas extends AbstractNpcAI
 	
 	protected static L2BossZone _Zone;
 	
-	private Antharas(String name, String descr)
+	private Antharas()
 	{
-		super(name, descr);
+		super(Antharas.class.getSimpleName(), "ai/individual");
 		registerMobs(ANTHARAS_OLD_ID, ANTHARAS_WEAK_ID, ANTHARAS_NORMAL_ID, ANTHARAS_STRONG_ID, 29069, 29070, 29071, 29072, 29073, 29074, 29075, 29076);
 		init();
 	}
@@ -130,12 +130,9 @@ public class Antharas extends AbstractNpcAI
 		try
 		{
 			_Zone = GrandBossManager.getInstance().getZone(179700, 113800, -7709);
-			L2NpcTemplate template1;
-			L2Spawn tempSpawn;
-			
 			// Old Antharas
-			template1 = NpcTable.getInstance().getTemplate(ANTHARAS_OLD_ID);
-			tempSpawn = new L2Spawn(template1);
+			L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(ANTHARAS_OLD_ID);
+			L2Spawn tempSpawn = new L2Spawn(template1);
 			tempSpawn.setX(181323);
 			tempSpawn.setY(114850);
 			tempSpawn.setZ(-7623);
@@ -447,7 +444,7 @@ public class Antharas extends AbstractNpcAI
 					break;
 				case 2:
 					// Set camera.
-					broadcastPacket(new SpecialCamera(_antharas.getObjectId(), 700, 13, -19, 0, 20000, 0, 0, 1, 0));
+					broadcastPacket(new SpecialCamera(_antharas, 700, 13, -19, 0, 10000, 20000, 0, 0, 0, 0, 0));
 					
 					// Set next task.
 					if (_socialTask != null)
@@ -460,7 +457,7 @@ public class Antharas extends AbstractNpcAI
 				
 				case 3:
 					// Do social.
-					broadcastPacket(new SpecialCamera(_antharas.getObjectId(), 700, 13, 0, 6000, 20000, 0, 0, 1, 0));
+					broadcastPacket(new SpecialCamera(_antharas, 700, 13, 0, 6000, 10000, 20000, 0, 0, 0, 0, 0));
 					// Set next task.
 					if (_socialTask != null)
 					{
@@ -470,7 +467,7 @@ public class Antharas extends AbstractNpcAI
 					_socialTask = ThreadPoolManager.getInstance().scheduleGeneral(new AntharasSpawn(4), 10000);
 					break;
 				case 4:
-					broadcastPacket(new SpecialCamera(_antharas.getObjectId(), 3700, 0, -3, 0, 10000, 0, 0, 1, 0));
+					broadcastPacket(new SpecialCamera(_antharas, 3700, 0, -3, 0, 10000, 10000, 0, 0, 0, 0, 0));
 					// Set next task.
 					if (_socialTask != null)
 					{
@@ -482,7 +479,7 @@ public class Antharas extends AbstractNpcAI
 				
 				case 5:
 					// Do social.
-					broadcastPacket(new SpecialCamera(_antharas.getObjectId(), 1100, 0, -3, 22000, 30000, 0, 0, 1, 0));
+					broadcastPacket(new SpecialCamera(_antharas, 1100, 0, -3, 22000, 10000, 30000, 0, 0, 0, 0, 0));
 					// Set next task.
 					if (_socialTask != null)
 					{
@@ -494,7 +491,7 @@ public class Antharas extends AbstractNpcAI
 				
 				case 6:
 					// Set camera.
-					broadcastPacket(new SpecialCamera(_antharas.getObjectId(), 1100, 0, -3, 300, 7000, 0, 0, 1, 0));
+					broadcastPacket(new SpecialCamera(_antharas, 1100, 0, -3, 300, 10000, 7000, 0, 0, 0, 0, 0));
 					// Set next task.
 					if (_socialTask != null)
 					{
@@ -858,18 +855,18 @@ public class Antharas extends AbstractNpcAI
 	private static class MoveAtRandom implements Runnable
 	{
 		private final L2Npc _npc;
-		private final Location _pos;
+		private final Location _loc;
 		
-		public MoveAtRandom(L2Npc npc, Location pos)
+		public MoveAtRandom(L2Npc npc, Location loc)
 		{
 			_npc = npc;
-			_pos = pos;
+			_loc = loc;
 		}
 		
 		@Override
 		public void run()
 		{
-			_npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, _pos);
+			_npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, _loc);
 		}
 	}
 	
@@ -916,7 +913,7 @@ public class Antharas extends AbstractNpcAI
 	{
 		if ((npc.getId() == 29019) || (npc.getId() == 29066) || (npc.getId() == 29067) || (npc.getId() == 29068))
 		{
-			broadcastPacket(new SpecialCamera(_antharas.getObjectId(), 1200, 20, -10, 0, 13000, 0, 0, 1, 0));
+			broadcastPacket(new SpecialCamera(_antharas, 1200, 20, -10, 0, 10000, 13000, 0, 0, 0, 0, 0));
 			npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 			_cubeSpawnTask = ThreadPoolManager.getInstance().scheduleGeneral(new CubeSpawn(0), 10000);
 			GrandBossManager.getInstance().setBossStatus(npc.getId(), DEAD);
@@ -952,6 +949,6 @@ public class Antharas extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Antharas(Antharas.class.getSimpleName(), "ai");
+		new Antharas();
 	}
 }

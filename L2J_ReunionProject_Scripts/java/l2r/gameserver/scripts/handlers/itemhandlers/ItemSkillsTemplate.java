@@ -24,6 +24,7 @@ import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
+import l2r.gameserver.model.items.type.L2ActionType;
 import l2r.gameserver.model.items.type.L2EtcItemType;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.SystemMessageId;
@@ -97,9 +98,10 @@ public class ItemSkillsTemplate implements IItemHandler
 					return false;
 				}
 				
-				if ((itemSkill.getItemConsumeId() == 0) && (itemSkill.getItemConsume() > 0) && (item.isPotion() || item.isElixir() || itemSkill.isSimultaneousCast()))
+				final boolean isCapsuleItem = item.getItem().getDefaultAction() == L2ActionType.capsule;
+				if (isCapsuleItem || ((itemSkill.getItemConsumeId() == 0) && (itemSkill.getItemConsume() > 0) && (item.isPotion() || item.isElixir() || itemSkill.isSimultaneousCast())))
 				{
-					if (!playable.destroyItem("Consume", item.getObjectId(), itemSkill.getItemConsume(), playable, false))
+					if (!playable.destroyItem("Consume", item.getObjectId(), isCapsuleItem && (itemSkill.getItemConsume() == 0) ? 1 : itemSkill.getItemConsume(), playable, false))
 					{
 						playable.sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 						return false;
