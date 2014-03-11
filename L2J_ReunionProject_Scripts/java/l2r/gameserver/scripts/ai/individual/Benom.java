@@ -1,6 +1,6 @@
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -32,7 +32,7 @@ public class Benom extends AbstractNpcAI
 		}
 		if ((npc.getId() == BENOM) && !npc.isCastingNow() && attacker.getClassId().isMage() && (Rnd.get(1000) < 15))
 		{
-			SkillTable.getInstance().getInfo(4996, 1);
+			SkillData.getInstance().getInfo(4996, 1);
 			try
 			{
 				npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, attacker, Integer.valueOf(50000));

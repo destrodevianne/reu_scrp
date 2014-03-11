@@ -25,7 +25,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.GeoData;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Object;
@@ -2103,7 +2103,7 @@ public class CrystalCaverns extends Quest
 				{
 					teleportPlayer(player, new Location(144653, 152606, -12126), world.getInstanceId());
 					player.stopSkillEffects(5239);
-					SkillTable.getInstance().getInfo(5239, 1).getEffects(player, player);
+					SkillData.getInstance().getInfo(5239, 1).getEffects(player, player);
 					startQuestTimer("Timer2", 300000, npc, player);
 				}
 			}
@@ -2252,8 +2252,8 @@ public class CrystalCaverns extends Quest
 				if (world._alarm == null)
 				{
 					int[] spawnLoc = ALARMSPAWN[getRandom(ALARMSPAWN.length)];
-					npc.addSkill(SkillTable.getInstance().getInfo(5244, 1));
-					npc.addSkill(SkillTable.getInstance().getInfo(5245, 1));
+					npc.addSkill(SkillData.getInstance().getInfo(5244, 1));
+					npc.addSkill(SkillData.getInstance().getInfo(5245, 1));
 					world._alarm = addSpawn(ALARMID, spawnLoc[0], spawnLoc[1], spawnLoc[2], 10800, false, 0, false, world.getInstanceId());
 					world._alarm.disableCoreAI(true);
 					world._alarm.setIsImmobilized(true);
@@ -2276,24 +2276,24 @@ public class CrystalCaverns extends Quest
 					{
 						if ((nowHp < (maxHp * 0.15)) && (world._raidStatus == 2))
 						{
-							npc.doCast(SkillTable.getInstance().getInfo(5225, 1));
+							npc.doCast(SkillData.getInstance().getInfo(5225, 1));
 							npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 1, npc.getName(), NpcStringId.DEMON_KING_BELETH_GIVE_ME_THE_POWER_AAAHH));
 						}
 						else if ((rand < 10) || (nowHp < (maxHp * 0.15)))
 						{
-							npc.doCast(SkillTable.getInstance().getInfo(5225, 1));
+							npc.doCast(SkillData.getInstance().getInfo(5225, 1));
 							npc.broadcastPacket(new CreatureSay(npc.getObjectId(), 1, npc.getName(), NpcStringId.DEMON_KING_BELETH_GIVE_ME_THE_POWER_AAAHH));
 							startQuestTimer("baylor_remove_invul", 30000, world._baylor, null);
 						}
 					}
 					else if ((nowHp < (maxHp * 0.3)) && (rand > 50) && (npc.getFirstEffect(5225) == null) && (npc.getFirstEffect(5224) == null))
 					{
-						npc.doCast(SkillTable.getInstance().getInfo(5224, 1));
+						npc.doCast(SkillData.getInstance().getInfo(5224, 1));
 					}
 					else if (rand < 33)
 					{
 						npc.setTarget(world._raiders.get(getRandom(world._raiders.size())));
-						npc.doCast(SkillTable.getInstance().getInfo(5229, 1));
+						npc.doCast(SkillData.getInstance().getInfo(5229, 1));
 					}
 				}
 			}
@@ -2540,14 +2540,14 @@ public class CrystalCaverns extends Quest
 						{
 							if (partyMember.getInstanceId() == world.getInstanceId())
 							{
-								SkillTable.getInstance().getInfo(5239, 1).getEffects(partyMember, partyMember);
+								SkillData.getInstance().getInfo(5239, 1).getEffects(partyMember, partyMember);
 								startQuestTimer("Timer2", 300000, npc, partyMember);
 							}
 						}
 					}
 					else
 					{
-						SkillTable.getInstance().getInfo(5239, 1).getEffects(player, player);
+						SkillData.getInstance().getInfo(5239, 1).getEffects(player, player);
 						startQuestTimer("Timer2", 300000, npc, player);
 					}
 					startQuestTimer("Timer21", 300000, npc, null);
@@ -2766,7 +2766,7 @@ public class CrystalCaverns extends Quest
 								if (partyMember.getInstanceId() == world.getInstanceId())
 								{
 									partyMember.stopSkillEffects(5239);
-									SkillTable.getInstance().getInfo(5239, 2).getEffects(partyMember, partyMember);
+									SkillData.getInstance().getInfo(5239, 2).getEffects(partyMember, partyMember);
 									startQuestTimer("Timer3", 600000, npc, partyMember);
 								}
 							}
@@ -2774,7 +2774,7 @@ public class CrystalCaverns extends Quest
 						else
 						{
 							player.stopSkillEffects(5239);
-							SkillTable.getInstance().getInfo(5239, 2).getEffects(player, player);
+							SkillData.getInstance().getInfo(5239, 2).getEffects(player, player);
 							startQuestTimer("Timer3", 600000, npc, player);
 						}
 						startQuestTimer("Timer31", 600000, npc, null);
@@ -2794,7 +2794,7 @@ public class CrystalCaverns extends Quest
 								if (partyMember.getInstanceId() == world.getInstanceId())
 								{
 									partyMember.stopSkillEffects(5239);
-									SkillTable.getInstance().getInfo(5239, 4).getEffects(partyMember, partyMember);
+									SkillData.getInstance().getInfo(5239, 4).getEffects(partyMember, partyMember);
 									startQuestTimer("Timer4", 1200000, npc, partyMember);
 								}
 							}
@@ -2802,7 +2802,7 @@ public class CrystalCaverns extends Quest
 						else
 						{
 							player.stopSkillEffects(5239);
-							SkillTable.getInstance().getInfo(5239, 4).getEffects(player, player);
+							SkillData.getInstance().getInfo(5239, 4).getEffects(player, player);
 							startQuestTimer("Timer4", 1200000, npc, player);
 						}
 						startQuestTimer("Timer41", 1200000, npc, null);
@@ -2822,7 +2822,7 @@ public class CrystalCaverns extends Quest
 								if (partyMember.getInstanceId() == world.getInstanceId())
 								{
 									partyMember.stopSkillEffects(5239);
-									SkillTable.getInstance().getInfo(5239, 3).getEffects(partyMember, partyMember);
+									SkillData.getInstance().getInfo(5239, 3).getEffects(partyMember, partyMember);
 									startQuestTimer("Timer5", 900000, npc, partyMember);
 								}
 							}
@@ -2830,7 +2830,7 @@ public class CrystalCaverns extends Quest
 						else
 						{
 							player.stopSkillEffects(5239);
-							SkillTable.getInstance().getInfo(5239, 3).getEffects(player, player);
+							SkillData.getInstance().getInfo(5239, 3).getEffects(player, player);
 							startQuestTimer("Timer5", 900000, npc, player);
 						}
 						startQuestTimer("Timer51", 900000, npc, null);

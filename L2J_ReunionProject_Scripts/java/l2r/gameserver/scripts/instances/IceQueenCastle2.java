@@ -20,7 +20,7 @@ import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
@@ -860,8 +860,8 @@ public class IceQueenCastle2 extends Quest
 						world._kegor.setIsImmobilized(true);
 					}
 				}
-				L2Skill skill1 = SkillTable.getInstance().getInfo(6288, 1);
-				L2Skill skill2 = SkillTable.getInstance().getInfo(6289, 1);
+				L2Skill skill1 = SkillData.getInstance().getInfo(6288, 1);
+				L2Skill skill2 = SkillData.getInstance().getInfo(6289, 1);
 				for (int objId : world.getAllowed())
 				{
 					L2PcInstance player = L2World.getInstance().getPlayer(objId);

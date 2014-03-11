@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -45,14 +45,14 @@ public class KelBilette extends AbstractNpcAI
 		if (event.equalsIgnoreCase("time_to_skill"))
 		{
 			npc.setTarget(player);
-			npc.doCast(SkillTable.getInstance().getInfo(4748, 6));
+			npc.doCast(SkillData.getInstance().getInfo(4748, 6));
 			_isAlreadyStarted = false;
 			startQuestTimer("time_to_skill1", 10000, npc, player);
 		}
 		else if (event.equalsIgnoreCase("time_to_skill1"))
 		{
 			npc.setTarget(player);
-			npc.doCast(SkillTable.getInstance().getInfo(5203, 6));
+			npc.doCast(SkillData.getInstance().getInfo(5203, 6));
 		}
 		else if (event.equalsIgnoreCase("time_to_spawn"))
 			addSpawn(GUARD, x + 100, y + 50, npc.getZ(), 0, false, 0, false, npc.getInstanceId());

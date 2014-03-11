@@ -1,7 +1,7 @@
 package l2r.gameserver.scripts.instances;
 
 import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
@@ -53,7 +53,7 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 		{
 			if ((npc != null) && !npc.isDead())
 			{
-				L2Skill skill = SkillTable.getInstance().getInfo(6437, Rnd.get(1, 3));
+				L2Skill skill = SkillData.getInstance().getInfo(6437, Rnd.get(1, 3));
 				for (L2PcInstance plr : npc.getKnownList().getKnownPlayersInRadius(skill.getAffectRange()))
 				{
 					if (!hasBuff(6437, plr) && !plr.isDead() && !plr.isAlikeDead())
@@ -224,7 +224,7 @@ public class FreyaInstanceMobs extends AbstractNpcAI
 			iter = 3;
 		}
 		
-		mob.doCast(SkillTable.getInstance().getInfo(freya_skills[iter][0], freya_skills[iter][1]));
+		mob.doCast(SkillData.getInstance().getInfo(freya_skills[iter][0], freya_skills[iter][1]));
 		if (freya_skills[iter][2] > 0)
 		{
 			startQuestTimer("show_string", freya_skills[iter][2], mob, null);

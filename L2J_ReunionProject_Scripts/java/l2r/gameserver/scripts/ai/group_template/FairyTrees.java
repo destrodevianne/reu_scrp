@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.actor.L2Attackable;
@@ -64,7 +64,7 @@ public class FairyTrees extends AbstractNpcAI
 				newNpc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, originalKiller);
 				if (getRandomBoolean())
 				{
-					L2Skill skill = SkillTable.getInstance().getInfo(4243, 1);
+					L2Skill skill = SkillData.getInstance().getInfo(4243, 1);
 					if ((skill != null) && (originalKiller != null))
 					{
 						skill.getEffects(newNpc, originalKiller);

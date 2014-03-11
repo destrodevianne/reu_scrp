@@ -18,6 +18,8 @@
  */
 package l2r.gameserver.scripts.ai.npc;
 
+import java.util.Collection;
+
 import l2r.gameserver.instancemanager.MapRegionManager;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.actor.L2Npc;
@@ -77,7 +79,7 @@ public class CastleTeleporter extends AbstractNpcAI
 			npc.getCastle().oustAllPlayers();
 			npc.setScriptValue(0);
 			
-			final L2PcInstance[] players = L2World.getInstance().getAllPlayersArray();
+			final Collection<L2PcInstance> players = L2World.getInstance().getPlayers();
 			for (L2PcInstance pl : players)
 			{
 				if (region == MapRegionManager.getInstance().getMapRegionLocId(pl))

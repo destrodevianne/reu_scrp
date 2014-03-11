@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Spawn;
@@ -65,7 +65,7 @@ public class Chests extends AbstractNpcAI
 	
 	private static void selfDestructChest(L2ChestInstance chest)
 	{
-		chest.doCast(SkillTable.getInstance().getInfo(_SKILL_SUICIDE_ID, chest.getLevel() / 10));
+		chest.doCast(SkillData.getInstance().getInfo(_SKILL_SUICIDE_ID, chest.getLevel() / 10));
 	}
 	
 	public static void main(String[] args)

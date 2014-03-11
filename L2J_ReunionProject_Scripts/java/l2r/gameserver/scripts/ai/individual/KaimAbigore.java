@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -43,7 +43,7 @@ public class KaimAbigore extends AbstractNpcAI
 		if (event.equalsIgnoreCase("time_to_skill"))
 		{
 			npc.setTarget(player);
-			npc.doCast(SkillTable.getInstance().getInfo(5260, 5));
+			npc.doCast(SkillData.getInstance().getInfo(5260, 5));
 			_isAlreadyStarted = false;
 		}
 		else if (event.equalsIgnoreCase("time_to_spawn"))

@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.ai.group_template;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2Object;
@@ -241,7 +241,7 @@ public class PrisonGuards extends AbstractNpcAI
 			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), npcString));
 		}
 		
-		L2Skill skill = SkillTable.getInstance().getInfo(effectId, isSpell ? 9 : 1);
+		L2Skill skill = SkillData.getInstance().getInfo(effectId, isSpell ? 9 : 1);
 		if (skill != null)
 		{
 			npc.setTarget(isSummon ? player.getSummon() : player);

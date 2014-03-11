@@ -29,7 +29,7 @@ import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GrandBossManager;
@@ -657,10 +657,10 @@ public final class Antharas extends AbstractNpcAI
 				case 29073:
 				case 29074:
 				case 29075:
-					skill = SkillTable.getInstance().getInfo(5097, 1);
+					skill = SkillData.getInstance().getInfo(5097, 1);
 					break;
 				case 29076:
-					skill = SkillTable.getInstance().getInfo(5094, 1);
+					skill = SkillData.getInstance().getInfo(5094, 1);
 					break;
 			}
 			
@@ -819,7 +819,7 @@ public final class Antharas extends AbstractNpcAI
 			GrandBossManager.getInstance().setBossStatus(_bossId, DORMANT);
 			if (FWA_DOSERVEREARTHQUAKE)
 			{
-				for (L2PcInstance p : L2World.getInstance().getAllPlayersArray())
+				for (L2PcInstance p : L2World.getInstance().getPlayers())
 				{
 					p.broadcastPacket(new Earthquake(185708, 114298, -8221, 20, 10));
 				}
@@ -896,10 +896,10 @@ public final class Antharas extends AbstractNpcAI
 				case 29073:
 				case 29074:
 				case 29075:
-					skill = SkillTable.getInstance().getInfo(5097, 1);
+					skill = SkillData.getInstance().getInfo(5097, 1);
 					break;
 				case 29076:
-					skill = SkillTable.getInstance().getInfo(5094, 1);
+					skill = SkillData.getInstance().getInfo(5094, 1);
 					break;
 			}
 			

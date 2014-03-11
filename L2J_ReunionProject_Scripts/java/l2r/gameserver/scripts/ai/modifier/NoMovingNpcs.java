@@ -67,7 +67,7 @@ public class NoMovingNpcs extends AbstractNpcAI
 		super(name, descr);
 		
 		// set mobs not random walk on start server
-		for (L2Object obj : L2World.getInstance().getAllVisibleObjectsArray())
+		for (L2Object obj : L2World.getInstance().getVisibleObjects())
 		{
 			if ((obj instanceof L2Npc) && contains(NO_MOVING_NPCS_LIST, ((L2Npc) obj).getId()))
 			{

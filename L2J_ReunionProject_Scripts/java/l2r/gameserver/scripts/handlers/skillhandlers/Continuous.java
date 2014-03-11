@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.ShotType;
@@ -68,7 +68,7 @@ public class Continuous implements ISkillHandler
 		
 		if (skill.getEffectId() != 0)
 		{
-			L2Skill sk = SkillTable.getInstance().getInfo(skill.getEffectId(), skill.getEffectLvl() == 0 ? 1 : skill.getEffectLvl());
+			L2Skill sk = SkillData.getInstance().getInfo(skill.getEffectId(), skill.getEffectLvl() == 0 ? 1 : skill.getEffectLvl());
 			
 			if (sk != null)
 			{

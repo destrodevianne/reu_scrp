@@ -34,7 +34,7 @@ import l2r.L2DatabaseFactory;
 import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.ItemTable;
 import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2DropCategory;
 import l2r.gameserver.model.L2DropData;
@@ -1156,7 +1156,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			L2Skill skillData = SkillTable.getInstance().getInfo(skillId, level);
+			L2Skill skillData = SkillData.getInstance().getInfo(skillId, level);
 			if (skillData == null)
 			{
 				activeChar.sendMessage("Could not update npc skill: not existing skill id with that level!");
@@ -1228,7 +1228,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// skill check
-			L2Skill skillData = SkillTable.getInstance().getInfo(skillId, level);
+			L2Skill skillData = SkillData.getInstance().getInfo(skillId, level);
 			if (skillData == null)
 			{
 				activeChar.sendMessage("Could not add npc skill: not existing skill id with that level!");
@@ -1325,7 +1325,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			{
 				int idval = skillDataList.getInt("skillid");
 				int levelval = skillDataList.getInt("level");
-				skillData = SkillTable.getInstance().getInfo(idval, levelval);
+				skillData = SkillData.getInstance().getInfo(idval, levelval);
 				if (skillData != null)
 				{
 					npcData.addSkill(skillData);
@@ -1344,7 +1344,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 				{
 					int idval = skillDataList2.getInt("skillid");
 					int levelval = skillDataList2.getInt("level");
-					skillData = SkillTable.getInstance().getInfo(idval, levelval);
+					skillData = SkillData.getInstance().getInfo(idval, levelval);
 					if (skillData != null)
 					{
 						npcData.addSkill(skillData);

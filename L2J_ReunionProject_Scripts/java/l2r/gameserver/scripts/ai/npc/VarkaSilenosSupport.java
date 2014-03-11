@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.ai.npc;
 import java.util.HashMap;
 import java.util.Map;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -47,7 +47,7 @@ public class VarkaSilenosSupport extends AbstractNpcAI
 		
 		public L2Skill getSkill()
 		{
-			return SkillTable.getInstance().getInfo(_skill, 1);
+			return SkillData.getInstance().getInfo(_skill, 1);
 		}
 		
 		public int getCost()

@@ -22,7 +22,7 @@ import java.util.List;
 
 import javolution.util.FastList;
 import l2r.Config;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.instancemanager.GrandBossManager;
@@ -301,14 +301,14 @@ public class QueenAnt extends AbstractNpcAI
 			{
 				if (!character.isMuted() && (getRandom(4) == 0))
 				{
-					curse = SkillTable.FrequentSkill.RAID_CURSE.getSkill();
+					curse = SkillData.FrequentSkill.RAID_CURSE.getSkill();
 				}
 			}
 			else
 			{
 				if (!character.isParalyzed() && (getRandom(4) == 0))
 				{
-					curse = SkillTable.FrequentSkill.RAID_CURSE2.getSkill();
+					curse = SkillData.FrequentSkill.RAID_CURSE2.getSkill();
 				}
 			}
 			

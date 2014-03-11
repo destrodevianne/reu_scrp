@@ -18,6 +18,8 @@
  */
 package l2r.gameserver.scripts.handlers.chathandlers;
 
+import java.util.Collection;
+
 import l2r.Config;
 import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.handler.IChatHandler;
@@ -60,7 +62,7 @@ public class ChatShout implements IChatHandler
 		CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
 		CreatureSay cs2 = new CreatureSay(activeChar.getObjectId(), type, activeChar.getNamePrefix() + activeChar.getName(), text);
 		
-		L2PcInstance[] pls = L2World.getInstance().getAllPlayersArray();
+		Collection<L2PcInstance> pls = L2World.getInstance().getPlayers();
 		
 		if (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("on") || (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("gm") && activeChar.canOverrideCond(PcCondOverride.CHAT_CONDITIONS)))
 		{

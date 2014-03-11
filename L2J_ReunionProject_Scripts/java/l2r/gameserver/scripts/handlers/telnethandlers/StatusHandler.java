@@ -23,6 +23,7 @@ import java.net.Socket;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 
 import l2r.gameserver.GameTimeController;
 import l2r.gameserver.LoginServerThread;
@@ -123,7 +124,7 @@ public class StatusHandler implements ITelnetHandler
 		int max = LoginServerThread.getInstance().getMaxPlayer();
 		
 		playerCount = L2World.getInstance().getAllPlayersCount();
-		objectCount = L2World.getInstance().getAllVisibleObjectsCount();
+		objectCount = L2World.getInstance().getVisibleObjectsCount();
 		
 		int itemCount = 0;
 		int itemVoidCount = 0;
@@ -138,7 +139,7 @@ public class StatusHandler implements ITelnetHandler
 		int summonCount = 0;
 		int AICount = 0;
 		
-		L2Object[] objs = L2World.getInstance().getAllVisibleObjectsArray();
+		Collection<L2Object> objs = L2World.getInstance().getVisibleObjects();
 		for (L2Object obj : objs)
 		{
 			if (obj == null)

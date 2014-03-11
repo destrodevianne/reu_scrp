@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 
 import l2r.Config;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.Team;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2Object;
@@ -339,7 +339,7 @@ public class AdminEffects implements IAdminCommandHandler
 				}
 				else if ((val >= 1) && (val <= 4))
 				{
-					L2Skill gmSpeedSkill = SkillTable.getInstance().getInfo(7029, val);
+					L2Skill gmSpeedSkill = SkillData.getInstance().getInfo(7029, val);
 					activeChar.doSimultaneousCast(gmSpeedSkill);
 				}
 			}

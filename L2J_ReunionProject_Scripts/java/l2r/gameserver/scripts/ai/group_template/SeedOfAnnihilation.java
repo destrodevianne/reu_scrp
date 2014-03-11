@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.instancemanager.ZoneManager;
 import l2r.gameserver.model.L2Spawn;
@@ -350,8 +350,8 @@ public class SeedOfAnnihilation extends AbstractNpcAI
 			else
 			{
 				npc.setTarget(player);
-				npc.doCast(SkillTable.getInstance().getInfo(6408, 1));
-				npc.doCast(SkillTable.getInstance().getInfo(6649, 1));
+				npc.doCast(SkillData.getInstance().getInfo(6408, 1));
+				npc.doCast(SkillData.getInstance().getInfo(6649, 1));
 				npc.showChatWindow(player, 1);
 			}
 		}

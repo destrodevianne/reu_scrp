@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 import l2r.Config;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SkillTreesData;
 import l2r.gameserver.model.L2SkillLearn;
 import l2r.gameserver.model.actor.L2Npc;
@@ -154,7 +154,7 @@ public class HealerTrainer extends AbstractNpcAI
 		
 		for (L2SkillLearn s : skills)
 		{
-			if (SkillTable.getInstance().getInfo(s.getSkillId(), s.getSkillLevel()) != null)
+			if (SkillData.getInstance().getInfo(s.getSkillId(), s.getSkillLevel()) != null)
 			{
 				count++;
 				asl.addSkill(s.getSkillId(), s.getSkillLevel(), s.getSkillLevel(), s.getLevelUpSp(), 0);

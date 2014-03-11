@@ -22,7 +22,7 @@ import java.util.List;
 
 import l2r.Config;
 import l2r.gameserver.datatables.PetDataTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -61,7 +61,7 @@ public class PetFood implements IItemHandler
 	
 	public boolean useFood(L2Playable activeChar, int skillId, int skillLevel, L2ItemInstance item)
 	{
-		final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
+		final L2Skill skill = SkillData.getInstance().getInfo(skillId, skillLevel);
 		if (skill != null)
 		{
 			if (activeChar.isPet())

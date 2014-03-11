@@ -15,7 +15,7 @@
 package l2r.gameserver.scripts.instances;
 
 import javolution.util.FastList;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Object;
@@ -302,7 +302,7 @@ public class FreyaFirstVisit extends Quest
 				{
 					if (Rnd.get(100) < 40)
 					{
-						world._freya.doCast(SkillTable.getInstance().getInfo(6278, 1));
+						world._freya.doCast(SkillData.getInstance().getInfo(6278, 1));
 					}
 				}
 			}
@@ -377,7 +377,7 @@ public class FreyaFirstVisit extends Quest
 				world._freya.abortAttack();
 				world._freya.abortCast();
 				world._freya.setTarget(player);
-				world._freya.doCast(SkillTable.getInstance().getInfo(6275, 1));
+				world._freya.doCast(SkillData.getInstance().getInfo(6275, 1));
 				startQuestTimer("movie", 7000, null, player);
 				NpcSay cs = new NpcSay(world._freya.getObjectId(), Say2.ALL, world._freya.getId(), NpcStringId.I_CAN_NO_LONGER_STAND_BY);
 				player.sendPacket(cs);

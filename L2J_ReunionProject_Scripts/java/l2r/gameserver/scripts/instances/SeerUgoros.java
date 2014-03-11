@@ -17,7 +17,7 @@ package l2r.gameserver.scripts.instances;
 import java.util.concurrent.ScheduledFuture;
 
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.MapRegionManager;
 import l2r.gameserver.instancemanager.ZoneManager;
@@ -69,7 +69,7 @@ public class SeerUgoros extends AbstractNpcAI
 	// State
 	static byte STATE = DEAD;
 	// Skill
-	private static final L2Skill _ugoros_skill = SkillTable.getInstance().getInfo(6426, 1);
+	private static final L2Skill _ugoros_skill = SkillData.getInstance().getInfo(6426, 1);
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
@@ -283,7 +283,7 @@ public class SeerUgoros extends AbstractNpcAI
 		}
 		NpcSay cs = new NpcSay(npc.getObjectId(), 1, npc.getId(), _text);
 		L2MapRegion region = MapRegionManager.getInstance().getMapRegion(npc.getX(), npc.getY());
-		for (L2PcInstance player : L2World.getInstance().getAllPlayersArray())
+		for (L2PcInstance player : L2World.getInstance().getPlayers())
 		{
 			if (region == MapRegionManager.getInstance().getMapRegion(player.getX(), player.getY()))
 			{

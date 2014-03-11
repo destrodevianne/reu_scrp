@@ -19,7 +19,7 @@
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
 import l2r.gameserver.datatables.FishingRodsData;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.ShotType;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
@@ -82,7 +82,7 @@ public class FishingSkill implements ISkillHandler
 		}
 		L2FishingRod fishingRod = FishingRodsData.getInstance().getFishingRod(weaponItem.getId());
 		double gradeBonus = fishingRod.getFishingRodLevel() * 0.1; // TODO: Check this formula (is guessed)
-		final L2Skill expertiseSkill = SkillTable.getInstance().getInfo(1315, player.getSkillLevel(1315));
+		final L2Skill expertiseSkill = SkillData.getInstance().getInfo(1315, player.getSkillLevel(1315));
 		int dmg = (int) ((fishingRod.getFishingRodDamage() + expertiseSkill.getPower() + skill.getPower()) * gradeBonus * SS);
 		// Penalty 5% less damage dealt
 		if (player.getSkillLevel(1315) <= (skill.getLevel() - 2)) // 1315 - Fish Expertise

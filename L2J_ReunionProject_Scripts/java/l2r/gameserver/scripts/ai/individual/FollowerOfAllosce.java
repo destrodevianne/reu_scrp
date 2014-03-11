@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -35,7 +35,7 @@ public class FollowerOfAllosce extends AbstractNpcAI
 		if (event.equalsIgnoreCase("time_to_skill"))
 		{
 			npc.setTarget(player);
-			npc.doCast(SkillTable.getInstance().getInfo(5624, 1));
+			npc.doCast(SkillData.getInstance().getInfo(5624, 1));
 			startQuestTimer("time_to_skill", 30000, npc, player);
 		}
 		return "";
@@ -51,7 +51,7 @@ public class FollowerOfAllosce extends AbstractNpcAI
 			npc.setIsInvul(true);
 			startQuestTimer("time_to_skill", 30000, npc, player);
 			npc.setTarget(player);
-			npc.doCast(SkillTable.getInstance().getInfo(5624, 1));
+			npc.doCast(SkillData.getInstance().getInfo(5624, 1));
 		}
 		return "";
 	}

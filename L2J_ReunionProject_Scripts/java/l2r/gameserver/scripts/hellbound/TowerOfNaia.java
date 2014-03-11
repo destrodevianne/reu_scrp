@@ -28,7 +28,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.datatables.DoorTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GlobalVariablesManager;
 import l2r.gameserver.instancemanager.ZoneManager;
@@ -987,7 +987,7 @@ public class TowerOfNaia extends Quest
 				cancelQuestTimers("spawn_lock");
 				startQuestTimer("spawn_lock", 300000, null, null);
 				npc.setTarget(player);
-				npc.doCast(SkillTable.getInstance().getInfo(5527, 1));
+				npc.doCast(SkillData.getInstance().getInfo(5527, 1));
 			}
 		}
 		else if (event.equalsIgnoreCase("teleport") && (_lock != null))
@@ -1013,7 +1013,7 @@ public class TowerOfNaia extends Quest
 				else
 				{
 					npc.setTarget(player);
-					npc.doCast(SkillTable.getInstance().getInfo(5527, 1));
+					npc.doCast(SkillData.getInstance().getInfo(5527, 1));
 				}
 			}
 			else

@@ -1,6 +1,6 @@
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -22,7 +22,7 @@ public class Sandstorm extends AbstractNpcAI
 		if (npcId == Sandstorm)
 		{
 			npc.setTarget(player);
-			npc.doCast(SkillTable.getInstance().getInfo(5435, 1));
+			npc.doCast(SkillData.getInstance().getInfo(5435, 1));
 		}
 		return super.onAggroRangeEnter(npc, player, isPet);
 	}

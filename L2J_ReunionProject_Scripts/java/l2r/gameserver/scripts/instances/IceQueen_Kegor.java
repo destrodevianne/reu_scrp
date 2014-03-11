@@ -3,7 +3,7 @@ package l2r.gameserver.scripts.instances;
 import java.util.List;
 
 import javolution.util.FastList;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.Location;
@@ -213,7 +213,7 @@ public class IceQueen_Kegor extends Quest
 						// buff player
 						if (npc.getKnownList().getKnownPlayers().size() == 1)
 						{
-							L2Skill buff = SkillTable.getInstance().getInfo(BUFF, 1);
+							L2Skill buff = SkillData.getInstance().getInfo(BUFF, 1);
 							if (buff != null)
 							{
 								for (L2PcInstance pl : npc.getKnownList().getKnownPlayers().values())

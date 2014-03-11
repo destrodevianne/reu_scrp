@@ -4,7 +4,7 @@ import java.util.List;
 
 import l2r.Config;
 import l2r.gameserver.datatables.MultiSell;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SkillTreesData;
 import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.L2SkillLearn;
@@ -202,7 +202,7 @@ public class AvantGarde extends AbstractNpcAI
 									if (Util.isDigit(skillIdVar))
 									{
 										int skillId = Integer.parseInt(skillIdVar);
-										final L2Skill sk = SkillTable.getInstance().getInfo(skillId, 1);
+										final L2Skill sk = SkillData.getInstance().getInfo(skillId, 1);
 										if (sk != null)
 										{
 											player.removeSkill(sk);
@@ -293,7 +293,7 @@ public class AvantGarde extends AbstractNpcAI
 		
 		for (L2SkillLearn s : subClassSkills)
 		{
-			if (SkillTable.getInstance().getInfo(s.getSkillId(), s.getSkillLevel()) != null)
+			if (SkillData.getInstance().getInfo(s.getSkillId(), s.getSkillLevel()) != null)
 			{
 				count++;
 				asl.addSkill(s.getSkillId(), s.getSkillLevel(), s.getSkillLevel(), 0, 0);
@@ -321,7 +321,7 @@ public class AvantGarde extends AbstractNpcAI
 		
 		for (L2SkillLearn s : skills)
 		{
-			if (SkillTable.getInstance().getInfo(s.getSkillId(), s.getSkillLevel()) != null)
+			if (SkillData.getInstance().getInfo(s.getSkillId(), s.getSkillLevel()) != null)
 			{
 				counts++;
 				asl.addSkill(s.getSkillId(), s.getSkillLevel(), s.getSkillLevel(), s.getLevelUpSp(), 0);

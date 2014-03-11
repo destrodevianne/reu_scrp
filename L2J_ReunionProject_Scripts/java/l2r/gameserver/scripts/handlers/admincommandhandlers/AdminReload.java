@@ -32,7 +32,7 @@ import l2r.gameserver.datatables.DoorTable;
 import l2r.gameserver.datatables.ItemTable;
 import l2r.gameserver.datatables.MultiSell;
 import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.datatables.TeleportLocationTable;
 import l2r.gameserver.handler.IAdminCommandHandler;
@@ -188,7 +188,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				case "skill":
 				{
-					SkillTable.getInstance().reload();
+					SkillData.getInstance().reload();
 					AdminTable.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded Skills.");
 					break;
 				}

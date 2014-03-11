@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.ai.zone.StakatoNest;
 
 import java.util.List;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Attackable;
@@ -107,7 +107,7 @@ public class StakatoNest extends AbstractNpcAI
 					mob.abortAttack();
 					mob.abortCast();
 					mob.setHeading(Util.calculateHeadingFrom(mob, _follower));
-					mob.doCast(SkillTable.getInstance().getInfo(4484, 1));
+					mob.doCast(SkillData.getInstance().getInfo(4484, 1));
 					mob.setCurrentHp(mob.getCurrentHp() + _hp);
 					_follower.doDie(_follower);
 					_follower.deleteMe();

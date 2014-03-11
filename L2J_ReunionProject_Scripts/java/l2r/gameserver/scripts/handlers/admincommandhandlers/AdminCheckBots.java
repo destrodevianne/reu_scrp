@@ -4,9 +4,12 @@ import javolution.util.FastList;
 import l2r.gameserver.datatables.ClassListData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2World;
+import l2r.gameserver.model.PageResult;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.interfaces.IProcedure;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
-import l2r.util.StringUtil;
+import l2r.gameserver.util.Comparators;
+import l2r.gameserver.util.HtmlUtil;
 
 public class AdminCheckBots implements IAdminCommandHandler
 {
@@ -23,7 +26,7 @@ public class AdminCheckBots implements IAdminCommandHandler
 	{
 		int farmBotsCount = 0;
 		int enchantBotsCount = 0;
-		for (L2PcInstance bots : L2World.getInstance().getAllPlayersArray())
+		for (L2PcInstance bots : L2World.getInstance().getPlayers())
 		{
 			if (bots.isFarmBot())
 			{
@@ -67,7 +70,7 @@ public class AdminCheckBots implements IAdminCommandHandler
 		{
 			int counter = 0;
 			
-			for (L2PcInstance onlinePlayer : L2World.getInstance().getAllPlayersArray())
+			for (L2PcInstance onlinePlayer : L2World.getInstance().getPlayers())
 			{
 				boolean addToList = true;
 				if ((activeChar != onlinePlayer) && onlinePlayer.isOnline() && ((onlinePlayer.getClient() != null) && !onlinePlayer.getClient().isDetached()))
@@ -113,93 +116,72 @@ public class AdminCheckBots implements IAdminCommandHandler
 		return false;
 	}
 	
-	private void showBots(L2PcInstance activeChar, int page, String type)
+	private void showBots(L2PcInstance activeChar, int page, final String type)
 	{
-		L2PcInstance[] players = L2World.getInstance().getAllPlayersArray();
+		final L2PcInstance[] players = L2World.getInstance().getPlayersSortedBy(Comparators.PLAYER_UPTIME_COMPARATOR);
 		
-		int maxCharactersPerPage = 20;
-		int maxPages = players.length / maxCharactersPerPage;
-		
-		if (players.length > (maxCharactersPerPage * maxPages))
-		{
-			maxPages++;
-		}
-		
-		// Check if number of users changed
-		if (page > maxPages)
-		{
-			page = maxPages;
-		}
-		
-		int charactersStart = maxCharactersPerPage * page;
-		int charactersEnd = players.length;
-		if ((charactersEnd - charactersStart) > maxCharactersPerPage)
-		{
-			charactersEnd = charactersStart + maxCharactersPerPage;
-		}
-		
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		NpcHtmlMessage html = new NpcHtmlMessage(5);
 		if (type.equals("farm"))
 		{
-			adminReply.setFile(activeChar.getHtmlPrefix(), "data/html/admin/farmbotlist.htm");
+			html.setFile(activeChar.getHtmlPrefix(), "data/html/admin/farmbotlist.htm");
 		}
 		else if (type.equals("enchant"))
 		{
-			adminReply.setFile(activeChar.getHtmlPrefix(), "data/html/admin/enchantbotlist.htm");
+			html.setFile(activeChar.getHtmlPrefix(), "data/html/admin/enchantbotlist.htm");
 		}
 		
-		final StringBuilder replyMSG = new StringBuilder(1000);
-		
-		for (int x = 0; x < maxPages; x++)
+		final PageResult result = HtmlUtil.createPage(players, page, 20, new IProcedure<Integer, String>()
 		{
-			int pagenr = x + 1;
-			if (type.equals("farm"))
+			@Override
+			public String execute(Integer i)
 			{
-				StringUtil.append(replyMSG, "<center><a action=\"bypass -h admin_check_farm_bots ", String.valueOf(x), "\">Page ", String.valueOf(pagenr), "</a></center>");
+				String whatToReturn = null;
+				if (type.equals("farm"))
+				{
+					whatToReturn = "<td align=center><a action=\"bypass -h admin_check_farm_bots " + i + "\">Page " + (i + 1) + "</a></td>";
+				}
+				else if (type.equals("enchant"))
+				{
+					whatToReturn = "<td align=center><a action=\"bypass -h admin_check_enchant_bots " + i + "\">Page " + (i + 1) + "</a></td>";
+				}
+				return whatToReturn;
 			}
-			else if (type.equals("enchant"))
-			{
-				StringUtil.append(replyMSG, "<center><a action=\"bypass -h admin_check_enchant_bots ", String.valueOf(x), "\">Page ", String.valueOf(pagenr), "</a></center>");
-			}
-		}
-		
-		adminReply.replace("%pages%", replyMSG.toString());
-		replyMSG.setLength(0);
-		
-		for (int i = charactersStart; i < charactersEnd; i++)
+		}, new IProcedure<L2PcInstance, String>()
 		{
-			if (type.equals("farm"))
+			@Override
+			public String execute(L2PcInstance player)
 			{
-				if (!players[i].isFarmBot())
+				StringBuilder sb = new StringBuilder();
+				String typeToSend = null;
+				sb.append("<tr>");
+				sb.append("<td width=80><a action=\"bypass -h admin_character_info " + player.getName() + "\">" + player.getName() + "</a></td>");
+				
+				if (type.equals("farm"))
 				{
-					continue;
+					typeToSend = ClassListData.getInstance().getClass(player.getClassId()).getClientCode();
 				}
-			}
-			else if (type.equals("enchant"))
-			{
-				if (!players[i].isEnchantBot())
+				else if (type.equals("enchant"))
 				{
-					continue;
+					typeToSend = String.valueOf(player.getEnchantChance());
 				}
+				
+				sb.append("<tr><td width=80><a action=\"bypass -h admin_teleportto " + player.getName() + "\">" + player.getName() + "</a></td><td width=110>" + typeToSend + "</td><td width=40>" + String.valueOf(player.getLevel()) + "</td></tr>");
+				sb.append("</tr>");
+				return sb.toString();
 			}
-			
-			// What to send, read below to understand
-			String typeToSend = null;
-			if (type.equals("farm"))
-			{
-				typeToSend = ClassListData.getInstance().getClass(players[i].getClassId()).getClientCode();
-			}
-			else if (type.equals("enchant"))
-			{
-				typeToSend = String.valueOf(players[i].getEnchantChance());
-			}
-			
-			// Add player info into new Table row
-			StringUtil.append(replyMSG, "<tr><td width=80><a action=\"bypass -h admin_teleportto ", players[i].getName(), "\">", players[i].getName(), "</a></td><td width=110>", typeToSend, "</td><td width=40>", String.valueOf(players[i].getLevel()), "</td></tr>");
+		});
+		
+		if (result.getPages() > 0)
+		{
+			html.replace("%pages%", "<table width=280 cellspacing=0><tr>" + result.getPagerTemplate() + "</tr></table>");
+		}
+		else
+		{
+			html.replace("%pages%", "");
 		}
 		
-		adminReply.replace("%players%", replyMSG.toString());
-		activeChar.sendPacket(adminReply);
+		html.replace("%players%", result.getBodyTemplate().toString());
+		activeChar.sendPacket(html);
 	}
 	
 	protected static final FastList<String[]> _dualboxCheck = new FastList<>();

@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.instances;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.Location;
@@ -95,10 +95,10 @@ public class NornilsGarden extends Quest
 		}
 	};
 	
-	private static final L2Skill skill1 = SkillTable.getInstance().getInfo(4322, 1);
-	private static final L2Skill skill2 = SkillTable.getInstance().getInfo(4327, 1);
-	private static final L2Skill skill3 = SkillTable.getInstance().getInfo(4329, 1);
-	private static final L2Skill skill4 = SkillTable.getInstance().getInfo(4324, 1);
+	private static final L2Skill skill1 = SkillData.getInstance().getInfo(4322, 1);
+	private static final L2Skill skill2 = SkillData.getInstance().getInfo(4327, 1);
+	private static final L2Skill skill3 = SkillData.getInstance().getInfo(4329, 1);
+	private static final L2Skill skill4 = SkillData.getInstance().getInfo(4324, 1);
 	
 	private static final int _herb_jar = 18478;
 	

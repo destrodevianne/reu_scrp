@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 
 import l2r.Config;
 import l2r.gameserver.datatables.ClassListData;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SkillTreesData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2Clan;
@@ -197,7 +197,7 @@ public class AdminSkill implements IAdminCommandHandler
 			String[] split = command.split(" ");
 			int id = Integer.parseInt(split[1]);
 			int lvl = Integer.parseInt(split[2]);
-			L2Skill skill = SkillTable.getInstance().getInfo(id, lvl);
+			L2Skill skill = SkillData.getInstance().getInfo(id, lvl);
 			activeChar.addSkill(skill);
 			activeChar.sendSkillList();
 			activeChar.sendMessage("You added yourself skill " + skill.getName() + "(" + id + ") level " + lvl);
@@ -254,7 +254,7 @@ public class AdminSkill implements IAdminCommandHandler
 		}
 		
 		final List<L2SkillLearn> skills = SkillTreesData.getInstance().getAvailablePledgeSkills(clan);
-		SkillTable st = SkillTable.getInstance();
+		SkillData st = SkillData.getInstance();
 		for (L2SkillLearn s : skills)
 		{
 			clan.addNewSkill(st.getInfo(s.getSkillId(), s.getSkillLevel()));
@@ -454,7 +454,7 @@ public class AdminSkill implements IAdminCommandHandler
 				String level = st.nextToken();
 				int idval = Integer.parseInt(id);
 				int levelval = Integer.parseInt(level);
-				skill = SkillTable.getInstance().getInfo(idval, levelval);
+				skill = SkillData.getInstance().getInfo(idval, levelval);
 			}
 			catch (Exception e)
 			{
@@ -496,7 +496,7 @@ public class AdminSkill implements IAdminCommandHandler
 			return;
 		}
 		final L2PcInstance player = target.getActingPlayer();
-		L2Skill skill = SkillTable.getInstance().getInfo(idval, player.getSkillLevel(idval));
+		L2Skill skill = SkillData.getInstance().getInfo(idval, player.getSkillLevel(idval));
 		if (skill != null)
 		{
 			String skillname = skill.getName();
@@ -547,7 +547,7 @@ public class AdminSkill implements IAdminCommandHandler
 			return;
 		}
 		
-		final L2Skill skill = SkillTable.getInstance().getInfo(id, level);
+		final L2Skill skill = SkillData.getInstance().getInfo(id, level);
 		if (skill == null)
 		{
 			activeChar.sendMessage("Error: there is no such skill.");

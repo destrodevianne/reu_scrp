@@ -22,7 +22,7 @@ import java.util.List;
 
 import javolution.util.FastList;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.instancemanager.InstanceManager;
@@ -166,8 +166,8 @@ public class PailakaDevilsLegacy extends Quest
 	};
 	// @formatter:on
 	
-	private static L2Skill boom_skill = SkillTable.getInstance().getInfo(5714, 1);
-	private static L2Skill energy_skill = SkillTable.getInstance().getInfo(5712, 1);
+	private static L2Skill boom_skill = SkillData.getInstance().getInfo(5714, 1);
+	private static L2Skill energy_skill = SkillData.getInstance().getInfo(5712, 1);
 	
 	private void attackPlayer(L2Attackable npc, L2Playable attacker)
 	{

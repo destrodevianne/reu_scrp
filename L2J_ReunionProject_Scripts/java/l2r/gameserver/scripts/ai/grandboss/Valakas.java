@@ -23,7 +23,7 @@ import java.util.List;
 
 import l2r.Config;
 import l2r.gameserver.GeoData;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.MountType;
 import l2r.gameserver.instancemanager.GrandBossManager;
@@ -254,25 +254,25 @@ public class Valakas extends AbstractNpcAI
 				if ((npc.getCurrentHp() < (npc.getMaxHp() / 4)) && (lvl != 4))
 				{
 					npc.setTarget(npc);
-					npc.doCast(SkillTable.getInstance().getInfo(4691, 4));
+					npc.doCast(SkillData.getInstance().getInfo(4691, 4));
 				}
 				// Current HPs are inferior to 50% ; apply lvl 3 of regen skill.
 				else if ((npc.getCurrentHp() < ((npc.getMaxHp() * 2) / 4.0)) && (lvl != 3))
 				{
 					npc.setTarget(npc);
-					npc.doCast(SkillTable.getInstance().getInfo(4691, 3));
+					npc.doCast(SkillData.getInstance().getInfo(4691, 3));
 				}
 				// Current HPs are inferior to 75% ; apply lvl 2 of regen skill.
 				else if ((npc.getCurrentHp() < ((npc.getMaxHp() * 3) / 4.0)) && (lvl != 2))
 				{
 					npc.setTarget(npc);
-					npc.doCast(SkillTable.getInstance().getInfo(4691, 2));
+					npc.doCast(SkillData.getInstance().getInfo(4691, 2));
 				}
 				// Apply lvl 1.
 				else if (lvl != 1)
 				{
 					npc.setTarget(npc);
-					npc.doCast(SkillTable.getInstance().getInfo(4691, 1));
+					npc.doCast(SkillData.getInstance().getInfo(4691, 1));
 				}
 			}
 			// Spawn cinematic, regen_task and choose of skill.
@@ -411,7 +411,7 @@ public class Valakas extends AbstractNpcAI
 		// Debuff strider-mounted players.
 		if (attacker.getMountType() == MountType.STRIDER)
 		{
-			final L2Skill skill = SkillTable.getInstance().getInfo(4258, 1);
+			final L2Skill skill = SkillData.getInstance().getInfo(4258, 1);
 			if (attacker.getFirstEffect(skill) == null)
 			{
 				npc.setTarget(attacker);
