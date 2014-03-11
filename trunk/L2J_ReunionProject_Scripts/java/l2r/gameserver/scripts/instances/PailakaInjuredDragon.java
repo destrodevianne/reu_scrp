@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
@@ -333,7 +333,7 @@ public class PailakaInjuredDragon extends Quest
 	private static void giveBuff(L2Npc npc, L2PcInstance player, int skillId, int level)
 	{
 		npc.setTarget(player);
-		npc.doCast(SkillTable.getInstance().getInfo(skillId, level));
+		npc.doCast(SkillData.getInstance().getInfo(skillId, level));
 		buff_counter--;
 		return;
 	}
@@ -558,7 +558,7 @@ public class PailakaInjuredDragon extends Quest
 		}
 		else if (event.equalsIgnoreCase("latana_animation2"))
 		{
-			npc.doCast(SkillTable.getInstance().getInfo(5759, 1));
+			npc.doCast(SkillData.getInstance().getInfo(5759, 1));
 			try
 			{
 				npc.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, player);

@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.handlers.usercommandhandlers;
 import l2r.Config;
 import l2r.gameserver.GameTimeController;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.TeleportWhereType;
 import l2r.gameserver.handler.IUserCommandHandler;
@@ -58,8 +58,8 @@ public class Unstuck implements IUserCommandHandler
 		}
 		activeChar.forceIsCasting(GameTimeController.getInstance().getGameTicks() + (unstuckTimer / GameTimeController.MILLIS_IN_TICK));
 		
-		L2Skill escape = SkillTable.getInstance().getInfo(2099, 1); // 5 minutes escape
-		L2Skill GM_escape = SkillTable.getInstance().getInfo(2100, 1); // 1 second escape
+		L2Skill escape = SkillData.getInstance().getInfo(2099, 1); // 5 minutes escape
+		L2Skill GM_escape = SkillData.getInstance().getInfo(2100, 1); // 1 second escape
 		if (activeChar.getAccessLevel().isGm())
 		{
 			if (GM_escape != null)

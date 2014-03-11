@@ -24,7 +24,7 @@ import java.util.Map;
 
 import javolution.util.FastMap;
 import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.idfactory.IdFactory;
@@ -277,7 +277,7 @@ public class BeastFarm extends AbstractNpcAI
 			nextNpc.broadcastPacket(new AbstractNpcInfo.NpcInfo(nextNpc, player));
 			nextNpc.setRunning();
 			
-			SkillTable st = SkillTable.getInstance();
+			SkillData st = SkillData.getInstance();
 			for (SkillHolder sh : beast.getSkills())
 			{
 				nextNpc.addBeastSkill(st.getInfo(sh.getSkillId(), sh.getSkillLvl()));

@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import l2r.gameserver.SevenSigns;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.effects.L2Effect;
@@ -267,7 +267,7 @@ public class CabaleBuffer extends AbstractNpcAI
 			
 			if (doCast)
 			{
-				final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
+				final L2Skill skill = SkillData.getInstance().getInfo(skillId, skillLevel);
 				_npc.setTarget(player);
 				_npc.doCast(skill);
 				return true;

@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import l2r.L2DatabaseFactory;
 import l2r.gameserver.model.L2Clan;
@@ -16,7 +18,6 @@ import l2r.gameserver.model.quest.State;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.serverpackets.NpcSay;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class Q00503_PursuitClanAmbition extends Quest
 {
@@ -91,7 +92,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 		}
 	}
 	
-	private static final TIntObjectHashMap<dropList> drop = new TIntObjectHashMap<>();
+	private static final Map<Integer, dropList> drop = new HashMap<>();
 	
 	public Q00503_PursuitClanAmbition(int id, String name, String descr)
 	{
@@ -137,7 +138,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 		addAttackId(27181);
 		
 		addKillId(20974);
-		for (int mobId : drop.keys())
+		for (int mobId : drop.keySet())
 		{
 			addKillId(mobId);
 		}

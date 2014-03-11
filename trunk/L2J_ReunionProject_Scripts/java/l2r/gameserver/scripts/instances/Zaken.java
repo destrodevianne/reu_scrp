@@ -23,7 +23,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.GeoData;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.MountType;
 import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.instancemanager.GrandBossManager;
@@ -961,12 +961,12 @@ public class Zaken extends Quest
 					int[] position = ZoneManager.getInstance().getZoneById(world._zakenZone).getZone().getRandomPoint();
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_DAY, position[0], position[1], position[2], 32768, false, 0, false, world.getInstanceId());
 					_log.warn("Zaken Day:  spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4216, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4217, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4218, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4219, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4220, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4221, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4216, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4217, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4218, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4219, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4220, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4221, 1));
 					world._zaken.setRunning();
 					world._zaken.addDamageHate(player, 0, 999);
 					world._zaken.getAI().setIntention(AI_INTENTION_ATTACK, player);
@@ -977,12 +977,12 @@ public class Zaken extends Quest
 					int[] position = ZoneManager.getInstance().getZoneById(world._zakenZone).getZone().getRandomPoint();
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_DAY83, position[0], position[1], position[2], 32768, false, 0, false, world.getInstanceId());
 					_log.warn("Zaken Day 83:  spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4216, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4217, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(6689, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(6690, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(6691, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(6692, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4216, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4217, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(6689, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(6690, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(6691, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(6692, 1));
 					world._zaken.setRunning();
 					world._zaken.addDamageHate(player, 0, 999);
 					world._zaken.getAI().setIntention(AI_INTENTION_ATTACK, player);
@@ -993,12 +993,12 @@ public class Zaken extends Quest
 					Location loc = _spawnsZaken.get(Rnd.get(_spawnsZaken.size()));
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_NIGHT, loc.getX(), loc.getY(), loc.getZ(), 32768, false, 0, false, world.getInstanceId());
 					_log.warn("Zaken Night:  spawned at: X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4216, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4217, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4218, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4219, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4220, 1));
-					world._zaken.addSkill(SkillTable.getInstance().getInfo(4221, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4216, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4217, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4218, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4219, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4220, 1));
+					world._zaken.addSkill(SkillData.getInstance().getInfo(4221, 1));
 					world._zaken.setRunning();
 					world._zaken.addDamageHate(player, 0, 999);
 					world._zaken.getAI().setIntention(AI_INTENTION_ATTACK, player);
@@ -1168,7 +1168,7 @@ public class Zaken extends Quest
 					if (skillId != 0)
 					{
 						npc.setTarget(player);
-						npc.doCast(SkillTable.getInstance().getInfo(skillId, 1));
+						npc.doCast(SkillData.getInstance().getInfo(skillId, 1));
 					}
 				}
 			}
@@ -1199,7 +1199,7 @@ public class Zaken extends Quest
 				if (sk_4258 == 0)
 				{
 					npc.setTarget(attacker);
-					npc.doCast(SkillTable.getInstance().getInfo(4258, 1));
+					npc.doCast(SkillData.getInstance().getInfo(4258, 1));
 				}
 			}
 			L2Character originalAttacker = isPet ? attacker.getSummon() : attacker;
@@ -1277,7 +1277,7 @@ public class Zaken extends Quest
 				if (skillId != 0)
 				{
 					npc.setTarget(attacker);
-					npc.doCast(SkillTable.getInstance().getInfo(skillId, 1));
+					npc.doCast(SkillData.getInstance().getInfo(skillId, 1));
 				}
 			}
 		}
@@ -1368,7 +1368,7 @@ public class Zaken extends Quest
 				if (skillId != 0)
 				{
 					npc.setTarget(caster);
-					npc.doCast(SkillTable.getInstance().getInfo(skillId, 1));
+					npc.doCast(SkillData.getInstance().getInfo(skillId, 1));
 				}
 			}
 		}

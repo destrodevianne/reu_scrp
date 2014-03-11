@@ -42,7 +42,7 @@ public class NoRandomAnimation extends AbstractNpcAI
 	{
 		super(name, descr);
 		
-		for (L2Object obj : L2World.getInstance().getAllVisibleObjectsArray())
+		for (L2Object obj : L2World.getInstance().getVisibleObjects())
 		{
 			if ((obj instanceof L2Npc) && contains(NO_ANIMATION_MOBS_LIST, ((L2Npc) obj).getId()))
 			{

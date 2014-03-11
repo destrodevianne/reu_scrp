@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -41,7 +41,7 @@ public class PowderKeg extends AbstractNpcAI
 		
 		if (Util.contains(NPC_IDS, npcId))
 		{
-			L2Skill _boom = SkillTable.getInstance().getInfo(5714, 1);
+			L2Skill _boom = SkillData.getInstance().getInfo(5714, 1);
 			npc.disableCoreAI(true);
 			npc.doCast(_boom);
 			npc.broadcastStatusUpdate();

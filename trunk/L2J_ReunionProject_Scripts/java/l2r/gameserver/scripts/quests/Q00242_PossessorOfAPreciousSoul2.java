@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.quests;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -317,7 +317,7 @@ public class Q00242_PossessorOfAPreciousSoul2 extends Quest
 						}
 						st.playSound(QuestSound.ITEMSOUND_QUEST_MIDDLE);
 						npc.setTarget(player);
-						npc.doCast(SkillTable.getInstance().getInfo(4546, 1));
+						npc.doCast(SkillData.getInstance().getInfo(4546, 1));
 					}
 					else
 					{

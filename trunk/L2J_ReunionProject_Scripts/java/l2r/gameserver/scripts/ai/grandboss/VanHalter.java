@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -17,7 +18,7 @@ import l2r.L2DatabaseFactory;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.datatables.DoorTable;
 import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
@@ -41,7 +42,6 @@ import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.CameraMode;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.network.serverpackets.MagicSkillUse;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 /**
  * Updated by GodFather 03.10.2011
@@ -50,7 +50,7 @@ public class VanHalter extends Quest
 {
 	protected static final Logger _log = Logger.getLogger(VanHalter.class.getName());
 	
-	protected TIntObjectHashMap<ArrayList<L2PcInstance>> _bleedingPlayers = new TIntObjectHashMap<>();
+	protected Map<Integer, ArrayList<L2PcInstance>> _bleedingPlayers = new HashMap<>();
 	
 	protected ArrayList<L2Spawn> _royalGuardSpawn = new ArrayList<>();
 	protected ArrayList<L2Spawn> _royalGuardCaptainSpawn = new ArrayList<>();
@@ -58,7 +58,7 @@ public class VanHalter extends Quest
 	protected ArrayList<L2Spawn> _triolRevelationSpawn = new ArrayList<>();
 	protected ArrayList<L2Spawn> _triolRevelationAlive = new ArrayList<>();
 	protected ArrayList<L2Spawn> _guardOfAltarSpawn = new ArrayList<>();
-	protected TIntObjectHashMap<L2Spawn> _cameraMarkerSpawn = new TIntObjectHashMap<>();
+	protected Map<Integer, L2Spawn> _cameraMarkerSpawn = new HashMap<>();
 	protected L2Spawn _ritualOfferingSpawn = null;
 	protected L2Spawn _ritualSacrificeSpawn = null;
 	protected L2Spawn _vanHalterSpawn = null;
@@ -1066,7 +1066,7 @@ public class VanHalter extends Quest
 		}
 		_timeUpTask = ThreadPoolManager.getInstance().scheduleGeneral(new TimeUp(), Config.HPH_FIGHTTIMEOFHALTER);
 		
-		TIntObjectHashMap<L2PcInstance> _targets = new TIntObjectHashMap<>();
+		Map<Integer, L2PcInstance> _targets = new HashMap<>();
 		int i = 0;
 		
 		for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
@@ -1161,7 +1161,7 @@ public class VanHalter extends Quest
 	
 	protected void addBleeding()
 	{
-		L2Skill bleed = SkillTable.getInstance().getInfo(4615, 12);
+		L2Skill bleed = SkillData.getInstance().getInfo(4615, 12);
 		
 		for (L2Npc tr : _triolRevelation)
 		{
@@ -1699,7 +1699,7 @@ public class VanHalter extends Quest
 					break;
 				
 				case 13:
-					L2Skill skill = SkillTable.getInstance().getInfo(1168, 7);
+					L2Skill skill = SkillData.getInstance().getInfo(1168, 7);
 					_ritualOffering.setIsInvul(false);
 					_vanHalter.setTarget(_ritualOffering);
 					_vanHalter.setIsImmobilized(false);

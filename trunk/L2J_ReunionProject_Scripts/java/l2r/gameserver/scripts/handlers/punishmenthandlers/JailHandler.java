@@ -85,7 +85,7 @@ public class JailHandler extends PlayerSpawnListener implements IPunishmentHandl
 			case IP:
 			{
 				String ip = String.valueOf(task.getKey());
-				for (L2PcInstance player : L2World.getInstance().getAllPlayersArray())
+				for (L2PcInstance player : L2World.getInstance().getPlayers())
 				{
 					if (player.getIPAddress().equals(ip))
 					{
@@ -129,7 +129,7 @@ public class JailHandler extends PlayerSpawnListener implements IPunishmentHandl
 			case IP:
 			{
 				String ip = String.valueOf(task.getKey());
-				for (L2PcInstance player : L2World.getInstance().getAllPlayersArray())
+				for (L2PcInstance player : L2World.getInstance().getPlayers())
 				{
 					if (player.getIPAddress().equals(ip))
 					{

@@ -19,7 +19,7 @@
 package l2r.gameserver.scripts.ai.group_template;
 
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.instancemanager.ZoneManager;
 import l2r.gameserver.model.Location;
@@ -209,7 +209,7 @@ public class DenOfEvil extends AbstractNpcAI
 				}
 				if (character.isPlayable())
 				{
-					L2Skill skill = SkillTable.getInstance().getInfo(6149, 1);
+					L2Skill skill = SkillData.getInstance().getInfo(6149, 1);
 					skill.getEffects(character, character); // apply effect
 				}
 				else

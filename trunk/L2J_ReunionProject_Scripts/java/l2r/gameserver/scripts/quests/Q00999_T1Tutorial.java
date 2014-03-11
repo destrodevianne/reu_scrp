@@ -19,6 +19,7 @@
 package l2r.gameserver.scripts.quests;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import l2r.Config;
 import l2r.gameserver.model.actor.L2Npc;
@@ -27,7 +28,6 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class Q00999_T1Tutorial extends Quest
 {
@@ -70,7 +70,7 @@ public class Q00999_T1Tutorial extends Quest
 	};
 	
 	private static final HashMap<Object, Object[]> Event = new HashMap<>();
-	private static final TIntObjectHashMap<Talk> Talks = new TIntObjectHashMap<>();
+	private static final Map<Integer, Talk> Talks = new HashMap<>();
 	
 	private static class Talk
 	{

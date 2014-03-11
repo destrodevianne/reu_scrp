@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -41,7 +41,7 @@ public class HatuOtis extends AbstractNpcAI
 			if (_isAlreadyUsedSkill == true)
 			{
 				npc.setTarget(npc);
-				npc.doCast(SkillTable.getInstance().getInfo(4737, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4737, 3));
 				_isAlreadyUsedSkill = false;
 			}
 			else
@@ -65,7 +65,7 @@ public class HatuOtis extends AbstractNpcAI
 				{
 					player.sendMessage("I will be with you, and to take care of you !");
 					npc.setTarget(player);
-					npc.doCast(SkillTable.getInstance().getInfo(4175, 3));
+					npc.doCast(SkillData.getInstance().getInfo(4175, 3));
 					_isAlreadyUsedSkill1 = true;
 				}
 			}

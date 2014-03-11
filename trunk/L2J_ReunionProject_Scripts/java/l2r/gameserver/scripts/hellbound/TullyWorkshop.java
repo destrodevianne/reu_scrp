@@ -29,7 +29,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.datatables.DoorTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.RaidBossStatus;
 import l2r.gameserver.instancemanager.RaidBossSpawnManager;
@@ -1352,7 +1352,7 @@ public class TullyWorkshop extends Quest
 					{
 						npc.setTarget(player);
 					}
-					npc.doCast(SkillTable.getInstance().getInfo(5526, 1));
+					npc.doCast(SkillData.getInstance().getInfo(5526, 1));
 				}
 				else
 				{
@@ -1367,7 +1367,7 @@ public class TullyWorkshop extends Quest
 					for (L2PcInstance partyMember : party.getMembers())
 					{
 						npc.setTarget(partyMember);
-						npc.doCast(SkillTable.getInstance().getInfo(5526, 1));
+						npc.doCast(SkillData.getInstance().getInfo(5526, 1));
 					}
 					startQuestTimer("despawn_agent_7", 60000, npc, null);
 				}
@@ -1524,7 +1524,7 @@ public class TullyWorkshop extends Quest
 				actor.clearAggroList();
 				actor.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 				actor.setTarget(victim);
-				actor.doCast(SkillTable.getInstance().getInfo(4065, 11));
+				actor.doCast(SkillData.getInstance().getInfo(4065, 11));
 				victim.setCurrentHp(victim.getCurrentHp() + (victim.getMaxHp() * 0.03)); // FIXME: not retail, it should be done after spell is finished, but it cannot be tracked now
 			}
 		}

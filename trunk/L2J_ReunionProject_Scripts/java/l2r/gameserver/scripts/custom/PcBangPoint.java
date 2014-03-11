@@ -17,7 +17,7 @@ package l2r.gameserver.scripts.custom;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2ServitorInstance;
@@ -1054,7 +1054,7 @@ public class PcBangPoint extends Quest
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), POINTSSKILL.get(event)[2], false, false, 1));
 				npc.setTarget(player);
-				npc.doCast(SkillTable.getInstance().getInfo(POINTSSKILL.get(event)[0], POINTSSKILL.get(event)[1]));
+				npc.doCast(SkillData.getInstance().getInfo(POINTSSKILL.get(event)[0], POINTSSKILL.get(event)[1]));
 				return "Individual_skill_info.htm";
 			}
 			else
@@ -1077,7 +1077,7 @@ public class PcBangPoint extends Quest
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), PETSKILL.get(event)[2], false, false, 1));
 				npc.setTarget(player.getSummon());
-				npc.doCast(SkillTable.getInstance().getInfo(PETSKILL.get(event)[0], PETSKILL.get(event)[1]));
+				npc.doCast(SkillData.getInstance().getInfo(PETSKILL.get(event)[0], PETSKILL.get(event)[1]));
 				return "Individual_pet_skill_info.htm";
 			}
 			else
@@ -1115,7 +1115,7 @@ public class PcBangPoint extends Quest
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 2500, false, false, 1));
 				player.mount(12621, 0, true);
-				player.addSkill(SkillTable.FrequentSkill.WYVERN_BREATH.getSkill());
+				player.addSkill(SkillData.FrequentSkill.WYVERN_BREATH.getSkill());
 				return null;
 			}
 			htmltext = "nopoint.htm";
@@ -1135,19 +1135,19 @@ public class PcBangPoint extends Quest
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 5600, false, false, 1));
 				npc.setTarget(player);
-				npc.doCast(SkillTable.getInstance().getInfo(4397, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4393, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4392, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4391, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4404, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4396, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4405, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4403, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4398, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4394, 4));
-				npc.doCast(SkillTable.getInstance().getInfo(4402, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4406, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4399, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4397, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4393, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4392, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4391, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4404, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4396, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4405, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4403, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4398, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4394, 4));
+				npc.doCast(SkillData.getInstance().getInfo(4402, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4406, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4399, 3));
 				htmltext = "skill_info.htm";
 			}
 			else
@@ -1170,19 +1170,19 @@ public class PcBangPoint extends Quest
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 4000, false, false, 1));
 				npc.setTarget(player.getSummon());
-				npc.doCast(SkillTable.getInstance().getInfo(4397, 1));
-				npc.doCast(SkillTable.getInstance().getInfo(4393, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4392, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4391, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4404, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4396, 1));
-				npc.doCast(SkillTable.getInstance().getInfo(4405, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4403, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4398, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4394, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4402, 1));
-				npc.doCast(SkillTable.getInstance().getInfo(4406, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4399, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4397, 1));
+				npc.doCast(SkillData.getInstance().getInfo(4393, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4392, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4391, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4404, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4396, 1));
+				npc.doCast(SkillData.getInstance().getInfo(4405, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4403, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4398, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4394, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4402, 1));
+				npc.doCast(SkillData.getInstance().getInfo(4406, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4399, 2));
 				htmltext = "pet_skill_info.htm";
 			}
 			else
@@ -1205,13 +1205,13 @@ public class PcBangPoint extends Quest
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 3000, false, false, 1));
 				npc.setTarget(player);
-				npc.doCast(SkillTable.getInstance().getInfo(4397, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4396, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4392, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4391, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4395, 4));
-				npc.doCast(SkillTable.getInstance().getInfo(4401, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4400, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4397, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4396, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4392, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4391, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4395, 4));
+				npc.doCast(SkillData.getInstance().getInfo(4401, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4400, 3));
 				htmltext = "skill_info.htm";
 			}
 			else
@@ -1234,13 +1234,13 @@ public class PcBangPoint extends Quest
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 2100, false, false, 1));
 				npc.setTarget(player.getSummon());
-				npc.doCast(SkillTable.getInstance().getInfo(4397, 1));
-				npc.doCast(SkillTable.getInstance().getInfo(4396, 1));
-				npc.doCast(SkillTable.getInstance().getInfo(4392, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4391, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4395, 3));
-				npc.doCast(SkillTable.getInstance().getInfo(4401, 2));
-				npc.doCast(SkillTable.getInstance().getInfo(4400, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4397, 1));
+				npc.doCast(SkillData.getInstance().getInfo(4396, 1));
+				npc.doCast(SkillData.getInstance().getInfo(4392, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4391, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4395, 3));
+				npc.doCast(SkillData.getInstance().getInfo(4401, 2));
+				npc.doCast(SkillData.getInstance().getInfo(4400, 2));
 				htmltext = "pet_skill_info.htm";
 			}
 			else

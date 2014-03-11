@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.L2Spawn;
@@ -1706,7 +1706,7 @@ public class Kamaloka extends Quest
 						final int skillLvl = FIRST_ROOM[world.index][3];
 						if ((skillId != 0) && (skillLvl != 0))
 						{
-							final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLvl);
+							final L2Skill skill = SkillData.getInstance().getInfo(skillId, skillLvl);
 							if (skill != null)
 							{
 								skill.getEffects(world.boss, world.boss);
@@ -1747,7 +1747,7 @@ public class Kamaloka extends Quest
 						final int skillLvl = SECOND_ROOM[world.index][2];
 						if ((skillId != 0) && (skillLvl != 0))
 						{
-							final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLvl);
+							final L2Skill skill = SkillData.getInstance().getInfo(skillId, skillLvl);
 							if (skill != null)
 							{
 								skill.getEffects(world.boss, world.boss);
@@ -1770,7 +1770,7 @@ public class Kamaloka extends Quest
 					final int skillLvl = MINIBOSS[world.index][5];
 					if ((skillId != 0) && (skillLvl != 0))
 					{
-						final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLvl);
+						final L2Skill skill = SkillData.getInstance().getInfo(skillId, skillLvl);
 						if (skill != null)
 						{
 							skill.getEffects(world.boss, world.boss);

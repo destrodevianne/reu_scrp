@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.InstanceManager;
@@ -713,7 +713,7 @@ public class HallOfSufferingDefence extends Quest
 			}
 			else if (event.equalsIgnoreCase("ressurectTwin"))
 			{
-				L2Skill skill = SkillTable.getInstance().getInfo(5824, 1);
+				L2Skill skill = SkillData.getInstance().getInfo(5824, 1);
 				L2Npc aliveTwin = (world.klanikus == npc ? world.klodekus : world.klanikus);
 				npc.doRevive();
 				npc.doCast(skill);

@@ -27,7 +27,7 @@ import l2r.L2DatabaseFactory;
 import l2r.gameserver.GameTimeController;
 import l2r.gameserver.SevenSigns;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.IVoicedCommandHandler;
@@ -167,7 +167,7 @@ public class Wedding implements IVoicedCommandHandler
 					skillId = 4361;
 				}
 				
-				final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
+				final L2Skill skill = SkillData.getInstance().getInfo(skillId, skillLevel);
 				if (activeChar.getFirstEffect(skill) == null)
 				{
 					skill.getEffects(activeChar, activeChar);
@@ -240,8 +240,8 @@ public class Wedding implements IVoicedCommandHandler
 		}
 		
 		ptarget.setEngageRequest(true, activeChar.getObjectId());
-		// $s1
-		ConfirmDlg dlg = new ConfirmDlg(SystemMessageId.S1.getId()).addString(activeChar.getName() + " is asking to engage you. Do you want to start a new relationship?");
+		final ConfirmDlg dlg = new ConfirmDlg(activeChar.getName() + " is asking to engage you. Do you want to start a new relationship?");
+		dlg.addTime(15 * 1000);
 		ptarget.sendPacket(dlg);
 		return true;
 	}

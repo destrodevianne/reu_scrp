@@ -1,6 +1,8 @@
 package l2r.gameserver.scripts.ai.zone.Selmahum;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -10,7 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestEventType;
@@ -30,8 +32,6 @@ import l2r.gameserver.util.Util;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class SelMahumChefs extends AbstractNpcAI
 {
@@ -63,7 +63,7 @@ public class SelMahumChefs extends AbstractNpcAI
 	private static final int SKILL_FULL = 6332;
 	
 	protected static final FastMap<Integer, ChefGroup> chefGroups = new FastMap<>();
-	protected static final TIntObjectHashMap<Location[]> escortSpawns = new TIntObjectHashMap<>();
+	protected static final Map<Integer, Location[]> escortSpawns = new HashMap<>();
 	protected static final ConcurrentHashMap<L2Npc, Integer> fireplaces = new ConcurrentHashMap<>();
 	protected static final ConcurrentHashMap<L2Npc, L2Npc> fireplacesFeed = new ConcurrentHashMap<>();
 	
@@ -305,12 +305,12 @@ public class SelMahumChefs extends AbstractNpcAI
 			{
 				if (type == 0)
 				{
-					SkillTable.getInstance().getInfo(SKILL_TIRED, 1).getEffects(mob, mob);
+					SkillData.getInstance().getInfo(SKILL_TIRED, 1).getEffects(mob, mob);
 					mob.setDisplayEffect(2);
 				}
 				else if (type == 1)
 				{
-					SkillTable.getInstance().getInfo(SKILL_FULL, 1).getEffects(mob, mob);
+					SkillData.getInstance().getInfo(SKILL_FULL, 1).getEffects(mob, mob);
 					mob.setDisplayEffect(1);
 				}
 				mob.getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
@@ -392,7 +392,7 @@ public class SelMahumChefs extends AbstractNpcAI
 			if ((group.lastInvincible.get() < System.currentTimeMillis()) && (((npc.getCurrentHp() / npc.getMaxHp()) * 100) < 50))
 			{
 				group.lastInvincible.set(System.currentTimeMillis() + 600000);
-				SkillTable.getInstance().getInfo(5989, 1).getEffects(npc, npc);
+				SkillData.getInstance().getInfo(5989, 1).getEffects(npc, npc);
 			}
 			else if (npc.getFirstEffect(5989) != null)
 			{
@@ -400,7 +400,7 @@ public class SelMahumChefs extends AbstractNpcAI
 				{
 					if (!npc.isCastingNow())
 					{
-						npc.doCast(SkillTable.getInstance().getInfo(6330, 1));
+						npc.doCast(SkillData.getInstance().getInfo(6330, 1));
 					}
 				}
 			}

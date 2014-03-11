@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -67,7 +67,7 @@ public class HotSpringDisease extends AbstractNpcAI
 			if (Rnd.get(100) < DISEASE_CHANCE)
 			{
 				npc.setTarget(attacker);
-				npc.doCast(SkillTable.getInstance().getInfo(4554, Rnd.get(10) + 1));
+				npc.doCast(SkillData.getInstance().getInfo(4554, Rnd.get(10) + 1));
 			}
 		}
 		if (Util.contains(disease2mobs, npc.getId()))
@@ -75,7 +75,7 @@ public class HotSpringDisease extends AbstractNpcAI
 			if (Rnd.get(100) < DISEASE_CHANCE)
 			{
 				npc.setTarget(attacker);
-				npc.doCast(SkillTable.getInstance().getInfo(4553, Rnd.get(10) + 1));
+				npc.doCast(SkillData.getInstance().getInfo(4553, Rnd.get(10) + 1));
 			}
 		}
 		if (Util.contains(disease3mobs, npc.getId()))
@@ -83,7 +83,7 @@ public class HotSpringDisease extends AbstractNpcAI
 			if (Rnd.get(100) < DISEASE_CHANCE)
 			{
 				npc.setTarget(attacker);
-				npc.doCast(SkillTable.getInstance().getInfo(4552, Rnd.get(10) + 1));
+				npc.doCast(SkillData.getInstance().getInfo(4552, Rnd.get(10) + 1));
 			}
 		}
 		if (Util.contains(disease4mobs, npc.getId()))
@@ -91,7 +91,7 @@ public class HotSpringDisease extends AbstractNpcAI
 			if (Rnd.get(100) < DISEASE_CHANCE)
 			{
 				npc.setTarget(attacker);
-				npc.doCast(SkillTable.getInstance().getInfo(4551, Rnd.get(10) + 1));
+				npc.doCast(SkillData.getInstance().getInfo(4551, Rnd.get(10) + 1));
 			}
 		}
 		return super.onAttack(npc, attacker, damage, isPet);

@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.quests;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.interfaces.IL2Procedure;
+import l2r.gameserver.model.interfaces.IProcedure;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -32,7 +32,7 @@ import l2r.gameserver.util.Util;
  */
 public class Q10290_LandDragonConqueror extends Quest
 {
-	public class RewardCheck implements IL2Procedure<L2PcInstance>
+	public class RewardCheck implements IProcedure<L2PcInstance, Boolean>
 	{
 		private final L2Npc _npc;
 		
@@ -42,7 +42,7 @@ public class Q10290_LandDragonConqueror extends Quest
 		}
 		
 		@Override
-		public boolean execute(L2PcInstance member)
+		public Boolean execute(L2PcInstance member)
 		{
 			if (Util.checkIfInRange(8000, _npc, member, false))
 			{

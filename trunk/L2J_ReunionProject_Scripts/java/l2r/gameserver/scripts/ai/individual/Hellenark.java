@@ -3,7 +3,7 @@ package l2r.gameserver.scripts.ai.individual;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -124,7 +124,7 @@ public class Hellenark extends AbstractNpcAI
 		if (event.equalsIgnoreCase("cast"))
 		{
 			L2Npc npc1;
-			for (Iterator<Object> i$ = spawnnaia.iterator(); i$.hasNext(); npc1.doCast(SkillTable.getInstance().getInfo(5765, 1)))
+			for (Iterator<Object> i$ = spawnnaia.iterator(); i$.hasNext(); npc1.doCast(SkillData.getInstance().getInfo(5765, 1)))
 			{
 				npc1 = (L2Npc) i$.next();
 				npc1.setTarget(player);

@@ -37,7 +37,7 @@ import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.ClanTable;
 import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.TeleportWhereType;
 import l2r.gameserver.instancemanager.CHSiegeManager;
@@ -283,7 +283,7 @@ public class RainbowSpringsChateau extends Quest
 	
 	private static final L2Skill[] DEBUFFS =
 	{
-		SkillTable.getInstance().getInfo(0, 1)
+		SkillData.getInstance().getInfo(0, 1)
 	};
 	
 	protected static Map<Integer, Long> _warDecreesCount = new HashMap<>();

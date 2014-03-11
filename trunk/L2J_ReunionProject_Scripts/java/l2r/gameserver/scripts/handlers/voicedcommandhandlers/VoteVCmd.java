@@ -53,7 +53,7 @@ public class VoteVCmd implements IVoicedCommandHandler
 			
 			voteclean();
 			Announcements.getInstance().announceToAll("Voting system has started, all players can vote now by pressing .yes or .no");
-			for (L2PcInstance all : L2World.getInstance().getAllPlayersArray())
+			for (L2PcInstance all : L2World.getInstance().getPlayers())
 				all.setVoter(true);
 		}
 		else if (command.equalsIgnoreCase("votedisable"))
@@ -62,7 +62,7 @@ public class VoteVCmd implements IVoicedCommandHandler
 				return false;
 			
 			Announcements.getInstance().announceToAll("Voting system has ended.");
-			for (L2PcInstance all : L2World.getInstance().getAllPlayersArray())
+			for (L2PcInstance all : L2World.getInstance().getPlayers())
 				all.setVoter(false);
 		}
 		else if (command.equalsIgnoreCase("yes"))

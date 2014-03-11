@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.quests;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
@@ -108,7 +108,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			{
 				st.set("good2", "1");
 				npc.setDisplayEffect(1);
-				L2Skill skill = SkillTable.getInstance().getInfo(6727, 1);
+				L2Skill skill = SkillData.getInstance().getInfo(6727, 1);
 				npc.setTarget(player);
 				npc.doCast(skill);
 			}
@@ -120,7 +120,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				st.set("good3", "1");
 				npc.setDisplayEffect(1);
 				L2Npc support = addSpawn(JudeVanEtins, 85783, -253471, -8320, 65, false, 0, false, player.getInstanceId());
-				L2Skill skill = SkillTable.getInstance().getInfo(6729, 1);
+				L2Skill skill = SkillData.getInstance().getInfo(6729, 1);
 				support.setTarget(player);
 				support.doCast(skill);
 			}
@@ -132,7 +132,7 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				st.set("good4", "1");
 				npc.setDisplayEffect(1);
 				L2Npc support = addSpawn(SolinaEvilThoughts, 56097, -250576, -6757, 0, false, 0, false, player.getInstanceId());
-				L2Skill skill = SkillTable.getInstance().getInfo(6729, 1);
+				L2Skill skill = SkillData.getInstance().getInfo(6729, 1);
 				support.setTarget(player);
 				support.doCast(skill);
 			}
@@ -241,25 +241,25 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			{
 				if (player.isMageClass())
 				{
-					L2Skill buff1 = SkillTable.getInstance().getInfo(6714, 1);
+					L2Skill buff1 = SkillData.getInstance().getInfo(6714, 1);
 					if (buff1 != null)
 					{
 						npc.setTarget(player);
 						npc.doSimultaneousCast(buff1);
 					}
-					L2Skill buff2 = SkillTable.getInstance().getInfo(6721, 1);
+					L2Skill buff2 = SkillData.getInstance().getInfo(6721, 1);
 					if (buff2 != null)
 					{
 						npc.setTarget(player);
 						npc.doSimultaneousCast(buff2);
 					}
-					L2Skill buff3 = SkillTable.getInstance().getInfo(6722, 1);
+					L2Skill buff3 = SkillData.getInstance().getInfo(6722, 1);
 					if (buff3 != null)
 					{
 						npc.setTarget(player);
 						npc.doSimultaneousCast(buff3);
 					}
-					L2Skill buff4 = SkillTable.getInstance().getInfo(6717, 1);
+					L2Skill buff4 = SkillData.getInstance().getInfo(6717, 1);
 					if (buff4 != null)
 					{
 						npc.setTarget(player);
@@ -268,25 +268,25 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				}
 				else
 				{
-					L2Skill buff1 = SkillTable.getInstance().getInfo(6714, 1);
+					L2Skill buff1 = SkillData.getInstance().getInfo(6714, 1);
 					if (buff1 != null)
 					{
 						npc.setTarget(player);
 						npc.doSimultaneousCast(buff1);
 					}
-					L2Skill buff2 = SkillTable.getInstance().getInfo(6715, 1);
+					L2Skill buff2 = SkillData.getInstance().getInfo(6715, 1);
 					if (buff2 != null)
 					{
 						npc.setTarget(player);
 						npc.doSimultaneousCast(buff2);
 					}
-					L2Skill buff3 = SkillTable.getInstance().getInfo(6716, 1);
+					L2Skill buff3 = SkillData.getInstance().getInfo(6716, 1);
 					if (buff3 != null)
 					{
 						npc.setTarget(player);
 						npc.doSimultaneousCast(buff3);
 					}
-					L2Skill buff4 = SkillTable.getInstance().getInfo(6717, 1);
+					L2Skill buff4 = SkillData.getInstance().getInfo(6717, 1);
 					if (buff4 != null)
 					{
 						npc.setTarget(player);

@@ -59,7 +59,7 @@ public class ChatBattlefield implements IChatHandler
 			if (activeChar.isGM())
 			{
 				CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getNamePrefix() + activeChar.getName(), text);
-				for (L2PcInstance player : L2World.getInstance().getAllPlayersArray())
+				for (L2PcInstance player : L2World.getInstance().getPlayers())
 				{
 					if (player.getSiegeSide() == activeChar.getSiegeSide())
 					{
@@ -70,7 +70,7 @@ public class ChatBattlefield implements IChatHandler
 			}
 			
 			CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
-			for (L2PcInstance player : L2World.getInstance().getAllPlayersArray())
+			for (L2PcInstance player : L2World.getInstance().getPlayers())
 			{
 				if (player.getSiegeSide() == activeChar.getSiegeSide())
 				{

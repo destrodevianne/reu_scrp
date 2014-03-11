@@ -3,7 +3,7 @@ package l2r.gameserver.scripts.custom;
 import java.util.List;
 
 import javolution.util.FastList;
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -128,7 +128,7 @@ public class NevitsHerald extends Quest
 				}
 				
 				npc.setTarget(player);
-				npc.doCast(SkillTable.getInstance().getInfo(23312, 1));
+				npc.doCast(SkillData.getInstance().getInfo(23312, 1));
 				return null;
 			}
 		}
@@ -175,7 +175,7 @@ public class NevitsHerald extends Quest
 		
 		// message.setUpperEffect(true);
 		
-		for (L2PcInstance onlinePlayer : L2World.getInstance().getAllPlayersArray())
+		for (L2PcInstance onlinePlayer : L2World.getInstance().getPlayers())
 		{
 			if (onlinePlayer == null)
 			{

@@ -3,7 +3,7 @@ package l2r.gameserver.scripts.quests;
 import java.util.HashMap;
 import java.util.Map;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.L2Summon;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -303,7 +303,7 @@ public class Q00421_LittleWingAdventures extends Quest
 									else
 									{
 										npc.setTarget(player);
-										L2Skill skill = SkillTable.getInstance().getInfo(4167, 1);
+										L2Skill skill = SkillData.getInstance().getInfo(4167, 1);
 										if (skill != null)
 										{
 											skill.getEffects(npc, player);
@@ -325,7 +325,7 @@ public class Q00421_LittleWingAdventures extends Quest
 									else
 									{
 										npc.setTarget(player);
-										L2Skill skill = SkillTable.getInstance().getInfo(4167, 1);
+										L2Skill skill = SkillData.getInstance().getInfo(4167, 1);
 										if (skill != null)
 										{
 											skill.getEffects(npc, player);
@@ -347,7 +347,7 @@ public class Q00421_LittleWingAdventures extends Quest
 									else
 									{
 										npc.setTarget(player);
-										L2Skill skill = SkillTable.getInstance().getInfo(4167, 1);
+										L2Skill skill = SkillData.getInstance().getInfo(4167, 1);
 										if (skill != null)
 										{
 											skill.getEffects(npc, player);

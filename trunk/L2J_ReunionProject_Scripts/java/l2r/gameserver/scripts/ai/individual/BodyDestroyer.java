@@ -14,7 +14,7 @@
  */
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.datatables.SkillTable;
+import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -57,7 +57,7 @@ public class BodyDestroyer extends AbstractNpcAI
 				((L2Attackable) npc).addDamageHate(player, 0, 9999);
 				_isLocked = true;
 				npc.setTarget(player);
-				npc.doCast(SkillTable.getInstance().getInfo(5256, 1));
+				npc.doCast(SkillData.getInstance().getInfo(5256, 1));
 				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), player.getName() + " u will Die."));
 				startQuestTimer("time_to_destroy", 30000, npc, player);
 			}

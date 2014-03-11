@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -36,12 +37,14 @@ import l2r.gameserver.datatables.ClassListData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2World;
+import l2r.gameserver.model.PageResult;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.L2Summon;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2PetInstance;
 import l2r.gameserver.model.base.ClassId;
+import l2r.gameserver.model.interfaces.IProcedure;
 import l2r.gameserver.network.L2GameClient;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.ExBrExtraUserInfo;
@@ -53,6 +56,8 @@ import l2r.gameserver.network.serverpackets.PartySmallWindowDeleteAll;
 import l2r.gameserver.network.serverpackets.SetSummonRemainTime;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.network.serverpackets.UserInfo;
+import l2r.gameserver.util.Comparators;
+import l2r.gameserver.util.HtmlUtil;
 import l2r.gameserver.util.Util;
 import l2r.util.StringUtil;
 
@@ -900,51 +905,43 @@ public class AdminEditChar implements IAdminCommandHandler
 	
 	private void listCharacters(L2PcInstance activeChar, int page)
 	{
-		L2PcInstance[] players = L2World.getInstance().getAllPlayersArray();
+		final L2PcInstance[] players = L2World.getInstance().getPlayersSortedBy(Comparators.PLAYER_UPTIME_COMPARATOR);
 		
-		int maxCharactersPerPage = 20;
-		int maxPages = players.length / maxCharactersPerPage;
+		final NpcHtmlMessage html = new NpcHtmlMessage(5);
+		html.setFile(activeChar.getHtmlPrefix(), "data/html/admin/charlist.htm");
 		
-		if (players.length > (maxCharactersPerPage * maxPages))
+		final PageResult result = HtmlUtil.createPage(players, page, 20, new IProcedure<Integer, String>()
 		{
-			maxPages++;
+			@Override
+			public String execute(Integer i)
+			{
+				return "<td align=center><a action=\"bypass -h admin_show_characters " + i + "\">Page " + (i + 1) + "</a></td>";
+			}
+		}, new IProcedure<L2PcInstance, String>()
+		{
+			@Override
+			public String execute(L2PcInstance player)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.append("<tr>");
+				sb.append("<td width=80><a action=\"bypass -h admin_character_info " + player.getName() + "\">" + player.getName() + "</a></td>");
+				sb.append("<td width=110>" + ClassListData.getInstance().getClass(player.getClassId()).getClientCode() + "</td><td width=40>" + player.getLevel() + "</td>");
+				sb.append("</tr>");
+				return sb.toString();
+			}
+		});
+		
+		if (result.getPages() > 0)
+		{
+			html.replace("%pages%", "<table width=280 cellspacing=0><tr>" + result.getPagerTemplate() + "</tr></table>");
+		}
+		else
+		{
+			html.replace("%pages%", "");
 		}
 		
-		// Check if number of users changed
-		if (page > maxPages)
-		{
-			page = maxPages;
-		}
-		
-		int charactersStart = maxCharactersPerPage * page;
-		int charactersEnd = players.length;
-		if ((charactersEnd - charactersStart) > maxCharactersPerPage)
-		{
-			charactersEnd = charactersStart + maxCharactersPerPage;
-		}
-		
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		adminReply.setFile(activeChar.getHtmlPrefix(), "data/html/admin/charlist.htm");
-		
-		final StringBuilder replyMSG = new StringBuilder(1000);
-		
-		for (int x = 0; x < maxPages; x++)
-		{
-			int pagenr = x + 1;
-			StringUtil.append(replyMSG, "<center><a action=\"bypass -h admin_show_characters ", String.valueOf(x), "\">Page ", String.valueOf(pagenr), "</a></center>");
-		}
-		
-		adminReply.replace("%pages%", replyMSG.toString());
-		replyMSG.setLength(0);
-		
-		for (int i = charactersStart; i < charactersEnd; i++)
-		{
-			// Add player info into new Table row
-			StringUtil.append(replyMSG, "<tr><td width=80><a action=\"bypass -h admin_character_info ", players[i].getName(), "\">", players[i].getName(), "</a></td><td width=110>", ClassListData.getInstance().getClass(players[i].getClassId()).getClientCode(), "</td><td width=40>", String.valueOf(players[i].getLevel()), "</td></tr>");
-		}
-		
-		adminReply.replace("%players%", replyMSG.toString());
-		activeChar.sendPacket(adminReply);
+		html.replace("%players%", result.getBodyTemplate().toString());
+		activeChar.sendPacket(html);
 	}
 	
 	private void showCharacterInfo(L2PcInstance activeChar, L2PcInstance player)
@@ -1113,7 +1110,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	{
 		int CharactersFound = 0;
 		String name;
-		L2PcInstance[] players = L2World.getInstance().getAllPlayersArray();
+		Collection<L2PcInstance> players = L2World.getInstance().getPlayers();
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile(activeChar.getHtmlPrefix(), "data/html/admin/charfind.htm");
 		
@@ -1179,7 +1176,7 @@ public class AdminEditChar implements IAdminCommandHandler
 				throw new IllegalArgumentException("Malformed IPv4 number");
 			}
 		}
-		L2PcInstance[] players = L2World.getInstance().getAllPlayersArray();
+		Collection<L2PcInstance> players = L2World.getInstance().getPlayers();
 		int CharactersFound = 0;
 		L2GameClient client;
 		String name, ip = "0.0.0.0";
@@ -1294,7 +1291,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	 */
 	private void findDualbox(L2PcInstance activeChar, int multibox)
 	{
-		L2PcInstance[] players = L2World.getInstance().getAllPlayersArray();
+		Collection<L2PcInstance> players = L2World.getInstance().getPlayers();
 		
 		Map<String, List<L2PcInstance>> ipMap = new HashMap<>();
 		
@@ -1359,7 +1356,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	
 	private void findDualboxStrict(L2PcInstance activeChar, int multibox)
 	{
-		L2PcInstance[] players = L2World.getInstance().getAllPlayersArray();
+		Collection<L2PcInstance> players = L2World.getInstance().getPlayers();
 		
 		Map<IpPack, List<L2PcInstance>> ipMap = new HashMap<>();
 		

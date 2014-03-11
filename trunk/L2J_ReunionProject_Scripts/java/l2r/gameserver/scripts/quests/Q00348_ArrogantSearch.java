@@ -1,12 +1,14 @@
 package l2r.gameserver.scripts.quests;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
 import l2r.gameserver.model.skills.L2Skill;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class Q00348_ArrogantSearch extends Quest
 {
@@ -59,21 +61,21 @@ public class Q00348_ArrogantSearch extends Quest
 	private static final int ADENA = 57; // cheater reward
 	
 	// ARK: [key, summon, no-key text, openning-with-key text, already-openned text, content item]
-	private static final TIntObjectHashMap<Object[]> ARKS = new TIntObjectHashMap<>();
+	private static final Map<Integer, Object[]> ARKS = new HashMap<>();
 	// npc: letter to take, item to check for, 1st time htm, return htm, State.COMPLETED part htm, [x,y,z of chest]
-	private static final TIntObjectHashMap<Object[]> ARK_OWNERS = new TIntObjectHashMap<>();
+	private static final Map<Integer, Object[]> ARK_OWNERS = new HashMap<>();
 	// npc: fabrics to give, variable to set, ok htm, not ok htm, done htm
-	private static final TIntObjectHashMap<Object[]> BLOODY_OWNERS = new TIntObjectHashMap<>();
+	private static final Map<Integer, Object[]> BLOODY_OWNERS = new HashMap<>();
 	// mob: cond, giveItem, amount, chance%, takeItem (assumed to take only 1 of it)
-	private static final TIntObjectHashMap<Object[]> DROPS = new TIntObjectHashMap<>();
+	private static final Map<Integer, Object[]> DROPS = new HashMap<>();
 	
 	// pathologic situation, mobs in stage 29 drop same items as in stage 26 :/
 	// mob: cond, giveItem, amount, chance%, takeItem (assumed to take only 1 of it)
-	private static final TIntObjectHashMap<Object[]> DROPS_29 = new TIntObjectHashMap<>();
+	private static final Map<Integer, Object[]> DROPS_29 = new HashMap<>();
 	
 	// mob: cond, giveItem, amount, chance%, takeItem (assumed to take only 1 of it)
-	private static final TIntObjectHashMap<Object[]> ATTACK_DROPS_24 = new TIntObjectHashMap<>();
-	private static final TIntObjectHashMap<Object[]> ATTACK_DROPS_25 = new TIntObjectHashMap<>();
+	private static final Map<Integer, Object[]> ATTACK_DROPS_24 = new HashMap<>();
+	private static final Map<Integer, Object[]> ATTACK_DROPS_25 = new HashMap<>();
 	
 	public Q00348_ArrogantSearch(int id, String name, String descr)
 	{
@@ -332,19 +334,19 @@ public class Q00348_ArrogantSearch extends Quest
 			WHITE_FABRIC_1
 		});
 		
-		for (int i : ARK_OWNERS.keys())
+		for (int i : ARK_OWNERS.keySet())
 		{
 			addTalkId(i);
 		}
-		for (int i : ARKS.keys())
+		for (int i : ARKS.keySet())
 		{
 			addTalkId(i);
 		}
-		for (int i : BLOODY_OWNERS.keys())
+		for (int i : BLOODY_OWNERS.keySet())
 		{
 			addTalkId(i);
 		}
-		for (int i : DROPS.keys())
+		for (int i : DROPS.keySet())
 		{
 			addKillId(i);
 		}

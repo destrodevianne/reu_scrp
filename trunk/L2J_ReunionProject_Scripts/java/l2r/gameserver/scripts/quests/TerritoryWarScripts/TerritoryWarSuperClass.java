@@ -191,7 +191,7 @@ public class TerritoryWarSuperClass extends Quest
 			int territoryId = getTerritoryIdForThisNPCId(npc.getId());
 			if ((territoryId >= 81) && (territoryId <= 89))
 			{
-				for (L2PcInstance pl : L2World.getInstance().getAllPlayersArray())
+				for (L2PcInstance pl : L2World.getInstance().getPlayers())
 				{
 					if (pl.getSiegeSide() == territoryId)
 					{
@@ -378,7 +378,7 @@ public class TerritoryWarSuperClass extends Quest
 	{
 		super.setOnEnterWorld(val);
 		
-		for (L2PcInstance player : L2World.getInstance().getAllPlayersArray())
+		for (L2PcInstance player : L2World.getInstance().getPlayers())
 		{
 			if (player.getSiegeSide() > 0)
 			{
