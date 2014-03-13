@@ -41,7 +41,7 @@ import l2r.gameserver.scripting.scriptengine.listeners.player.PlayerSpawnListene
 public class JailHandler extends PlayerSpawnListener implements IPunishmentHandler
 {
 	@Override
-	public void onSpawn(L2PcInstance activeChar)
+	public void onPlayerLogin(L2PcInstance activeChar)
 	{
 		if (activeChar.isJailed() && !activeChar.isInsideZone(ZoneIdType.JAIL))
 		{
