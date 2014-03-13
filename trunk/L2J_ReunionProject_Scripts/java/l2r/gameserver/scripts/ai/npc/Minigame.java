@@ -247,7 +247,7 @@ public class Minigame extends AbstractNpcAI
 	}
 	
 	@Override
-	public boolean onUseSkill(SkillUseEvent event)
+	public boolean onSkillUse(SkillUseEvent event)
 	{
 		final MinigameRoom room = getRoomByParticipant((L2PcInstance) event.getCaster());
 		final boolean miniGameStarted = room.getStarted();
