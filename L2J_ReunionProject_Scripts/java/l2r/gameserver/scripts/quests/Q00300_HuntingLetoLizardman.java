@@ -25,7 +25,7 @@ import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.ItemHolder;
-import l2r.gameserver.model.itemcontainer.PcInventory;
+import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -40,7 +40,7 @@ public final class Q00300_HuntingLetoLizardman extends Quest
 	private static final int RATH = 30126;
 	// Items
 	private static final int BRACELET_OF_LIZARDMAN = 7139;
-	private static final ItemHolder REWARD_ADENA = new ItemHolder(PcInventory.ADENA_ID, 30000);
+	private static final ItemHolder REWARD_ADENA = new ItemHolder(Inventory.ADENA_ID, 30000);
 	private static final ItemHolder REWARD_ANIMAL_BONE = new ItemHolder(1872, 50);
 	private static final ItemHolder REWARD_ANIMAL_SKIN = new ItemHolder(1867, 50);
 	// Misc

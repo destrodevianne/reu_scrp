@@ -42,7 +42,7 @@ import l2r.gameserver.model.entity.Castle;
 import l2r.gameserver.model.entity.Castle.CastleFunction;
 import l2r.gameserver.model.entity.Fort;
 import l2r.gameserver.model.holders.SkillHolder;
-import l2r.gameserver.model.itemcontainer.PcInventory;
+import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.ExShowCropSetting;
 import l2r.gameserver.network.serverpackets.ExShowDominionRegistry;
@@ -543,7 +543,7 @@ public class CastleChamberlain extends AbstractNpcAI
 							}
 							else if (player.getAdena() >= price)
 							{
-								takeItems(player, PcInventory.ADENA_ID, price);
+								takeItems(player, Inventory.ADENA_ID, price);
 								for (int doorId : doors)
 								{
 									castle.setDoorUpgrade(doorId, level, true);
@@ -633,7 +633,7 @@ public class CastleChamberlain extends AbstractNpcAI
 						}
 						else if (player.getAdena() >= price)
 						{
-							takeItems(player, PcInventory.ADENA_ID, price);
+							takeItems(player, Inventory.ADENA_ID, price);
 							castle.setTrapUpgrade(trapIndex, level, true);
 							htmltext = "chamberlain-20.html";
 						}
@@ -774,11 +774,11 @@ public class CastleChamberlain extends AbstractNpcAI
 				if (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_TAXES))
 				{
 					final long amount = (st.hasMoreTokens()) ? Long.parseLong(st.nextToken()) : 0;
-					if ((amount > 0) && (amount < PcInventory.MAX_ADENA))
+					if ((amount > 0) && (amount < Inventory.MAX_ADENA))
 					{
 						if (player.getAdena() >= amount)
 						{
-							takeItems(player, PcInventory.ADENA_ID, amount);
+							takeItems(player, Inventory.ADENA_ID, amount);
 							castle.addToTreasuryNoTax(amount);
 						}
 						else
@@ -1275,7 +1275,7 @@ public class CastleChamberlain extends AbstractNpcAI
 								final long totalCost = Config.SSQ_DAWN_TICKET_PRICE * Config.SSQ_DAWN_TICKET_BUNDLE;
 								if (player.getAdena() >= totalCost)
 								{
-									takeItems(player, PcInventory.ADENA_ID, totalCost);
+									takeItems(player, Inventory.ADENA_ID, totalCost);
 									giveItems(player, Config.SSQ_MANORS_AGREEMENT_ID, Config.SSQ_DAWN_TICKET_BUNDLE);
 									castle.setTicketBuyCount(ticketCount + 1);
 								}

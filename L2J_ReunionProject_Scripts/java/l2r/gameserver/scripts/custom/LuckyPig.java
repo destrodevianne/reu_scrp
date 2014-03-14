@@ -27,7 +27,7 @@ import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.itemcontainer.PcInventory;
+import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -75,7 +75,7 @@ public class LuckyPig extends AbstractNpcAI
 						continue;
 					}
 					L2ItemInstance item = (L2ItemInstance) object;
-					if (item.getId() == PcInventory.ADENA_ID)
+					if (item.getId() == Inventory.ADENA_ID)
 					{
 						npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(item.getX(), item.getY(), item.getZ(), 0));
 						L2World.getInstance().removeVisibleObject(item, item.getWorldRegion());

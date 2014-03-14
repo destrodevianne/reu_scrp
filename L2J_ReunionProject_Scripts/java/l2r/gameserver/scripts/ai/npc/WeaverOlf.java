@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.ai.npc;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.itemcontainer.PcInventory;
+import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
@@ -194,7 +194,7 @@ public class WeaverOlf extends AbstractNpcAI
 			{
 				if (player.getAdena() > price)
 				{
-					takeItems(player, PcInventory.ADENA_ID, price);
+					takeItems(player, Inventory.ADENA_ID, price);
 					takeItems(player, itemIds[0], 1);
 					int rand = getRandom(200);
 					if (rand <= CHANCES[0])

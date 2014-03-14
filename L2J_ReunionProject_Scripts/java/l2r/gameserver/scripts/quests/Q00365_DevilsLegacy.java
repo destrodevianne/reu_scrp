@@ -24,7 +24,7 @@ import java.util.Map;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
-import l2r.gameserver.model.itemcontainer.PcInventory;
+import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 
@@ -189,7 +189,7 @@ public final class Q00365_DevilsLegacy extends Quest
 						htmltext = "30092-06.html";
 					}
 					takeItems(player, PIRATES_TREASURE_CHEST, 1);
-					takeItems(player, PcInventory.ADENA_ID, 600);
+					takeItems(player, Inventory.ADENA_ID, 600);
 					rewardItems(player, itemId, 1);
 				}
 				break;
