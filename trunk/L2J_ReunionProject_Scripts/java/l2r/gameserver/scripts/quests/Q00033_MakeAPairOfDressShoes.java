@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.quests;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.itemcontainer.PcInventory;
+import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -77,7 +77,7 @@ public class Q00033_MakeAPairOfDressShoes extends Quest
 				{
 					st.takeItems(LEATHER, LEATHER_COUNT);
 					st.takeItems(THREAD, LEATHER_COUNT);
-					st.takeItems(PcInventory.ADENA_ID, ADENA_COUNT2);
+					st.takeItems(Inventory.ADENA_ID, ADENA_COUNT2);
 					st.setCond(4, true);
 				}
 				else
@@ -97,7 +97,7 @@ public class Q00033_MakeAPairOfDressShoes extends Quest
 				{
 					return "30164-03.html";
 				}
-				st.takeItems(PcInventory.ADENA_ID, ADENA_COUNT3);
+				st.takeItems(Inventory.ADENA_ID, ADENA_COUNT3);
 				st.setCond(5, true);
 				break;
 			default:

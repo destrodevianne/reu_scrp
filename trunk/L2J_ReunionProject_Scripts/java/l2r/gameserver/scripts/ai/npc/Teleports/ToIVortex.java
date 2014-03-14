@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.ai.npc.Teleports;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.itemcontainer.PcInventory;
+import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
@@ -193,7 +193,7 @@ public class ToIVortex extends AbstractNpcAI
 			{
 				if (player.getAdena() >= 10000)
 				{
-					takeItems(player, PcInventory.ADENA_ID, 10000);
+					takeItems(player, Inventory.ADENA_ID, 10000);
 					giveItems(player, GREEN_DIMENSION_STONE, 1);
 				}
 				else
@@ -206,7 +206,7 @@ public class ToIVortex extends AbstractNpcAI
 			{
 				if (player.getAdena() >= 10000)
 				{
-					takeItems(player, PcInventory.ADENA_ID, 10000);
+					takeItems(player, Inventory.ADENA_ID, 10000);
 					giveItems(player, BLUE_DIMENSION_STONE, 1);
 				}
 				else
@@ -219,7 +219,7 @@ public class ToIVortex extends AbstractNpcAI
 			{
 				if (player.getAdena() >= 10000)
 				{
-					takeItems(player, PcInventory.ADENA_ID, 10000);
+					takeItems(player, Inventory.ADENA_ID, 10000);
 					giveItems(player, RED_DIMENSION_STONE, 1);
 				}
 				else

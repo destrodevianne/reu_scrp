@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.ai.npc.Teleports;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.itemcontainer.PcInventory;
+import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
@@ -50,7 +50,7 @@ public class Survivor extends AbstractNpcAI
 			}
 			else
 			{
-				takeItems(player, PcInventory.ADENA_ID, 150000);
+				takeItems(player, Inventory.ADENA_ID, 150000);
 				player.teleToLocation(-149406, 255247, -80);
 				return null;
 			}
