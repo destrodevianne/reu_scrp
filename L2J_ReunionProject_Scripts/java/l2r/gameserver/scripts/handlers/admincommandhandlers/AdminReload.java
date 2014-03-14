@@ -29,12 +29,15 @@ import l2r.gameserver.datatables.AdminTable;
 import l2r.gameserver.datatables.BuyListData;
 import l2r.gameserver.datatables.CrestTable;
 import l2r.gameserver.datatables.DoorTable;
+import l2r.gameserver.datatables.EnchantItemData;
+import l2r.gameserver.datatables.EnchantItemGroupsData;
 import l2r.gameserver.datatables.ItemTable;
 import l2r.gameserver.datatables.MultiSell;
 import l2r.gameserver.datatables.NpcTable;
 import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.datatables.TeleportLocationTable;
+import l2r.gameserver.datatables.TransformData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.instancemanager.CursedWeaponsManager;
 import l2r.gameserver.instancemanager.QuestManager;
@@ -250,6 +253,19 @@ public class AdminReload implements IAdminCommandHandler
 						L2ScriptEngineManager.getInstance().reportScriptFileError(file, e);
 						activeChar.sendMessage("There was an error while loading handlers.");
 					}
+					break;
+				}
+				case "enchant":
+				{
+					EnchantItemGroupsData.getInstance().load();
+					EnchantItemData.getInstance().load();
+					AdminTable.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded item enchanting data.");
+					break;
+				}
+				case "transform":
+				{
+					TransformData.getInstance().load();
+					AdminTable.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded transform data.");
 					break;
 				}
 				default:

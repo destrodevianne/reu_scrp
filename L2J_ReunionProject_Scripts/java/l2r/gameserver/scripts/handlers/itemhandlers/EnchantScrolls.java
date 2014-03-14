@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -48,7 +48,7 @@ public class EnchantScrolls implements IItemHandler
 			return false;
 		}
 		
-		activeChar.setActiveEnchantItem(item);
+		activeChar.setActiveEnchantItemId(item.getObjectId());
 		activeChar.sendPacket(new ChooseInventoryItem(item.getId()));
 		return true;
 	}
