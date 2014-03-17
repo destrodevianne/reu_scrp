@@ -1123,7 +1123,15 @@ public class VanHalter extends Quest
 			{
 				if (!_vanHalter.isAfraid())
 				{
-					_vanHalter.getAI().notifyEvent(CtrlEvent.EVT_AFRAID);
+					try
+					{
+						_vanHalter.getAI().notifyEvent(CtrlEvent.EVT_AFRAID);
+					}
+					catch (Exception e)
+					{
+						_log.warn("Logger: notifyEvent failed (VanHalter) Report this to team. ");
+					}
+					
 					if (_vanHalter.getZ() >= -10476)
 					{
 						Location pos = new Location(-16397, -53308, -10448, 0);
