@@ -648,7 +648,7 @@ public class RainbowSpringsChateau extends Quest
 				{
 					_siegeEnd.cancel(false);
 				}
-				ThreadPoolManager.getInstance().executeTask(new SiegeEnd(clan));
+				ThreadPoolManager.getInstance().executeGeneral(new SiegeEnd(clan));
 			}
 		}
 		
@@ -935,7 +935,7 @@ public class RainbowSpringsChateau extends Quest
 	public static void launchSiege()
 	{
 		_nextSiege.cancel(false);
-		ThreadPoolManager.getInstance().executeTask(new SiegeStart());
+		ThreadPoolManager.getInstance().executeGeneral(new SiegeStart());
 	}
 	
 	public static void endSiege()
@@ -944,7 +944,7 @@ public class RainbowSpringsChateau extends Quest
 		{
 			_siegeEnd.cancel(false);
 		}
-		ThreadPoolManager.getInstance().executeTask(new SiegeEnd(null));
+		ThreadPoolManager.getInstance().executeGeneral(new SiegeEnd(null));
 	}
 	
 	public static void updateAdminDate(long date)
