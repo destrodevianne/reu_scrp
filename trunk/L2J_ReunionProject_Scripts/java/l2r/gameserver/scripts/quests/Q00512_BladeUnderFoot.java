@@ -296,7 +296,7 @@ public final class Q00512_BladeUnderFoot extends Quest
 			}
 		}
 		
-		if ((isEnter && castle.getSiege().getIsInProgress()) || ((castle.getSiegeDate().getTimeInMillis() - System.currentTimeMillis()) <= 7200000))
+		if ((isEnter && castle.getSiege().isInProgress()) || ((castle.getSiegeDate().getTimeInMillis() - System.currentTimeMillis()) <= 7200000))
 		{
 			return "CastleWarden-18.htm";
 		}

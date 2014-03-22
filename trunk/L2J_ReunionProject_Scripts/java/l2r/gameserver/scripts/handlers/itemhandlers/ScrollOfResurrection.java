@@ -99,7 +99,7 @@ public class ScrollOfResurrection implements IItemHandler
 				castle = CastleManager.getInstance().getCastle(targetPet.getOwner().getX(), targetPet.getOwner().getY(), targetPet.getOwner().getZ());
 			}
 			
-			if ((castle != null) && castle.getSiege().getIsInProgress())
+			if ((castle != null) && castle.getSiege().isInProgress())
 			{
 				condGood = false;
 				activeChar.sendPacket(SystemMessageId.CANNOT_BE_RESURRECTED_DURING_SIEGE);
