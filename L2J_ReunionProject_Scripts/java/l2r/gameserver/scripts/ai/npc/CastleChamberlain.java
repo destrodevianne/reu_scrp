@@ -445,7 +445,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_SET_FUNCTIONS))
 				{
-					if (castle.getSiege().getIsInProgress())
+					if (castle.getSiege().isInProgress())
 					{
 						htmltext = "chamberlain-08.html";
 					}
@@ -516,7 +516,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_SET_FUNCTIONS))
 				{
-					if (castle.getSiege().getIsInProgress())
+					if (castle.getSiege().isInProgress())
 					{
 						htmltext = "chamberlain-08.html";
 					}
@@ -614,7 +614,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_SET_FUNCTIONS))
 				{
-					if (castle.getSiege().getIsInProgress())
+					if (castle.getSiege().isInProgress())
 					{
 						htmltext = "chamberlain-08.html";
 					}
@@ -653,7 +653,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (npc.isMyLord(player))
 				{
-					if (castle.getSiege().getIsInProgress())
+					if (castle.getSiege().isInProgress())
 					{
 						htmltext = "chamberlain-07.html";
 					}
@@ -694,7 +694,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_TAXES))
 				{
-					if (castle.getSiege().getIsInProgress())
+					if (castle.getSiege().isInProgress())
 					{
 						htmltext = "chamberlain-08.html";
 					}
@@ -724,7 +724,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_TAXES))
 				{
-					if (castle.getSiege().getIsInProgress())
+					if (castle.getSiege().isInProgress())
 					{
 						htmltext = "chamberlain-08.html";
 					}
@@ -825,7 +825,7 @@ public class CastleChamberlain extends AbstractNpcAI
 				{
 					htmltext = "chamberlain-21.html";
 				}
-				else if (castle.getSiege().getIsInProgress())
+				else if (castle.getSiege().isInProgress())
 				{
 					htmltext = "chamberlain-08.html";
 				}
@@ -841,7 +841,7 @@ public class CastleChamberlain extends AbstractNpcAI
 				{
 					htmltext = "chamberlain-21.html";
 				}
-				else if (castle.getSiege().getIsInProgress())
+				else if (castle.getSiege().isInProgress())
 				{
 					htmltext = "chamberlain-08.html";
 				}
@@ -855,7 +855,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_DISMISS))
 				{
-					if (castle.getSiege().getIsInProgress())
+					if (castle.getSiege().isInProgress())
 					{
 						htmltext = "chamberlain-08.html";
 					}
@@ -877,7 +877,7 @@ public class CastleChamberlain extends AbstractNpcAI
 				{
 					htmltext = "chamberlain-21.html";
 				}
-				else if (castle.getSiege().getIsInProgress())
+				else if (castle.getSiege().isInProgress())
 				{
 					htmltext = "chamberlain-08.html";
 				}
@@ -893,7 +893,7 @@ public class CastleChamberlain extends AbstractNpcAI
 				{
 					htmltext = "chamberlain-21.html";
 				}
-				else if (castle.getSiege().getIsInProgress())
+				else if (castle.getSiege().isInProgress())
 				{
 					htmltext = "chamberlain-08.html";
 				}
@@ -1194,7 +1194,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "give_crown":
 			{
-				if (castle.getSiege().getIsInProgress())
+				if (castle.getSiege().isInProgress())
 				{
 					htmltext = "chamberlain-08.html";
 				}
@@ -1223,7 +1223,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (npc.isMyLord(player))
 				{
-					if (castle.getSiege().getIsInProgress())
+					if (castle.getSiege().isInProgress())
 					{
 						htmltext = "chamberlain-08.html";
 					}
@@ -1261,7 +1261,7 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (npc.isMyLord(player))
 				{
-					if (castle.getSiege().getIsInProgress())
+					if (castle.getSiege().isInProgress())
 					{
 						htmltext = "chamberlain-08.html";
 					}
