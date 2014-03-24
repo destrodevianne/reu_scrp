@@ -16,10 +16,9 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 	private static final int _kroon = 32653;
 	private static final int _taroon = 32654;
 	
-	public Q10284_AcquisitionOfDivineSword(int questId, String name, String descr)
+	public Q10284_AcquisitionOfDivineSword()
 	{
-		super(questId, name, descr);
-		
+		super(10284, Q10284_AcquisitionOfDivineSword.class.getSimpleName(), "Acquisition of Divine Sword");
 		addStartNpc(_rafforty);
 		addTalkId(_rafforty);
 		addTalkId(_jinia);
@@ -140,15 +139,23 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 				case State.CREATED:
 					QuestState _prev = player.getQuestState(Q10283_RequestOfIceMerchant.class.getSimpleName());
 					if ((_prev != null) && (_prev.getState() == State.COMPLETED) && (player.getLevel() >= 82))
+					{
 						htmltext = "32020-01.htm";
+					}
 					else
+					{
 						htmltext = "32020-03.htm";
+					}
 					break;
 				case State.STARTED:
 					if (st.getInt("progress") == 1)
+					{
 						htmltext = "32020-05.htm";
+					}
 					else if (st.getInt("progress") == 2)
+					{
 						htmltext = "32020-09.htm";
+					}
 					break;
 				case State.COMPLETED:
 					htmltext = "32020-02.htm";
@@ -158,7 +165,9 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 		else if (npc.getId() == _jinia)
 		{
 			if (st.getState() != State.STARTED)
+			{
 				return getNoQuestMsg(player);
+			}
 			
 			if (st.getInt("progress") == 1)
 			{
@@ -194,14 +203,17 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 			}
 		}
 		
-		else if (npc.getId() == _kroon || npc.getId() == _taroon)
+		else if ((npc.getId() == _kroon) || (npc.getId() == _taroon))
 		{
 			if (st.getState() != State.STARTED)
+			{
 				return getNoQuestMsg(player);
+			}
 			
 			if (st.getInt("progress") == 2)
+			{
 				htmltext = npc.getId() == _kroon ? "32653-01.htm" : "32654-01.htm";
-			
+			}
 			else if (st.getInt("progress") == 3)
 			{
 				st.set("jinia_themes", "102030");
@@ -214,10 +226,5 @@ public class Q10284_AcquisitionOfDivineSword extends Quest
 		}
 		
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10284_AcquisitionOfDivineSword(10284, Q10284_AcquisitionOfDivineSword.class.getSimpleName(), "Acquisition of Divine Sword");
 	}
 }

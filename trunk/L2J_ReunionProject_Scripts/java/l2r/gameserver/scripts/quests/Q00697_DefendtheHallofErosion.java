@@ -31,10 +31,9 @@ public class Q00697_DefendtheHallofErosion extends Quest
 	private static final int TEPIOS = 32603;
 	private static final int VesperNobleEnhanceStone = 14052;
 	
-	public Q00697_DefendtheHallofErosion(int questId, String name, String descr)
+	public Q00697_DefendtheHallofErosion()
 	{
-		super(questId, name, descr);
-		
+		super(697, Q00697_DefendtheHallofErosion.class.getSimpleName(), "Defend the Hall of Erosion");
 		addStartNpc(TEPIOS);
 		addTalkId(TEPIOS);
 	}
@@ -104,10 +103,5 @@ public class Q00697_DefendtheHallofErosion extends Quest
 				break;
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00697_DefendtheHallofErosion(697, Q00697_DefendtheHallofErosion.class.getSimpleName(), "Defend the Hall of Erosion");
 	}
 }

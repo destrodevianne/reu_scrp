@@ -60,9 +60,9 @@ public final class Q00049_TheRoadHome extends Quest
 		NPC_ITEMS.put(DUSTIN, new ItemHolder(5, GALLADUCCIS_ORDER_3));
 	}
 	
-	private Q00049_TheRoadHome(int questId, String name, String descr)
+	public Q00049_TheRoadHome()
 	{
-		super(questId, name, descr);
+		super(49, Q00049_TheRoadHome.class.getSimpleName(), "The Road Home");
 		addStartNpc(GALLADUCCI);
 		addTalkId(GALLADUCCI);
 		addTalkId(NPC_ITEMS.keySet());
@@ -297,10 +297,5 @@ public final class Q00049_TheRoadHome extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00049_TheRoadHome(49, Q00049_TheRoadHome.class.getSimpleName(), "The Road Home");
 	}
 }

@@ -44,6 +44,27 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 	private static int PIECE_OF_TABLET = 8081;
 	private static int REPORT_PIECE = 8082;
 	
+	public Q00115_TheOtherSideOfTruth()
+	{
+		super(115, Q00115_TheOtherSideOfTruth.class.getSimpleName(), "The Other Side of Truth");
+		addStartNpc(RAFFORTY);
+		addTalkId(RAFFORTY);
+		addTalkId(MISA);
+		addTalkId(KIERRE);
+		addTalkId(ICE_SCULPTURE1);
+		addTalkId(ICE_SCULPTURE2);
+		addTalkId(ICE_SCULPTURE3);
+		addTalkId(ICE_SCULPTURE4);
+		
+		questItemIds = new int[]
+		{
+			MISAS_LETTER,
+			RAFFORTYS_LETTER,
+			PIECE_OF_TABLET,
+			REPORT_PIECE
+		};
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -54,7 +75,7 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 			return htmltext;
 		}
 		
-		if (event.equalsIgnoreCase("32020-02.htm") && st.getState() == State.CREATED)
+		if (event.equalsIgnoreCase("32020-02.htm") && (st.getState() == State.CREATED))
 		{
 			st.setState(State.STARTED);
 			st.set("cond", "1");
@@ -91,8 +112,10 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 		{
 			st.set("cond", "8");
 			st.playSound("ItemSound.quest_middle");
-			if (st.getInt("32021") == 0 && st.getInt("32077") == 0)
+			if ((st.getInt("32021") == 0) && (st.getInt("32077") == 0))
+			{
 				st.giveItems(PIECE_OF_TABLET, 1);
+			}
 			htmltext = "Sculpture-04.htm";
 		}
 		else if (event.equalsIgnoreCase("32022-02.htm"))
@@ -161,7 +184,9 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 			{
 				case State.CREATED:
 					if (player.getLevel() >= 53)
+					{
 						htmltext = "32020-01.htm";
+					}
 					else
 					{
 						htmltext = "32020-00.htm";
@@ -170,13 +195,21 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 					break;
 				case State.STARTED:
 					if (st.getInt("cond") == 1)
+					{
 						htmltext = "32020-03.htm";
+					}
 					else if (st.getInt("cond") == 2)
+					{
 						htmltext = "32020-04.htm";
+					}
 					else if (st.getInt("cond") == 3)
+					{
 						htmltext = "32020-05.htm";
+					}
 					else if (st.getInt("cond") == 4)
+					{
 						htmltext = "32020-11.htm";
+					}
 					else if (st.getInt("cond") == 5)
 					{
 						htmltext = "32020-13.htm";
@@ -185,15 +218,25 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 						st.set("cond", "6");
 					}
 					else if (st.getInt("cond") == 6)
+					{
 						htmltext = "32020-14.htm";
-					else if (st.getInt("cond") == 7 || st.getInt("cond") == 8)
+					}
+					else if ((st.getInt("cond") == 7) || (st.getInt("cond") == 8))
+					{
 						htmltext = "32020-14a.htm";
+					}
 					else if (st.getInt("cond") == 9)
+					{
 						htmltext = "32020-15.htm";
+					}
 					else if (st.getInt("cond") == 10)
+					{
 						htmltext = "32020-17.htm";
+					}
 					else if (st.getInt("cond") == 11)
+					{
 						htmltext = "32020-20.htm";
+					}
 					else if (st.getInt("cond") == 12)
 					{
 						htmltext = "32020-18.htm";
@@ -208,7 +251,7 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 					break;
 			}
 		}
-		else if (npcId == MISA && st.getState() == State.STARTED)
+		else if ((npcId == MISA) && (st.getState() == State.STARTED))
 		{
 			if (st.getInt("cond") == 1)
 			{
@@ -218,13 +261,19 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 			else if (st.getInt("cond") == 2)
+			{
 				htmltext = "32018-02.htm";
+			}
 			else if (st.getInt("cond") == 6)
+			{
 				htmltext = "32018-03.htm";
+			}
 			else if (st.getInt("cond") == 7)
+			{
 				htmltext = "32018-05.htm";
+			}
 		}
-		else if (npcId == KIERRE && st.getState() == State.STARTED)
+		else if ((npcId == KIERRE) && (st.getState() == State.STARTED))
 		{
 			if (st.getInt("cond") == 8)
 			{
@@ -234,21 +283,25 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 			else if (st.getInt("cond") >= 9)
+			{
 				htmltext = "";
+			}
 		}
-		else if ((npcId == ICE_SCULPTURE1 || npcId == ICE_SCULPTURE2 || npcId == ICE_SCULPTURE3 || npcId == ICE_SCULPTURE4) && st.getState() == State.STARTED)
+		else if (((npcId == ICE_SCULPTURE1) || (npcId == ICE_SCULPTURE2) || (npcId == ICE_SCULPTURE3) || (npcId == ICE_SCULPTURE4)) && (st.getState() == State.STARTED))
 		{
 			if (st.getInt("cond") == 7)
 			{
 				String _npcId = String.valueOf(npcId);
 				int npcId_flag = st.getInt(_npcId);
-				if (npcId == ICE_SCULPTURE1 || npcId == ICE_SCULPTURE2)
+				if ((npcId == ICE_SCULPTURE1) || (npcId == ICE_SCULPTURE2))
 				{
 					int talk_flag = st.getInt("talk");
 					return npcId_flag == 1 ? "Sculpture-02.htm" : talk_flag == 1 ? "Sculpture-06.htm" : "Sculpture-03-" + _npcId + ".htm";
 				}
 				else if (npcId_flag == 1)
+				{
 					htmltext = "Sculpture-02.htm";
+				}
 				else
 				{
 					st.set(_npcId, "1");
@@ -256,7 +309,9 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 				}
 			}
 			else if (st.getInt("cond") == 8)
+			{
 				htmltext = "Sculpture-04.htm";
+			}
 			else if (st.getInt("cond") == 11)
 			{
 				htmltext = "Sculpture-07.htm";
@@ -265,34 +320,10 @@ public class Q00115_TheOtherSideOfTruth extends Quest
 				st.playSound("ItemSound.quest_middle");
 			}
 			else if (st.getInt("cond") == 12)
+			{
 				htmltext = "Sculpture-08.htm";
+			}
 		}
 		return htmltext;
-	}
-	
-	public Q00115_TheOtherSideOfTruth(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		addStartNpc(RAFFORTY);
-		addTalkId(RAFFORTY);
-		addTalkId(MISA);
-		addTalkId(KIERRE);
-		addTalkId(ICE_SCULPTURE1);
-		addTalkId(ICE_SCULPTURE2);
-		addTalkId(ICE_SCULPTURE3);
-		addTalkId(ICE_SCULPTURE4);
-		
-		questItemIds = new int[]
-		{
-			MISAS_LETTER,
-			RAFFORTYS_LETTER,
-			PIECE_OF_TABLET,
-			REPORT_PIECE
-		};
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00115_TheOtherSideOfTruth(115, Q00115_TheOtherSideOfTruth.class.getSimpleName(), "The Other Side Of Truth");
 	}
 }

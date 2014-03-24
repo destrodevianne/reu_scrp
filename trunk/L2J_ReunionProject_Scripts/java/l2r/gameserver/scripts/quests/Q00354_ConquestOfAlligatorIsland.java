@@ -54,7 +54,7 @@ public final class Q00354_ConquestOfAlligatorIsland extends Quest
 		MOB2.put(20991, 69); // tribe_of_swamp
 	}
 	
-	private Q00354_ConquestOfAlligatorIsland()
+	public Q00354_ConquestOfAlligatorIsland()
 	{
 		super(354, Q00354_ConquestOfAlligatorIsland.class.getSimpleName(), "Conquest of Alligator Island");
 		addStartNpc(KLUCK);
@@ -181,10 +181,5 @@ public final class Q00354_ConquestOfAlligatorIsland extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String args[])
-	{
-		new Q00354_ConquestOfAlligatorIsland();
 	}
 }

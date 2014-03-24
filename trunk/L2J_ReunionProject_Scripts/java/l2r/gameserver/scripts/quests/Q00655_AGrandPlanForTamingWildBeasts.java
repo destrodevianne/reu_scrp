@@ -38,10 +38,9 @@ public class Q00655_AGrandPlanForTamingWildBeasts extends Quest
 	
 	private static final SiegableHall BEAST_STRONGHOLD = CHSiegeManager.getInstance().getSiegableHall(63);
 	
-	public Q00655_AGrandPlanForTamingWildBeasts(int questId, String name, String descr)
+	public Q00655_AGrandPlanForTamingWildBeasts()
 	{
-		super(questId, name, descr);
-		
+		super(655, Q00655_AGrandPlanForTamingWildBeasts.class.getSimpleName(), "");
 		addStartNpc(MESSENGER);
 		addTalkId(MESSENGER);
 	}
@@ -102,10 +101,5 @@ public class Q00655_AGrandPlanForTamingWildBeasts extends Quest
 				st.giveItems(STONE, 1);
 			}
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00655_AGrandPlanForTamingWildBeasts(655, Q00655_AGrandPlanForTamingWildBeasts.class.getSimpleName(), "");
 	}
 }

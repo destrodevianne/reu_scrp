@@ -52,9 +52,9 @@ public class Q00141_ShadowFoxPart3 extends Quest
 	private static final int MAX_REWARD_LEVEL = 42;
 	private static final int REPORT_COUNT = 30;
 	
-	private Q00141_ShadowFoxPart3(int questId, String name, String descr)
+	public Q00141_ShadowFoxPart3()
 	{
-		super(questId, name, descr);
+		super(141, Q00141_ShadowFoxPart3.class.getSimpleName(), "Shadow Fox - 3");
 		addStartNpc(NATOOLS);
 		addTalkId(NATOOLS);
 		addKillId(MOBS.keySet());
@@ -193,10 +193,5 @@ public class Q00141_ShadowFoxPart3 extends Quest
 				break;
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00141_ShadowFoxPart3(141, Q00141_ShadowFoxPart3.class.getSimpleName(), "Shadow Fox - 3");
 	}
 }

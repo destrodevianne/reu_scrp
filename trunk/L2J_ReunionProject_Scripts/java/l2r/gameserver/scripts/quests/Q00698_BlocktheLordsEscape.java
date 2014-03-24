@@ -28,10 +28,9 @@ public class Q00698_BlocktheLordsEscape extends Quest
 	private static final int TEPIOS = 32603;
 	private static final int VESPER_STONE = 14052;
 	
-	public Q00698_BlocktheLordsEscape(int questId, String name, String descr)
+	public Q00698_BlocktheLordsEscape()
 	{
-		super(questId, name, descr);
-		
+		super(698, Q00698_BlocktheLordsEscape.class.getSimpleName(), "Block the Lords Escape");
 		addStartNpc(TEPIOS);
 		addTalkId(TEPIOS);
 	}
@@ -98,10 +97,5 @@ public class Q00698_BlocktheLordsEscape extends Quest
 				break;
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00698_BlocktheLordsEscape(698, Q00698_BlocktheLordsEscape.class.getSimpleName(), "Block the Lords Escape");
 	}
 }

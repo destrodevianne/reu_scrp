@@ -15,10 +15,9 @@ public class Q00693_DefeatingDragonkinRemnants extends Quest
 	private static final int EDRIC = 32527;
 	private static final int REWARD_CHANCE = 60;
 	
-	public Q00693_DefeatingDragonkinRemnants(int questId, String name, String descr)
+	public Q00693_DefeatingDragonkinRemnants()
 	{
-		super(questId, name, descr);
-		
+		super(693, Q00693_DefeatingDragonkinRemnants.class.getSimpleName(), "Defeating Dragonkin Remnants");
 		addStartNpc(EDRIC);
 		addTalkId(EDRIC);
 	}
@@ -152,10 +151,5 @@ public class Q00693_DefeatingDragonkinRemnants extends Quest
 		htmltext = htmltext.replace("%replace%", replace);
 		
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00693_DefeatingDragonkinRemnants(693, Q00693_DefeatingDragonkinRemnants.class.getSimpleName(), "Defeating Dragonkin Remnants");
 	}
 }

@@ -47,9 +47,9 @@ public class Q00641_AttackSailren extends Quest
 		22199, // Pterosaur
 	};
 	
-	public Q00641_AttackSailren(int id, String name, String descr)
+	public Q00641_AttackSailren()
 	{
-		super(id, name, descr);
+		super(641, Q00641_AttackSailren.class.getSimpleName(), "Attack Sailren!");
 		addStartNpc(SHILENS_STONE_STATUE);
 		addTalkId(SHILENS_STONE_STATUE);
 		addKillId(MOBS);
@@ -132,10 +132,5 @@ public class Q00641_AttackSailren extends Quest
 				break;
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00641_AttackSailren(641, Q00641_AttackSailren.class.getSimpleName(), "Attack Sailren!");
 	}
 }

@@ -148,10 +148,9 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 		}
 	};
 	
-	public Q00337_AudienceWithTheLandDragon(int questId, String name, String descr)
+	public Q00337_AudienceWithTheLandDragon()
 	{
-		super(questId, name, descr);
-		
+		super(337, qn, "");
 		addStartNpc(GABRIELLE);
 		addTalkId(GABRIELLE, ORVEN, KENDRA, CHAKIRIS, KAIENA, MOKE, HELTON, GILMORE, THEODRIC);
 		
@@ -731,10 +730,5 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 				break;
 		}
 		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00337_AudienceWithTheLandDragon(337, qn, "");
 	}
 }

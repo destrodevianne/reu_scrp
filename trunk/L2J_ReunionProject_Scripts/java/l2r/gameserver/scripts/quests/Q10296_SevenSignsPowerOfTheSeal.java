@@ -39,10 +39,9 @@ public class Q10296_SevenSignsPowerOfTheSeal extends Quest
 	};
 	private static final int ETISETINA = 18949;
 	
-	public Q10296_SevenSignsPowerOfTheSeal(int questId, String name, String descr)
+	public Q10296_SevenSignsPowerOfTheSeal()
 	{
-		super(questId, name, descr);
-		
+		super(10296, Q10296_SevenSignsPowerOfTheSeal.class.getSimpleName(), "Q10296_SevenSignsPoweroftheSeal");
 		addStartNpc(EVIL);
 		
 		for (int id : NPCs)
@@ -232,10 +231,5 @@ public class Q10296_SevenSignsPowerOfTheSeal extends Quest
 		}
 		
 		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10296_SevenSignsPowerOfTheSeal(10296, Q10296_SevenSignsPowerOfTheSeal.class.getSimpleName(), "Q10296_SevenSignsPoweroftheSeal");
 	}
 }

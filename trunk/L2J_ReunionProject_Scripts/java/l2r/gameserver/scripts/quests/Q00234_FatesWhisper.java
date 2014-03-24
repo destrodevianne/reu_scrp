@@ -42,10 +42,9 @@ public class Q00234_FatesWhisper extends Quest
 	private static final Map<Integer, Integer> CHEST_SPAWN = new HashMap<>();
 	private static final Map<Integer, String> Weapons = new HashMap<>();
 	
-	public Q00234_FatesWhisper(int questId, String name, String descr)
+	public Q00234_FatesWhisper()
 	{
-		super(questId, name, descr);
-		
+		super(234, qn, "");
 		addStartNpc(31002);
 		
 		for (int npc : NPCs)
@@ -464,10 +463,5 @@ public class Q00234_FatesWhisper extends Quest
 			addSpawn(CHEST_SPAWN.get(Integer.valueOf(npcId)).intValue(), npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), true, 60000L, false);
 		}
 		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00234_FatesWhisper(234, qn, "");
 	}
 }

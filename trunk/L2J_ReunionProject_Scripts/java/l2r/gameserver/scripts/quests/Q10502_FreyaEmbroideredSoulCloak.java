@@ -19,6 +19,19 @@ public class Q10502_FreyaEmbroideredSoulCloak extends Quest
 	// Reward
 	private static final int CloakofFreya = 21720;
 	
+	public Q10502_FreyaEmbroideredSoulCloak()
+	{
+		super(10502, Q10502_FreyaEmbroideredSoulCloak.class.getSimpleName(), "Freya Embroidered Soul Cloak");
+		addStartNpc(Olfadams);
+		addTalkId(Olfadams);
+		addKillId(Freya);
+		
+		questItemIds = new int[]
+		{
+			Freyasoulfragment
+		};
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -167,23 +180,5 @@ public class Q10502_FreyaEmbroideredSoulCloak extends Quest
 			}
 		}
 		return super.onKill(npc, player, isPet);
-	}
-	
-	public Q10502_FreyaEmbroideredSoulCloak(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		addStartNpc(Olfadams);
-		addTalkId(Olfadams);
-		addKillId(Freya);
-		
-		questItemIds = new int[]
-		{
-			Freyasoulfragment
-		};
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10502_FreyaEmbroideredSoulCloak(10502, Q10502_FreyaEmbroideredSoulCloak.class.getSimpleName(), "Freya Embroidered Soul Cloak");
 	}
 }

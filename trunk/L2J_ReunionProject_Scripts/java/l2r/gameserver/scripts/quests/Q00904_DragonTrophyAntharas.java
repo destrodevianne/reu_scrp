@@ -46,9 +46,9 @@ public class Q00904_DragonTrophyAntharas extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 84;
 	
-	private Q00904_DragonTrophyAntharas(int questId, String name, String descr)
+	public Q00904_DragonTrophyAntharas()
 	{
-		super(questId, name, descr);
+		super(904, Q00904_DragonTrophyAntharas.class.getSimpleName(), "Dragon Trophy - Antharas");
 		addStartNpc(THEODRIC);
 		addTalkId(THEODRIC);
 		addKillId(ANTHARAS_OLD, ANTHARAS_WEAK, ANTHARAS_NORMAL, ANTHARAS_STRONG);
@@ -176,10 +176,5 @@ public class Q00904_DragonTrophyAntharas extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00904_DragonTrophyAntharas(904, Q00904_DragonTrophyAntharas.class.getSimpleName(), "Dragon Trophy - Antharas");
 	}
 }

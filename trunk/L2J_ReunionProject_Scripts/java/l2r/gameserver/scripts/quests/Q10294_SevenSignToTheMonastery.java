@@ -61,13 +61,47 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 	private static final int NORTH_DEVICE = 32819;
 	private static final int WEST_DEVICE = 32816;
 	
+	public Q10294_SevenSignToTheMonastery()
+	{
+		super(10294, Q10294_SevenSignToTheMonastery.class.getSimpleName(), "Seven Signs, To the Monastery of Silence");
+		addTalkId(Odd_Globe);
+		addStartNpc(Elcadia);
+		addTalkId(Elcadia);
+		addTalkId(GoodBook1);
+		addTalkId(GoodBook2);
+		addTalkId(GoodBook3);
+		addTalkId(GoodBook4);
+		addTalkId(RelicGuardian);
+		addTalkId(ErisEvilThoughts);
+		addTalkId(Elcadia_Support);
+		addStartNpc(Elcadia_Support);
+		addTalkId(SolinaEvilThoughts);
+		addTalkId(RelicWatcher);
+		addTalkId(RelicWatcher1);
+		addTalkId(RelicWatcher2);
+		addTalkId(RelicWatcher3);
+		addTalkId(JudeVanEtins);
+		addTalkId(SOUTH_DEVICE);
+		addTalkId(EAST_DEVICE);
+		addTalkId(NORTH_DEVICE);
+		addTalkId(WEST_DEVICE);
+		
+		for (int i : WrongBook)
+		{
+			addTalkId(i);
+		}
+		
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
+		{
 			return htmltext;
+		}
 		
 		if (npc.getId() == Elcadia)
 		{
@@ -83,7 +117,9 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			if (event.equalsIgnoreCase("32792-03.html"))
 			{
 				if (st.getState() != State.STARTED)
+				{
 					st.setState(State.STARTED);
+				}
 				st.set("cond", "2");
 				st.playSound("ItemSound.quest_middle");
 			}
@@ -142,9 +178,13 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			if (event.equalsIgnoreCase("truexit"))
 			{
 				if (st.getInt("good1") == 1)
+				{
 					htmltext = "32804-05.html";
+				}
 				else
+				{
 					htmltext = "32804-03.html";
+				}
 			}
 		}
 		else if (npc.getId() == RelicWatcher1)
@@ -152,9 +192,13 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			if (event.equalsIgnoreCase("truexit"))
 			{
 				if (st.getInt("good2") == 1)
+				{
 					htmltext = "32805-05.html";
+				}
 				else
+				{
 					htmltext = "32805-03.html";
+				}
 			}
 		}
 		else if (npc.getId() == RelicWatcher2)
@@ -162,9 +206,13 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			if (event.equalsIgnoreCase("truexit"))
 			{
 				if (st.getInt("good3") == 1)
+				{
 					htmltext = "32806-05.html";
+				}
 				else
+				{
 					htmltext = "32806-03.html";
+				}
 			}
 		}
 		else if (npc.getId() == RelicWatcher3)
@@ -172,9 +220,13 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			if (event.equalsIgnoreCase("truexit"))
 			{
 				if (st.getInt("good4") == 1)
+				{
 					htmltext = "32807-05.html";
+				}
 				else
+				{
 					htmltext = "32807-03.html";
+				}
 			}
 		}
 		return htmltext;
@@ -192,10 +244,14 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 		}
 		if (npc.getId() == WEST_DEVICE)
 		{
-			if (st.getInt("good2") != 1 || st.getInt("good3") != 1 || st.getInt("good4") != 1)
+			if ((st.getInt("good2") != 1) || (st.getInt("good3") != 1) || (st.getInt("good4") != 1))
+			{
 				htmltext = "passnotdone.html";
+			}
 			else
+			{
 				htmltext = "32816.html";
+			}
 		}
 		else if (npc.getId() == EAST_DEVICE)
 		{
@@ -211,29 +267,47 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 		else if (npc.getId() == NORTH_DEVICE)
 		{
 			if (st.getInt("good4") == 1)
+			{
 				htmltext = "passdone.html";
+			}
 			else
+			{
 				htmltext = "32819.html";
+			}
 		}
 		else if (npc.getId() == SOUTH_DEVICE)
 		{
 			if (st.getInt("good3") == 1)
+			{
 				htmltext = "passdone.html";
+			}
 			else
+			{
 				htmltext = "32818.html";
+			}
 		}
 		else if (npc.getId() == Elcadia)
 		{
 			if (st.getState() == State.COMPLETED)
+			{
 				htmltext = "32784-02.html";
+			}
 			else if (player.getLevel() < 81)
+			{
 				htmltext = "32784-12.html";
-			else if (player.getQuestState(Q10293_SevenSignsForbiddenBook.class.getSimpleName()) == null || player.getQuestState(Q10293_SevenSignsForbiddenBook.class.getSimpleName()).getState() != State.COMPLETED)
+			}
+			else if ((player.getQuestState(Q10293_SevenSignsForbiddenBook.class.getSimpleName()) == null) || (player.getQuestState(Q10293_SevenSignsForbiddenBook.class.getSimpleName()).getState() != State.COMPLETED))
+			{
 				htmltext = "32784-12.html";
+			}
 			else if (st.getState() == State.CREATED)
+			{
 				htmltext = "32784-01.html";
+			}
 			else if (st.getInt("cond") == 1)
+			{
 				htmltext = "32784-06.html";
+			}
 		}
 		else if (npc.getId() == Elcadia_Support)
 		{
@@ -302,15 +376,15 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 			{
 				htmltext = "32784-12.html";
 			}
-			else if (player.getQuestState(Q10293_SevenSignsForbiddenBook.class.getSimpleName()) == null || player.getQuestState(Q10293_SevenSignsForbiddenBook.class.getSimpleName()).getState() != State.COMPLETED)
+			else if ((player.getQuestState(Q10293_SevenSignsForbiddenBook.class.getSimpleName()) == null) || (player.getQuestState(Q10293_SevenSignsForbiddenBook.class.getSimpleName()).getState() != State.COMPLETED))
 			{
 				htmltext = "32784-12.html";
 			}
-			else if (st.getInt("cond") < 3 && player.getQuestState(Q10294_SevenSignToTheMonastery.class.getSimpleName()).getState() != State.COMPLETED)
+			else if ((st.getInt("cond") < 3) && (player.getQuestState(Q10294_SevenSignToTheMonastery.class.getSimpleName()).getState() != State.COMPLETED))
 			{
 				htmltext = "32792-01.html";
 			}
-			else if (st.getInt("cond") == 3 && player.getQuestState(Q10294_SevenSignToTheMonastery.class.getSimpleName()).getState() != State.COMPLETED)
+			else if ((st.getInt("cond") == 3) && (player.getQuestState(Q10294_SevenSignToTheMonastery.class.getSimpleName()).getState() != State.COMPLETED))
 			{
 				if (player.isSubClassActive())
 				{
@@ -330,11 +404,13 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				}
 			}
 			else
+			{
 				htmltext = "32784-02.html";
+			}
 		}
 		else if (npc.getId() == RelicGuardian)
 		{
-			if (st.getInt("cond") == 2 && st.getInt("good1") == 1 && st.getInt("good2") == 1 && st.getInt("good3") == 1 && st.getInt("good4") == 1)
+			if ((st.getInt("cond") == 2) && (st.getInt("good1") == 1) && (st.getInt("good2") == 1) && (st.getInt("good3") == 1) && (st.getInt("good4") == 1))
 			{
 				st.set("cond", "3");
 				st.playSound("ItemSound.quest_middle");
@@ -345,12 +421,16 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 				htmltext = "32803-05.html";
 			}
 			else
+			{
 				htmltext = "32803-01.html";
+			}
 		}
 		else if (npc.getId() == Odd_Globe)
 		{
 			if (st.getInt("cond") < 3)
+			{
 				htmltext = "32815-01.html";
+			}
 		}
 		else if (npc.getId() == Elcadia_Support)
 		{
@@ -367,35 +447,53 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 		else if (Util.contains(WrongBook, npc.getId()))
 		{
 			if (st.getInt("cond") == 2)
+			{
 				htmltext = "wrong.html";
+			}
 		}
 		else if (npc.getId() == GoodBook1)
 		{
 			if (st.getInt("good1") == 1)
+			{
 				htmltext = "already.html";
+			}
 			else
+			{
 				htmltext = "32821-01.html";
+			}
 		}
 		else if (npc.getId() == GoodBook2)
 		{
 			if (st.getInt("good2") == 1)
+			{
 				htmltext = "already.html";
+			}
 			else
+			{
 				htmltext = "32825-01.html";
+			}
 		}
 		else if (npc.getId() == GoodBook3)
 		{
 			if (st.getInt("good3") == 1)
+			{
 				htmltext = "already.html";
+			}
 			else
+			{
 				htmltext = "32829-01.html";
+			}
 		}
 		else if (npc.getId() == GoodBook4)
 		{
 			if (st.getInt("good4") == 1)
+			{
 				htmltext = "already.html";
+			}
 			else
+			{
 				htmltext = "32833-01.html";
+			}
 		}
 		else if (npc.getId() == SolinaEvilThoughts)
 		{
@@ -408,59 +506,31 @@ public class Q10294_SevenSignToTheMonastery extends Quest
 		else if (npc.getId() == RelicWatcher)
 		{
 			if (st.getInt("cond") < 3)
+			{
 				htmltext = "32804-01.html";
+			}
 		}
 		else if (npc.getId() == RelicWatcher1)
 		{
 			if (st.getInt("cond") < 3)
+			{
 				htmltext = "32805-01.html";
+			}
 		}
 		else if (npc.getId() == RelicWatcher2)
 		{
 			if (st.getInt("cond") < 3)
+			{
 				htmltext = "32806-01.html";
+			}
 		}
 		else if (npc.getId() == RelicWatcher3)
 		{
 			if (st.getInt("cond") < 3)
+			{
 				htmltext = "32807-01.html";
+			}
 		}
 		return htmltext;
-	}
-	
-	public Q10294_SevenSignToTheMonastery(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		addTalkId(Odd_Globe);
-		addStartNpc(Elcadia);
-		addTalkId(Elcadia);
-		addTalkId(GoodBook1);
-		addTalkId(GoodBook2);
-		addTalkId(GoodBook3);
-		addTalkId(GoodBook4);
-		addTalkId(RelicGuardian);
-		addTalkId(ErisEvilThoughts);
-		addTalkId(Elcadia_Support);
-		addStartNpc(Elcadia_Support);
-		addTalkId(SolinaEvilThoughts);
-		addTalkId(RelicWatcher);
-		addTalkId(RelicWatcher1);
-		addTalkId(RelicWatcher2);
-		addTalkId(RelicWatcher3);
-		addTalkId(JudeVanEtins);
-		addTalkId(SOUTH_DEVICE);
-		addTalkId(EAST_DEVICE);
-		addTalkId(NORTH_DEVICE);
-		addTalkId(WEST_DEVICE);
-		
-		for (int i : WrongBook)
-			addTalkId(i);
-		
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10294_SevenSignToTheMonastery(10294, Q10294_SevenSignToTheMonastery.class.getSimpleName(), "Seven Sign To The Monastery");
 	}
 }

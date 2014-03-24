@@ -313,10 +313,9 @@ public class Q00230_TestOfSummoner extends Quest
 		}
 	};
 	
-	public Q00230_TestOfSummoner(int questId, String name, String descr)
+	public Q00230_TestOfSummoner()
 	{
-		super(questId, name, descr);
-		
+		super(230, qn, "");
 		addStartNpc(Galatea);
 		for (int npcId : npc)
 		{
@@ -863,10 +862,5 @@ public class Q00230_TestOfSummoner extends Quest
 			}
 		}
 		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00230_TestOfSummoner(230, qn, "");
 	}
 }

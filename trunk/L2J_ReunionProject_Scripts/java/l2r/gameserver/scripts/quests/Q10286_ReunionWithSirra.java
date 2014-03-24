@@ -18,10 +18,9 @@ public class Q10286_ReunionWithSirra extends Quest
 	
 	private static final int _blackCore = 15470;
 	
-	public Q10286_ReunionWithSirra(int questId, String name, String descr)
+	public Q10286_ReunionWithSirra()
 	{
-		super(questId, name, descr);
-		
+		super(10286, Q10286_ReunionWithSirra.class.getSimpleName(), "Reunion With Sirra");
 		addStartNpc(_rafforty);
 		addTalkId(_rafforty);
 		addTalkId(_jinia);
@@ -194,10 +193,5 @@ public class Q10286_ReunionWithSirra extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10286_ReunionWithSirra(10286, Q10286_ReunionWithSirra.class.getSimpleName(), "Reunion With Sirra");
 	}
 }

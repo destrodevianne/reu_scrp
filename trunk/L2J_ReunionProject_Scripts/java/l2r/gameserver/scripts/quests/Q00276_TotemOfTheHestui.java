@@ -63,7 +63,7 @@ public final class Q00276_TotemOfTheHestui extends Quest
 		SPAWN_CHANCES.add(new ItemHolder(39, 2));
 	}
 	
-	private Q00276_TotemOfTheHestui()
+	public Q00276_TotemOfTheHestui()
 	{
 		super(276, Q00276_TotemOfTheHestui.class.getSimpleName(), "Totem of the Hestui");
 		addStartNpc(TANAPI);
@@ -171,10 +171,5 @@ public final class Q00276_TotemOfTheHestui extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00276_TotemOfTheHestui();
 	}
 }

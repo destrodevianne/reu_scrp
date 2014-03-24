@@ -173,9 +173,4 @@ public class Q00461_RumbleInTheBase extends Quest
 		}
 		return htmltext;
 	}
-	
-	public static void main(String[] args)
-	{
-		new Q00461_RumbleInTheBase(461, Q00461_RumbleInTheBase.class.getSimpleName(), "Rumble in the Base");
-	}
 }

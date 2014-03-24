@@ -77,9 +77,9 @@ public class Q10290_LandDragonConqueror extends Quest
 	
 	private static final int ANTHARAS_SLAYER_CIRCLET = 8568;
 	
-	public Q10290_LandDragonConqueror(int questId, String name, String descr)
+	public Q10290_LandDragonConqueror()
 	{
-		super(questId, name, descr);
+		super(10290, Q10290_LandDragonConqueror.class.getSimpleName(), "Land Dragon Conqueror");
 		addStartNpc(THEODRIC);
 		addTalkId(THEODRIC);
 		addKillId(ANTHARAS);
@@ -182,10 +182,5 @@ public class Q10290_LandDragonConqueror extends Quest
 		}
 		
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10290_LandDragonConqueror(10290, Q10290_LandDragonConqueror.class.getSimpleName(), "Land Dragon Conqueror");
 	}
 }
