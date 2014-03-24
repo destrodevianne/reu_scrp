@@ -36,6 +36,100 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 	// Item
 	private static final int SolinasBiography = 17213;
 	
+	public Q10293_SevenSignsForbiddenBook()
+	{
+		super(10293, Q10293_SevenSignsForbiddenBook.class.getSimpleName(), "Seven Signs, Forbidden Book of the Elmore Aden Kingdom");
+		addStartNpc(Elcadia);
+		addTalkId(Elcadia);
+		addTalkId(Sophia1);
+		addTalkId(Elcadia_Support);
+		addTalkId(Books);
+		addTalkId(Books1);
+		addTalkId(Books2);
+		addTalkId(Books3);
+		addTalkId(Books4);
+		addTalkId(Sophia2);
+		addTalkId(Sophia3);
+		addStartNpc(Sophia3);
+		addFirstTalkId(Sophia3);
+		
+		questItemIds = new int[]
+		{
+			SolinasBiography
+		};
+	}
+	
+	@Override
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	{
+		String htmltext = event;
+		final QuestState st = player.getQuestState(getName());
+		if (st == null)
+		{
+			return htmltext;
+		}
+		
+		if (npc.getId() == Elcadia)
+		{
+			if (event.equalsIgnoreCase("32784-04.html"))
+			{
+				st.setState(State.STARTED);
+				st.set("cond", "1");
+				st.playSound("ItemSound.quest_accept");
+			}
+			else if (event.equalsIgnoreCase("32784-09.html"))
+			{
+				if (player.isSubClassActive())
+				{
+					htmltext = "32784-10.html";
+				}
+				else
+				{
+					st.playSound("ItemSound.quest_finish");
+					st.addExpAndSp(15000000, 1500000);
+					st.exitQuest(false);
+					htmltext = "32784-09.html";
+				}
+			}
+		}
+		else if (npc.getId() == Sophia2)
+		{
+			if (event.equalsIgnoreCase("32861-04.html"))
+			{
+				st.set("cond", "2");
+				st.playSound("ItemSound.quest_middle");
+			}
+			if (event.equalsIgnoreCase("32861-08.html"))
+			{
+				st.set("cond", "4");
+				st.playSound("ItemSound.quest_middle");
+			}
+			if (event.equalsIgnoreCase("32861-11.html"))
+			{
+				st.set("cond", "6");
+				st.playSound("ItemSound.quest_middle");
+			}
+		}
+		else if (npc.getId() == Elcadia_Support)
+		{
+			if (event.equalsIgnoreCase("32785-07.html"))
+			{
+				st.set("cond", "5");
+				st.playSound("ItemSound.quest_middle");
+			}
+		}
+		else if (npc.getId() == Books)
+		{
+			if (event.equalsIgnoreCase("32809-02.html"))
+			{
+				st.set("cond", "7");
+				st.giveItems(SolinasBiography, 1);
+				st.playSound("ItemSound.quest_middle");
+			}
+		}
+		return htmltext;
+	}
+	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
@@ -50,17 +144,29 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 		else if (npc.getId() == Elcadia)
 		{
 			if (st.getState() == State.COMPLETED)
+			{
 				htmltext = "32784-02.html";
+			}
 			else if (player.getLevel() < 81)
+			{
 				htmltext = "32784-11.htm";
-			else if (player.getQuestState(Q10292_SevenSignsGirlofDoubt.class.getSimpleName()) == null || player.getQuestState(Q10292_SevenSignsGirlofDoubt.class.getSimpleName()).getState() != State.COMPLETED)
+			}
+			else if ((player.getQuestState(Q10292_SevenSignsGirlofDoubt.class.getSimpleName()) == null) || (player.getQuestState(Q10292_SevenSignsGirlofDoubt.class.getSimpleName()).getState() != State.COMPLETED))
+			{
 				htmltext = "32784-11.htm";
+			}
 			else if (st.getState() == State.CREATED)
+			{
 				htmltext = "32784-01.htm";
+			}
 			else if (st.getInt("cond") == 1)
+			{
 				htmltext = "32784-06.html";
+			}
 			else if (st.getInt("cond") >= 8)
+			{
 				htmltext = "32784-07.html";
+			}
 		}
 		else if (npc.getId() == Elcadia_Support)
 		{
@@ -145,27 +251,37 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 		else if (npc.getId() == Books)
 		{
 			if (st.getInt("cond") == 6)
+			{
 				htmltext = "32809-01.html";
+			}
 		}
 		else if (npc.getId() == Books1)
 		{
 			if (st.getInt("cond") == 6)
+			{
 				htmltext = "32810-01.html";
+			}
 		}
 		else if (npc.getId() == Books2)
 		{
 			if (st.getInt("cond") == 6)
+			{
 				htmltext = "32811-01.html";
+			}
 		}
 		else if (npc.getId() == Books3)
 		{
 			if (st.getInt("cond") == 6)
+			{
 				htmltext = "32812-01.html";
+			}
 		}
 		else if (npc.getId() == Books4)
 		{
 			if (st.getInt("cond") == 6)
+			{
 				htmltext = "32813-01.html";
+			}
 		}
 		return htmltext;
 	}
@@ -200,105 +316,5 @@ public class Q10293_SevenSignsForbiddenBook extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-	{
-		String htmltext = event;
-		final QuestState st = player.getQuestState(getName());
-		if (st == null)
-		{
-			return htmltext;
-		}
-		
-		if (npc.getId() == Elcadia)
-		{
-			if (event.equalsIgnoreCase("32784-04.html"))
-			{
-				st.setState(State.STARTED);
-				st.set("cond", "1");
-				st.playSound("ItemSound.quest_accept");
-			}
-			else if (event.equalsIgnoreCase("32784-09.html"))
-			{
-				if (player.isSubClassActive())
-				{
-					htmltext = "32784-10.html";
-				}
-				else
-				{
-					st.playSound("ItemSound.quest_finish");
-					st.addExpAndSp(15000000, 1500000);
-					st.exitQuest(false);
-					htmltext = "32784-09.html";
-				}
-			}
-		}
-		else if (npc.getId() == Sophia2)
-		{
-			if (event.equalsIgnoreCase("32861-04.html"))
-			{
-				st.set("cond", "2");
-				st.playSound("ItemSound.quest_middle");
-			}
-			if (event.equalsIgnoreCase("32861-08.html"))
-			{
-				st.set("cond", "4");
-				st.playSound("ItemSound.quest_middle");
-			}
-			if (event.equalsIgnoreCase("32861-11.html"))
-			{
-				st.set("cond", "6");
-				st.playSound("ItemSound.quest_middle");
-			}
-		}
-		else if (npc.getId() == Elcadia_Support)
-		{
-			if (event.equalsIgnoreCase("32785-07.html"))
-			{
-				st.set("cond", "5");
-				st.playSound("ItemSound.quest_middle");
-			}
-		}
-		else if (npc.getId() == Books)
-		{
-			if (event.equalsIgnoreCase("32809-02.html"))
-			{
-				st.set("cond", "7");
-				st.giveItems(SolinasBiography, 1);
-				st.playSound("ItemSound.quest_middle");
-			}
-		}
-		return htmltext;
-	}
-	
-	public Q10293_SevenSignsForbiddenBook(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		addStartNpc(Elcadia);
-		addTalkId(Elcadia);
-		addTalkId(Sophia1);
-		addTalkId(Elcadia_Support);
-		addTalkId(Books);
-		addTalkId(Books1);
-		addTalkId(Books2);
-		addTalkId(Books3);
-		addTalkId(Books4);
-		addTalkId(Sophia2);
-		addTalkId(Sophia3);
-		addStartNpc(Sophia3);
-		addFirstTalkId(Sophia3);
-		
-		questItemIds = new int[]
-		{
-			SolinasBiography
-		};
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10293_SevenSignsForbiddenBook(10293, Q10293_SevenSignsForbiddenBook.class.getSimpleName(), "Seven Signs, Forbidden Book of the Elmore Aden Kingdom");
 	}
 }

@@ -71,10 +71,9 @@ public class Q00726_LightwithintheDarkness extends Quest
 	
 	private final Map<Integer, FortDungeon> _fortDungeons = new HashMap<>(21);
 	
-	public Q00726_LightwithintheDarkness(int questId, String name, String descr)
+	public Q00726_LightwithintheDarkness()
 	{
-		super(questId, name, descr);
-		
+		super(726, Q00726_LightwithintheDarkness.class.getSimpleName(), "");
 		_fortDungeons.put(35666, new FortDungeon(80));
 		_fortDungeons.put(35698, new FortDungeon(81));
 		_fortDungeons.put(35735, new FortDungeon(82));
@@ -454,10 +453,5 @@ public class Q00726_LightwithintheDarkness extends Quest
 				player.sendPacket(packet);
 			}
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00726_LightwithintheDarkness(726, Q00726_LightwithintheDarkness.class.getSimpleName(), "");
 	}
 }

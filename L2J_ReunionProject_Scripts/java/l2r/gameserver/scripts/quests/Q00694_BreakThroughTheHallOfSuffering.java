@@ -13,10 +13,9 @@ public final class Q00694_BreakThroughTheHallOfSuffering extends Quest
 	private static final int MOUTHOFEKIMUS = 32537;
 	private static final int MARK = 13691;
 	
-	public Q00694_BreakThroughTheHallOfSuffering(int questId, String name, String descr)
+	public Q00694_BreakThroughTheHallOfSuffering()
 	{
-		super(questId, name, descr);
-		
+		super(694, Q00694_BreakThroughTheHallOfSuffering.class.getSimpleName(), "Break Through the Hall of Suffering");
 		addStartNpc(TEPIOS);
 		addStartNpc(MOUTHOFEKIMUS);
 		
@@ -105,10 +104,5 @@ public final class Q00694_BreakThroughTheHallOfSuffering extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00694_BreakThroughTheHallOfSuffering(694, Q00694_BreakThroughTheHallOfSuffering.class.getSimpleName(), "Break Through the Hall of Suffering");
 	}
 }

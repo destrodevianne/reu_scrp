@@ -37,9 +37,9 @@ public class Q10288_SecretMission extends Quest
 	// Item
 	private static final int LETTER = 15529;
 	
-	public Q10288_SecretMission(int questId, String name, String descr)
+	public Q10288_SecretMission()
 	{
-		super(questId, name, descr);
+		super(10288, Q10288_SecretMission.class.getSimpleName(), "Secret Mission");
 		addStartNpc(AQUILANI, DOMINIC);
 		addFirstTalkId(AQUILANI);
 		addTalkId(DOMINIC, GREYMORE, AQUILANI);
@@ -155,10 +155,5 @@ public class Q10288_SecretMission extends Quest
 				break;
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10288_SecretMission(10288, Q10288_SecretMission.class.getSimpleName(), "Secret Mission");
 	}
 }

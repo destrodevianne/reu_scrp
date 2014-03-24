@@ -47,9 +47,9 @@ public class Q10504_JewelOfAntharas extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 84;
 	
-	private Q10504_JewelOfAntharas(int questId, String name, String descr)
+	public Q10504_JewelOfAntharas()
 	{
-		super(questId, name, descr);
+		super(10504, Q10504_JewelOfAntharas.class.getSimpleName(), "Jewel of Antharas");
 		addStartNpc(THEODRIC);
 		addTalkId(THEODRIC);
 		addKillId(ANTHARAS_OLD, ANTHARAS_WEAK, ANTHARAS_NORMAL, ANTHARAS_STRONG);
@@ -171,10 +171,5 @@ public class Q10504_JewelOfAntharas extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10504_JewelOfAntharas(10504, Q10504_JewelOfAntharas.class.getSimpleName(), "Jewel of Antharas");
 	}
 }

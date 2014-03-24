@@ -20,6 +20,20 @@ public class Q10503_FrintezzaEmbroideredSoulCloak extends Quest
 	// Reward
 	private static final int CloakofFrintezza = 21721;
 	
+	public Q10503_FrintezzaEmbroideredSoulCloak()
+	{
+		super(10503, Q10503_FrintezzaEmbroideredSoulCloak.class.getSimpleName(), "Frintezza Embroidered Soul Cloak");
+		addStartNpc(Olfadams);
+		addTalkId(Olfadams);
+		addKillId(Frintezza);
+		addKillId(tezzaPet);
+		
+		questItemIds = new int[]
+		{
+			Frintezzasoulfragment
+		};
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -168,24 +182,5 @@ public class Q10503_FrintezzaEmbroideredSoulCloak extends Quest
 			}
 		}
 		return super.onKill(npc, player, isPet);
-	}
-	
-	public Q10503_FrintezzaEmbroideredSoulCloak(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		addStartNpc(Olfadams);
-		addTalkId(Olfadams);
-		addKillId(Frintezza);
-		addKillId(tezzaPet);
-		
-		questItemIds = new int[]
-		{
-			Frintezzasoulfragment
-		};
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10503_FrintezzaEmbroideredSoulCloak(10503, Q10503_FrintezzaEmbroideredSoulCloak.class.getSimpleName(), "Frintezza Embroidered Soul Cloak");
 	}
 }

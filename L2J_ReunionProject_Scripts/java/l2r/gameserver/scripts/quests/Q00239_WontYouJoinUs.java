@@ -48,9 +48,9 @@ public class Q00239_WontYouJoinUs extends Quest
 	private static final int CHANCE_FOR_FRAGMENT = 80;
 	private static final int MIN_LEVEL = 82;
 	
-	public Q00239_WontYouJoinUs(int questId, String name, String descr)
+	public Q00239_WontYouJoinUs()
 	{
-		super(questId, name, descr);
+		super(239, Q00239_WontYouJoinUs.class.getSimpleName(), "Won't You Join Us?");
 		addStartNpc(ATHENIA);
 		addTalkId(ATHENIA);
 		addKillId(WASTE_LANDFILL_MACHINE, SUPPRESSOR, EXTERMINATOR);
@@ -194,10 +194,5 @@ public class Q00239_WontYouJoinUs extends Quest
 				break;
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00239_WontYouJoinUs(239, Q00239_WontYouJoinUs.class.getSimpleName(), "Won't You Join Us?");
 	}
 }

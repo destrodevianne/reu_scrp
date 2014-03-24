@@ -77,10 +77,9 @@ public class Q00348_ArrogantSearch extends Quest
 	private static final Map<Integer, Object[]> ATTACK_DROPS_24 = new HashMap<>();
 	private static final Map<Integer, Object[]> ATTACK_DROPS_25 = new HashMap<>();
 	
-	public Q00348_ArrogantSearch(int id, String name, String descr)
+	public Q00348_ArrogantSearch()
 	{
-		super(id, name, descr);
-		
+		super(348, qn, "");
 		addStartNpc(HANELLIN);
 		addTalkId(HANELLIN);
 		addTalkId(ARK_GUARDIANS_CORPSE);
@@ -808,10 +807,5 @@ public class Q00348_ArrogantSearch extends Quest
 		}
 		
 		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00348_ArrogantSearch(348, qn, "");
 	}
 }

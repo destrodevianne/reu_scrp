@@ -113,6 +113,18 @@ public class Q00456_DontKnowDontCare extends Quest
 		}
 	};
 	
+	public Q00456_DontKnowDontCare()
+	{
+		super(456, Q00456_DontKnowDontCare.class.getSimpleName(), "Don't Know, Don't Care");
+		for (int npc : SEPARATED_SOUL)
+		{
+			addStartNpc(npc);
+			addTalkId(npc);
+		}
+		addTalkId(DRAKE_LEADER_NPC, BEHEMOTH_LEADER_NPC, DRAGON_BEAST_NPC);
+		addKillId(DRAKE_LEADER, BEHEMOTH_LEADER, DRAGON_BEAST);
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -330,22 +342,5 @@ public class Q00456_DontKnowDontCare extends Quest
 			}
 		}
 		return null;
-	}
-	
-	public Q00456_DontKnowDontCare(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		for (int npc : SEPARATED_SOUL)
-		{
-			addStartNpc(npc);
-			addTalkId(npc);
-		}
-		addTalkId(DRAKE_LEADER_NPC, BEHEMOTH_LEADER_NPC, DRAGON_BEAST_NPC);
-		addKillId(DRAKE_LEADER, BEHEMOTH_LEADER, DRAGON_BEAST);
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00456_DontKnowDontCare(456, Q00456_DontKnowDontCare.class.getSimpleName(), "Don't Know, Don't Care");
 	}
 }

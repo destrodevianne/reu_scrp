@@ -39,9 +39,9 @@ public class Q00028_ChestCaughtWithABaitOfIcyAir extends Quest
 	private static final int KIKIS_LETTER = 7626;
 	private static final int ELVEN_RING = 881;
 	
-	public Q00028_ChestCaughtWithABaitOfIcyAir(int questId, String name, String descr)
+	public Q00028_ChestCaughtWithABaitOfIcyAir()
 	{
-		super(questId, name, descr);
+		super(28, Q00028_ChestCaughtWithABaitOfIcyAir.class.getSimpleName(), "Chest Caught With A Bait Of Icy Air");
 		addStartNpc(OFULLE);
 		addTalkId(OFULLE, KIKI);
 		registerQuestItems(KIKIS_LETTER);
@@ -139,10 +139,5 @@ public class Q00028_ChestCaughtWithABaitOfIcyAir extends Quest
 				break;
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00028_ChestCaughtWithABaitOfIcyAir(28, Q00028_ChestCaughtWithABaitOfIcyAir.class.getSimpleName(), "Chest Caught With A Bait Of Icy Air");
 	}
 }

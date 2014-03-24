@@ -156,9 +156,9 @@ public class Q00289_NoMoreSoupForYou extends Quest
 		}
 	};
 	
-	public Q00289_NoMoreSoupForYou(int id, String name, String descr)
+	public Q00289_NoMoreSoupForYou()
 	{
-		super(id, name, descr);
+		super(289, Q00289_NoMoreSoupForYou.class.getSimpleName(), "No More Soup For You");
 		addStartNpc(STAN);
 		addTalkId(STAN);
 		addKillId(MOBS);
@@ -258,10 +258,5 @@ public class Q00289_NoMoreSoupForYou extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00289_NoMoreSoupForYou(289, Q00289_NoMoreSoupForYou.class.getSimpleName(), "No More Soup For You");
 	}
 }

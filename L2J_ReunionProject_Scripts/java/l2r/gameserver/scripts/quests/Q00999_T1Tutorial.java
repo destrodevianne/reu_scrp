@@ -88,10 +88,9 @@ public class Q00999_T1Tutorial extends Quest
 		}
 	}
 	
-	public Q00999_T1Tutorial(int questId, String name, String descr)
+	public Q00999_T1Tutorial()
 	{
-		super(questId, name, descr);
-		
+		super(999, qn, "");
 		Event.put("32133_02", new Object[]
 		{
 			"32133-03.htm",
@@ -748,10 +747,5 @@ public class Q00999_T1Tutorial extends Quest
 			}
 		}
 		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00999_T1Tutorial(999, qn, "");
 	}
 }

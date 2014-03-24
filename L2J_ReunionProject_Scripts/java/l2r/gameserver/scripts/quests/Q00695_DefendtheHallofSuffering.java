@@ -39,10 +39,9 @@ public final class Q00695_DefendtheHallofSuffering extends Quest
 	private static final int TEPIOS2 = 32530;
 	private static final int SOE = 736;
 	
-	public Q00695_DefendtheHallofSuffering(int questId, String name, String descr)
+	public Q00695_DefendtheHallofSuffering()
 	{
-		super(questId, name, descr);
-		
+		super(695, Q00695_DefendtheHallofSuffering.class.getSimpleName(), "Defend The Hall of Suffering");
 		addStartNpc(TEPIOS);
 		addTalkId(TEPIOS);
 		addTalkId(TEPIOS2);
@@ -271,10 +270,5 @@ public final class Q00695_DefendtheHallofSuffering extends Quest
 		Instance inst = InstanceManager.getInstance().getInstance(world.getInstanceId());
 		inst.setDuration(5 * 60000);
 		inst.setEmptyDestroyTime(0);
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00695_DefendtheHallofSuffering(695, Q00695_DefendtheHallofSuffering.class.getSimpleName(), "Defend The Hall of Suffering");
 	}
 }

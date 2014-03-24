@@ -97,9 +97,9 @@ public class Q00453_NotStrongEnoughAlone extends Quest
 		}
 	};
 	
-	public Q00453_NotStrongEnoughAlone(int questId, String name, String descr)
+	public Q00453_NotStrongEnoughAlone()
 	{
-		super(questId, name, descr);
+		super(453, Q00453_NotStrongEnoughAlone.class.getSimpleName(), "Not Strong Enought Alone");
 		addStartNpc(KLEMIS);
 		addTalkId(KLEMIS);
 		addKillId(MONSTER1);
@@ -349,10 +349,5 @@ public class Q00453_NotStrongEnoughAlone extends Quest
 			}
 		}
 		st.setCond(5, true);
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00453_NotStrongEnoughAlone(453, Q00453_NotStrongEnoughAlone.class.getSimpleName(), "Not Strong Enought Alone");
 	}
 }

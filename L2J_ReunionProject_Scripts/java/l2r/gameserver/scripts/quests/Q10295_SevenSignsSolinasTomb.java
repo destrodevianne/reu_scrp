@@ -46,9 +46,9 @@ public class Q10295_SevenSignsSolinasTomb extends Quest
 		18959
 	};
 	
-	public Q10295_SevenSignsSolinasTomb(int questId, String name, String descr)
+	public Q10295_SevenSignsSolinasTomb()
 	{
-		super(questId, name, descr);
+		super(10295, Q10295_SevenSignsSolinasTomb.class.getSimpleName(), "Seven Signs Solinas Tomb");
 		addStartNpc(ErisEvilThoughts);
 		addTalkId(new int[]
 		{
@@ -521,10 +521,5 @@ public class Q10295_SevenSignsSolinasTomb extends Quest
 		addSpawn(18959, 56520, -252104, -6760, 0, false, 0L, false, player.getInstanceId());
 		addSpawn(18959, 56424, -252104, -6760, 0, false, 0L, false, player.getInstanceId());
 		addSpawn(18959, 56440, -252216, -6760, 0, false, 0L, false, player.getInstanceId());
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10295_SevenSignsSolinasTomb(10295, Q10295_SevenSignsSolinasTomb.class.getSimpleName(), "Seven Signs Solinas Tomb");
 	}
 }

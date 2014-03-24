@@ -19,6 +19,56 @@ public class Q10501_ZakenEmbroideredSoulCloak extends Quest
 	// Reward
 	private static final int Cloakofzaken = 21719;
 	
+	public Q10501_ZakenEmbroideredSoulCloak()
+	{
+		super(10501, Q10501_ZakenEmbroideredSoulCloak.class.getSimpleName(), "Zaken Embroidered Soul Cloak");
+		addStartNpc(Olfadams);
+		addTalkId(Olfadams);
+		addKillId(Zaken);
+		
+		questItemIds = new int[]
+		{
+			Zakensoulfragment
+		};
+	}
+	
+	@Override
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	{
+		String htmltext = event;
+		final QuestState st = player.getQuestState(getName());
+		if (st == null)
+		{
+			return htmltext;
+		}
+		
+		if (event.equalsIgnoreCase("32612-01.htm"))
+		{
+			st.set("cond", "1");
+			st.setState(State.STARTED);
+			st.playSound("ItemSound.quest_accept");
+			htmltext = "32612-01.htm";
+		}
+		else if (event.equalsIgnoreCase("32612-03.htm"))
+		{
+			if (st.getQuestItemsCount(Zakensoulfragment) < 20)
+			{
+				st.set("cond", "1");
+				st.playSound("ItemSound.quest_middle");
+				htmltext = "32612-error.htm";
+			}
+			else
+			{
+				st.giveItems(Cloakofzaken, 1);
+				st.takeItems(Zakensoulfragment, 20);
+				st.playSound("ItemSound.quest_finish");
+				st.exitQuest(false);
+				htmltext = "32612-reward.htm";
+			}
+		}
+		return htmltext;
+	}
+	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
@@ -130,60 +180,5 @@ public class Q10501_ZakenEmbroideredSoulCloak extends Quest
 			}
 		}
 		return super.onKill(npc, player, isPet);
-	}
-	
-	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
-	{
-		String htmltext = event;
-		final QuestState st = player.getQuestState(getName());
-		if (st == null)
-		{
-			return htmltext;
-		}
-		
-		if (event.equalsIgnoreCase("32612-01.htm"))
-		{
-			st.set("cond", "1");
-			st.setState(State.STARTED);
-			st.playSound("ItemSound.quest_accept");
-			htmltext = "32612-01.htm";
-		}
-		else if (event.equalsIgnoreCase("32612-03.htm"))
-		{
-			if (st.getQuestItemsCount(Zakensoulfragment) < 20)
-			{
-				st.set("cond", "1");
-				st.playSound("ItemSound.quest_middle");
-				htmltext = "32612-error.htm";
-			}
-			else
-			{
-				st.giveItems(Cloakofzaken, 1);
-				st.takeItems(Zakensoulfragment, 20);
-				st.playSound("ItemSound.quest_finish");
-				st.exitQuest(false);
-				htmltext = "32612-reward.htm";
-			}
-		}
-		return htmltext;
-	}
-	
-	public Q10501_ZakenEmbroideredSoulCloak(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		addStartNpc(Olfadams);
-		addTalkId(Olfadams);
-		addKillId(Zaken);
-		
-		questItemIds = new int[]
-		{
-			Zakensoulfragment
-		};
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10501_ZakenEmbroideredSoulCloak(10501, Q10501_ZakenEmbroideredSoulCloak.class.getSimpleName(), "Zaken Embroidered Soul Cloak");
 	}
 }

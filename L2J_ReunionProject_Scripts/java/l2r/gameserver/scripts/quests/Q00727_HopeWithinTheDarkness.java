@@ -751,6 +751,53 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 		}
 	}
 	
+	public Q00727_HopeWithinTheDarkness()
+	{
+		super(727, Q00727_HopeWithinTheDarkness.class.getSimpleName(), "Hope Within The Darkness");
+		_castleDungeons.put(36403, new CastleDungeon(80, 36403));
+		_castleDungeons.put(36404, new CastleDungeon(81, 36404));
+		_castleDungeons.put(36405, new CastleDungeon(82, 36405));
+		_castleDungeons.put(36406, new CastleDungeon(83, 36406));
+		_castleDungeons.put(36407, new CastleDungeon(84, 36407));
+		_castleDungeons.put(36408, new CastleDungeon(85, 36408));
+		_castleDungeons.put(36409, new CastleDungeon(86, 36409));
+		_castleDungeons.put(36410, new CastleDungeon(87, 36410));
+		_castleDungeons.put(36411, new CastleDungeon(88, 36411));
+		
+		NPC_BUFFS.put(NPC_KNIGHT, new SkillHolder(5970, 1));
+		NPC_BUFFS.put(NPC_RANGER, new SkillHolder(5971, 1));
+		NPC_BUFFS.put(NPC_MAGE, new SkillHolder(5972, 1));
+		NPC_BUFFS.put(NPC_WARRIOR, new SkillHolder(5973, 1));
+		
+		for (int i : _castleDungeons.keySet())
+		{
+			addStartNpc(i);
+			addTalkId(i);
+		}
+		
+		for (int i = NPC_KNIGHT; i <= NPC_WARRIOR; i++)
+		{
+			addSpawnId(i);
+			addKillId(i);
+			addAttackId(i);
+			addTalkId(i);
+			addFirstTalkId(i);
+		}
+		
+		for (int i : BOSSES)
+		{
+			addSpawnId(i);
+			addKillId(i);
+			addAttackId(i);
+		}
+		
+		for (int i : MONSTERS)
+		{
+			addKillId(i);
+			addAttackId(i);
+		}
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -1061,58 +1108,5 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 		}
 		
 		return null;
-	}
-	
-	public Q00727_HopeWithinTheDarkness(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		_castleDungeons.put(36403, new CastleDungeon(80, 36403));
-		_castleDungeons.put(36404, new CastleDungeon(81, 36404));
-		_castleDungeons.put(36405, new CastleDungeon(82, 36405));
-		_castleDungeons.put(36406, new CastleDungeon(83, 36406));
-		_castleDungeons.put(36407, new CastleDungeon(84, 36407));
-		_castleDungeons.put(36408, new CastleDungeon(85, 36408));
-		_castleDungeons.put(36409, new CastleDungeon(86, 36409));
-		_castleDungeons.put(36410, new CastleDungeon(87, 36410));
-		_castleDungeons.put(36411, new CastleDungeon(88, 36411));
-		
-		NPC_BUFFS.put(NPC_KNIGHT, new SkillHolder(5970, 1));
-		NPC_BUFFS.put(NPC_RANGER, new SkillHolder(5971, 1));
-		NPC_BUFFS.put(NPC_MAGE, new SkillHolder(5972, 1));
-		NPC_BUFFS.put(NPC_WARRIOR, new SkillHolder(5973, 1));
-		
-		for (int i : _castleDungeons.keySet())
-		{
-			addStartNpc(i);
-			addTalkId(i);
-		}
-		
-		for (int i = NPC_KNIGHT; i <= NPC_WARRIOR; i++)
-		{
-			addSpawnId(i);
-			addKillId(i);
-			addAttackId(i);
-			addTalkId(i);
-			addFirstTalkId(i);
-		}
-		
-		for (int i : BOSSES)
-		{
-			addSpawnId(i);
-			addKillId(i);
-			addAttackId(i);
-		}
-		
-		for (int i : MONSTERS)
-		{
-			addKillId(i);
-			addAttackId(i);
-		}
-		
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00727_HopeWithinTheDarkness(727, Q00727_HopeWithinTheDarkness.class.getSimpleName(), "Hope Within The Darkness");
 	}
 }

@@ -132,9 +132,9 @@ public class Q00350_EnhanceYourWeapon extends Quest
 	// <npcid, <level, LevelingInfo>>
 	private static final FastMap<Integer, FastMap<Integer, LevelingInfo>> _npcLevelingInfos = new FastMap<>();
 	
-	public Q00350_EnhanceYourWeapon(int questId, String name, String descr)
+	public Q00350_EnhanceYourWeapon()
 	{
-		super(questId, name, descr);
+		super(350, Q00350_EnhanceYourWeapon.class.getSimpleName(), "Enhance Your Weapon");
 		addStartNpc(STARTING_NPCS);
 		addTalkId(STARTING_NPCS);
 		load();
@@ -655,10 +655,5 @@ public class Q00350_EnhanceYourWeapon extends Quest
 		}
 		_log.info("[EnhanceYourWeapon] Loaded " + _soulCrystals.size() + " Soul Crystal data.");
 		_log.info("[EnhanceYourWeapon] Loaded " + _npcLevelingInfos.size() + " npc Leveling info data.");
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00350_EnhanceYourWeapon(350, Q00350_EnhanceYourWeapon.class.getSimpleName(), "Enhance Your Weapon");
 	}
 }

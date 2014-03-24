@@ -51,6 +51,22 @@ public class Q00423_TakeYourBestShot extends Quest
 		22774
 	};
 	
+	public Q00423_TakeYourBestShot()
+	{
+		super(423, Q00423_TakeYourBestShot.class.getSimpleName(), "Take Your Best Shot!");
+		addStartNpc(_johnny);
+		addTalkId(_johnny);
+		addStartNpc(_batracos);
+		addTalkId(_batracos);
+		addFirstTalkId(_batracos);
+		
+		addKillId(_tanta_guard);
+		for (int _mob : _mobs)
+		{
+			addKillId(_mob);
+		}
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -194,27 +210,5 @@ public class Q00423_TakeYourBestShot extends Quest
 		npc.setIsRunning(true);
 		npc.addDamageHate(player, 0, 999);
 		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
-	}
-	
-	public Q00423_TakeYourBestShot(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		addStartNpc(_johnny);
-		addTalkId(_johnny);
-		addStartNpc(_batracos);
-		addTalkId(_batracos);
-		addFirstTalkId(_batracos);
-		
-		addKillId(_tanta_guard);
-		for (int _mob : _mobs)
-		{
-			addKillId(_mob);
-		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00423_TakeYourBestShot(423, Q00423_TakeYourBestShot.class.getSimpleName(), "Take Your Best Shot!");
 	}
 }

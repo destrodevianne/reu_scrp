@@ -49,9 +49,9 @@ public class Q00139_ShadowFoxPart1 extends Quest
 	private static final int MAX_REWARD_LEVEL = 42;
 	private static final int DROP_CHANCE = 68;
 	
-	private Q00139_ShadowFoxPart1(int questId, String name, String descr)
+	public Q00139_ShadowFoxPart1()
 	{
-		super(questId, name, descr);
+		super(139, Q00139_ShadowFoxPart1.class.getSimpleName(), "Shadow Fox - 1");
 		addStartNpc(MIA);
 		addTalkId(MIA);
 		addKillId(MOBS);
@@ -170,10 +170,5 @@ public class Q00139_ShadowFoxPart1 extends Quest
 				break;
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00139_ShadowFoxPart1(139, Q00139_ShadowFoxPart1.class.getSimpleName(), "Shadow Fox - 1");
 	}
 }

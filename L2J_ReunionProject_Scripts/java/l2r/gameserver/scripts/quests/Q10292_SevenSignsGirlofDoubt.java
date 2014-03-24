@@ -39,6 +39,28 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 		boolean spawned = false;
 	}
 	
+	public Q10292_SevenSignsGirlofDoubt()
+	{
+		super(10292, Q10292_SevenSignsGirlofDoubt.class.getSimpleName(), "Seven Signs, Girl of Doubt");
+		addStartNpc(Wood);
+		addTalkId(Wood);
+		addTalkId(Franz);
+		addTalkId(Hardin);
+		addTalkId(Elcadia);
+		addTalkId(Gruff_looking_Man);
+		addTalkId(Jeina);
+		addKillId(27422);
+		for (int _npc : Mobs)
+		{
+			addKillId(_npc);
+		}
+		
+		questItemIds = new int[]
+		{
+			Elcadias_Mark
+		};
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -47,14 +69,16 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 		
 		int instanceId = npc.getInstanceId();
 		InstanceHolder holder = instanceWorlds.get(instanceId);
-		if (holder == null && instanceId > 0)
+		if ((holder == null) && (instanceId > 0))
 		{
 			holder = new InstanceHolder();
 			instanceWorlds.put(instanceId, holder);
 		}
 		
 		if (st == null)
+		{
 			return htmltext;
+		}
 		if (event.equalsIgnoreCase("evil_despawn"))
 		{
 			if (holder != null)
@@ -63,7 +87,9 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 				for (L2Npc h : holder.mobs)
 				{
 					if (h != null)
+					{
 						h.deleteMe();
+					}
 				}
 				holder.mobs.clear();
 				instanceWorlds.remove(instanceId);
@@ -144,22 +170,36 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 		else if (npc.getId() == Wood)
 		{
 			if (st.getState() == State.COMPLETED)
+			{
 				htmltext = "32593-02.htm";
+			}
 			else if (player.getLevel() < 81)
+			{
 				htmltext = "32593-03.htm";
-			else if (player.getQuestState(Q00198_SevenSignsEmbryo.class.getSimpleName()) == null || player.getQuestState(Q00198_SevenSignsEmbryo.class.getSimpleName()).getState() != State.COMPLETED)
+			}
+			else if ((player.getQuestState(Q00198_SevenSignsEmbryo.class.getSimpleName()) == null) || (player.getQuestState(Q00198_SevenSignsEmbryo.class.getSimpleName()).getState() != State.COMPLETED))
+			{
 				htmltext = "32593-03.htm";
+			}
 			else if (st.getState() == State.CREATED)
+			{
 				htmltext = "32593-01.htm";
+			}
 			else if (st.getInt("cond") >= 1)
+			{
 				htmltext = "32593-07.html";
+			}
 		}
 		else if (npc.getId() == Franz)
 		{
 			if (st.getInt("cond") == 1)
+			{
 				htmltext = "32597-01.htm";
+			}
 			else if (st.getInt("cond") == 2)
+			{
 				htmltext = "32597-03.html";
+			}
 		}
 		else if (npc.getId() == Elcadia)
 		{
@@ -205,9 +245,13 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 		else if (npc.getId() == Hardin)
 		{
 			if (st.getInt("cond") == 7)
+			{
 				htmltext = "30832-01.html";
+			}
 			else if (st.getInt("cond") == 8)
+			{
 				htmltext = "30832-04.html";
+			}
 		}
 		return htmltext;
 	}
@@ -217,27 +261,31 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 	{
 		QuestState st = player.getQuestState(getName());
 		
-		if (st != null && st.getInt("cond") == 3 && Util.contains(Mobs, npc.getId()) && st.getQuestItemsCount(Elcadias_Mark) < 10 && st.getQuestItemsCount(Elcadias_Mark) != 9)
+		if ((st != null) && (st.getInt("cond") == 3) && Util.contains(Mobs, npc.getId()) && (st.getQuestItemsCount(Elcadias_Mark) < 10) && (st.getQuestItemsCount(Elcadias_Mark) != 9))
 		{
 			st.giveItems(Elcadias_Mark, 1);
 			st.playSound("ItemSound.quest_middle");
 		}
-		else if (st != null && st.getInt("cond") == 3 && Util.contains(Mobs, npc.getId()) && st.getQuestItemsCount(Elcadias_Mark) >= 9)
+		else if ((st != null) && (st.getInt("cond") == 3) && Util.contains(Mobs, npc.getId()) && (st.getQuestItemsCount(Elcadias_Mark) >= 9))
 		{
 			st.giveItems(Elcadias_Mark, 1);
 			st.playSound("ItemSound.quest_middle");
 			st.set("cond", "4");
 		}
-		else if (st != null && st.getInt("cond") == 5 && npc.getId() == 27422)
+		else if ((st != null) && (st.getInt("cond") == 5) && (npc.getId() == 27422))
 		{
 			int instanceid = npc.getInstanceId();
 			InstanceHolder holder = instanceWorlds.get(instanceid);
 			if (holder == null)
+			{
 				return null;
+			}
 			for (L2Npc h : holder.mobs)
 			{
 				if (h != null)
+				{
 					h.deleteMe();
+				}
 			}
 			holder.spawned = false;
 			holder.mobs.clear();
@@ -246,33 +294,5 @@ public class Q10292_SevenSignsGirlofDoubt extends Quest
 			st.playSound("ItemSound.quest_middle");
 		}
 		return super.onKill(npc, player, isPet);
-	}
-	
-	public Q10292_SevenSignsGirlofDoubt(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		addStartNpc(Wood);
-		addTalkId(Wood);
-		addTalkId(Franz);
-		addTalkId(Hardin);
-		addTalkId(Elcadia);
-		addTalkId(Gruff_looking_Man);
-		addTalkId(Jeina);
-		addKillId(27422);
-		for (int _npc : Mobs)
-		{
-			addKillId(_npc);
-		}
-		
-		questItemIds = new int[]
-		{
-			Elcadias_Mark
-		};
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10292_SevenSignsGirlofDoubt(10292, Q10292_SevenSignsGirlofDoubt.class.getSimpleName(), "Seven Signs, Girl of Doubt");
 	}
 }

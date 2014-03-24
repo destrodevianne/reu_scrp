@@ -86,13 +86,11 @@ public class Q00308_ReedFieldMaintenance extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 82;
 	
-	public Q00308_ReedFieldMaintenance(int questId, String name, String descr)
+	public Q00308_ReedFieldMaintenance()
 	{
-		super(questId, name, descr);
-		
+		super(308, Q00308_ReedFieldMaintenance.class.getSimpleName(), "Reed Field Maintenance");
 		addStartNpc(KATENSA);
 		addTalkId(KATENSA);
-		
 		addKillId(MUCROKIANS);
 		addKillId(CONTAMINATED_MUCROKIAN, CHANGED_MUCROKIAN);
 	}
@@ -263,10 +261,5 @@ public class Q00308_ReedFieldMaintenance extends Quest
 		}
 		
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00308_ReedFieldMaintenance(308, Q00308_ReedFieldMaintenance.class.getSimpleName(), "Reed Field Maintenance");
 	}
 }

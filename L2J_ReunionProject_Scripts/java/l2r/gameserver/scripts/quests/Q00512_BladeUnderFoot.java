@@ -341,6 +341,44 @@ public final class Q00512_BladeUnderFoot extends Quest
 		}
 	}
 	
+	public Q00512_BladeUnderFoot()
+	{
+		super(512, Q00512_BladeUnderFoot.class.getSimpleName(), "Blade Under Foot");
+		_castleDungeons.put(36403, new CastleDungeon(13, 36403));
+		_castleDungeons.put(36404, new CastleDungeon(14, 36404));
+		_castleDungeons.put(36405, new CastleDungeon(15, 36405));
+		_castleDungeons.put(36406, new CastleDungeon(16, 36406));
+		_castleDungeons.put(36407, new CastleDungeon(17, 36407));
+		_castleDungeons.put(36408, new CastleDungeon(18, 36408));
+		_castleDungeons.put(36409, new CastleDungeon(19, 36409));
+		_castleDungeons.put(36410, new CastleDungeon(20, 36410));
+		_castleDungeons.put(36411, new CastleDungeon(21, 36411));
+		
+		for (int i : _castleDungeons.keySet())
+		{
+			addStartNpc(i);
+			addTalkId(i);
+		}
+		
+		for (int i : RAIDS1)
+		{
+			addKillId(i);
+		}
+		for (int i : RAIDS2)
+		{
+			addKillId(i);
+		}
+		for (int i : RAIDS3)
+		{
+			addKillId(i);
+		}
+		
+		for (int i = 25572; i <= 25595; i++)
+		{
+			addAttackId(i);
+		}
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -484,48 +522,5 @@ public final class Q00512_BladeUnderFoot extends Quest
 			}
 		}
 		return null;
-	}
-	
-	public Q00512_BladeUnderFoot(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		_castleDungeons.put(36403, new CastleDungeon(13, 36403));
-		_castleDungeons.put(36404, new CastleDungeon(14, 36404));
-		_castleDungeons.put(36405, new CastleDungeon(15, 36405));
-		_castleDungeons.put(36406, new CastleDungeon(16, 36406));
-		_castleDungeons.put(36407, new CastleDungeon(17, 36407));
-		_castleDungeons.put(36408, new CastleDungeon(18, 36408));
-		_castleDungeons.put(36409, new CastleDungeon(19, 36409));
-		_castleDungeons.put(36410, new CastleDungeon(20, 36410));
-		_castleDungeons.put(36411, new CastleDungeon(21, 36411));
-		
-		for (int i : _castleDungeons.keySet())
-		{
-			addStartNpc(i);
-			addTalkId(i);
-		}
-		
-		for (int i : RAIDS1)
-		{
-			addKillId(i);
-		}
-		for (int i : RAIDS2)
-		{
-			addKillId(i);
-		}
-		for (int i : RAIDS3)
-		{
-			addKillId(i);
-		}
-		
-		for (int i = 25572; i <= 25595; i++)
-		{
-			addAttackId(i);
-		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00512_BladeUnderFoot(512, Q00512_BladeUnderFoot.class.getSimpleName(), "Blade Under Foot");
 	}
 }

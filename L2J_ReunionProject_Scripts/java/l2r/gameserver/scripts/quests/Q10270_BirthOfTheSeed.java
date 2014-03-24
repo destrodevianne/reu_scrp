@@ -18,9 +18,9 @@ public class Q10270_BirthOfTheSeed extends Quest
 	private static final int _relrikia = 32567;
 	private static final int _artius = 32559;
 	
-	public Q10270_BirthOfTheSeed(int questId, String name, String descr)
+	public Q10270_BirthOfTheSeed()
 	{
-		super(questId, name, descr);
+		super(10270, Q10270_BirthOfTheSeed.class.getSimpleName(), "BirthOfTheSeed");
 		questItemIds = new int[]
 		{
 			13868,
@@ -102,14 +102,20 @@ public class Q10270_BirthOfTheSeed extends Quest
 				{
 					case State.CREATED:
 						if (player.getLevel() < 75)
+						{
 							htmltext = "32563-02.htm";
+						}
 						else
+						{
 							htmltext = "32563-01.htm";
+						}
 						break;
 					
 					case State.STARTED:
 						if (cond == 1)
+						{
 							htmltext = "32563-06.htm";
+						}
 						break;
 					
 					case State.COMPLETED:
@@ -119,16 +125,20 @@ public class Q10270_BirthOfTheSeed extends Quest
 				break;
 			case _artius:
 				if (cond == 1)
+				{
 					htmltext = "32559-01.htm";
+				}
 				else if (cond == 2)
 				{
-					if (qs.getQuestItemsCount(13868) < 1 && qs.getQuestItemsCount(13869) < 1 && qs.getQuestItemsCount(13870) < 1)
+					if ((qs.getQuestItemsCount(13868) < 1) && (qs.getQuestItemsCount(13869) < 1) && (qs.getQuestItemsCount(13870) < 1))
+					{
 						htmltext = "32559-04.htm";
-					
-					else if (qs.getQuestItemsCount(13868) + qs.getQuestItemsCount(13869) + qs.getQuestItemsCount(13870) < 3)
+					}
+					else if ((qs.getQuestItemsCount(13868) + qs.getQuestItemsCount(13869) + qs.getQuestItemsCount(13870)) < 3)
+					{
 						htmltext = "32559-05.htm";
-					
-					else if (qs.getQuestItemsCount(13868) == 1 && qs.getQuestItemsCount(13869) == 1 && qs.getQuestItemsCount(13870) == 1)
+					}
+					else if ((qs.getQuestItemsCount(13868) == 1) && (qs.getQuestItemsCount(13869) == 1) && (qs.getQuestItemsCount(13870) == 1))
 					{
 						htmltext = "32559-06.htm";
 						qs.takeItems(13868, 1);
@@ -138,16 +148,24 @@ public class Q10270_BirthOfTheSeed extends Quest
 						qs.playSound("ItemSound.quest_middle");
 					}
 				}
-				else if (cond == 3 || cond == 4)
+				else if ((cond == 3) || (cond == 4))
+				{
 					htmltext = "32559-07.htm";
+				}
 				else if (cond == 5)
+				{
 					htmltext = "32559-12.htm";
+				}
 				if (qs.getState() == State.COMPLETED)
+				{
 					htmltext = "32559-02.htm";
+				}
 				break;
 			case _jinbi:
 				if (cond < 4)
+				{
 					htmltext = "32566-02.htm";
+				}
 				else if (cond == 4)
 				{
 					if (qs.getInt("pay") == 1)
@@ -160,7 +178,9 @@ public class Q10270_BirthOfTheSeed extends Quest
 					}
 				}
 				else if (cond > 4)
+				{
 					htmltext = "32566-12.htm";
+				}
 				
 				break;
 			case _relrikia:
@@ -192,8 +212,10 @@ public class Q10270_BirthOfTheSeed extends Quest
 					for (L2PcInstance partyMember : cc.getMembers())
 					{
 						QuestState qs = partyMember.getQuestState(getName());
-						if (qs != null && qs.getInt("cond") == 2)
+						if ((qs != null) && (qs.getInt("cond") == 2))
+						{
 							qs.giveItems(13869, 1);
+						}
 					}
 				}
 				else
@@ -201,16 +223,20 @@ public class Q10270_BirthOfTheSeed extends Quest
 					for (L2PcInstance partyMember : party.getMembers())
 					{
 						QuestState qs = partyMember.getQuestState(getName());
-						if (qs != null && qs.getInt("cond") == 2)
+						if ((qs != null) && (qs.getInt("cond") == 2))
+						{
 							qs.giveItems(13869, 1);
+						}
 					}
 				}
 			}
 			else
 			{
 				QuestState qs = player.getQuestState(getName());
-				if (qs != null && qs.getInt("cond") == 2)
+				if ((qs != null) && (qs.getInt("cond") == 2))
+				{
 					qs.giveItems(13869, 1);
+				}
 			}
 		}
 		else if (npc.getId() == _klodekus)
@@ -224,8 +250,10 @@ public class Q10270_BirthOfTheSeed extends Quest
 					for (L2PcInstance partyMember : cc.getMembers())
 					{
 						QuestState qs = partyMember.getQuestState(getName());
-						if (qs != null && qs.getInt("cond") == 2)
+						if ((qs != null) && (qs.getInt("cond") == 2))
+						{
 							qs.giveItems(13868, 1);
+						}
 					}
 				}
 				else
@@ -233,16 +261,20 @@ public class Q10270_BirthOfTheSeed extends Quest
 					for (L2PcInstance partyMember : party.getMembers())
 					{
 						QuestState qs = partyMember.getQuestState(getName());
-						if (qs != null && qs.getInt("cond") == 2)
+						if ((qs != null) && (qs.getInt("cond") == 2))
+						{
 							qs.giveItems(13868, 1);
+						}
 					}
 				}
 			}
 			else
 			{
 				QuestState qs = player.getQuestState(getName());
-				if (qs != null && qs.getInt("cond") == 2)
+				if ((qs != null) && (qs.getInt("cond") == 2))
+				{
 					qs.giveItems(13868, 1);
+				}
 			}
 		}
 		else if (npc.getId() == _cohemenes)
@@ -256,8 +288,10 @@ public class Q10270_BirthOfTheSeed extends Quest
 					for (L2PcInstance partyMember : cc.getMembers())
 					{
 						QuestState qs = partyMember.getQuestState(getName());
-						if (qs != null && qs.getInt("cond") == 2)
+						if ((qs != null) && (qs.getInt("cond") == 2))
+						{
 							qs.giveItems(13870, 1);
+						}
 					}
 				}
 				else
@@ -265,23 +299,22 @@ public class Q10270_BirthOfTheSeed extends Quest
 					for (L2PcInstance partyMember : party.getMembers())
 					{
 						QuestState qs = partyMember.getQuestState(getName());
-						if (qs != null && qs.getInt("cond") == 2)
+						if ((qs != null) && (qs.getInt("cond") == 2))
+						{
 							qs.giveItems(13870, 1);
+						}
 					}
 				}
 			}
 			else
 			{
 				QuestState qs = player.getQuestState(getName());
-				if (qs != null && qs.getInt("cond") == 2)
+				if ((qs != null) && (qs.getInt("cond") == 2))
+				{
 					qs.giveItems(13870, 1);
+				}
 			}
 		}
 		return super.onKill(npc, player, isPet);
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10270_BirthOfTheSeed(10270, Q10270_BirthOfTheSeed.class.getSimpleName(), "BirthOfTheSeed");
 	}
 }

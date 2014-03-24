@@ -124,7 +124,7 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 		MOBS_DROP_CHANCES.put(22194, new DropInfo(TOTEM, 0.03)); // Ritual Sacrifice
 	}
 	
-	private Q00638_SeekersOfTheHolyGrail()
+	public Q00638_SeekersOfTheHolyGrail()
 	{
 		super(638, Q00638_SeekersOfTheHolyGrail.class.getSimpleName(), "Seekers Of The Holy Grail");
 		addStartNpc(INNOCENTIN);
@@ -240,10 +240,5 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00638_SeekersOfTheHolyGrail();
 	}
 }

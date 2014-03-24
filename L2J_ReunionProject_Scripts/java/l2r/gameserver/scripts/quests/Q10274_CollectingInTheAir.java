@@ -55,9 +55,9 @@ public class Q10274_CollectingInTheAir extends Quest
 		18692, // Green Star Stone
 	};
 	
-	public Q10274_CollectingInTheAir(int questId, String name, String descr)
+	public Q10274_CollectingInTheAir()
 	{
-		super(questId, name, descr);
+		super(10274, Q10274_CollectingInTheAir.class.getSimpleName(), "Collecting in the Air");
 		addStartNpc(LEKON);
 		addTalkId(LEKON);
 		addSkillSeeId(MOBS);
@@ -157,10 +157,5 @@ public class Q10274_CollectingInTheAir extends Quest
 				break;
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q10274_CollectingInTheAir(10274, Q10274_CollectingInTheAir.class.getSimpleName(), "Collecting in the Air");
 	}
 }

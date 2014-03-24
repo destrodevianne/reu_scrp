@@ -94,10 +94,9 @@ public class Q00503_PursuitClanAmbition extends Quest
 	
 	private static final Map<Integer, dropList> drop = new HashMap<>();
 	
-	public Q00503_PursuitClanAmbition(int id, String name, String descr)
+	public Q00503_PursuitClanAmbition()
 	{
-		super(id, name, descr);
-		
+		super(503, qn, "");
 		addStartNpc(30760);
 		for (int npcId : NPC)
 		{
@@ -904,10 +903,5 @@ public class Q00503_PursuitClanAmbition extends Quest
 				st.playSound("ItemSound.quest_itemget");
 			}
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00503_PursuitClanAmbition(503, qn, "");
 	}
 }

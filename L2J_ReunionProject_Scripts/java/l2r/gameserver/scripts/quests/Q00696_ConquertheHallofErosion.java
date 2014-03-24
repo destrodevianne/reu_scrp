@@ -31,13 +31,11 @@ public final class Q00696_ConquertheHallofErosion extends Quest
 	private static final int MARK_OF_KEUCEREUS_STAGE_1 = 13691;
 	private static final int MARK_OF_KEUCEREUS_STAGE_2 = 13692;
 	
-	public Q00696_ConquertheHallofErosion(int questId, String name, String descr)
+	public Q00696_ConquertheHallofErosion()
 	{
-		super(questId, name, descr);
-		
+		super(696, Q00696_ConquertheHallofErosion.class.getSimpleName(), "Conquer the Hall of Erosion");
 		addStartNpc(TEPIOS);
 		addTalkId(TEPIOS);
-		
 		addKillId(COHEMENES);
 		
 		questItemIds = new int[]
@@ -154,10 +152,5 @@ public final class Q00696_ConquertheHallofErosion extends Quest
 			}
 		}
 		return super.onKill(npc, player, isSummon);
-	}
-	
-	public static void main(String[] args)
-	{
-		new Q00696_ConquertheHallofErosion(696, Q00696_ConquertheHallofErosion.class.getSimpleName(), "Conquer the Hall of Erosion");
 	}
 }
