@@ -25,7 +25,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.items.L2Weapon;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
-import l2r.gameserver.model.items.type.L2ActionType;
+import l2r.gameserver.model.items.type.ActionType;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.MagicSkillUse;
 import l2r.gameserver.util.Broadcast;
@@ -71,7 +71,7 @@ public class BlessedSpiritShot implements IItemHandler
 		}
 		
 		// Check for correct grade
-		boolean gradeCheck = item.isEtcItem() && (item.getEtcItem().getDefaultAction() == L2ActionType.spiritshot) && (weaponInst.getItem().getItemGradeSPlus() == item.getItem().getItemGradeSPlus());
+		boolean gradeCheck = item.isEtcItem() && (item.getEtcItem().getDefaultAction() == ActionType.SPIRITSHOT) && (weaponInst.getItem().getItemGradeSPlus() == item.getItem().getItemGradeSPlus());
 		
 		if (!gradeCheck)
 		{
