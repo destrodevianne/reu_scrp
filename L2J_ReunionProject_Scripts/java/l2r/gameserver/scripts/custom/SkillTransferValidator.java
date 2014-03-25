@@ -39,8 +39,6 @@ import l2r.gameserver.util.Util;
  */
 public final class SkillTransferValidator extends L2Script
 {
-	private static final String qn = "SkillTransfer";
-	
 	private static final ItemHolder[] PORMANDERS =
 	{
 		// Cardinal (97)
@@ -51,18 +49,18 @@ public final class SkillTransferValidator extends L2Script
 		new ItemHolder(15309, 4)
 	};
 	
-	public SkillTransferValidator(int id, String name, String descr)
+	public SkillTransferValidator()
 	{
-		super(id, name, descr);
+		super(-1, "SkillTransfer", "custom");
 		setOnEnterWorld(true);
 	}
 	
 	@Override
 	public String onEnterWorld(L2PcInstance player)
 	{
+		addProfessionChangeNotify(player);
 		if (getTransferClassIndex(player) >= 0)
 		{
-			addProfessionChangeNotify(player);
 			startQuestTimer("givePormanders", 2000, null, player);
 		}
 		return null;
@@ -82,20 +80,20 @@ public final class SkillTransferValidator extends L2Script
 			final int index = getTransferClassIndex(player);
 			if (index >= 0)
 			{
-				QuestState st = player.getQuestState(qn);
+				QuestState st = player.getQuestState(getName());
 				if (st == null)
 				{
 					st = newQuestState(player);
 				}
 				
-				final String name = qn + String.valueOf(player.getClassId().getId());
+				final String name = getName() + String.valueOf(player.getClassId().getId());
 				if (st.getInt(name) == 0)
 				{
 					st.setInternal(name, "1");
 					if (st.getGlobalQuestVar(name).isEmpty())
 					{
 						st.saveGlobalQuestVar(name, "1");
-						player.addItem(qn, PORMANDERS[index].getId(), PORMANDERS[index].getCount(), null, true);
+						player.addItem(getName(), PORMANDERS[index].getId(), PORMANDERS[index].getCount(), null, true);
 					}
 				}
 				
@@ -150,6 +148,6 @@ public final class SkillTransferValidator extends L2Script
 	
 	public static void main(String[] args)
 	{
-		new SkillTransferValidator(-1, qn, "custom");
+		new SkillTransferValidator();
 	}
 }
