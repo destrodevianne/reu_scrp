@@ -492,7 +492,7 @@ public class Q10295_SevenSignsSolinasTomb extends Quest
 			}
 		}
 		
-		return null;
+		return super.onKill(npc, player, isPet);
 	}
 	
 	private void activateTombGuards(L2PcInstance player)
