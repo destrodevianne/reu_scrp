@@ -18,12 +18,12 @@
  */
 package l2r.gameserver.scripts.quests;
 
-import l2r.gameserver.instancemanager.HellboundManager;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
+import l2r.gameserver.scripts.hellbound.HellboundEngine;
 
 /**
  * Path To Hellbound (130)
@@ -139,7 +139,7 @@ public class Q00130_PathToHellbound extends Quest
 			{
 				if (npc.getId() == CASIAN)
 				{
-					if (!HellboundManager.getInstance().isLocked())
+					if (!HellboundEngine.getInstance().isLocked())
 					{
 						htmltext = (player.getLevel() >= MIN_LEVEL) ? "30612-01.htm" : "30612-02.html";
 					}

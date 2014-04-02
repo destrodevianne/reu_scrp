@@ -18,12 +18,12 @@
  */
 package l2r.gameserver.scripts.quests;
 
-import l2r.gameserver.instancemanager.HellboundManager;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
+import l2r.gameserver.scripts.hellbound.HellboundEngine;
 
 /**
  * That's Bloody Hot! (133)
@@ -124,7 +124,7 @@ public class Q00133_ThatsBloodyHot extends Quest
 			{
 				if (st.isCond(4))
 				{
-					if (!HellboundManager.getInstance().isLocked())
+					if (!HellboundEngine.getInstance().isLocked())
 					{
 						st.giveAdena(254247, true);
 						st.addExpAndSp(331457, 32524);

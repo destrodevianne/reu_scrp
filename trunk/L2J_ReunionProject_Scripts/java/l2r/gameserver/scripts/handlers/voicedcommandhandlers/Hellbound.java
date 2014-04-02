@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -19,10 +19,11 @@
 package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 
 import l2r.gameserver.handler.IVoicedCommandHandler;
-import l2r.gameserver.instancemanager.HellboundManager;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.scripts.hellbound.HellboundEngine;
 
 /**
+ * Hellbound voiced command.
  * @author DS
  */
 public class Hellbound implements IVoicedCommandHandler
@@ -35,14 +36,14 @@ public class Hellbound implements IVoicedCommandHandler
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String params)
 	{
-		if (HellboundManager.getInstance().isLocked())
+		if (HellboundEngine.getInstance().isLocked())
 		{
 			activeChar.sendMessage("Hellbound is currently locked.");
 			return true;
 		}
 		
-		final int maxTrust = HellboundManager.getInstance().getMaxTrust();
-		activeChar.sendMessage("Hellbound level: " + HellboundManager.getInstance().getLevel() + " trust: " + HellboundManager.getInstance().getTrust() + (maxTrust > 0 ? "/" + maxTrust : ""));
+		final int maxTrust = HellboundEngine.getInstance().getMaxTrust();
+		activeChar.sendMessage("Hellbound level: " + HellboundEngine.getInstance().getLevel() + " trust: " + HellboundEngine.getInstance().getTrust() + (maxTrust > 0 ? "/" + maxTrust : ""));
 		return true;
 	}
 	
