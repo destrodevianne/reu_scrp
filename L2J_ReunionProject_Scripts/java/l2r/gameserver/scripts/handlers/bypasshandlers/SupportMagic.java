@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -18,11 +18,11 @@
  */
 package l2r.gameserver.scripts.handlers.bypasshandlers;
 
+import l2r.gameserver.enums.CategoryType;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.base.ClassId;
 import l2r.gameserver.model.holders.SkillHolder;
 
 public class SupportMagic implements IBypassHandler
@@ -99,7 +99,7 @@ public class SupportMagic implements IBypassHandler
 	private static void makeSupportMagic(L2PcInstance player, L2Npc npc, boolean isSummon)
 	{
 		final int level = player.getLevel();
-		if (isSummon && (!player.hasSummon() || !player.getSummon().isServitor()))
+		if (isSummon && !player.hasServitor())
 		{
 			npc.showChatWindow(player, "data/html/default/SupportMagicNoSummon.htm");
 			return;
@@ -140,7 +140,7 @@ public class SupportMagic implements IBypassHandler
 		else
 		{
 			npc.setTarget(player);
-			if (player.isMageClass() && (player.getClassId() != ClassId.overlord) && (player.getClassId() != ClassId.warcryer))
+			if (player.isInCategory(CategoryType.BEGINNER_MAGE))
 			{
 				for (SkillHolder skill : MAGE_BUFFS)
 				{
