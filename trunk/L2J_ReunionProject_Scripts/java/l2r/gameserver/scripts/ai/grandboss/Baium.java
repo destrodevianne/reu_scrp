@@ -1,165 +1,166 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
- * 
+ * Copyright (C) 2004-2014 L2J DataPack
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.ai.grandboss;
 
-import static l2r.gameserver.enums.CtrlIntention.AI_INTENTION_FOLLOW;
-import static l2r.gameserver.enums.CtrlIntention.AI_INTENTION_IDLE;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javolution.util.FastList;
 import l2r.Config;
-import l2r.gameserver.GeoData;
-import l2r.gameserver.ThreadPoolManager;
+import l2r.gameserver.enums.CategoryType;
+import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.MountType;
 import l2r.gameserver.instancemanager.GrandBossManager;
-import l2r.gameserver.model.L2Object;
+import l2r.gameserver.instancemanager.ZoneManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.StatsSet;
+import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
-import l2r.gameserver.model.actor.instance.L2DecoyInstance;
+import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.holders.SkillHolder;
-import l2r.gameserver.model.quest.QuestTimer;
 import l2r.gameserver.model.skills.L2Skill;
-import l2r.gameserver.model.zone.type.L2BossZone;
+import l2r.gameserver.model.variables.NpcVariables;
+import l2r.gameserver.model.zone.type.L2NoRestartZone;
+import l2r.gameserver.network.NpcStringId;
+import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.Earthquake;
-import l2r.gameserver.network.serverpackets.MoveToPawn;
+import l2r.gameserver.network.serverpackets.ExShowScreenMessage;
 import l2r.gameserver.network.serverpackets.PlaySound;
+import l2r.gameserver.network.serverpackets.SocialAction;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
 
 /**
- * Baium's AI.
- * @author Fulminus
+ * Baium AI.
+ * @author St3eT
  */
-public class Baium extends AbstractNpcAI
+public final class Baium extends AbstractNpcAI
 {
 	// NPCs
-	private static final int STONE_BAIUM = 29025;
-	private static final int ANGELIC_VORTEX = 31862;
-	private static final int LIVE_BAIUM = 29020;
-	private static final int ARCHANGEL = 29021;
-	private static final int TELEPORT_CUBIC = 31842;
-	// Item
-	private static final int BLOODED_FABRIC = 4295;
-	// Baium status tracking
-	private static final byte ASLEEP = 0; // baium is in the stone version, waiting to be woken up. Entry is unlocked
-	private static final byte AWAKE = 1; // baium is awake and fighting. Entry is locked.
-	private static final byte DEAD = 2; // baium has been killed and has not yet spawned. Entry is locked
-	// Fixed archangel spawn location
-	private static final Location[] ANGEL_LOCATION =
-	{
-		new Location(114239, 17168, 10080, 63544),
-		new Location(115780, 15564, 10080, 13620),
-		new Location(114880, 16236, 10080, 5400),
-		new Location(115168, 17200, 10080, 0),
-		new Location(115792, 16608, 10080, 0)
-	};
-	
+	private static final int BAIUM = 29020; // Baium
+	private static final int BAIUM_STONE = 29025; // Baium
+	private static final int ANG_VORTEX = 31862; // Angelic Vortex
+	private static final int ARCHANGEL = 29021; // Archangel
+	private static final int TELE_CUBE = 31842; // Teleportation Cubic
 	// Skills
-	private static final SkillHolder GENERAL_ATTACK = new SkillHolder(4127, 1);
-	private static final SkillHolder WIND_OF_FORCE = new SkillHolder(4128, 1);
-	private static final SkillHolder EARTHQUAKE = new SkillHolder(4129, 1);
-	private static final SkillHolder STRIKING_OF_THUNDERBOLT = new SkillHolder(4130, 1);
-	private static final SkillHolder STUN = new SkillHolder(4131, 1);
-	private static final SkillHolder BAIUM_HEAL = new SkillHolder(4135, 1);
-	private static final SkillHolder HINDER_STRIDER = new SkillHolder(4258, 1);
-	// private static final SkillHolder PRESENT_FROM_BAIUM = new SkillHolder(4136, 1);
-	
-	private long _LastAttackVsBaiumTime = 0;
-	protected final List<L2Npc> _Minions = new ArrayList<>(5);
-	private L2BossZone _Zone;
-	
-	private L2Character _target;
-	private SkillHolder _skill;
-	
-	private Baium(String name, String descr)
+	private static final SkillHolder BAIUM_ATTACK = new SkillHolder(4127, 1); // Baium: General Attack
+	private static final SkillHolder ENERGY_WAVE = new SkillHolder(4128, 1); // Wind Of Force
+	private static final SkillHolder EARTH_QUAKE = new SkillHolder(4129, 1); // Earthquake
+	private static final SkillHolder THUNDERBOLT = new SkillHolder(4130, 1); // Striking of Thunderbolt
+	private static final SkillHolder GROUP_HOLD = new SkillHolder(4131, 1); // Stun
+	private static final SkillHolder SPEAR_ATTACK = new SkillHolder(4132, 1); // Spear: Pound the Ground
+	private static final SkillHolder ANGEL_HEAL = new SkillHolder(4133, 1); // Angel Heal
+	private static final SkillHolder HEAL_OF_BAIUM = new SkillHolder(4135, 1); // Baium Heal
+	private static final SkillHolder BAIUM_PRESENT = new SkillHolder(4136, 1); // Baium's Gift
+	private static final SkillHolder ANTI_STRIDER = new SkillHolder(4258, 1); // Hinder Strider
+	// Items
+	private static final int FABRIC = 4295; // Blooded Fabric
+	// Zone
+	private static final L2NoRestartZone zone = ZoneManager.getInstance().getZoneById(70051, L2NoRestartZone.class); // Baium zone
+	// Status
+	private static final int ALIVE = 0;
+	private static final int WAITING = 1;
+	private static final int IN_FIGHT = 2;
+	private static final int DEAD = 3;
+	// Locations
+	private static final Location BAIUM_GIFT_LOC = new Location(115910, 17337, 10105);
+	private static final Location BAIUM_LOC = new Location(116033, 17447, 10107, -25348);
+	private static final Location TELEPORT_CUBIC_LOC = new Location(115017, 15549, 10090);
+	private static final Location TELEPORT_IN_LOC = new Location(114077, 15882, 10078);
+	private static final Location[] TELEPORT_OUT_LOC =
 	{
-		super(name, descr);
-		registerMobs(LIVE_BAIUM);
-		// Quest NPC starter initialization
-		addStartNpc(STONE_BAIUM, ANGELIC_VORTEX, TELEPORT_CUBIC);
-		addTalkId(STONE_BAIUM, ANGELIC_VORTEX, TELEPORT_CUBIC);
+		new Location(108784, 16000, -4928),
+		new Location(113824, 10448, -5164),
+		new Location(115488, 22096, -5168),
+	};
+	private static final Location[] ARCHANGEL_LOC =
+	{
+		new Location(115792, 16608, 10136, 0),
+		new Location(115168, 17200, 10136, 0),
+		new Location(115780, 15564, 10136, 13620),
+		new Location(114880, 16236, 10136, 5400),
+		new Location(114239, 17168, 10136, -1992)
+	};
+	// Misc
+	private L2GrandBossInstance _baium = null;
+	private static long _lastAttack = 0;
+	private static L2PcInstance _standbyPlayer = null;
+	
+	private Baium()
+	{
+		super(Baium.class.getSimpleName(), "ai/individual");
+		addFirstTalkId(ANG_VORTEX);
+		addTalkId(ANG_VORTEX, TELE_CUBE, BAIUM_STONE);
+		addStartNpc(ANG_VORTEX, TELE_CUBE, BAIUM_STONE);
+		addAttackId(BAIUM, ARCHANGEL);
+		addKillId(BAIUM);
+		addSeeCreatureId(BAIUM);
+		addSpellFinishedId(BAIUM);
 		
-		_Zone = GrandBossManager.getInstance().getZone(113100, 14500, 10077);
-		StatsSet info = GrandBossManager.getInstance().getStatsSet(LIVE_BAIUM);
-		int status = GrandBossManager.getInstance().getBossStatus(LIVE_BAIUM);
-		if (status == DEAD)
+		final StatsSet info = GrandBossManager.getInstance().getStatsSet(BAIUM);
+		final int curr_hp = info.getInteger("currentHP");
+		final int curr_mp = info.getInteger("currentMP");
+		final int loc_x = info.getInteger("loc_x");
+		final int loc_y = info.getInteger("loc_y");
+		final int loc_z = info.getInteger("loc_z");
+		final int heading = info.getInteger("heading");
+		final long respawnTime = info.getLong("respawn_time");
+		
+		switch (getStatus())
 		{
-			// load the unlock date and time for baium from DB
-			long temp = (info.getLong("respawn_time") - System.currentTimeMillis());
-			if (temp > 0)
+			case WAITING:
 			{
-				// the unlock time has not yet expired. Mark Baium as currently locked (dead). Setup a timer
-				// to fire at the correct time (calculate the time between now and the unlock time,
-				// setup a timer to fire after that many msec)
-				startQuestTimer("baium_unlock", temp, null, null);
+				setStatus(ALIVE);
 			}
-			else
+			case ALIVE:
 			{
-				// the time has already expired while the server was offline. Delete the saved time and
-				// immediately spawn the stone-baium. Also the state need not be changed from ASLEEP
-				addSpawn(STONE_BAIUM, 116033, 17447, 10107, -25348, false, 0);
-				GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, ASLEEP);
+				addSpawn(BAIUM_STONE, BAIUM_LOC, false, 0);
+				break;
 			}
-		}
-		else if (status == AWAKE)
-		{
-			int loc_x = info.getInteger("loc_x");
-			int loc_y = info.getInteger("loc_y");
-			int loc_z = info.getInteger("loc_z");
-			int heading = info.getInteger("heading");
-			final int hp = info.getInteger("currentHP");
-			final int mp = info.getInteger("currentMP");
-			L2GrandBossInstance baium = (L2GrandBossInstance) addSpawn(LIVE_BAIUM, loc_x, loc_y, loc_z, heading, false, 0);
-			GrandBossManager.getInstance().addBoss(baium);
-			final L2Npc _baium = baium;
-			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+			case IN_FIGHT:
 			{
-				@Override
-				public void run()
+				_baium = (L2GrandBossInstance) addSpawn(BAIUM, loc_x, loc_y, loc_z, heading, false, 0);
+				_baium.setCurrentHpMp(curr_hp, curr_mp);
+				_lastAttack = System.currentTimeMillis();
+				addBoss(_baium);
+				
+				for (Location loc : ARCHANGEL_LOC)
 				{
-					try
-					{
-						_baium.setCurrentHpMp(hp, mp);
-						_baium.setIsInvul(true);
-						_baium.setIsImmobilized(true);
-						_baium.setRunning();
-						_baium.broadcastSocialAction(2);
-						startQuestTimer("baium_wakeup", 15000, _baium, null);
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
+					final L2Npc archangel = addSpawn(ARCHANGEL, loc, false, 0, true);
+					startQuestTimer("SELECT_TARGET", 5000, archangel, null);
 				}
-			}, 100L);
-		}
-		else
-		{
-			addSpawn(STONE_BAIUM, 116033, 17447, 10107, -25348, false, 0);
+				startQuestTimer("CHECK_ATTACK", 60000, _baium, null);
+				break;
+			}
+			case DEAD:
+			{
+				final long remain = respawnTime - System.currentTimeMillis();
+				if (remain > 0)
+				{
+					startQuestTimer("CLEAR_STATUS", remain, null, null);
+				}
+				else
+				{
+					notifyEvent("CLEAR_STATUS", null, null);
+				}
+				break;
+			}
 		}
 	}
 	
@@ -168,112 +169,311 @@ public class Baium extends AbstractNpcAI
 	{
 		switch (event)
 		{
-			case "baium_unlock":
+			case "31862-04.html":
 			{
-				GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, ASLEEP);
-				addSpawn(STONE_BAIUM, 116033, 17447, 10107, -25348, false, 0);
+				return event;
+			}
+			case "enter":
+			{
+				String htmltext = null;
+				if (getStatus() == DEAD)
+				{
+					htmltext = "31862-03.html";
+				}
+				else if (getStatus() == IN_FIGHT)
+				{
+					htmltext = "31862-02.html";
+				}
+				else if (!hasQuestItems(player, FABRIC))
+				{
+					htmltext = "31862-01.html";
+				}
+				else
+				{
+					takeItems(player, FABRIC, 1);
+					player.teleToLocation(TELEPORT_IN_LOC);
+				}
+				return htmltext;
+			}
+			case "teleportOut":
+			{
+				final Location destination = TELEPORT_OUT_LOC[getRandom(TELEPORT_OUT_LOC.length)];
+				player.teleToLocation(destination.getX() + getRandom(100), destination.getY() + getRandom(100), destination.getZ());
 				break;
 			}
-			case "skill_range":
+			case "wakeUp":
+			{
+				if (getStatus() == ALIVE)
+				{
+					npc.deleteMe();
+					setStatus(IN_FIGHT);
+					_baium = (L2GrandBossInstance) addSpawn(BAIUM, BAIUM_LOC, false, 0);
+					_baium.disableCoreAI(true);
+					addBoss(_baium);
+					_lastAttack = System.currentTimeMillis();
+					startQuestTimer("WAKEUP_ACTION", 50, _baium, null);
+					startQuestTimer("MANAGE_EARTHQUAKE", 2000, _baium, null);
+					startQuestTimer("CHECK_ATTACK", 60000, _baium, null);
+				}
+				break;
+			}
+			case "WAKEUP_ACTION":
 			{
 				if (npc != null)
 				{
-					callSkillAI(npc);
+					zone.broadcastPacket(new SocialAction(_baium.getObjectId(), 2));
 				}
 				break;
 			}
-			case "clean_player":
+			case "MANAGE_EARTHQUAKE":
 			{
-				_target = getRandomTarget(npc);
+				if (npc != null)
+				{
+					zone.broadcastPacket(new Earthquake(npc.getX(), npc.getY(), npc.getZ(), 40, 10));
+					zone.broadcastPacket(new PlaySound("BS02_A"));
+					startQuestTimer("SOCIAL_ACTION", 8000, npc, player);
+				}
 				break;
 			}
-			case "baium_wakeup":
+			case "SOCIAL_ACTION":
 			{
-				if ((npc != null) && (npc.getId() == LIVE_BAIUM))
+				if (npc != null)
 				{
-					npc.broadcastSocialAction(1);
-					npc.broadcastPacket(new Earthquake(npc.getX(), npc.getY(), npc.getZ(), 40, 5));
-					npc.broadcastPacket(new PlaySound(1, "BS02_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-					// start monitoring baium's inactivity
-					_LastAttackVsBaiumTime = System.currentTimeMillis();
-					startQuestTimer("baium_despawn", 60000, npc, null, true);
-					startQuestTimer("skill_range", 500, npc, null, true);
-					final L2Npc baium = npc;
-					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+					zone.broadcastPacket(new SocialAction(npc.getObjectId(), 3));
+					startQuestTimer("PLAYER_PORT", 6000, npc, player);
+				}
+				break;
+			}
+			case "PLAYER_PORT":
+			{
+				if (npc != null)
+				{
+					if ((player != null) && player.isInsideRadius(npc, 16000, true, false))
 					{
-						@Override
-						public void run()
+						player.teleToLocation(BAIUM_GIFT_LOC);
+						startQuestTimer("PLAYER_KILL", 3000, npc, player);
+					}
+					else if ((_standbyPlayer != null) && _standbyPlayer.isInsideRadius(npc, 16000, true, false))
+					{
+						_standbyPlayer.teleToLocation(BAIUM_GIFT_LOC);
+						startQuestTimer("PLAYER_KILL", 3000, npc, _standbyPlayer);
+					}
+				}
+				break;
+			}
+			case "PLAYER_KILL":
+			{
+				if ((player != null) && player.isInsideRadius(npc, 16000, true, false))
+				{
+					zone.broadcastPacket(new SocialAction(npc.getObjectId(), 1));
+					broadcastNpcSay(npc, Say2.NPC_ALL, player.getName() + ", How dare you wake me! Now you shall die!"); // TODO: replace with NpcStringId when are done core support
+					npc.setTarget(player);
+					npc.doCast(BAIUM_PRESENT.getSkill());
+				}
+				
+				for (L2PcInstance players : zone.getPlayersInside())
+				{
+					if (players.isHero())
+					{
+						zone.broadcastPacket(new ExShowScreenMessage(NpcStringId.NOT_EVEN_THE_GODS_THEMSELVES_COULD_TOUCH_ME_BUT_YOU_S1_YOU_DARE_CHALLENGE_ME_IGNORANT_MORTAL, 2, 4000, players.getName()));
+						break;
+					}
+				}
+				startQuestTimer("SPAWN_ARCHANGEL", 8000, npc, null);
+				break;
+			}
+			case "SPAWN_ARCHANGEL":
+			{
+				_baium.disableCoreAI(false);
+				
+				for (Location loc : ARCHANGEL_LOC)
+				{
+					final L2Npc archangel = addSpawn(ARCHANGEL, loc, false, 0, true);
+					startQuestTimer("SELECT_TARGET", 5000, archangel, null);
+				}
+				
+				if ((player != null) && !player.isDead())
+				{
+					attackPlayer((L2Attackable) npc, player);
+				}
+				else if ((_standbyPlayer != null) && !_standbyPlayer.isDead())
+				{
+					attackPlayer((L2Attackable) npc, _standbyPlayer);
+				}
+				else
+				{
+					for (L2Character characters : npc.getKnownList().getKnownCharactersInRadius(2000))
+					{
+						if ((characters != null) && characters.isPlayer() && zone.isInsideZone(characters) && !characters.isDead())
 						{
-							try
+							attackPlayer((L2Attackable) npc, (L2Playable) characters);
+							break;
+						}
+					}
+				}
+				break;
+			}
+			case "SELECT_TARGET":
+			{
+				if (npc != null)
+				{
+					final L2Attackable mob = (L2Attackable) npc;
+					final L2Character mostHated = mob.getMostHated();
+					
+					if ((_baium == null) || _baium.isDead())
+					{
+						mob.deleteMe();
+						break;
+					}
+					
+					if ((mostHated != null) && mostHated.isPlayer() && zone.isInsideZone(mostHated))
+					{
+						if (mob.getTarget() != mostHated)
+						{
+							mob.clearAggroList();
+						}
+						attackPlayer(mob, (L2Playable) mostHated);
+					}
+					else
+					{
+						boolean found = false;
+						for (L2Character characters : mob.getKnownList().getKnownCharactersInRadius(1000))
+						{
+							if ((characters != null) && characters.isPlayable() && zone.isInsideZone(characters) && !characters.isDead())
 							{
-								baium.setIsInvul(false);
-								baium.setIsImmobilized(false);
-								for (L2Npc minion : _Minions)
+								if (mob.getTarget() != characters)
 								{
-									minion.setShowSummonAnimation(false);
+									mob.clearAggroList();
 								}
-							}
-							catch (Exception e)
-							{
-								_log.warn(String.valueOf(e));
+								attackPlayer(mob, (L2Playable) characters);
+								found = true;
+								break;
 							}
 						}
-					}, 11100L);
-					
-					// TODO: Player that wake up Baium take damage.
-					
-					for (Location loc : ANGEL_LOCATION)
-					{
-						L2Npc angel = addSpawn(ARCHANGEL, loc, false, 0, true);
-						angel.setIsInvul(true);
-						_Minions.add(angel);
+						
+						if (!found)
+						{
+							if (mob.isInsideRadius(_baium, 40, true, false))
+							{
+								if (mob.getTarget() != _baium)
+								{
+									mob.clearAggroList();
+								}
+								mob.setIsRunning(true);
+								mob.addDamageHate(_baium, 0, 999);
+								mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, _baium);
+							}
+							else
+							{
+								mob.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, _baium);
+							}
+						}
 					}
+					startQuestTimer("SELECT_TARGET", 5000, npc, null);
 				}
-				// despawn the live baium after 30 minutes of inactivity
-				// also check if the players are cheating, having pulled Baium outside his zone...
 				break;
 			}
-			case "baium_despawn":
+			case "CHECK_ATTACK":
 			{
-				if ((npc != null) && (npc.getId() == LIVE_BAIUM))
+				if ((npc != null) && ((_lastAttack + 1800000) < System.currentTimeMillis()))
 				{
-					// just in case the zone reference has been lost (somehow...), restore the reference
-					if (_Zone == null)
+					notifyEvent("CLEAR_ZONE", null, null);
+					addSpawn(BAIUM_STONE, BAIUM_LOC, false, 0);
+					setStatus(ALIVE);
+				}
+				else if (npc != null)
+				{
+					if (((_lastAttack + 300000) < System.currentTimeMillis()) && (npc.getCurrentHp() < (npc.getMaxHp() * 0.75)))
 					{
-						_Zone = GrandBossManager.getInstance().getZone(113100, 14500, 10077);
-					}
-					if ((_LastAttackVsBaiumTime + 1800000) < System.currentTimeMillis())
-					{
-						npc.deleteMe(); // despawn the live-baium
-						for (L2Npc minion : _Minions)
-						{
-							if (minion != null)
-							{
-								minion.getSpawn().stopRespawn();
-								minion.deleteMe();
-							}
-						}
-						_Minions.clear();
-						addSpawn(STONE_BAIUM, 116033, 17447, 10107, -25348, false, 0); // spawn stone-baium
-						GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, ASLEEP); // mark that Baium is not awake any more
-						_Zone.oustAllPlayers();
-						cancelQuestTimer("baium_despawn", npc, null);
-					}
-					else if (((_LastAttackVsBaiumTime + 300000) < System.currentTimeMillis()) && (npc.getCurrentHp() < ((npc.getMaxHp() * 3) / 4.0)))
-					{
-						npc.setIsCastingNow(false); // just in case
 						npc.setTarget(npc);
-						if (npc.isPhysicalMuted())
-						{
-							return super.onAdvEvent(event, npc, player);
-						}
-						npc.doCast(BAIUM_HEAL.getSkill());
-						npc.setIsCastingNow(true);
+						npc.doCast(HEAL_OF_BAIUM.getSkill());
 					}
-					else if (!_Zone.isInsideZone(npc))
+					startQuestTimer("CHECK_ATTACK", 60000, npc, null);
+				}
+				break;
+			}
+			case "CLEAR_STATUS":
+			{
+				setStatus(ALIVE);
+				addSpawn(BAIUM_STONE, BAIUM_LOC, false, 0);
+				break;
+			}
+			case "CLEAR_ZONE":
+			{
+				for (L2Character charInside : zone.getCharactersInside())
+				{
+					if (charInside != null)
 					{
-						npc.teleToLocation(116033, 17447, 10104);
+						if (charInside.isNpc())
+						{
+							charInside.deleteMe();
+						}
+						else if (charInside.isPlayer())
+						{
+							notifyEvent("teleportOut", null, (L2PcInstance) charInside);
+						}
 					}
+				}
+				break;
+			}
+			case "RESPAWN_BAIUM":
+			{
+				if (getStatus() == DEAD)
+				{
+					setRespawn(0);
+					cancelQuestTimer("CLEAR_STATUS", null, null);
+					notifyEvent("CLEAR_STATUS", null, null);
+				}
+				else
+				{
+					player.sendMessage(getClass().getSimpleName() + ": You cant respawn Baium while Baium is alive!");
+				}
+				break;
+			}
+			case "ABORT_FIGHT":
+			{
+				if (getStatus() == IN_FIGHT)
+				{
+					_baium = null;
+					notifyEvent("CLEAR_ZONE", null, null);
+					notifyEvent("CLEAR_STATUS", null, null);
+					player.sendMessage(getClass().getSimpleName() + ": Aborting fight!");
+				}
+				else
+				{
+					player.sendMessage(getClass().getSimpleName() + ": You cant abort attack right now!");
+				}
+				cancelQuestTimers("CHECK_ATTACK");
+				cancelQuestTimers("SELECT_TARGET");
+				break;
+			}
+			case "DESPAWN_MINIONS":
+			{
+				if (getStatus() == IN_FIGHT)
+				{
+					for (L2Character charInside : zone.getCharactersInside())
+					{
+						if ((charInside != null) && charInside.isNpc() && (charInside.getId() == ARCHANGEL))
+						{
+							charInside.deleteMe();
+						}
+					}
+					if (player != null)
+					{
+						player.sendMessage(getClass().getSimpleName() + ": All archangels has been deleted!");
+					}
+				}
+				else if (player != null)
+				{
+					player.sendMessage(getClass().getSimpleName() + ": You cant despawn archangels right now!");
+				}
+				break;
+			}
+			case "MANAGE_SKILLS":
+			{
+				if (npc != null)
+				{
+					manageSkills(npc);
 				}
 				break;
 			}
@@ -282,445 +482,327 @@ public class Baium extends AbstractNpcAI
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon, L2Skill skill)
 	{
-		String htmltext = "";
-		if (_Zone == null)
-		{
-			_Zone = GrandBossManager.getInstance().getZone(113100, 14500, 10077);
-		}
-		if (_Zone == null)
-		{
-			return "<html><body>Angelic Vortex:<br>You may not enter while admin disabled this zone</body></html>";
-		}
+		_lastAttack = System.currentTimeMillis();
 		
-		switch (npc.getId())
+		if (npc.getId() == BAIUM)
 		{
-			case STONE_BAIUM:
+			if (attacker.getMountType() == MountType.STRIDER)
 			{
-				if (GrandBossManager.getInstance().getBossStatus(LIVE_BAIUM) == ASLEEP)
+				boolean hasStriderDebuff = false;
+				final L2Effect[] effects = npc.getAllEffects();
+				if ((effects != null) && (effects.length != 0))
 				{
-					if (_Zone.isPlayerAllowed(player))
+					for (L2Effect e : effects)
 					{
-						// once Baium is awaken, no more people may enter until he dies, the server reboots, or
-						// 30 minutes pass with no attacks made against Baium.
-						GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, AWAKE);
-						npc.deleteMe();
-						L2GrandBossInstance baium = (L2GrandBossInstance) addSpawn(LIVE_BAIUM, npc, true);
-						GrandBossManager.getInstance().addBoss(baium);
-						final L2Npc _baium = baium;
-						ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+						if (e.getSkill().getId() == ANTI_STRIDER.getSkillId())
 						{
-							@Override
-							public void run()
-							{
-								try
-								{
-									_baium.setIsInvul(true);
-									_baium.setRunning();
-									_baium.broadcastSocialAction(2);
-									startQuestTimer("baium_wakeup", 15000, _baium, null);
-									_baium.setShowSummonAnimation(false);
-								}
-								catch (Throwable e)
-								{
-									_log.warn(String.valueOf(e));
-								}
-							}
-						}, 100L);
+							hasStriderDebuff = true;
+						}
 					}
-					else
+				}
+				if (!hasStriderDebuff)
+				{
+					npc.setTarget(attacker);
+					if (npc.isMuted())
 					{
-						htmltext = "Conditions are not right to wake up Baium";
+						return super.onAttack(npc, attacker, damage, isSummon);
 					}
+					npc.doCast(ANTI_STRIDER.getSkill());
 				}
-				break;
 			}
-			case ANGELIC_VORTEX:
+			
+			if (skill == null)
 			{
-				if (player.isFlying())
-				{
-					// print "Player "+player.getName()+" attempted to enter Baium's lair while flying!";
-					return "<html><body>Angelic Vortex:<br>You may not enter while flying a wyvern</body></html>";
-				}
-				
-				if ((GrandBossManager.getInstance().getBossStatus(LIVE_BAIUM) == ASLEEP) && hasQuestItems(player, BLOODED_FABRIC))
-				{
-					takeItems(player, BLOODED_FABRIC, 1);
-					// allow entry for the player for the next 30 secs (more than enough time for the TP to happen)
-					// Note: this just means 30secs to get in, no limits on how long it takes before we get out.
-					_Zone.allowPlayerEntry(player, 30);
-					player.teleToLocation(113100, 14500, 10077);
-				}
-				else
-				{
-					npc.showChatWindow(player, 1);
-				}
-				break;
+				refreshAiParams(attacker, npc, (damage * 1000));
 			}
-			case TELEPORT_CUBIC:
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.25))
 			{
-				int x, y, z;
-				switch (getRandom(3))
-				{
-					case 0:
-						x = 108784 + getRandom(100);
-						y = 16000 + getRandom(100);
-						z = -4928;
-						break;
-					case 1:
-						x = 113824 + getRandom(100);
-						y = 10448 + getRandom(100);
-						z = -5164;
-						break;
-					default:
-						x = 115488 + getRandom(100);
-						y = 22096 + getRandom(100);
-						z = -5168;
-						break;
-				}
-				player.teleToLocation(x, y, z);
-				break;
+				refreshAiParams(attacker, npc, ((damage / 3) * 100));
 			}
-		}
-		return htmltext;
-	}
-	
-	@Override
-	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
-	{
-		if (npc.isInvul())
-		{
-			npc.getAI().setIntention(AI_INTENTION_IDLE);
-			return null;
-		}
-		callSkillAI(npc);
-		return super.onSpellFinished(npc, player, skill);
-	}
-	
-	@Override
-	public String onSpawn(L2Npc npc)
-	{
-		npc.disableCoreAI(true);
-		return super.onSpawn(npc);
-	}
-	
-	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
-	{
-		if (!_Zone.isInsideZone(attacker))
-		{
-			attacker.reduceCurrentHp(attacker.getCurrentHp(), attacker, false, false, null);
-			return super.onAttack(npc, attacker, damage, isSummon);
-		}
-		if (npc.isInvul())
-		{
-			npc.getAI().setIntention(AI_INTENTION_IDLE);
-			return super.onAttack(npc, attacker, damage, isSummon);
-		}
-		
-		if (attacker.getMountType() == MountType.STRIDER)
-		{
-			boolean hasStriderDebuff = false;
-			final L2Effect[] effects = npc.getAllEffects();
-			if ((effects != null) && (effects.length != 0))
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.5))
 			{
-				for (L2Effect e : effects)
+				refreshAiParams(attacker, npc, (damage * 20));
+			}
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.75))
+			{
+				refreshAiParams(attacker, npc, (damage * 10));
+			}
+			else
+			{
+				refreshAiParams(attacker, npc, ((damage / 3) * 20));
+			}
+			manageSkills(npc);
+		}
+		else
+		{
+			final L2Attackable mob = (L2Attackable) npc;
+			final L2Character mostHated = mob.getMostHated();
+			
+			if ((getRandom(100) < 10) && mob.checkDoCastConditions(SPEAR_ATTACK.getSkill()))
+			{
+				if ((mostHated != null) && (npc.calculateDistance(mostHated, true, false) < 1000) && zone.isCharacterInZone(mostHated))
 				{
-					if (e.getSkill().getId() == HINDER_STRIDER.getSkillId())
-					{
-						hasStriderDebuff = true;
-					}
+					mob.setTarget(mostHated);
+					mob.doCast(SPEAR_ATTACK.getSkill());
+				}
+				else if (zone.isCharacterInZone(attacker))
+				{
+					mob.setTarget(attacker);
+					mob.doCast(SPEAR_ATTACK.getSkill());
 				}
 			}
-			if (!hasStriderDebuff)
+			
+			if ((getRandom(100) < 5) && (npc.getCurrentHp() < (npc.getMaxHp() * 0.5)) && mob.checkDoCastConditions(ANGEL_HEAL.getSkill()))
 			{
-				npc.setTarget(attacker);
-				if (npc.isMuted())
-				{
-					return super.onAttack(npc, attacker, damage, isSummon);
-				}
-				npc.doCast(HINDER_STRIDER.getSkill());
+				npc.setTarget(npc);
+				npc.doCast(ANGEL_HEAL.getSkill());
 			}
 		}
-		// update a variable with the last action against baium
-		_LastAttackVsBaiumTime = System.currentTimeMillis();
-		callSkillAI(npc);
-		return super.onAttack(npc, attacker, damage, isSummon);
+		return super.onAttack(npc, attacker, damage, isSummon, skill);
 	}
 	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		cancelQuestTimer("baium_despawn", npc, null);
-		npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-		// spawn the "Teleportation Cubic" for 15 minutes (to allow players to exit the lair)
-		addSpawn(TELEPORT_CUBIC, 115017, 15549, 10090, 0, false, 900000);
-		// Calculate Min and Max respawn times randomly.
-		long respawnTime = Config.BAIUM_SPAWN_INTERVAL + getRandom(-Config.BAIUM_SPAWN_RANDOM, Config.BAIUM_SPAWN_RANDOM);
-		respawnTime *= 3600000;
-		
-		GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, DEAD);
-		startQuestTimer("baium_unlock", respawnTime, null, null);
-		// also save the respawn time so that the info is maintained past reboots
-		StatsSet info = GrandBossManager.getInstance().getStatsSet(LIVE_BAIUM);
-		info.set("respawn_time", (System.currentTimeMillis()) + respawnTime);
-		GrandBossManager.getInstance().setStatsSet(LIVE_BAIUM, info);
-		for (L2Npc minion : _Minions)
+		if (zone.isCharacterInZone(killer))
 		{
-			if (minion != null)
-			{
-				minion.getSpawn().stopRespawn();
-				minion.deleteMe();
-			}
-		}
-		_Minions.clear();
-		final QuestTimer timer = getQuestTimer("skill_range", npc, null);
-		if (timer != null)
-		{
-			timer.cancelAndRemove();
+			setStatus(DEAD);
+			addSpawn(TELE_CUBE, TELEPORT_CUBIC_LOC, false, 900000);
+			zone.broadcastPacket(new PlaySound("BS01_D"));
+			long respawnTime = (Config.BAIUM_SPAWN_INTERVAL + getRandom(-Config.BAIUM_SPAWN_RANDOM, Config.BAIUM_SPAWN_RANDOM)) * 3600000;
+			setRespawn(respawnTime);
+			startQuestTimer("CLEAR_STATUS", respawnTime, null, null);
+			startQuestTimer("CLEAR_ZONE", 900000, null, null);
+			cancelQuestTimer("CHECK_ATTACK", npc, null);
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
 	
-	public L2Character getRandomTarget(L2Npc npc)
+	@Override
+	public String onSeeCreature(L2Npc npc, L2Character creature, boolean isSummon)
 	{
-		FastList<L2Character> result = FastList.newInstance();
-		Collection<L2Object> objs = npc.getKnownList().getKnownObjects().values();
+		if (!zone.isInsideZone(creature) || (creature.isNpc() && (creature.getId() == BAIUM_STONE)))
 		{
-			for (L2Object obj : objs)
+			return super.onSeeCreature(npc, creature, isSummon);
+		}
+		
+		if (creature.isPlayer() && !creature.isDead() && (_standbyPlayer == null))
+		{
+			_standbyPlayer = (L2PcInstance) creature;
+		}
+		
+		if (creature.isInCategory(CategoryType.CLERIC_GROUP))
+		{
+			if (npc.getCurrentHp() < (npc.getMaxHp() * 0.25))
 			{
-				if (obj.isPlayable() || (obj instanceof L2DecoyInstance))
-				{
-					if (obj.isPlayer())
-					{
-						if (obj.getActingPlayer().getAppearance().getInvisible())
-						{
-							continue;
-						}
-					}
-					
-					if (((((L2Character) obj).getZ() < (npc.getZ() - 100)) && (((L2Character) obj).getZ() > (npc.getZ() + 100))) || !(GeoData.getInstance().canSeeTarget(((L2Character) obj).getX(), ((L2Character) obj).getY(), ((L2Character) obj).getZ(), npc.getX(), npc.getY(), npc.getZ())))
-					{
-						continue;
-					}
-				}
-				if (obj.isPlayable() || (obj instanceof L2DecoyInstance))
-				{
-					if (Util.checkIfInRange(9000, npc, obj, true) && !((L2Character) obj).isDead())
-					{
-						result.add((L2Character) obj);
-					}
-				}
+				refreshAiParams(creature, npc, 10000);
 			}
-		}
-		if (result.isEmpty())
-		{
-			for (L2Npc minion : _Minions)
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.5))
 			{
-				if (minion != null)
-				{
-					result.add(minion);
-				}
+				refreshAiParams(creature, npc, 10000, 6000);
 			}
-		}
-		
-		if (result.isEmpty())
-		{
-			FastList.recycle(result);
-			return null;
-		}
-		
-		Object[] characters = result.toArray();
-		QuestTimer timer = getQuestTimer("clean_player", npc, null);
-		if (timer != null)
-		{
-			timer.cancelAndRemove();
-		}
-		startQuestTimer("clean_player", 20000, npc, null);
-		L2Character target = (L2Character) characters[getRandom(characters.length)];
-		FastList.recycle(result);
-		return target;
-		
-	}
-	
-	public synchronized void callSkillAI(L2Npc npc)
-	{
-		if (npc.isInvul() || npc.isCastingNow())
-		{
-			return;
-		}
-		
-		if ((_target == null) || _target.isDead() || !(_Zone.isInsideZone(_target)))
-		{
-			_target = getRandomTarget(npc);
-			if (_target != null)
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.75))
 			{
-				_skill = getRandomSkill(npc);
+				refreshAiParams(creature, npc, 10000, 3000);
 			}
-		}
-		
-		L2Character target = _target;
-		SkillHolder skill = _skill;
-		if (skill == null)
-		{
-			skill = (getRandomSkill(npc));
-		}
-		
-		if (npc.isPhysicalMuted())
-		{
-			return;
-		}
-		
-		if ((target == null) || target.isDead() || !(_Zone.isInsideZone(target)))
-		{
-			npc.setIsCastingNow(false);
-			return;
-		}
-		
-		if (Util.checkIfInRange(skill.getSkill().getCastRange(), npc, target, true))
-		{
-			npc.getAI().setIntention(AI_INTENTION_IDLE);
-			npc.setTarget(target);
-			npc.setIsCastingNow(true);
-			_target = null;
-			_skill = null;
-			if (getDist(skill.getSkill().getCastRange()) > 0)
+			else
 			{
-				npc.broadcastPacket(new MoveToPawn(npc, target, getDist(skill.getSkill().getCastRange())));
-			}
-			try
-			{
-				Thread.sleep(1000);
-				npc.stopMove(null);
-				npc.doCast(skill.getSkill());
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
+				refreshAiParams(creature, npc, 10000, 2000);
 			}
 		}
 		else
 		{
-			npc.getAI().setIntention(AI_INTENTION_FOLLOW, target, null);
-			npc.setIsCastingNow(false);
+			refreshAiParams(creature, npc, 10000, 1000);
 		}
-	}
-	
-	public SkillHolder getRandomSkill(L2Npc npc)
-	{
-		SkillHolder skill;
-		if (npc.getCurrentHp() > ((npc.getMaxHp() * 3) / 4.0))
-		{
-			if (getRandom(100) < 10)
-			{
-				skill = WIND_OF_FORCE;
-			}
-			else if (getRandom(100) < 10)
-			{
-				skill = EARTHQUAKE;
-			}
-			else
-			{
-				skill = GENERAL_ATTACK;
-			}
-		}
-		else if (npc.getCurrentHp() > ((npc.getMaxHp() * 2) / 4.0))
-		{
-			if (getRandom(100) < 10)
-			{
-				skill = STUN;
-			}
-			else if (getRandom(100) < 10)
-			{
-				skill = WIND_OF_FORCE;
-			}
-			else if (getRandom(100) < 10)
-			{
-				skill = EARTHQUAKE;
-			}
-			else
-			{
-				skill = GENERAL_ATTACK;
-			}
-		}
-		else if (npc.getCurrentHp() > (npc.getMaxHp() / 4.0))
-		{
-			if (getRandom(100) < 10)
-			{
-				skill = STRIKING_OF_THUNDERBOLT;
-			}
-			else if (getRandom(100) < 10)
-			{
-				skill = STUN;
-			}
-			else if (getRandom(100) < 10)
-			{
-				skill = WIND_OF_FORCE;
-			}
-			else if (getRandom(100) < 10)
-			{
-				skill = EARTHQUAKE;
-			}
-			else
-			{
-				skill = GENERAL_ATTACK;
-			}
-		}
-		else if (getRandom(100) < 10)
-		{
-			skill = STRIKING_OF_THUNDERBOLT;
-		}
-		else if (getRandom(100) < 10)
-		{
-			skill = STUN;
-		}
-		else if (getRandom(100) < 10)
-		{
-			skill = WIND_OF_FORCE;
-		}
-		else if (getRandom(100) < 10)
-		{
-			skill = EARTHQUAKE;
-		}
-		else
-		{
-			skill = GENERAL_ATTACK;
-		}
-		return skill;
+		manageSkills(npc);
+		return super.onSeeCreature(npc, creature, isSummon);
 	}
 	
 	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isSummon)
+	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
 	{
-		if (npc.isInvul())
+		startQuestTimer("MANAGE_SKILLS", 1000, npc, null);
+		
+		if (!zone.isCharacterInZone(npc) && (_baium != null))
 		{
-			npc.getAI().setIntention(AI_INTENTION_IDLE);
-			return null;
+			_baium.teleToLocation(BAIUM_LOC);
 		}
-		npc.setTarget(caster);
-		return super.onSkillSee(npc, caster, skill, targets, isSummon);
+		return super.onSpellFinished(npc, player, skill);
 	}
 	
-	public int getDist(int range)
+	@Override
+	public boolean unload(boolean removeFromList)
 	{
-		int dist = 0;
-		switch (range)
+		if (_baium != null)
 		{
-			case -1:
-				break;
-			case 100:
-				dist = 85;
-				break;
-			default:
-				dist = range - 85;
-				break;
+			_baium.deleteMe();
 		}
-		return dist;
+		return super.unload(removeFromList);
+	}
+	
+	private final void refreshAiParams(L2Character attacker, L2Npc npc, int damage)
+	{
+		refreshAiParams(attacker, npc, damage, damage);
+	}
+	
+	private final void refreshAiParams(L2Character attacker, L2Npc npc, int damage, int aggro)
+	{
+		final int newAggroVal = damage + getRandom(3000);
+		final int aggroVal = aggro + 1000;
+		final NpcVariables vars = npc.getVariables();
+		for (int i = 0; i < 3; i++)
+		{
+			if (attacker == vars.getObject("c_quest" + i, L2Character.class))
+			{
+				if (vars.getInteger("i_quest" + i) < aggroVal)
+				{
+					vars.set("i_quest" + i, newAggroVal);
+				}
+				return;
+			}
+		}
+		final int index = Util.getIndexOfMinValue(vars.getInteger("i_quest0"), vars.getInteger("i_quest1"), vars.getInteger("i_quest2"));
+		vars.set("i_quest" + index, newAggroVal);
+		vars.set("c_quest" + index, attacker);
+	}
+	
+	private int getStatus()
+	{
+		return GrandBossManager.getInstance().getBossStatus(BAIUM);
+	}
+	
+	private void addBoss(L2GrandBossInstance grandboss)
+	{
+		GrandBossManager.getInstance().addBoss(grandboss);
+	}
+	
+	private void setStatus(int status)
+	{
+		GrandBossManager.getInstance().setBossStatus(BAIUM, status);
+	}
+	
+	private void setRespawn(long respawnTime)
+	{
+		GrandBossManager.getInstance().getStatsSet(BAIUM).set("respawn_time", (System.currentTimeMillis() + respawnTime));
+	}
+	
+	private void manageSkills(L2Npc npc)
+	{
+		if (npc.isCastingNow() || npc.isCoreAIDisabled() || !npc.isInCombat())
+		{
+			return;
+		}
+		
+		final NpcVariables vars = npc.getVariables();
+		for (int i = 0; i < 3; i++)
+		{
+			final L2Character attacker = vars.getObject("c_quest" + i, L2Character.class);
+			if ((attacker != null) && ((npc.calculateDistance(attacker, true, false) > 9000) || attacker.isDead()))
+			{
+				vars.set("i_quest" + i, 0);
+			}
+		}
+		final int index = Util.getIndexOfMaxValue(vars.getInteger("i_quest0"), vars.getInteger("i_quest1"), vars.getInteger("i_quest2"));
+		final L2Character player = vars.getObject("c_quest" + index, L2Character.class);
+		final int i2 = vars.getInteger("i_quest" + index);
+		if ((i2 > 0) && (getRandom(100) < 70))
+		{
+			vars.set("i_quest" + index, 500);
+		}
+		
+		SkillHolder skillToCast = null;
+		if ((player != null) && !player.isDead())
+		{
+			if (npc.getCurrentHp() > (npc.getMaxHp() * 0.75))
+			{
+				if (getRandom(100) < 10)
+				{
+					skillToCast = ENERGY_WAVE;
+				}
+				else if (getRandom(100) < 10)
+				{
+					skillToCast = EARTH_QUAKE;
+				}
+				else
+				{
+					skillToCast = BAIUM_ATTACK;
+				}
+			}
+			else if (npc.getCurrentHp() > (npc.getMaxHp() * 0.5))
+			{
+				if (getRandom(100) < 10)
+				{
+					skillToCast = GROUP_HOLD;
+				}
+				else if (getRandom(100) < 10)
+				{
+					skillToCast = ENERGY_WAVE;
+				}
+				else if (getRandom(100) < 10)
+				{
+					skillToCast = EARTH_QUAKE;
+				}
+				else
+				{
+					skillToCast = BAIUM_ATTACK;
+				}
+			}
+			else if (npc.getCurrentHp() > (npc.getMaxHp() * 0.25))
+			{
+				if (getRandom(100) < 10)
+				{
+					skillToCast = THUNDERBOLT;
+				}
+				else if (getRandom(100) < 10)
+				{
+					skillToCast = GROUP_HOLD;
+				}
+				else if (getRandom(100) < 10)
+				{
+					skillToCast = ENERGY_WAVE;
+				}
+				else if (getRandom(100) < 10)
+				{
+					skillToCast = EARTH_QUAKE;
+				}
+				else
+				{
+					skillToCast = BAIUM_ATTACK;
+				}
+			}
+			else if (getRandom(100) < 10)
+			{
+				skillToCast = THUNDERBOLT;
+			}
+			else if (getRandom(100) < 10)
+			{
+				skillToCast = GROUP_HOLD;
+			}
+			else if (getRandom(100) < 10)
+			{
+				skillToCast = ENERGY_WAVE;
+			}
+			else if (getRandom(100) < 10)
+			{
+				skillToCast = EARTH_QUAKE;
+			}
+			else
+			{
+				skillToCast = BAIUM_ATTACK;
+			}
+		}
+		
+		if ((skillToCast != null) && npc.checkDoCastConditions(skillToCast.getSkill()))
+		{
+			npc.setTarget(player);
+			npc.doCast(skillToCast.getSkill());
+		}
 	}
 	
 	public static void main(String[] args)
 	{
-		new Baium(Baium.class.getSimpleName(), "ai");
+		new Baium();
 	}
 }
