@@ -1,196 +1,239 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2004-2014 L2J DataPack
+ * 
+ * This file is part of L2J DataPack.
+ * 
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.quests;
 
 import l2r.gameserver.instancemanager.InstanceManager;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.entity.Instance;
+import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
 
 /**
- ** @author GKR 2011-03-24
+ * Story of Those Left (10287)
+ * @author Adry_85
  */
-public class Q10287_StoryOfThoseLeft extends Quest
+public final class Q10287_StoryOfThoseLeft extends Quest
 {
-	// NPC's
-	private static final int _rafforty = 32020;
-	private static final int _jinia = 32760;
-	private static final int _kegor = 32761;
+	// NPCs
+	private static final int RAFFORTY = 32020;
+	private static final int JINIA = 32760;
+	private static final int KEGOR = 32761;
+	// Misc
+	private static final int MIN_LEVEL = 82;
+	// Location
+	private static final Location EXIT_LOC = new Location(113793, -109342, -845, 0);
 	
 	public Q10287_StoryOfThoseLeft()
 	{
 		super(10287, Q10287_StoryOfThoseLeft.class.getSimpleName(), "Story of Those Left");
-		addStartNpc(_rafforty);
-		addTalkId(_rafforty);
-		addTalkId(_jinia);
-		addTalkId(_kegor);
+		addStartNpc(RAFFORTY);
+		addTalkId(RAFFORTY, JINIA, KEGOR);
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		String htmltext = event;
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, false);
 		if (st == null)
 		{
-			return htmltext;
+			return null;
 		}
 		
-		if (npc.getId() == _rafforty)
+		String htmltext = null;
+		switch (event)
 		{
-			if (event.equalsIgnoreCase("32020-04.htm"))
+			case "32020-02.htm":
 			{
-				st.setState(State.STARTED);
-				st.set("cond", "1");
-				st.set("progress", "1");
-				st.set("Ex1", "0");
-				st.set("Ex2", "0");
-				st.playSound("ItemSound.quest_accept");
+				st.startQuest();
+				st.setMemoState(1);
+				htmltext = event;
+				break;
 			}
-			else if (event.startsWith("reward_") && (st.getInt("progress") == 2))
+			case "32020-08.html":
 			{
-				try
+				if (st.isMemoState(2))
 				{
-					int itemId = Integer.parseInt(event.substring(7));
-					
-					if (((itemId >= 10549) && (itemId <= 10553)) || (itemId == 14219))
-					{
-						st.giveItems(itemId, 1);
-					}
-					
-					st.playSound("ItemSound.quest_finished");
-					st.exitQuest(false);
-					htmltext = "32020-11.htm";
+					htmltext = event;
 				}
-				catch (Exception e)
+				break;
+			}
+			case "32760-02.html":
+			{
+				if (st.isMemoState(1))
 				{
-					
+					htmltext = event;
 				}
+				break;
 			}
-		}
-		else if (npc.getId() == _jinia)
-		{
-			if (event.equalsIgnoreCase("32760-03.htm") && (st.getInt("progress") == 1) && (st.getInt("Ex1") == 0))
+			case "32760-03.html":
 			{
-				st.set("Ex1", "1");
-				st.set("cond", "3");
-				st.playSound("ItemSound.quest_middle");
+				if (st.isMemoState(1))
+				{
+					st.set("ex1", 1);
+					st.setCond(3, true);
+					htmltext = event;
+				}
+				break;
 			}
-		}
-		else if (npc.getId() == _kegor)
-		{
-			if (event.equalsIgnoreCase("32761-04.htm") && (st.getInt("progress") == 1) && (st.getInt("Ex1") == 1) && (st.getInt("Ex2") == 0))
+			case "32760-06.html":
 			{
-				st.set("Ex2", "1");
-				st.set("cond", "4");
-				st.playSound("ItemSound.quest_middle");
+				if (st.isMemoState(2))
+				{
+					st.setCond(5, true);
+					player.teleToLocation(EXIT_LOC, 0);
+					htmltext = event; // TODO: missing "jinia_npc_q10287_06.htm"
+				}
+				break;
+			}
+			case "32761-02.html":
+			{
+				if (st.isMemoState(1) && (st.getInt("ex1") == 1) && (st.getInt("ex2") == 0))
+				{
+					htmltext = event;
+				}
+				break;
+			}
+			case "32761-03.html":
+			{
+				if (st.isMemoState(1) && (st.getInt("ex1") == 1) && (st.getInt("ex2") == 0))
+				{
+					st.set("ex2", 1);
+					st.setCond(4, true);
+					htmltext = event;
+				}
+				break;
+			}
+			case "10549":
+			case "10550":
+			case "10551":
+			case "10552":
+			case "10553":
+			case "14219":
+			{
+				if (st.isMemoState(2))
+				{
+					st.rewardItems(Integer.valueOf(event), 1);
+					htmltext = "32020-09.html";
+					st.exitQuest(false, true);
+				}
+				break;
 			}
 		}
-		
 		return htmltext;
 	}
 	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
+		QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
-		
-		if (st == null)
+		switch (st.getState())
 		{
-			return htmltext;
-		}
-		
-		if (npc.getId() == _rafforty)
-		{
-			switch (st.getState())
+			case State.COMPLETED:
 			{
-				case State.CREATED:
-					QuestState _prev = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
-					if ((_prev != null) && (_prev.getState() == State.COMPLETED) && (player.getLevel() >= 82))
+				if (npc.getId() == RAFFORTY)
+				{
+					htmltext = "32020-04.html";
+				}
+				break;
+			}
+			case State.CREATED:
+			{
+				if (npc.getId() == RAFFORTY)
+				{
+					st = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
+					htmltext = ((player.getLevel() >= MIN_LEVEL) && (st != null) && (st.isCompleted())) ? "32020-01.htm" : "32020-03.htm";
+				}
+				break;
+			}
+			case State.STARTED:
+			{
+				switch (npc.getId())
+				{
+					case RAFFORTY:
 					{
-						htmltext = "32020-01.htm";
+						if (st.isMemoState(1))
+						{
+							htmltext = (player.getLevel() >= MIN_LEVEL) ? "32020-05.html" : "32020-06.html";
+						}
+						else if (st.isMemoState(2))
+						{
+							htmltext = "32020-07.html";
+						}
+						break;
 					}
-					else
+					case JINIA:
 					{
-						htmltext = "32020-03.htm";
+						if (st.isMemoState(1))
+						{
+							final int state1 = st.getInt("ex1");
+							final int state2 = st.getInt("ex2");
+							if ((state1 == 0) && (state2 == 0))
+							{
+								htmltext = "32760-01.html";
+							}
+							else if ((state1 == 1) && (state2 == 0))
+							{
+								htmltext = "32760-04.html";
+							}
+							else if ((state1 == 1) && (state2 == 1))
+							{
+								st.setCond(5, true);
+								st.setMemoState(2);
+								st.unset("ex1");
+								st.unset("ex2");
+								final InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
+								world.removeAllowed(player.getObjectId());
+								player.setInstanceId(0);
+								htmltext = "32760-05.html";
+							}
+						}
+						break;
 					}
-					break;
-				case State.STARTED:
-					if (st.getInt("progress") == 1)
+					case KEGOR:
 					{
-						htmltext = "32020-05.htm";
+						if (st.isMemoState(1))
+						{
+							final int state1 = st.getInt("ex1");
+							final int state2 = st.getInt("ex2");
+							if ((state1 == 1) && (state2 == 0))
+							{
+								htmltext = "32761-01.html";
+							}
+							else if ((state1 == 0) && (state2 == 0))
+							{
+								htmltext = "32761-04.html";
+							}
+							else if ((state1 == 1) && (state2 == 1))
+							{
+								htmltext = "32761-05.html";
+							}
+						}
+						break;
 					}
-					else if (st.getInt("progress") == 2)
-					{
-						htmltext = "32020-09.htm";
-					}
-					break;
-				case State.COMPLETED:
-					htmltext = "32020-02.htm";
-					break;
+				}
+				break;
 			}
 		}
-		
-		else if ((npc.getId() == _jinia) && (st.getInt("progress") == 1))
-		{
-			if (st.getInt("Ex1") == 0)
-			{
-				return "32760-01.htm";
-			}
-			else if ((st.getInt("Ex1") == 1) && (st.getInt("Ex2") == 0))
-			{
-				return "32760-04.htm";
-			}
-			else if ((st.getInt("Ex1") == 1) && (st.getInt("Ex2") == 1))
-			{
-				st.set("cond", "5");
-				st.playSound("ItemSound.quest_middle");
-				st.set("progress", "2");
-				st.set("Ex1", "0");
-				st.set("Ex2", "0");
-				
-				// destroy instance after 1 min
-				Instance inst = InstanceManager.getInstance().getInstance(npc.getInstanceId());
-				inst.setDuration(60000);
-				inst.setEmptyDestroyTime(0);
-				
-				return "32760-05.htm";
-			}
-			
-		}
-		
-		else if ((npc.getId() == _kegor) && (st.getInt("progress") == 1))
-		{
-			if ((st.getInt("Ex1") == 1) && (st.getInt("Ex2") == 0))
-			{
-				htmltext = "32761-01.htm";
-			}
-			else if ((st.getInt("Ex1") == 0) && (st.getInt("Ex2") == 0))
-			{
-				htmltext = "32761-02.htm";
-			}
-			else if (st.getInt("Ex2") == 1)
-			{
-				htmltext = "32761-05.htm";
-			}
-		}
-		
 		return htmltext;
 	}
 }

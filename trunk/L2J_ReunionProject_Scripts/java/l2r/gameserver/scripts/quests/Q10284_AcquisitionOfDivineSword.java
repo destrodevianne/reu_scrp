@@ -1,230 +1,328 @@
+/*
+ * Copyright (C) 2004-2014 L2J DataPack
+ * 
+ * This file is part of L2J DataPack.
+ * 
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package l2r.gameserver.scripts.quests;
 
 import l2r.gameserver.instancemanager.InstanceManager;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.entity.Instance;
+import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
 
-public class Q10284_AcquisitionOfDivineSword extends Quest
+/**
+ * Acquisition of Divine Sword (10284)
+ * @author Adry_85
+ */
+public final class Q10284_AcquisitionOfDivineSword extends Quest
 {
-	// NPC's
-	private static final int _rafforty = 32020;
-	private static final int _jinia = 32760;
-	private static final int _kroon = 32653;
-	private static final int _taroon = 32654;
+	// NPCs
+	private static final int RAFFORTY = 32020;
+	private static final int KRUN = 32653;
+	private static final int TARUN = 32654;
+	private static final int JINIA = 32760;
+	// Misc
+	private static final int MIN_LEVEL = 82;
+	// Item
+	private static final int COLD_RESISTANCE_POTION = 15514;
+	// Location
+	private static final Location EXIT_LOC = new Location(113793, -109342, -845, 0);
 	
 	public Q10284_AcquisitionOfDivineSword()
 	{
 		super(10284, Q10284_AcquisitionOfDivineSword.class.getSimpleName(), "Acquisition of Divine Sword");
-		addStartNpc(_rafforty);
-		addTalkId(_rafforty);
-		addTalkId(_jinia);
-		addTalkId(_kroon);
-		addTalkId(_taroon);
+		addStartNpc(RAFFORTY);
+		addTalkId(RAFFORTY, JINIA, TARUN, KRUN);
+		registerQuestItems(COLD_RESISTANCE_POTION);
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		String htmltext = event;
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, false);
 		if (st == null)
 		{
-			return htmltext;
+			return null;
 		}
 		
-		if (npc.getId() == _rafforty)
+		String htmltext = null;
+		switch (event)
 		{
-			if (event.equalsIgnoreCase("32020-04.htm"))
+			case "32020-02.html":
 			{
-				st.setState(State.STARTED);
-				st.set("progress", "1");
-				st.set("cond", "1");
-				st.set("jinia_themes", "102030"); // theme ID - state - something like 1-0, 2-0, 3-0
-				st.playSound("ItemSound.quest_accept");
+				st.startQuest();
+				st.setMemoState(1);
+				htmltext = event;
+				break;
 			}
-		}
-		
-		else if (npc.getId() == _jinia)
-		{
-			if (event.equalsIgnoreCase("32760-05.htm"))
+			case "32020-03.html":
+			case "32760-02a.html":
+			case "32760-02b.html":
+			case "32760-03a.html":
+			case "32760-03b.html":
+			case "32760-04a.html":
+			case "32760-04b.html":
 			{
-				switch (st.getInt("jinia_themes"))
+				if (st.isMemoState(1))
 				{
-					case 112030: // 1st theme have been readed
-						htmltext = "32760-05a.htm";
-						break;
-					
-					case 102130: // 2nd theme have been readed
-						htmltext = "32760-05b.htm";
-						break;
-					
-					case 102031: // 3rd theme have been readed
-						htmltext = "32760-05c.htm";
-						break;
-					
-					case 102131: // 2nd and 3rd theme have been readed
-						htmltext = "32760-05d.htm";
-						break;
-					
-					case 112031: // 1st and 3rd theme have been readed
-						htmltext = "32760-05e.htm";
-						break;
-					
-					case 112130: // 1st and 2nd theme have been readed
-						htmltext = "32760-05f.htm";
-						break;
-					
-					case 112131: // all three themes have been readed
-						htmltext = "32760-05g.htm";
+					htmltext = event;
 				}
+				break;
 			}
-			
-			else if (event.equalsIgnoreCase("32760-02c.htm"))
+			case "32760-02c.html":
 			{
-				int jinia_themes = st.getInt("jinia_themes");
-				jinia_themes += 10000; // mark 1st theme as readed
-				st.set("jinia_themes", Integer.toString(jinia_themes));
+				if (st.isMemoState(1))
+				{
+					st.set("ex1", 1);
+					htmltext = event;
+				}
+				break;
 			}
-			
-			else if (event.equalsIgnoreCase("32760-03c.htm"))
+			case "another_story":
 			{
-				int jinia_themes = st.getInt("jinia_themes");
-				jinia_themes += 100; // mark 2nd theme as readed
-				st.set("jinia_themes", Integer.toString(jinia_themes));
+				if (st.isMemoState(1))
+				{
+					if ((st.getInt("ex1") == 1) && (st.getInt("ex2") == 0) && (st.getInt("ex3") == 0))
+					{
+						htmltext = "32760-05a.html";
+					}
+					else if ((st.getInt("ex1") == 0) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 0))
+					{
+						htmltext = "32760-05b.html";
+					}
+					else if ((st.getInt("ex1") == 0) && (st.getInt("ex2") == 0) && (st.getInt("ex3") == 1))
+					{
+						htmltext = "32760-05c.html";
+					}
+					else if ((st.getInt("ex1") == 0) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 1))
+					{
+						htmltext = "32760-05d.html";
+					}
+					else if ((st.getInt("ex1") == 1) && (st.getInt("ex2") == 0) && (st.getInt("ex3") == 1))
+					{
+						htmltext = "32760-05e.html";
+					}
+					else if ((st.getInt("ex1") == 1) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 0))
+					{
+						htmltext = "32760-05f.html";
+					}
+					else if ((st.getInt("ex1") == 1) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 1))
+					{
+						htmltext = "32760-05g.html";
+					}
+				}
+				break;
 			}
-			
-			else if (event.equalsIgnoreCase("32760-04c.htm"))
+			case "32760-03c.html":
 			{
-				int jinia_themes = st.getInt("jinia_themes");
-				jinia_themes += 1; // mark 3rd theme as readed
-				st.set("jinia_themes", Integer.toString(jinia_themes));
+				if (st.isMemoState(1))
+				{
+					st.set("ex2", 1);
+					htmltext = event;
+				}
+				break;
 			}
-			
-			else if (event.equalsIgnoreCase("32760-07.htm"))
+			case "32760-04c.html":
 			{
-				st.set("jinia_themes", "102030");
-				st.set("progress", "2");
-				st.set("cond", "3");
-				st.playSound("ItemSound.quest_middle");
-				
-				// destroy instance after 1 min
-				Instance inst = InstanceManager.getInstance().getInstance(player.getInstanceId());
-				inst.setDuration(60000);
-				inst.setEmptyDestroyTime(0);
+				if (st.isMemoState(1))
+				{
+					st.set("ex3", 1);
+					htmltext = event;
+				}
+				break;
+			}
+			case "32760-06.html":
+			{
+				if (st.isMemoState(1) && (st.getInt("ex1") == 1) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 1))
+				{
+					htmltext = event;
+				}
+				break;
+			}
+			case "32760-07.html":
+			{
+				if (st.isMemoState(1) && (st.getInt("ex1") == 1) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 1))
+				{
+					st.unset("ex1");
+					st.unset("ex2");
+					st.unset("ex3");
+					st.setCond(3, true);
+					st.setMemoState(2);
+					final InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
+					world.removeAllowed(player.getObjectId());
+					player.setInstanceId(0);
+					htmltext = event;
+				}
+				break;
+			}
+			case "exit_instance":
+			{
+				if (st.isMemoState(2))
+				{
+					player.teleToLocation(EXIT_LOC, 0);
+				}
+				break;
+			}
+			case "32654-02.html":
+			case "32654-03.html":
+			case "32653-02.html":
+			case "32653-03.html":
+			{
+				if (st.isMemoState(2))
+				{
+					htmltext = event;
+				}
+				break;
 			}
 		}
-		
 		return htmltext;
 	}
 	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
+		QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
-		
-		if (st == null)
+		switch (st.getState())
 		{
-			return htmltext;
-		}
-		
-		if (npc.getId() == _rafforty)
-		{
-			switch (st.getState())
+			case State.COMPLETED:
 			{
-				case State.CREATED:
-					QuestState _prev = player.getQuestState(Q10283_RequestOfIceMerchant.class.getSimpleName());
-					if ((_prev != null) && (_prev.getState() == State.COMPLETED) && (player.getLevel() >= 82))
-					{
-						htmltext = "32020-01.htm";
-					}
-					else
-					{
-						htmltext = "32020-03.htm";
-					}
-					break;
-				case State.STARTED:
-					if (st.getInt("progress") == 1)
-					{
-						htmltext = "32020-05.htm";
-					}
-					else if (st.getInt("progress") == 2)
-					{
-						htmltext = "32020-09.htm";
-					}
-					break;
-				case State.COMPLETED:
-					htmltext = "32020-02.htm";
-					break;
-			}
-		}
-		else if (npc.getId() == _jinia)
-		{
-			if (st.getState() != State.STARTED)
-			{
-				return getNoQuestMsg(player);
-			}
-			
-			if (st.getInt("progress") == 1)
-			{
-				int jinia_themes = st.getInt("jinia_themes");
-				// look above for explanation
-				switch (jinia_themes)
+				if (npc.getId() == RAFFORTY)
 				{
-					case 102030:
-						htmltext = "32760-01.htm";
-						break;
-					case 112030:
-						htmltext = "32760-01a.htm";
-						break;
-					case 102130:
-						htmltext = "32760-01b.htm";
-						break;
-					case 102031:
-						htmltext = "32760-01c.htm";
-						break;
-					case 102131:
-						htmltext = "32760-01d.htm";
-						break;
-					case 112031:
-						htmltext = "32760-01e.htm";
-						break;
-					case 112130:
-						htmltext = "32760-01f.htm";
-						break;
-					case 112131:
-						htmltext = "32760-01g.htm";
-						break;
+					htmltext = "32020-05.html";
 				}
+				break;
+			}
+			case State.CREATED:
+			{
+				if (npc.getId() == RAFFORTY)
+				{
+					st = player.getQuestState(Q10283_RequestOfIceMerchant.class.getSimpleName());
+					htmltext = ((player.getLevel() >= MIN_LEVEL) && (st != null) && (st.isCompleted())) ? "32020-01.htm" : "32020-04.html";
+				}
+				break;
+			}
+			case State.STARTED:
+			{
+				switch (npc.getId())
+				{
+					case RAFFORTY:
+					{
+						switch (st.getMemoState())
+						{
+							case 1:
+							{
+								htmltext = (player.getLevel() >= MIN_LEVEL) ? "32020-06.html" : "32020-08.html";
+								break;
+							}
+							case 2:
+							{
+								htmltext = "32020-07.html";
+								break;
+							}
+						}
+						break;
+					}
+					case JINIA:
+					{
+						if (st.isMemoState(1))
+						{
+							if ((st.getInt("ex1") == 0) && (st.getInt("ex2") == 0) && (st.getInt("ex3") == 0))
+							{
+								htmltext = "32760-01.html";
+							}
+							else if ((st.getInt("ex1") == 1) && (st.getInt("ex2") == 0) && (st.getInt("ex3") == 0))
+							{
+								htmltext = "32760-01a.html";
+							}
+							else if ((st.getInt("ex1") == 0) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 0))
+							{
+								htmltext = "32760-01b.html";
+							}
+							else if ((st.getInt("ex1") == 0) && (st.getInt("ex2") == 0) && (st.getInt("ex3") == 1))
+							{
+								htmltext = "32760-01c.html";
+							}
+							else if ((st.getInt("ex1") == 0) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 1))
+							{
+								htmltext = "32760-01d.html";
+							}
+							else if ((st.getInt("ex1") == 1) && (st.getInt("ex2") == 0) && (st.getInt("ex3") == 1))
+							{
+								htmltext = "32760-01e.html";
+							}
+							else if ((st.getInt("ex1") == 1) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 0))
+							{
+								htmltext = "32760-01f.html";
+							}
+							else if ((st.getInt("ex1") == 1) && (st.getInt("ex2") == 1) && (st.getInt("ex3") == 1))
+							{
+								htmltext = "32760-01g.html";
+							}
+						}
+						break;
+					}
+					case TARUN:
+					{
+						switch (st.getMemoState())
+						{
+							case 2:
+							{
+								htmltext = (player.getLevel() >= MIN_LEVEL) ? "32654-01.html" : "32654-05.html";
+								break;
+							}
+							case 3:
+							{
+								st.giveAdena(296425, true);
+								st.addExpAndSp(921805, 82230);
+								st.exitQuest(false, true);
+								htmltext = "32654-04.html";
+								break;
+							}
+						}
+						break;
+					}
+					case KRUN:
+					{
+						switch (st.getMemoState())
+						{
+							case 2:
+							{
+								htmltext = (player.getLevel() >= MIN_LEVEL) ? "32653-01.html" : "32653-05.html";
+								break;
+							}
+							case 3:
+							{
+								st.giveAdena(296425, true);
+								st.addExpAndSp(921805, 82230);
+								st.exitQuest(false, true);
+								htmltext = "32653-04.html";
+								break;
+							}
+						}
+						break;
+					}
+				}
+				break;
 			}
 		}
-		
-		else if ((npc.getId() == _kroon) || (npc.getId() == _taroon))
-		{
-			if (st.getState() != State.STARTED)
-			{
-				return getNoQuestMsg(player);
-			}
-			
-			if (st.getInt("progress") == 2)
-			{
-				htmltext = npc.getId() == _kroon ? "32653-01.htm" : "32654-01.htm";
-			}
-			else if (st.getInt("progress") == 3)
-			{
-				st.set("jinia_themes", "102030");
-				st.giveItems(57, 296425);
-				st.addExpAndSp(921805, 82230);
-				st.playSound("ItemSound.quest_finish");
-				htmltext = npc.getId() == _kroon ? "32653-05.htm" : "32654-05.htm";
-				st.exitQuest(false);
-			}
-		}
-		
 		return htmltext;
 	}
 }

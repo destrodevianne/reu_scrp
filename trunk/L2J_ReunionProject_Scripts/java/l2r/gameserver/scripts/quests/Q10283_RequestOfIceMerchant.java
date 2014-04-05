@@ -85,6 +85,11 @@ public class Q10283_RequestOfIceMerchant extends Quest
 				return null;
 			}
 		}
+		else if (event.equalsIgnoreCase("despawn"))
+		{
+			_jiniaOnSpawn = false;
+			return null;
+		}
 		else if ((npc.getId() == JINIA) && event.equalsIgnoreCase("32760-04.html"))
 		{
 			st.giveAdena(190000, true);
@@ -94,12 +99,6 @@ public class Q10283_RequestOfIceMerchant extends Quest
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, MOVE_TO_END);
 			npc.decayMe();
 		}
-		else if (event.equalsIgnoreCase("despawn"))
-		{
-			_jiniaOnSpawn = false;
-			return null;
-		}
-		
 		return htmltext;
 	}
 	
@@ -112,7 +111,7 @@ public class Q10283_RequestOfIceMerchant extends Quest
 		}
 		
 		final QuestState st = player.getQuestState(getName());
-		if ((npc.getId() == JINIA) && (st != null) && (st.isCond(2)))
+		if ((st != null) && st.isCond(2))
 		{
 			return "32760-01.html";
 		}
