@@ -29,7 +29,7 @@ public class NoTalkingNpcs extends AbstractNpcAI
 	{
 		if (contains(NO_TALKING_LIST, npc.getId()))
 		{
-			return "skipNextAction";
+			return "";
 		}
 		
 		npc.showChatWindow(player);
