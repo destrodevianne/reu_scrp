@@ -165,7 +165,7 @@ public class DrakeMages extends AbstractNpcAI
 	
 	protected void load()
 	{
-		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/drake_mages.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/spawnZones/drake_mages.xml");
 		if (!f.exists())
 		{
 			_log.error("[Drake Mages AI]: Error! drake_mages.xml file is missing!");

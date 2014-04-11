@@ -165,7 +165,7 @@ public class DrakeWarriors extends AbstractNpcAI
 	
 	protected void load()
 	{
-		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/drake_warriors.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/spawnZones/drake_warriors.xml");
 		if (!f.exists())
 		{
 			_log.error("[Drake Warriors AI]: Error! drake_warriors.xml file is missing!");

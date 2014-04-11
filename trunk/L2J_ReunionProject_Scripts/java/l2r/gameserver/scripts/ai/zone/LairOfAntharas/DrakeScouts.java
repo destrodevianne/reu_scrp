@@ -165,7 +165,7 @@ public class DrakeScouts extends AbstractNpcAI
 	
 	protected void load()
 	{
-		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/drake_scouts.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/spawnZones/drake_scouts.xml");
 		if (!f.exists())
 		{
 			_log.error("[Drake Scouts AI]: Error! drake_scouts.xml file is missing!");

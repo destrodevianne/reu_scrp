@@ -63,7 +63,7 @@ public class TarBeetleSpawn extends DocumentParser
 	{
 		_spawnZoneList.clear();
 		_spawnList.clear();
-		parseDatapackFile("data/spawnZones/tar_beetle.xml");
+		parseDatapackFile("data/xml/spawnZones/tar_beetle.xml");
 		_log.info(TarBeetleSpawn.class.getSimpleName() + ": Loaded " + _spawnZoneList.size() + " spawn zones.");
 	}
 	

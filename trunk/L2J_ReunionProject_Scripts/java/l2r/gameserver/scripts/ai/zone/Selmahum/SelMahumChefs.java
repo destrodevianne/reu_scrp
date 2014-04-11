@@ -613,7 +613,7 @@ public class SelMahumChefs extends AbstractNpcAI
 	
 	private void load()
 	{
-		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/selmahum_chefs.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/spawnZones/selmahum_chefs.xml");
 		if (!f.exists())
 		{
 			_log.error("[Sel Mahum Chefs]: Error! cooks.xml file is missing!");

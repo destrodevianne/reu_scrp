@@ -165,7 +165,7 @@ public class Knoriks extends AbstractNpcAI
 	
 	protected void load()
 	{
-		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/knoriks_route.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/spawnZones/knoriks_route.xml");
 		if (!f.exists())
 		{
 			_log.error("[Knoriks AI]: Error! knoriks_route.xml file is missing!");
