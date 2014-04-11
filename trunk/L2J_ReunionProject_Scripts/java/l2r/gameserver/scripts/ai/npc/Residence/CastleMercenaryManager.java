@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc;
+package l2r.gameserver.scripts.ai.npc.Residence;
 
 import java.util.StringTokenizer;
 
@@ -28,6 +28,7 @@ import l2r.gameserver.model.actor.instance.L2MerchantInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.entity.Castle;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Castle Mercenary Manager AI.

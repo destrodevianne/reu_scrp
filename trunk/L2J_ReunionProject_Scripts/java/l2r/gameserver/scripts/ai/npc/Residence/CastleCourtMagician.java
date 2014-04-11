@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc;
+package l2r.gameserver.scripts.ai.npc.Residence;
 
 import l2r.Config;
 import l2r.gameserver.SevenSigns;
@@ -27,6 +27,7 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.network.clientpackets.RequestAcquireSkill;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import gr.reunion.interf.ReunionEvents;
 
 /**

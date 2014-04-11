@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc;
+package l2r.gameserver.scripts.ai.npc.Residence;
 
 import l2r.gameserver.instancemanager.FortSiegeManager;
 import l2r.gameserver.model.ClanPrivilege;
@@ -28,6 +28,7 @@ import l2r.gameserver.model.entity.Fort;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.network.serverpackets.SystemMessage;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Fortress Siege Manager AI.
