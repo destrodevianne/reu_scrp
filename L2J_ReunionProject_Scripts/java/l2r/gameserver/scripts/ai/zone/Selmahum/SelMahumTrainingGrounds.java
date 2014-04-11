@@ -118,7 +118,7 @@ public class SelMahumTrainingGrounds extends AbstractNpcAI
 	
 	private void init()
 	{
-		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/training_grounds.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/spawnZones/training_grounds.xml");
 		if (!f.exists())
 		{
 			_log.error("[Sel Mahum Training Grounds] Missing training_grounds.xml!");

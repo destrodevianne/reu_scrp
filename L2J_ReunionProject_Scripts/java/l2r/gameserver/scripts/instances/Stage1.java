@@ -253,7 +253,7 @@ public final class Stage1 extends Quest
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
 			
-			File file = new File(Config.DATAPACK_ROOT + "/data/spawnZones/seed_of_destruction.xml");
+			File file = new File(Config.DATAPACK_ROOT + "/data/xml/spawnZones/seed_of_destruction.xml");
 			if (!file.exists())
 			{
 				_log.error("[Seed of Destruction] Missing seed_of_destruction.xml. The quest wont work without it!");

@@ -165,7 +165,7 @@ public class DrakeLeaders extends AbstractNpcAI
 	
 	protected void load()
 	{
-		File f = new File(Config.DATAPACK_ROOT, "data/spawnZones/drake_leaders.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/spawnZones/drake_leaders.xml");
 		if (!f.exists())
 		{
 			_log.error("[Drake Leaders AI]: Error! drake_leaders.xml file is missing!");
