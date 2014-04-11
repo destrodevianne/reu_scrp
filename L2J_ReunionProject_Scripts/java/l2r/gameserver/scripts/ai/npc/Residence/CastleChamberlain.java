@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc;
+package l2r.gameserver.scripts.ai.npc.Residence;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -49,6 +49,7 @@ import l2r.gameserver.network.serverpackets.ExShowDominionRegistry;
 import l2r.gameserver.network.serverpackets.ExShowSeedInfo;
 import l2r.gameserver.network.serverpackets.ExShowSeedSetting;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
 
 /**
