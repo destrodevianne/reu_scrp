@@ -30,15 +30,12 @@ import l2r.gameserver.util.Util;
  * Jewel of Antharas (10504)
  * @author Zoey76
  */
-public class Q10504_JewelOfAntharas extends Quest
+public final class Q10504_JewelOfAntharas extends Quest
 {
 	// NPC
 	private static final int THEODRIC = 30755;
-	// Monsters
-	private static final int ANTHARAS_OLD = 29019;
-	private static final int ANTHARAS_WEAK = 29066;
-	private static final int ANTHARAS_NORMAL = 29067;
-	private static final int ANTHARAS_STRONG = 29068;
+	// Monster
+	private static final int ANTHARAS = 29068;
 	// Items
 	private static final int CLEAR_CRYSTAL = 21905;
 	private static final int FILLED_CRYSTAL_ANTHARAS_ENERGY = 21907;
@@ -52,7 +49,7 @@ public class Q10504_JewelOfAntharas extends Quest
 		super(10504, Q10504_JewelOfAntharas.class.getSimpleName(), "Jewel of Antharas");
 		addStartNpc(THEODRIC);
 		addTalkId(THEODRIC);
-		addKillId(ANTHARAS_OLD, ANTHARAS_WEAK, ANTHARAS_NORMAL, ANTHARAS_STRONG);
+		addKillId(ANTHARAS);
 		registerQuestItems(CLEAR_CRYSTAL, FILLED_CRYSTAL_ANTHARAS_ENERGY);
 	}
 	

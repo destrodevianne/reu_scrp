@@ -31,15 +31,12 @@ import l2r.gameserver.util.Util;
  * Dragon Trophy - Antharas (904)
  * @author Zoey76
  */
-public class Q00904_DragonTrophyAntharas extends Quest
+public final class Q00904_DragonTrophyAntharas extends Quest
 {
 	// NPC
 	private static final int THEODRIC = 30755;
-	// Monsters
-	private static final int ANTHARAS_OLD = 29019;
-	private static final int ANTHARAS_WEAK = 29066;
-	private static final int ANTHARAS_NORMAL = 29067;
-	private static final int ANTHARAS_STRONG = 29068;
+	// Monster
+	private static final int ANTHARAS = 29068;
 	// Items
 	private static final int MEDAL_OF_GLORY = 21874;
 	private static final int PORTAL_STONE = 3865;
@@ -51,7 +48,7 @@ public class Q00904_DragonTrophyAntharas extends Quest
 		super(904, Q00904_DragonTrophyAntharas.class.getSimpleName(), "Dragon Trophy - Antharas");
 		addStartNpc(THEODRIC);
 		addTalkId(THEODRIC);
-		addKillId(ANTHARAS_OLD, ANTHARAS_WEAK, ANTHARAS_NORMAL, ANTHARAS_STRONG);
+		addKillId(ANTHARAS);
 	}
 	
 	@Override

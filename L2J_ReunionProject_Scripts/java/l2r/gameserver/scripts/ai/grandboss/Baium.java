@@ -505,10 +505,6 @@ public final class Baium extends AbstractNpcAI
 				if (!hasStriderDebuff)
 				{
 					npc.setTarget(attacker);
-					if (npc.isMuted())
-					{
-						return super.onAttack(npc, attacker, damage, isSummon);
-					}
 					npc.doCast(ANTI_STRIDER.getSkill());
 				}
 			}
