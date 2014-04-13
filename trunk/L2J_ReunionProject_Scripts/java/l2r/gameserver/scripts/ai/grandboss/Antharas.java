@@ -1,340 +1,194 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
- * 
+ * Copyright (C) 2004-2014 L2J DataPack
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.ai.grandboss;
 
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 import l2r.Config;
-import l2r.gameserver.GeoData;
-import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillData;
-import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.MountType;
 import l2r.gameserver.instancemanager.GrandBossManager;
-import l2r.gameserver.model.L2Spawn;
-import l2r.gameserver.model.L2World;
+import l2r.gameserver.instancemanager.ZoneManager;
+import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.StatsSet;
+import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.actor.templates.L2NpcTemplate;
+import l2r.gameserver.model.effects.L2Effect;
+import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.skills.L2Skill;
-import l2r.gameserver.model.zone.type.L2BossZone;
+import l2r.gameserver.model.zone.type.L2NoRestartZone;
+import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.serverpackets.Earthquake;
-import l2r.gameserver.network.serverpackets.L2GameServerPacket;
+import l2r.gameserver.network.serverpackets.ExShowScreenMessage;
 import l2r.gameserver.network.serverpackets.PlaySound;
+import l2r.gameserver.network.serverpackets.SocialAction;
 import l2r.gameserver.network.serverpackets.SpecialCamera;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
+import l2r.gameserver.util.Broadcast;
+import l2r.gameserver.util.Util;
 
 /**
- * Antharas' AI.
- * @author L2J_JP SANDMAN
+ * Antharas AI.
+ * @author St3eT
  */
 public final class Antharas extends AbstractNpcAI
 {
-	// config
-	private static final int FWA_ACTIVITYTIMEOFANTHARAS = 120;
-	// private static final int FWA_APPTIMEOFANTHARAS = 1800000;
-	private static final int FWA_INACTIVITYTIME = 900000;
-	private static final boolean FWA_OLDANTHARAS = false;
-	private static final boolean FWA_MOVEATRANDOM = true;
-	private static final boolean FWA_DOSERVEREARTHQUAKE = true;
-	private static final int FWA_LIMITOFWEAK = 45;
-	private static final int FWA_LIMITOFNORMAL = 63;
-	private static final int FWA_MAXMOBS = 10; // this includes Antharas itself
-	private static final int FWA_INTERVALOFMOBSWEAK = 180000;
-	private static final int FWA_INTERVALOFMOBSNORMAL = 150000;
-	private static final int FWA_INTERVALOFMOBSSTRONG = 120000;
-	private static final int FWA_PERCENTOFBEHEMOTH = 60;
-	private static final int FWA_SELFDESTRUCTTIME = 15000;
-	// Location of teleport cube.
-	private final int _teleportCubeId = 31859;
-	private final int _teleportCubeLocation[][] =
+	// NPC
+	private static final int ANTHARAS = 29068; // Antharas
+	private static final int BEHEMOTH = 29069; // Behemoth Dragon
+	private static final int TERASQUE = 29190; // Tarask Dragon
+	private static final int BOMBER = 29070; // Dragon Bomber
+	private static final int HEART = 13001; // Heart of Warding
+	private static final int CUBE = 31859; // Teleportation Cubic
+	private static final Map<Integer, Location> INVISIBLE_NPC = new HashMap<>();
 	{
-		{
-			177615,
-			114941,
-			-7709,
-			0
-		}
-	};
+		INVISIBLE_NPC.put(29077, new Location(177229, 113298, -7735)); // antaras_clear_npc_1
+		INVISIBLE_NPC.put(29078, new Location(176707, 113585, -7735)); // antaras_clear_npc_2
+		INVISIBLE_NPC.put(29079, new Location(176385, 113889, -7735)); // antaras_clear_npc_3
+		INVISIBLE_NPC.put(29080, new Location(176082, 114241, -7735)); // antaras_clear_npc_4
+		INVISIBLE_NPC.put(29081, new Location(176066, 114802, -7735)); // antaras_clear_npc_5
+		INVISIBLE_NPC.put(29082, new Location(176095, 115313, -7735)); // antaras_clear_npc_6
+		INVISIBLE_NPC.put(29083, new Location(176425, 115829, -7735)); // antaras_clear_npc_7
+		INVISIBLE_NPC.put(29084, new Location(176949, 116378, -7735)); // antaras_clear_npc_8
+		INVISIBLE_NPC.put(29085, new Location(177655, 116402, -7735)); // antaras_clear_npc_9
+		INVISIBLE_NPC.put(29086, new Location(178248, 116395, -7735)); // antaras_clear_npc_10
+		INVISIBLE_NPC.put(29087, new Location(178706, 115998, -7735)); // antaras_clear_npc_11
+		INVISIBLE_NPC.put(29088, new Location(179208, 115452, -7735)); // antaras_clear_npc_12
+		INVISIBLE_NPC.put(29089, new Location(179191, 115079, -7735)); // antaras_clear_npc_13
+		INVISIBLE_NPC.put(29090, new Location(179221, 114546, -7735)); // antaras_clear_npc_14
+		INVISIBLE_NPC.put(29091, new Location(178916, 113925, -7735)); // antaras_clear_npc_15
+		INVISIBLE_NPC.put(29092, new Location(178782, 113814, -7735)); // antaras_clear_npc_16
+		INVISIBLE_NPC.put(29093, new Location(178419, 113417, -7735)); // antaras_clear_npc_17
+		INVISIBLE_NPC.put(29094, new Location(177855, 113282, -7735)); // antaras_clear_npc_18
+	}
 	
-	protected List<L2Spawn> _teleportCubeSpawn = new FastList<>();
-	protected List<L2Npc> _teleportCube = new FastList<>();
-	// Spawn data of monsters.
-	protected Map<Integer, L2Spawn> _monsterSpawn = new FastMap<>();
-	// Instance of monsters.
-	protected List<L2Npc> _monsters = new FastList<>();
-	protected L2GrandBossInstance _antharas = null;
-	// Antharas Ids
-	private static final int ANTHARAS_OLD_ID = 29019;
-	private static final int ANTHARAS_WEAK_ID = 29066;
-	private static final int ANTHARAS_NORMAL_ID = 29067;
-	private static final int ANTHARAS_STRONG_ID = 29068;
-	// Tasks.
-	protected ScheduledFuture<?> _cubeSpawnTask = null;
-	protected ScheduledFuture<?> _monsterSpawnTask = null;
-	protected ScheduledFuture<?> _activityCheckTask = null;
-	protected ScheduledFuture<?> _socialTask = null;
-	protected ScheduledFuture<?> _mobiliseTask = null;
-	protected ScheduledFuture<?> _mobsSpawnTask = null;
-	protected ScheduledFuture<?> _selfDestructionTask = null;
-	protected ScheduledFuture<?> _moveAtRandomTask = null;
-	protected ScheduledFuture<?> _movieTask = null;
-	// Antharas Status Tracking :
-	private static final byte DORMANT = 0; // Antharas is spawned and no one has entered yet. Entry is unlocked
-	private static final byte WAITING = 1; // Antharas is spawend and someone has entered, triggering a 30 minute window for additional people to enter
-	// before he unleashes his attack. Entry is unlocked
-	private static final byte FIGHTING = 2; // Antharas is engaged in battle, annihilating his foes. Entry is locked
-	private static final byte DEAD = 3; // Antharas has been killed. Entry is locked
-	
-	protected static long _LastAction = 0;
-	
-	protected static L2BossZone _Zone;
+	// Item
+	private static final int STONE = 3865; // Portal Stone
+	// Skill
+	private static final SkillHolder ANTH_JUMP = new SkillHolder(4106, 1); // Antharas Stun
+	private static final SkillHolder ANTH_TAIL = new SkillHolder(4107, 1); // Antharas Stun
+	private static final SkillHolder ANTH_FEAR = new SkillHolder(4108, 1); // Antharas Terror
+	private static final SkillHolder ANTH_DEBUFF = new SkillHolder(4109, 1); // Curse of Antharas
+	private static final SkillHolder ANTH_MOUTH = new SkillHolder(4110, 2); // Breath Attack
+	private static final SkillHolder ANTH_BREATH = new SkillHolder(4111, 1); // Antharas Fossilization
+	private static final SkillHolder ANTH_NORM_ATTACK = new SkillHolder(4112, 1); // Ordinary Attack
+	private static final SkillHolder ANTH_NORM_ATTACK_EX = new SkillHolder(4113, 1); // Animal doing ordinary attack
+	private static final SkillHolder ANTH_REGEN_1 = new SkillHolder(4125, 1); // Antharas Regeneration
+	private static final SkillHolder ANTH_REGEN_2 = new SkillHolder(4239, 1); // Antharas Regeneration
+	private static final SkillHolder ANTH_REGEN_3 = new SkillHolder(4240, 1); // Antharas Regeneration
+	private static final SkillHolder ANTH_REGEN_4 = new SkillHolder(4241, 1); // Antharas Regeneration
+	private static final SkillHolder DISPEL_BOM = new SkillHolder(5042, 1); // NPC Dispel Bomb
+	private static final SkillHolder ANTH_ANTI_STRIDER = new SkillHolder(4258, 1); // Hinder Strider
+	private static final SkillHolder ANTH_FEAR_SHORT = new SkillHolder(5092, 1); // Antharas Terror
+	private static final SkillHolder ANTH_METEOR = new SkillHolder(5093, 1); // Antharas Meteor
+	// Zone
+	private static final L2NoRestartZone zone = ZoneManager.getInstance().getZoneById(70050, L2NoRestartZone.class); // Antharas Nest zone
+	// Status
+	private static final int ALIVE = 0;
+	private static final int WAITING = 1;
+	private static final int IN_FIGHT = 2;
+	private static final int DEAD = 3;
+	// Misc
+	private static final int MAX_PEOPLE = 200; // Max allowed players
+	private L2GrandBossInstance _antharas = null;
+	private static long _lastAttack = 0;
+	private static int _minionCount = 0;
+	private static int minionMultipler = 0;
+	private static int moveChance = 0;
+	private static int sandStorm = 0;
+	private static L2PcInstance attacker_1 = null;
+	private static L2PcInstance attacker_2 = null;
+	private static L2PcInstance attacker_3 = null;
+	private static int attacker_1_hate = 0;
+	private static int attacker_2_hate = 0;
+	private static int attacker_3_hate = 0;
 	
 	private Antharas()
 	{
 		super(Antharas.class.getSimpleName(), "ai/individual");
-		registerMobs(ANTHARAS_OLD_ID, ANTHARAS_WEAK_ID, ANTHARAS_NORMAL_ID, ANTHARAS_STRONG_ID, 29069, 29070, 29071, 29072, 29073, 29074, 29075, 29076);
-		init();
-	}
-	
-	// Initialize
-	private void init()
-	{
-		// Setting spawn data of monsters.
-		try
-		{
-			_Zone = GrandBossManager.getInstance().getZone(179700, 113800, -7709);
-			// Old Antharas
-			L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(ANTHARAS_OLD_ID);
-			L2Spawn tempSpawn = new L2Spawn(template1);
-			tempSpawn.setX(181323);
-			tempSpawn.setY(114850);
-			tempSpawn.setZ(-7623);
-			tempSpawn.setHeading(32542);
-			tempSpawn.setAmount(1);
-			tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
-			SpawnTable.getInstance().addNewSpawn(tempSpawn, false);
-			_monsterSpawn.put(29019, tempSpawn);
-			
-			// Weak Antharas
-			template1 = NpcTable.getInstance().getTemplate(ANTHARAS_WEAK_ID);
-			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setX(181323);
-			tempSpawn.setY(114850);
-			tempSpawn.setZ(-7623);
-			tempSpawn.setHeading(32542);
-			tempSpawn.setAmount(1);
-			tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
-			SpawnTable.getInstance().addNewSpawn(tempSpawn, false);
-			_monsterSpawn.put(29066, tempSpawn);
-			
-			// Normal Antharas
-			template1 = NpcTable.getInstance().getTemplate(ANTHARAS_NORMAL_ID);
-			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setX(181323);
-			tempSpawn.setY(114850);
-			tempSpawn.setZ(-7623);
-			tempSpawn.setHeading(32542);
-			tempSpawn.setAmount(1);
-			tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
-			SpawnTable.getInstance().addNewSpawn(tempSpawn, false);
-			_monsterSpawn.put(29067, tempSpawn);
-			
-			// Strong Antharas
-			template1 = NpcTable.getInstance().getTemplate(ANTHARAS_STRONG_ID);
-			tempSpawn = new L2Spawn(template1);
-			tempSpawn.setX(181323);
-			tempSpawn.setY(114850);
-			tempSpawn.setZ(-7623);
-			tempSpawn.setHeading(32542);
-			tempSpawn.setAmount(1);
-			tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
-			SpawnTable.getInstance().addNewSpawn(tempSpawn, false);
-			_monsterSpawn.put(29068, tempSpawn);
-		}
-		catch (Exception e)
-		{
-			_log.warn(e.getMessage());
-		}
+		addStartNpc(HEART, CUBE);
+		addTalkId(HEART, CUBE);
+		addFirstTalkId(HEART);
+		addSpawnId(INVISIBLE_NPC.keySet());
+		addSpawnId(ANTHARAS);
+		addMoveFinishedId(BOMBER);
+		addAggroRangeEnterId(BOMBER);
+		addSpellFinishedId(ANTHARAS);
+		addAttackId(ANTHARAS, BOMBER, BEHEMOTH, TERASQUE);
+		addKillId(ANTHARAS, TERASQUE, BEHEMOTH);
 		
-		// Setting spawn data of teleport cube.
-		try
+		final StatsSet info = GrandBossManager.getInstance().getStatsSet(ANTHARAS);
+		final int curr_hp = info.getInteger("currentHP");
+		final int curr_mp = info.getInteger("currentMP");
+		final int loc_x = info.getInteger("loc_x");
+		final int loc_y = info.getInteger("loc_y");
+		final int loc_z = info.getInteger("loc_z");
+		final int heading = info.getInteger("heading");
+		final long respawnTime = info.getLong("respawn_time");
+		
+		switch (getStatus())
 		{
-			L2NpcTemplate Cube = NpcTable.getInstance().getTemplate(_teleportCubeId);
-			L2Spawn spawnDat;
-			for (int[] element : _teleportCubeLocation)
+			case ALIVE:
 			{
-				spawnDat = new L2Spawn(Cube);
-				spawnDat.setAmount(1);
-				spawnDat.setX(element[0]);
-				spawnDat.setY(element[1]);
-				spawnDat.setZ(element[2]);
-				spawnDat.setHeading(element[3]);
-				spawnDat.setRespawnDelay(60);
-				spawnDat.setLocationId(0);
-				SpawnTable.getInstance().addNewSpawn(spawnDat, false);
-				_teleportCubeSpawn.add(spawnDat);
+				_antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 0, false, 0);
+				_antharas.setCurrentHpMp(curr_hp, curr_mp);
+				addBoss(_antharas);
+				break;
 			}
-		}
-		catch (Exception e)
-		{
-			_log.warn(e.getMessage());
-		}
-		int status = GrandBossManager.getInstance().getBossStatus(ANTHARAS_OLD_ID);
-		if (FWA_OLDANTHARAS || (status == WAITING))
-		{
-			StatsSet info = GrandBossManager.getInstance().getStatsSet(ANTHARAS_OLD_ID);
-			Long respawnTime = info.getLong("respawn_time");
-			if ((status == DEAD) && (respawnTime <= System.currentTimeMillis()))
+			case WAITING:
 			{
-				// the time has already expired while the server was offline. Immediately spawn antharas in his cave.
-				// also, the status needs to be changed to DORMANT
-				GrandBossManager.getInstance().setBossStatus(ANTHARAS_OLD_ID, DORMANT);
-				status = DORMANT;
+				_antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 0, false, 0);
+				_antharas.setCurrentHpMp(curr_hp, curr_mp);
+				addBoss(_antharas);
+				startQuestTimer("SPAWN_ANTHARAS", Config.ANTHARAS_WAIT_TIME * 60000, null, null);
+				break;
 			}
-			else if (status == FIGHTING)
+			case IN_FIGHT:
 			{
-				int loc_x = info.getInteger("loc_x");
-				int loc_y = info.getInteger("loc_y");
-				int loc_z = info.getInteger("loc_z");
-				int heading = info.getInteger("heading");
-				int hp = info.getInteger("currentHP");
-				int mp = info.getInteger("currentMP");
-				_antharas = (L2GrandBossInstance) addSpawn(ANTHARAS_OLD_ID, loc_x, loc_y, loc_z, heading, false, 0);
-				GrandBossManager.getInstance().addBoss(_antharas);
-				_antharas.setCurrentHpMp(hp, mp);
-				_LastAction = System.currentTimeMillis();
-				// Start repeating timer to check for inactivity
-				_activityCheckTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckActivity(), 60000, 60000);
+				_antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, loc_x, loc_y, loc_z, heading, false, 0);
+				_antharas.setCurrentHpMp(curr_hp, curr_mp);
+				addBoss(_antharas);
+				_lastAttack = System.currentTimeMillis();
+				startQuestTimer("CHECK_ATTACK", 60000, _antharas, null);
+				startQuestTimer("SPAWN_MINION", 300000, _antharas, null);
+				break;
 			}
-			else if (status == DEAD)
+			case DEAD:
 			{
-				ThreadPoolManager.getInstance().scheduleGeneral(new UnlockAntharas(ANTHARAS_OLD_ID), respawnTime - System.currentTimeMillis());
-			}
-			else
-			{
-				setAntharasSpawnTask();
-			}
-		}
-		else
-		{
-			int statusWeak = GrandBossManager.getInstance().getBossStatus(ANTHARAS_WEAK_ID);
-			int statusNormal = GrandBossManager.getInstance().getBossStatus(ANTHARAS_NORMAL_ID);
-			int statusStrong = GrandBossManager.getInstance().getBossStatus(ANTHARAS_STRONG_ID);
-			int antharasId = 0;
-			if ((statusWeak == FIGHTING) || (statusWeak == DEAD))
-			{
-				antharasId = ANTHARAS_WEAK_ID;
-				status = statusWeak;
-			}
-			else if ((statusNormal == FIGHTING) || (statusNormal == DEAD))
-			{
-				antharasId = ANTHARAS_NORMAL_ID;
-				status = statusNormal;
-			}
-			else if ((statusStrong == FIGHTING) || (statusStrong == DEAD))
-			{
-				antharasId = ANTHARAS_STRONG_ID;
-				status = statusStrong;
-			}
-			if ((antharasId != 0) && (status == FIGHTING))
-			{
-				StatsSet info = GrandBossManager.getInstance().getStatsSet(antharasId);
-				int loc_x = info.getInteger("loc_x");
-				int loc_y = info.getInteger("loc_y");
-				int loc_z = info.getInteger("loc_z");
-				int heading = info.getInteger("heading");
-				int hp = info.getInteger("currentHP");
-				int mp = info.getInteger("currentMP");
-				_antharas = (L2GrandBossInstance) addSpawn(antharasId, loc_x, loc_y, loc_z, heading, false, 0);
-				GrandBossManager.getInstance().addBoss(_antharas);
-				_antharas.setCurrentHpMp(hp, mp);
-				_LastAction = System.currentTimeMillis();
-				// Start repeating timer to check for inactivity
-				_activityCheckTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckActivity(), 60000, 60000);
-			}
-			else if ((antharasId != 0) && (status == DEAD))
-			{
-				StatsSet info = GrandBossManager.getInstance().getStatsSet(antharasId);
-				Long respawnTime = info.getLong("respawn_time");
-				if (respawnTime <= System.currentTimeMillis())
+				final long remain = respawnTime - System.currentTimeMillis();
+				if (remain > 0)
 				{
-					// the time has already expired while the server was offline. Immediately spawn antharas in his cave.
-					// also, the status needs to be changed to DORMANT
-					GrandBossManager.getInstance().setBossStatus(antharasId, DORMANT);
-					status = DORMANT;
+					startQuestTimer("CLEAR_STATUS", remain, null, null);
 				}
 				else
 				{
-					ThreadPoolManager.getInstance().scheduleGeneral(new UnlockAntharas(antharasId), respawnTime - System.currentTimeMillis());
+					setStatus(ALIVE);
+					_antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 0, false, 0);
+					addBoss(_antharas);
 				}
-			}
-		}
-	}
-	
-	// Do spawn teleport cube.
-	public void spawnCube()
-	{
-		if (_mobsSpawnTask != null)
-		{
-			_mobsSpawnTask.cancel(true);
-			_mobsSpawnTask = null;
-		}
-		if (_selfDestructionTask != null)
-		{
-			_selfDestructionTask.cancel(true);
-			_selfDestructionTask = null;
-		}
-		if (_activityCheckTask != null)
-		{
-			_activityCheckTask.cancel(false);
-			_activityCheckTask = null;
-		}
-		
-		for (L2Spawn spawnDat : _teleportCubeSpawn)
-		{
-			_teleportCube.add(spawnDat.doSpawn());
-		}
-	}
-	
-	// Setting Antharas spawn task.
-	public void setAntharasSpawnTask()
-	{
-		if (_monsterSpawnTask == null)
-		{
-			synchronized (this)
-			{
-				if (_monsterSpawnTask == null)
-				{
-					GrandBossManager.getInstance().setBossStatus(ANTHARAS_OLD_ID, WAITING);
-					_monsterSpawnTask = ThreadPoolManager.getInstance().scheduleGeneral(new AntharasSpawn(1), (Config.ANTHARAS_WAIT_TIME * 60000));
-				}
+				break;
 			}
 		}
 	}
@@ -342,609 +196,915 @@ public final class Antharas extends AbstractNpcAI
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (event.equalsIgnoreCase("waiting"))
+		switch (event)
 		{
-			setAntharasSpawnTask();
-		}
-		
-		return super.onAdvEvent(event, npc, player);
-	}
-	
-	protected void startMinionSpawns(int antharasId)
-	{
-		int intervalOfMobs;
-		
-		// Interval of minions is decided by the type of Antharas
-		// that invaded the lair.
-		switch (antharasId)
-		{
-			case ANTHARAS_WEAK_ID:
-				intervalOfMobs = FWA_INTERVALOFMOBSWEAK;
-				break;
-			case ANTHARAS_NORMAL_ID:
-				intervalOfMobs = FWA_INTERVALOFMOBSNORMAL;
-				break;
-			default:
-				intervalOfMobs = FWA_INTERVALOFMOBSSTRONG;
-				break;
-		}
-		
-		// Spawn mobs.
-		_mobsSpawnTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new MobsSpawn(), intervalOfMobs, intervalOfMobs);
-	}
-	
-	// Do spawn Antharas.
-	private class AntharasSpawn implements Runnable
-	{
-		private int _taskId = 0;
-		private final Collection<L2Character> _players = _Zone.getCharactersInside();
-		
-		public AntharasSpawn(int taskId)
-		{
-			_taskId = taskId;
-		}
-		
-		@Override
-		public void run()
-		{
-			int npcId;
-			L2Spawn antharasSpawn = null;
-			
-			switch (_taskId)
+			case "enter":
 			{
-				case 1: // Spawn.
-					// Strength of Antharas is decided by the number of players that
-					// invaded the lair.
-					_monsterSpawnTask.cancel(false);
-					_monsterSpawnTask = null;
-					if (FWA_OLDANTHARAS)
+				String htmltext = null;
+				if (getStatus() == DEAD)
+				{
+					htmltext = "13001-01.html";
+				}
+				else if (getStatus() == IN_FIGHT)
+				{
+					htmltext = "13001-02.html";
+				}
+				else if (zone.getPlayersInside().size() >= MAX_PEOPLE)
+				{
+					htmltext = "13001-04.html";
+				}
+				else if (player.isInParty())
+				{
+					final L2Party party = player.getParty();
+					final boolean isInCC = party.isInCommandChannel();
+					final List<L2PcInstance> members = (isInCC) ? party.getCommandChannel().getMembers() : party.getMembers();
+					final boolean isPartyLeader = (isInCC) ? party.getCommandChannel().isLeader(player) : party.isLeader(player);
+					if (!isPartyLeader)
 					{
-						npcId = 29019; // old
+						htmltext = "13001-05.html";
 					}
-					else if (_players.size() <= FWA_LIMITOFWEAK)
+					else if (!hasQuestItems(player, STONE))
 					{
-						npcId = 29066; // weak
+						htmltext = "13001-03.html";
 					}
-					else if (_players.size() > FWA_LIMITOFNORMAL)
+					else if (members.size() > (MAX_PEOPLE - zone.getPlayersInside().size()))
 					{
-						npcId = 29068; // strong
+						htmltext = "13001-04.html";
 					}
 					else
 					{
-						npcId = 29067; // normal
+						for (L2PcInstance member : members)
+						{
+							if (member.isInsideRadius(npc, 1000, true, false))
+							{
+								member.teleToLocation(179700 + getRandom(700), 113800 + getRandom(2100), -7709);
+							}
+						}
+						if (getStatus() != WAITING)
+						{
+							setStatus(WAITING);
+							startQuestTimer("SPAWN_ANTHARAS", Config.ANTHARAS_WAIT_TIME * 60000, null, null);
+						}
 					}
-					
-					// Do spawn.
-					antharasSpawn = _monsterSpawn.get(npcId);
-					_antharas = (L2GrandBossInstance) antharasSpawn.doSpawn();
-					GrandBossManager.getInstance().addBoss(_antharas);
-					
-					_monsters.add(_antharas);
-					_antharas.setIsImmobilized(true);
-					
-					GrandBossManager.getInstance().setBossStatus(ANTHARAS_OLD_ID, DORMANT);
-					GrandBossManager.getInstance().setBossStatus(npcId, FIGHTING);
-					_LastAction = System.currentTimeMillis();
-					// Start repeating timer to check for inactivity
-					_activityCheckTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckActivity(), 60000, 60000);
-					
-					// Setting 1st time of minions spawn task.
-					if (!FWA_OLDANTHARAS)
-					{
-						startMinionSpawns(npcId);
-					}
-					
-					// Set next task.
-					if (_socialTask != null)
-					{
-						_socialTask.cancel(true);
-						_socialTask = null;
-					}
-					_socialTask = ThreadPoolManager.getInstance().scheduleGeneral(new AntharasSpawn(2), 16);
-					break;
-				case 2:
-					// Set camera.
-					broadcastPacket(new SpecialCamera(_antharas, 700, 13, -19, 0, 10000, 20000, 0, 0, 0, 0, 0));
-					
-					// Set next task.
-					if (_socialTask != null)
-					{
-						_socialTask.cancel(true);
-						_socialTask = null;
-					}
-					_socialTask = ThreadPoolManager.getInstance().scheduleGeneral(new AntharasSpawn(3), 3000);
-					break;
-				
-				case 3:
-					// Do social.
-					broadcastPacket(new SpecialCamera(_antharas, 700, 13, 0, 6000, 10000, 20000, 0, 0, 0, 0, 0));
-					// Set next task.
-					if (_socialTask != null)
-					{
-						_socialTask.cancel(true);
-						_socialTask = null;
-					}
-					_socialTask = ThreadPoolManager.getInstance().scheduleGeneral(new AntharasSpawn(4), 10000);
-					break;
-				case 4:
-					broadcastPacket(new SpecialCamera(_antharas, 3700, 0, -3, 0, 10000, 10000, 0, 0, 0, 0, 0));
-					// Set next task.
-					if (_socialTask != null)
-					{
-						_socialTask.cancel(true);
-						_socialTask = null;
-					}
-					_socialTask = ThreadPoolManager.getInstance().scheduleGeneral(new AntharasSpawn(5), 200);
-					break;
-				
-				case 5:
-					// Do social.
-					broadcastPacket(new SpecialCamera(_antharas, 1100, 0, -3, 22000, 10000, 30000, 0, 0, 0, 0, 0));
-					// Set next task.
-					if (_socialTask != null)
-					{
-						_socialTask.cancel(true);
-						_socialTask = null;
-					}
-					_socialTask = ThreadPoolManager.getInstance().scheduleGeneral(new AntharasSpawn(6), 10800);
-					break;
-				
-				case 6:
-					// Set camera.
-					broadcastPacket(new SpecialCamera(_antharas, 1100, 0, -3, 300, 10000, 7000, 0, 0, 0, 0, 0));
-					// Set next task.
-					if (_socialTask != null)
-					{
-						_socialTask.cancel(true);
-						_socialTask = null;
-					}
-					_socialTask = ThreadPoolManager.getInstance().scheduleGeneral(new AntharasSpawn(7), 1900);
-					break;
-				
-				case 7:
-					_antharas.abortCast();
-					
-					_mobiliseTask = ThreadPoolManager.getInstance().scheduleGeneral(new SetMobilised(_antharas), 16);
-					
-					// Move at random.
-					if (FWA_MOVEATRANDOM)
-					{
-						Location pos = new Location(getRandom(175000, 178500), getRandom(112400, 116000), -7707, 0);
-						_moveAtRandomTask = ThreadPoolManager.getInstance().scheduleGeneral(new MoveAtRandom(_antharas, pos), 500);
-					}
-					
-					if (_socialTask != null)
-					{
-						_socialTask.cancel(true);
-						_socialTask = null;
-					}
-					break;
-			}
-		}
-	}
-	
-	protected void broadcastPacket(L2GameServerPacket mov)
-	{
-		if (_Zone != null)
-		{
-			for (L2Character characters : _Zone.getCharactersInside())
-			{
-				if (characters.isPlayer())
-				{
-					characters.sendPacket(mov);
 				}
-			}
-		}
-	}
-	
-	// Do spawn Behemoth or Bomber.
-	private class MobsSpawn implements Runnable
-	{
-		public MobsSpawn()
-		{
-		}
-		
-		@Override
-		public void run()
-		{
-			L2NpcTemplate template1;
-			L2Spawn tempSpawn;
-			boolean isBehemoth = getRandom(100) < FWA_PERCENTOFBEHEMOTH;
-			try
-			{
-				int mobNumber = (isBehemoth ? 2 : 3);
-				// Set spawn.
-				for (int i = 0; i < mobNumber; i++)
+				else
 				{
-					if (_monsters.size() >= FWA_MAXMOBS)
+					if (!hasQuestItems(player, STONE))
 					{
+						htmltext = "13001-03.html";
+					}
+					else
+					{
+						player.teleToLocation(179700 + getRandom(700), 113800 + getRandom(2100), -7709);
+						if (getStatus() != WAITING)
+						{
+							setStatus(WAITING);
+							startQuestTimer("SPAWN_ANTHARAS", Config.ANTHARAS_WAIT_TIME * 60000, null, null);
+						}
+					}
+				}
+				return htmltext;
+			}
+			case "teleportOut":
+			{
+				player.teleToLocation(79800 + getRandom(600), 151200 + getRandom(1100), -3534);
+				break;
+			}
+			case "SPAWN_ANTHARAS":
+			{
+				_antharas.teleToLocation(181323, 114850, -7623, 32542);
+				setStatus(IN_FIGHT);
+				_lastAttack = System.currentTimeMillis();
+				zone.broadcastPacket(new PlaySound("BS02_A"));
+				startQuestTimer("CAMERA_1", 23, _antharas, null);
+				break;
+			}
+			case "CAMERA_1":
+			{
+				zone.broadcastPacket(new SpecialCamera(npc, 700, 13, -19, 0, 10000, 20000, 0, 0, 0, 0, 0));
+				startQuestTimer("CAMERA_2", 3000, npc, null);
+				break;
+			}
+			case "CAMERA_2":
+			{
+				zone.broadcastPacket(new SpecialCamera(npc, 700, 13, 0, 6000, 10000, 20000, 0, 0, 0, 0, 0));
+				startQuestTimer("CAMERA_3", 10000, npc, null);
+				break;
+			}
+			case "CAMERA_3":
+			{
+				zone.broadcastPacket(new SpecialCamera(npc, 3700, 0, -3, 0, 10000, 10000, 0, 0, 0, 0, 0));
+				zone.broadcastPacket(new SocialAction(npc.getObjectId(), 1));
+				startQuestTimer("CAMERA_4", 200, npc, null);
+				startQuestTimer("SOCIAL", 5200, npc, null);
+				break;
+			}
+			case "CAMERA_4":
+			{
+				zone.broadcastPacket(new SpecialCamera(npc, 1100, 0, -3, 22000, 10000, 30000, 0, 0, 0, 0, 0));
+				startQuestTimer("CAMERA_5", 10800, npc, null);
+				break;
+			}
+			case "CAMERA_5":
+			{
+				zone.broadcastPacket(new SpecialCamera(npc, 1100, 0, -3, 300, 10000, 7000, 0, 0, 0, 0, 0));
+				startQuestTimer("START_MOVE", 1900, npc, null);
+				break;
+			}
+			case "SOCIAL":
+			{
+				zone.broadcastPacket(new SocialAction(npc.getObjectId(), 2));
+				break;
+			}
+			case "START_MOVE":
+			{
+				for (L2PcInstance players : npc.getKnownList().getKnownPlayersInRadius(4000))
+				{
+					if (players.isHero())
+					{
+						zone.broadcastPacket(new ExShowScreenMessage(NpcStringId.S1_YOU_CANNOT_HOPE_TO_DEFEAT_ME_WITH_YOUR_MEAGER_STRENGTH, 2, 4000, players.getName()));
 						break;
 					}
-					int npcId;
-					if (isBehemoth)
+				}
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(179011, 114871, -7704));
+				startQuestTimer("CHECK_ATTACK", 60000, npc, null);
+				startQuestTimer("SPAWN_MINION", 300000, npc, null);
+				break;
+			}
+			case "SET_REGEN":
+			{
+				if (npc != null)
+				{
+					boolean hasbuff = false;
+					final L2Effect[] effects = npc.getAllEffects();
+					if (npc.getCurrentHp() < (npc.getMaxHp() * 0.25))
 					{
-						npcId = 29069;
-					}
-					else
-					{
-						npcId = getRandom(29070, 29076);
-					}
-					template1 = NpcTable.getInstance().getTemplate(npcId);
-					tempSpawn = new L2Spawn(template1);
-					// allocates it at random in the lair of Antharas.
-					int tried = 0;
-					boolean notFound = true;
-					int x = 175000;
-					int y = 112400;
-					int dt = ((_antharas.getX() - x) * (_antharas.getX() - x)) + ((_antharas.getY() - y) * (_antharas.getY() - y));
-					while ((tried++ < 25) && notFound)
-					{
-						int rx = getRandom(175000, 179900);
-						int ry = getRandom(112400, 116000);
-						int rdt = ((_antharas.getX() - rx) * (_antharas.getX() - rx)) + ((_antharas.getY() - ry) * (_antharas.getY() - ry));
-						if (GeoData.getInstance().canSeeTarget(_antharas.getX(), _antharas.getY(), -7704, rx, ry, -7704))
+						if ((effects != null) && (effects.length != 0))
 						{
-							if (rdt < dt)
+							for (L2Effect e : effects)
 							{
-								x = rx;
-								y = ry;
-								dt = rdt;
-								if (rdt <= 900000)
+								if (e.getSkill().getId() == ANTH_REGEN_4.getSkillId())
 								{
-									notFound = false;
+									hasbuff = true;
 								}
 							}
 						}
+						if (!hasbuff)
+						{
+							npc.doCast(ANTH_REGEN_4.getSkill());
+						}
 					}
-					tempSpawn.setX(x);
-					tempSpawn.setY(y);
-					tempSpawn.setZ(-7704);
-					tempSpawn.setHeading(0);
-					tempSpawn.setAmount(1);
-					tempSpawn.setRespawnDelay(FWA_ACTIVITYTIMEOFANTHARAS * 2);
-					SpawnTable.getInstance().addNewSpawn(tempSpawn, false);
-					// Do spawn.
-					_monsters.add(tempSpawn.doSpawn());
+					else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.5))
+					{
+						if ((effects != null) && (effects.length != 0))
+						{
+							for (L2Effect e : effects)
+							{
+								if (e.getSkill().getId() == ANTH_REGEN_3.getSkillId())
+								{
+									hasbuff = true;
+								}
+							}
+						}
+						if (!hasbuff)
+						{
+							npc.doCast(ANTH_REGEN_3.getSkill());
+						}
+					}
+					else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.75))
+					{
+						if ((effects != null) && (effects.length != 0))
+						{
+							for (L2Effect e : effects)
+							{
+								if (e.getSkill().getId() == ANTH_REGEN_2.getSkillId())
+								{
+									hasbuff = true;
+								}
+							}
+						}
+						if (!hasbuff)
+						{
+							npc.doCast(ANTH_REGEN_2.getSkill());
+						}
+					}
+					else
+					{
+						if ((effects != null) && (effects.length != 0))
+						{
+							for (L2Effect e : effects)
+							{
+								if (e.getSkill().getId() == ANTH_REGEN_1.getSkillId())
+								{
+									hasbuff = true;
+								}
+							}
+						}
+						if (!hasbuff)
+						{
+							npc.doCast(ANTH_REGEN_1.getSkill());
+						}
+					}
+					startQuestTimer("SET_REGEN", 60000, npc, null);
 				}
+				break;
 			}
-			catch (Exception e)
+			case "CHECK_ATTACK":
 			{
-				_log.warn(e.getMessage());
+				if ((npc != null) && ((_lastAttack + 900000) < System.currentTimeMillis()))
+				{
+					setStatus(ALIVE);
+					for (L2Character charInside : zone.getCharactersInside())
+					{
+						if (charInside != null)
+						{
+							if (charInside.isNpc())
+							{
+								if (charInside.getId() == ANTHARAS)
+								{
+									charInside.teleToLocation(185708, 114298, -8221);
+								}
+								else
+								{
+									charInside.deleteMe();
+								}
+							}
+							else if (charInside.isPlayer())
+							{
+								charInside.teleToLocation(79800 + getRandom(600), 151200 + getRandom(1100), -3534);
+							}
+						}
+					}
+					cancelQuestTimer("CHECK_ATTACK", npc, null);
+					cancelQuestTimer("SPAWN_MINION", npc, null);
+				}
+				else if (npc != null)
+				{
+					if (attacker_1_hate > 10)
+					{
+						attacker_1_hate -= getRandom(10);
+					}
+					if (attacker_2_hate > 10)
+					{
+						attacker_2_hate -= getRandom(10);
+					}
+					if (attacker_3_hate > 10)
+					{
+						attacker_3_hate -= getRandom(10);
+					}
+					manageSkills(npc);
+					startQuestTimer("CHECK_ATTACK", 60000, npc, null);
+				}
+				break;
+			}
+			case "SPAWN_MINION":
+			{
+				if ((minionMultipler > 1) && (_minionCount < (100 - (minionMultipler * 2))))
+				{
+					for (int i = 0; i < minionMultipler; i++)
+					{
+						addSpawn(BEHEMOTH, npc, true);
+						addSpawn(TERASQUE, npc, true);
+					}
+					_minionCount += (minionMultipler * 2);
+				}
+				else if (_minionCount < 98)
+				{
+					addSpawn(BEHEMOTH, npc, true);
+					addSpawn(TERASQUE, npc, true);
+					_minionCount += 2;
+				}
+				else if (_minionCount < 99)
+				{
+					addSpawn((getRandomBoolean() ? BEHEMOTH : TERASQUE), npc, true);
+					_minionCount++;
+				}
+				
+				if ((getRandom(100) > 10) && (minionMultipler < 4))
+				{
+					minionMultipler++;
+				}
+				startQuestTimer("SPAWN_MINION", 300000, npc, null);
+				break;
+			}
+			case "CLEAR_ZONE":
+			{
+				for (L2Character charInside : zone.getCharactersInside())
+				{
+					if (charInside != null)
+					{
+						if (charInside.isNpc())
+						{
+							charInside.deleteMe();
+						}
+						else if (charInside.isPlayer())
+						{
+							charInside.teleToLocation(79800 + getRandom(600), 151200 + getRandom(1100), -3534);
+						}
+					}
+				}
+				break;
+			}
+			case "TID_USED_FEAR":
+			{
+				if ((npc != null) && (sandStorm == 0))
+				{
+					sandStorm = 1;
+					npc.disableCoreAI(true);
+					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(177648, 114816, -7735));
+					startQuestTimer("TID_FEAR_MOVE_TIMEOVER", 2000, npc, null);
+					startQuestTimer("TID_FEAR_COOLTIME", 300000, npc, null);
+				}
+				break;
+			}
+			case "TID_FEAR_COOLTIME":
+			{
+				sandStorm = 0;
+				break;
+			}
+			case "TID_FEAR_MOVE_TIMEOVER":
+			{
+				if ((sandStorm == 1) && (npc.getX() == 177648) && (npc.getY() == 114816))
+				{
+					sandStorm = 2;
+					moveChance = 0;
+					npc.disableCoreAI(false);
+					for (Map.Entry<Integer, Location> entry : INVISIBLE_NPC.entrySet())
+					{
+						addSpawn(entry.getKey(), entry.getValue());
+					}
+				}
+				else if (sandStorm == 1)
+				{
+					if (moveChance <= 3)
+					{
+						moveChance++;
+						npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(177648, 114816, -7735));
+						startQuestTimer("TID_FEAR_MOVE_TIMEOVER", 5000, npc, null);
+					}
+					else
+					{
+						npc.teleToLocation(177648, 114816, -7735, npc.getHeading());
+						startQuestTimer("TID_FEAR_MOVE_TIMEOVER", 1000, npc, null);
+					}
+				}
+				break;
+			}
+			case "CLEAR_STATUS":
+			{
+				_antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 0, false, 0);
+				addBoss(_antharas);
+				Broadcast.toAllOnlinePlayers(new Earthquake(185708, 114298, -8221, 20, 10));
+				setStatus(ALIVE);
+				break;
+			}
+			case "SKIP_WAITING":
+			{
+				if (getStatus() == WAITING)
+				{
+					cancelQuestTimer("SPAWN_ANTHARAS", null, null);
+					notifyEvent("SPAWN_ANTHARAS", null, null);
+					player.sendMessage(getClass().getSimpleName() + ": Skipping waiting time ...");
+				}
+				else
+				{
+					player.sendMessage(getClass().getSimpleName() + ": You cant skip waiting time right now!");
+				}
+				break;
+			}
+			case "RESPAWN_ANTHARAS":
+			{
+				if (getStatus() == DEAD)
+				{
+					setRespawn(0);
+					cancelQuestTimer("CLEAR_STATUS", null, null);
+					notifyEvent("CLEAR_STATUS", null, null);
+					player.sendMessage(getClass().getSimpleName() + ": Antharas has been respawned.");
+				}
+				else
+				{
+					player.sendMessage(getClass().getSimpleName() + ": You cant respawn antharas while antharas is alive!");
+				}
+				break;
+			}
+			case "DESPAWN_MINIONS":
+			{
+				if (getStatus() == IN_FIGHT)
+				{
+					_minionCount = 0;
+					for (L2Character charInside : zone.getCharactersInside())
+					{
+						if ((charInside != null) && charInside.isNpc() && ((charInside.getId() == BEHEMOTH) || (charInside.getId() == TERASQUE)))
+						{
+							charInside.deleteMe();
+						}
+					}
+					if (player != null) // Player dont will be null just when is this event called from GM command
+					{
+						player.sendMessage(getClass().getSimpleName() + ": All minions has been deleted!");
+					}
+				}
+				else if (player != null) // Player dont will be null just when is this event called from GM command
+				{
+					player.sendMessage(getClass().getSimpleName() + ": You cant despawn minions right now!");
+				}
+				break;
+			}
+			case "ABORT_FIGHT":
+			{
+				if (getStatus() == IN_FIGHT)
+				{
+					setStatus(ALIVE);
+					cancelQuestTimer("CHECK_ATTACK", _antharas, null);
+					cancelQuestTimer("SPAWN_MINION", _antharas, null);
+					for (L2Character charInside : zone.getCharactersInside())
+					{
+						if (charInside != null)
+						{
+							if (charInside.isNpc())
+							{
+								if (charInside.getId() == ANTHARAS)
+								{
+									charInside.teleToLocation(185708, 114298, -8221);
+								}
+								else
+								{
+									charInside.deleteMe();
+								}
+							}
+							else if (charInside.isPlayer() && !charInside.isGM())
+							{
+								charInside.teleToLocation(79800 + getRandom(600), 151200 + getRandom(1100), -3534);
+							}
+						}
+					}
+					player.sendMessage(getClass().getSimpleName() + ": Fight has been aborted!");
+				}
+				else
+				{
+					player.sendMessage(getClass().getSimpleName() + ": You cant abort fight right now!");
+				}
+				break;
+			}
+			case "MANAGE_SKILL":
+			{
+				manageSkills(npc);
+				break;
 			}
 		}
+		return super.onAdvEvent(event, npc, player);
 	}
 	
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		switch (npc.getId())
-		{
-			case 29070:
-			case 29071:
-			case 29072:
-			case 29073:
-			case 29074:
-			case 29075:
-			case 29076:
-				if ((_selfDestructionTask == null) && !npc.isDead())
-				{
-					_selfDestructionTask = ThreadPoolManager.getInstance().scheduleGeneral(new SelfDestructionOfBomber(npc), FWA_SELFDESTRUCTTIME);
-				}
-				break;
-		}
+		npc.doCast(DISPEL_BOM.getSkill());
+		npc.doDie(player);
 		return super.onAggroRangeEnter(npc, player, isSummon);
 	}
 	
-	// Do self destruction.
-	private class SelfDestructionOfBomber implements Runnable
+	@Override
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon, L2Skill skill)
 	{
-		private final L2Npc _bomber;
+		_lastAttack = System.currentTimeMillis();
 		
-		public SelfDestructionOfBomber(L2Npc bomber)
+		if (npc.getId() == BOMBER)
 		{
-			_bomber = bomber;
-		}
-		
-		@Override
-		public void run()
-		{
-			L2Skill skill = null;
-			switch (_bomber.getId())
+			if (npc.calculateDistance(attacker, true, false) < 230)
 			{
-				case 29070:
-				case 29071:
-				case 29072:
-				case 29073:
-				case 29074:
-				case 29075:
-					skill = SkillData.getInstance().getInfo(5097, 1);
-					break;
-				case 29076:
-					skill = SkillData.getInstance().getInfo(5094, 1);
-					break;
+				npc.doCast(DISPEL_BOM.getSkill());
+				npc.doDie(attacker);
+			}
+		}
+		else if (npc.getId() == ANTHARAS)
+		{
+			if (!zone.isCharacterInZone(attacker) || (getStatus() != IN_FIGHT))
+			{
+				_log.warn(getClass().getSimpleName() + ": Player " + attacker.getName() + " attacked Antharas in invalid conditions!");
+				attacker.teleToLocation(80464, 152294, -3534);
 			}
 			
-			_bomber.doCast(skill);
-			if (_selfDestructionTask != null)
+			if (attacker.getMountType() == MountType.STRIDER)
 			{
-				_selfDestructionTask.cancel(false);
-				_selfDestructionTask = null;
+				boolean hasStriderDebuff = false;
+				final L2Effect[] effects = npc.getAllEffects();
+				if ((effects != null) && (effects.length != 0))
+				{
+					for (L2Effect e : effects)
+					{
+						if (e.getSkill().getId() == ANTH_ANTI_STRIDER.getSkillId())
+						{
+							hasStriderDebuff = true;
+						}
+					}
+				}
+				if (!hasStriderDebuff)
+				{
+					npc.setTarget(attacker);
+					npc.doCast(ANTH_ANTI_STRIDER.getSkill());
+				}
 			}
-		}
-	}
-	
-	@Override
-	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
-	{
-		if (npc.isInvul())
-		{
-			return null;
-		}
-		else if ((skill != null) && ((skill.getId() == 5097) || (skill.getId() == 5094)))
-		{
-			switch (npc.getId())
+			
+			if (skill == null)
 			{
-				case 29070:
-				case 29071:
-				case 29072:
-				case 29073:
-				case 29074:
-				case 29075:
-				case 29076:
-					npc.doDie(npc);
-					break;
+				refreshAiParams(attacker, (damage * 1000));
 			}
-		}
-		return super.onSpellFinished(npc, player, skill);
-	}
-	
-	// At end of activity time.
-	protected class CheckActivity implements Runnable
-	{
-		@Override
-		public void run()
-		{
-			Long temp = (System.currentTimeMillis() - _LastAction);
-			if (temp > FWA_INACTIVITYTIME)
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.25))
 			{
-				GrandBossManager.getInstance().setBossStatus(_antharas.getId(), DORMANT);
-				setUnspawn();
+				refreshAiParams(attacker, ((damage / 3) * 100));
 			}
-		}
-	}
-	
-	// Clean Antharas's lair.
-	public void setUnspawn()
-	{
-		// Eliminate players.
-		_Zone.oustAllPlayers();
-		
-		// Not executed tasks is canceled.
-		if (_cubeSpawnTask != null)
-		{
-			_cubeSpawnTask.cancel(true);
-			_cubeSpawnTask = null;
-		}
-		if (_monsterSpawnTask != null)
-		{
-			_monsterSpawnTask.cancel(true);
-			_monsterSpawnTask = null;
-		}
-		if (_activityCheckTask != null)
-		{
-			_activityCheckTask.cancel(false);
-			_activityCheckTask = null;
-		}
-		if (_socialTask != null)
-		{
-			_socialTask.cancel(true);
-			_socialTask = null;
-		}
-		if (_mobiliseTask != null)
-		{
-			_mobiliseTask.cancel(true);
-			_mobiliseTask = null;
-		}
-		if (_mobsSpawnTask != null)
-		{
-			_mobsSpawnTask.cancel(true);
-			_mobsSpawnTask = null;
-		}
-		if (_selfDestructionTask != null)
-		{
-			_selfDestructionTask.cancel(true);
-			_selfDestructionTask = null;
-		}
-		if (_moveAtRandomTask != null)
-		{
-			_moveAtRandomTask.cancel(true);
-			_moveAtRandomTask = null;
-		}
-		
-		// Delete monsters.
-		for (L2Npc mob : _monsters)
-		{
-			mob.getSpawn().stopRespawn();
-			mob.deleteMe();
-		}
-		_monsters.clear();
-		
-		// Delete teleport cube.
-		for (L2Npc cube : _teleportCube)
-		{
-			cube.getSpawn().stopRespawn();
-			cube.deleteMe();
-		}
-		_teleportCube.clear();
-	}
-	
-	// Do spawn teleport cube.
-	private class CubeSpawn implements Runnable
-	{
-		private final int _type;
-		
-		public CubeSpawn(int type)
-		{
-			_type = type;
-		}
-		
-		@Override
-		public void run()
-		{
-			if (_type == 0)
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.5))
 			{
-				spawnCube();
-				_cubeSpawnTask = ThreadPoolManager.getInstance().scheduleGeneral(new CubeSpawn(1), 1800000);
+				refreshAiParams(attacker, (damage * 20));
+			}
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.75))
+			{
+				refreshAiParams(attacker, (damage * 10));
 			}
 			else
 			{
-				setUnspawn();
+				refreshAiParams(attacker, ((damage / 3) * 20));
 			}
+			manageSkills(npc);
 		}
-	}
-	
-	// UnLock Antharas.
-	private static class UnlockAntharas implements Runnable
-	{
-		private final int _bossId;
-		
-		public UnlockAntharas(int bossId)
-		{
-			_bossId = bossId;
-		}
-		
-		@Override
-		public void run()
-		{
-			GrandBossManager.getInstance().setBossStatus(_bossId, DORMANT);
-			if (FWA_DOSERVEREARTHQUAKE)
-			{
-				for (L2PcInstance p : L2World.getInstance().getPlayers())
-				{
-					p.broadcastPacket(new Earthquake(185708, 114298, -8221, 20, 10));
-				}
-			}
-		}
-	}
-	
-	// Action is enabled the boss.
-	private class SetMobilised implements Runnable
-	{
-		private final L2GrandBossInstance _boss;
-		
-		public SetMobilised(L2GrandBossInstance boss)
-		{
-			_boss = boss;
-		}
-		
-		@Override
-		public void run()
-		{
-			_boss.setIsImmobilized(false);
-			
-			// When it is possible to act, a social action is canceled.
-			if (_socialTask != null)
-			{
-				_socialTask.cancel(true);
-				_socialTask = null;
-			}
-		}
-	}
-	
-	// Move at random on after Antharas appears.
-	private static class MoveAtRandom implements Runnable
-	{
-		private final L2Npc _npc;
-		private final Location _loc;
-		
-		public MoveAtRandom(L2Npc npc, Location loc)
-		{
-			_npc = npc;
-			_loc = loc;
-		}
-		
-		@Override
-		public void run()
-		{
-			_npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, _loc);
-		}
-	}
-	
-	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
-	{
-		if ((npc.getId() == 29019) || (npc.getId() == 29066) || (npc.getId() == 29067) || (npc.getId() == 29068))
-		{
-			_LastAction = System.currentTimeMillis();
-			if (GrandBossManager.getInstance().getBossStatus(_antharas.getId()) != FIGHTING)
-			{
-				_Zone.oustAllPlayers();
-			}
-			else if (!FWA_OLDANTHARAS && (_mobsSpawnTask == null))
-			{
-				startMinionSpawns(npc.getId());
-			}
-		}
-		else if ((npc.getId() > 29069) && (npc.getId() < 29077) && (npc.getCurrentHp() <= damage))
-		{
-			L2Skill skill = null;
-			switch (npc.getId())
-			{
-				case 29070:
-				case 29071:
-				case 29072:
-				case 29073:
-				case 29074:
-				case 29075:
-					skill = SkillData.getInstance().getInfo(5097, 1);
-					break;
-				case 29076:
-					skill = SkillData.getInstance().getInfo(5094, 1);
-					break;
-			}
-			
-			npc.doCast(skill);
-		}
-		return super.onAttack(npc, attacker, damage, isSummon);
+		return super.onAttack(npc, attacker, damage, isSummon, skill);
 	}
 	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		if ((npc.getId() == 29019) || (npc.getId() == 29066) || (npc.getId() == 29067) || (npc.getId() == 29068))
+		if (zone.isCharacterInZone(killer))
 		{
-			broadcastPacket(new SpecialCamera(_antharas, 1200, 20, -10, 0, 10000, 13000, 0, 0, 0, 0, 0));
-			npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-			_cubeSpawnTask = ThreadPoolManager.getInstance().scheduleGeneral(new CubeSpawn(0), 10000);
-			GrandBossManager.getInstance().setBossStatus(npc.getId(), DEAD);
-			// Calculate Min and Max respawn times randomly.
-			long respawnTime = Config.ANTHARAS_SPAWN_INTERVAL + getRandom(-Config.ANTHARAS_SPAWN_RANDOM, Config.ANTHARAS_SPAWN_RANDOM);
-			respawnTime *= 3600000;
-			
-			ThreadPoolManager.getInstance().scheduleGeneral(new UnlockAntharas(npc.getId()), respawnTime);
-			// also save the respawn time so that the info is maintained past reboots
-			StatsSet info = GrandBossManager.getInstance().getStatsSet(npc.getId());
-			info.set("respawn_time", (System.currentTimeMillis() + respawnTime));
-			GrandBossManager.getInstance().setStatsSet(npc.getId(), info);
-		}
-		else if (npc.getId() == 29069)
-		{
-			int countHPHerb = getRandom(6, 18);
-			int countMPHerb = getRandom(6, 18);
-			for (int i = 0; i < countHPHerb; i++)
+			if (npc.getId() == ANTHARAS)
 			{
-				npc.dropItem(killer, 8602, 1);
+				_antharas = null;
+				notifyEvent("DESPAWN_MINIONS", null, null);
+				zone.broadcastPacket(new SpecialCamera(npc, 1200, 20, -10, 0, 10000, 13000, 0, 0, 0, 0, 0));
+				zone.broadcastPacket(new PlaySound("BS01_D"));
+				addSpawn(CUBE, 177615, 114941, -7709, 0, false, 900000);
+				// Calculate Min and Max respawn times randomly.
+				long respawnTime = Config.ANTHARAS_SPAWN_INTERVAL + getRandom(-Config.ANTHARAS_SPAWN_RANDOM, Config.ANTHARAS_SPAWN_RANDOM);
+				respawnTime *= 3600000;
+				setRespawn(respawnTime);
+				startQuestTimer("CLEAR_STATUS", respawnTime, null, null);
+				cancelQuestTimer("SET_REGEN", npc, null);
+				cancelQuestTimer("CHECK_ATTACK", npc, null);
+				cancelQuestTimer("SPAWN_MINION", npc, null);
+				startQuestTimer("CLEAR_ZONE", 900000, null, null);
+				setStatus(DEAD);
 			}
-			for (int i = 0; i < countMPHerb; i++)
+			else
 			{
-				npc.dropItem(killer, 8605, 1);
+				_minionCount--;
 			}
-		}
-		if (_monsters.contains(npc))
-		{
-			_monsters.remove(npc);
 		}
 		return super.onKill(npc, killer, isSummon);
+	}
+	
+	@Override
+	public void onMoveFinished(L2Npc npc)
+	{
+		npc.doCast(DISPEL_BOM.getSkill());
+		npc.doDie(null);
+	}
+	
+	@Override
+	public String onSpawn(L2Npc npc)
+	{
+		if (npc.getId() == ANTHARAS)
+		{
+			cancelQuestTimer("SET_REGEN", npc, null);
+			startQuestTimer("SET_REGEN", 60000, npc, null);
+			((L2Attackable) npc).setOnKillDelay(0);
+		}
+		else
+		{
+			for (int i = 1; i <= 6; i++)
+			{
+				final int x = npc.getTemplate().getParameters().getInteger("suicide" + i + "_x");
+				final int y = npc.getTemplate().getParameters().getInteger("suicide" + i + "_y");
+				final L2Attackable bomber = (L2Attackable) addSpawn(BOMBER, npc.getX(), npc.getY(), npc.getZ(), 0, true, 15000, true);
+				bomber.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(x, y, npc.getZ()));
+			}
+			npc.deleteMe();
+		}
+		return super.onSpawn(npc);
+	}
+	
+	@Override
+	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
+	{
+		if ((skill.getId() == ANTH_FEAR.getSkillId()) || (skill.getId() == ANTH_FEAR_SHORT.getSkillId()))
+		{
+			startQuestTimer("TID_USED_FEAR", 7000, npc, null);
+		}
+		startQuestTimer("MANAGE_SKILL", 1000, npc, null);
+		return super.onSpellFinished(npc, player, skill);
+	}
+	
+	@Override
+	public boolean unload(boolean removeFromList)
+	{
+		if (_antharas != null)
+		{
+			_antharas.deleteMe();
+			_antharas = null;
+		}
+		return super.unload(removeFromList);
+	}
+	
+	private int getStatus()
+	{
+		return GrandBossManager.getInstance().getBossStatus(ANTHARAS);
+	}
+	
+	private void addBoss(L2GrandBossInstance grandboss)
+	{
+		GrandBossManager.getInstance().addBoss(grandboss);
+	}
+	
+	private void setStatus(int status)
+	{
+		GrandBossManager.getInstance().setBossStatus(ANTHARAS, status);
+	}
+	
+	private void setRespawn(long respawnTime)
+	{
+		GrandBossManager.getInstance().getStatsSet(ANTHARAS).set("respawn_time", (System.currentTimeMillis() + respawnTime));
+	}
+	
+	private final void refreshAiParams(L2PcInstance attacker, int damage)
+	{
+		if ((attacker_1 != null) && (attacker == attacker_1))
+		{
+			if (attacker_1_hate < (damage + 1000))
+			{
+				attacker_1_hate = damage + getRandom(3000);
+			}
+		}
+		else if ((attacker_2 != null) && (attacker == attacker_2))
+		{
+			if (attacker_2_hate < (damage + 1000))
+			{
+				attacker_2_hate = damage + getRandom(3000);
+			}
+		}
+		else if ((attacker_3 != null) && (attacker == attacker_3))
+		{
+			if (attacker_3_hate < (damage + 1000))
+			{
+				attacker_3_hate = damage + getRandom(3000);
+			}
+		}
+		else
+		{
+			final int i1 = Util.min(attacker_1_hate, attacker_2_hate, attacker_3_hate);
+			if (attacker_1_hate == i1)
+			{
+				attacker_1_hate = damage + getRandom(3000);
+				attacker_1 = attacker;
+			}
+			else if (attacker_2_hate == i1)
+			{
+				attacker_2_hate = damage + getRandom(3000);
+				attacker_2 = attacker;
+			}
+			else if (attacker_3_hate == i1)
+			{
+				attacker_3_hate = damage + getRandom(3000);
+				attacker_3 = attacker;
+			}
+		}
+	}
+	
+	private void manageSkills(L2Npc npc)
+	{
+		if (npc.isCastingNow() || npc.isCoreAIDisabled() || !npc.isInCombat())
+		{
+			return;
+		}
+		
+		int i1 = 0;
+		int i2 = 0;
+		L2PcInstance c2 = null;
+		if ((attacker_1 == null) || (npc.calculateDistance(attacker_1, true, false) > 9000) || attacker_1.isDead())
+		{
+			attacker_1_hate = 0;
+		}
+		
+		if ((attacker_2 == null) || (npc.calculateDistance(attacker_2, true, false) > 9000) || attacker_2.isDead())
+		{
+			attacker_2_hate = 0;
+		}
+		
+		if ((attacker_3 == null) || (npc.calculateDistance(attacker_3, true, false) > 9000) || attacker_3.isDead())
+		{
+			attacker_3_hate = 0;
+		}
+		
+		if (attacker_1_hate > attacker_2_hate)
+		{
+			i1 = 2;
+			i2 = attacker_1_hate;
+			c2 = attacker_1;
+		}
+		else if (attacker_2_hate > 0)
+		{
+			i1 = 3;
+			i2 = attacker_2_hate;
+			c2 = attacker_2;
+		}
+		
+		if (attacker_3_hate > i2)
+		{
+			i1 = 4;
+			i2 = attacker_3_hate;
+			c2 = attacker_3;
+		}
+		if (i2 > 0)
+		{
+			if (getRandom(100) < 70)
+			{
+				switch (i1)
+				{
+					case 2:
+					{
+						attacker_1_hate = 500;
+						break;
+					}
+					case 3:
+					{
+						attacker_2_hate = 500;
+						break;
+					}
+					case 4:
+					{
+						attacker_3_hate = 500;
+						break;
+					}
+				}
+			}
+			
+			final double distance_c2 = npc.calculateDistance(c2, true, false);
+			final double direction_c2 = npc.calculateDirectionTo(c2);
+			
+			SkillHolder skillToCast = null;
+			if (npc.getCurrentHp() < (npc.getMaxHp() * 0.25))
+			{
+				if (getRandom(100) < 30)
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_MOUTH;
+				}
+				else if ((getRandom(100) < 80) && (((distance_c2 < 1423) && (direction_c2 < 188) && (direction_c2 > 172)) || ((distance_c2 < 802) && (direction_c2 < 194) && (direction_c2 > 166))))
+				{
+					skillToCast = ANTH_TAIL;
+				}
+				else if ((getRandom(100) < 40) && (((distance_c2 < 850) && (direction_c2 < 210) && (direction_c2 > 150)) || ((distance_c2 < 425) && (direction_c2 < 270) && (direction_c2 > 90))))
+				{
+					skillToCast = ANTH_DEBUFF;
+				}
+				else if ((getRandom(100) < 10) && (distance_c2 < 1100))
+				{
+					skillToCast = ANTH_JUMP;
+				}
+				else if (getRandom(100) < 10)
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_METEOR;
+				}
+				else if (getRandom(100) < 6)
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_BREATH;
+				}
+				else if (getRandomBoolean())
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_NORM_ATTACK_EX;
+				}
+				else if (getRandom(100) < 5)
+				{
+					npc.setTarget(c2);
+					skillToCast = getRandomBoolean() ? ANTH_FEAR : ANTH_FEAR_SHORT;
+				}
+				else
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_NORM_ATTACK;
+				}
+			}
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.5))
+			{
+				if ((getRandom(100) < 80) && (((distance_c2 < 1423) && (direction_c2 < 188) && (direction_c2 > 172)) || ((distance_c2 < 802) && (direction_c2 < 194) && (direction_c2 > 166))))
+				{
+					skillToCast = ANTH_TAIL;
+				}
+				else if ((getRandom(100) < 40) && (((distance_c2 < 850) && (direction_c2 < 210) && (direction_c2 > 150)) || ((distance_c2 < 425) && (direction_c2 < 270) && (direction_c2 > 90))))
+				{
+					skillToCast = ANTH_DEBUFF;
+				}
+				else if ((getRandom(100) < 10) && (distance_c2 < 1100))
+				{
+					skillToCast = ANTH_JUMP;
+				}
+				else if (getRandom(100) < 7)
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_METEOR;
+				}
+				else if (getRandom(100) < 6)
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_BREATH;
+				}
+				else if (getRandomBoolean())
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_NORM_ATTACK_EX;
+				}
+				else if (getRandom(100) < 5)
+				{
+					npc.setTarget(c2);
+					skillToCast = getRandomBoolean() ? ANTH_FEAR : ANTH_FEAR_SHORT;
+				}
+				else
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_NORM_ATTACK;
+				}
+			}
+			else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.75))
+			{
+				if ((getRandom(100) < 80) && (((distance_c2 < 1423) && (direction_c2 < 188) && (direction_c2 > 172)) || ((distance_c2 < 802) && (direction_c2 < 194) && (direction_c2 > 166))))
+				{
+					skillToCast = ANTH_TAIL;
+				}
+				else if ((getRandom(100) < 10) && (distance_c2 < 1100))
+				{
+					skillToCast = ANTH_JUMP;
+				}
+				else if (getRandom(100) < 5)
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_METEOR;
+				}
+				else if (getRandom(100) < 6)
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_BREATH;
+				}
+				else if (getRandomBoolean())
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_NORM_ATTACK_EX;
+				}
+				else if (getRandom(100) < 5)
+				{
+					npc.setTarget(c2);
+					skillToCast = getRandomBoolean() ? ANTH_FEAR : ANTH_FEAR_SHORT;
+				}
+				else
+				{
+					npc.setTarget(c2);
+					skillToCast = ANTH_NORM_ATTACK;
+				}
+			}
+			else if ((getRandom(100) < 80) && (((distance_c2 < 1423) && (direction_c2 < 188) && (direction_c2 > 172)) || ((distance_c2 < 802) && (direction_c2 < 194) && (direction_c2 > 166))))
+			{
+				skillToCast = ANTH_TAIL;
+			}
+			else if (getRandom(100) < 3)
+			{
+				npc.setTarget(c2);
+				skillToCast = ANTH_METEOR;
+			}
+			else if (getRandom(100) < 6)
+			{
+				npc.setTarget(c2);
+				skillToCast = ANTH_BREATH;
+			}
+			else if (getRandomBoolean())
+			{
+				npc.setTarget(c2);
+				skillToCast = ANTH_NORM_ATTACK_EX;
+			}
+			else if (getRandom(100) < 5)
+			{
+				npc.setTarget(c2);
+				skillToCast = getRandomBoolean() ? ANTH_FEAR : ANTH_FEAR_SHORT;
+			}
+			else
+			{
+				npc.setTarget(c2);
+				skillToCast = ANTH_NORM_ATTACK;
+			}
+			
+			if ((skillToCast != null) && npc.checkDoCastConditions(skillToCast.getSkill()))
+			{
+				npc.doCast(skillToCast.getSkill());
+			}
+		}
 	}
 	
 	public static void main(String[] args)

@@ -30,7 +30,7 @@ import l2r.gameserver.util.Util;
  * Land Dragon Conqueror (10290)
  * @author malyelfik
  */
-public class Q10290_LandDragonConqueror extends Quest
+public final class Q10290_LandDragonConqueror extends Quest
 {
 	public class RewardCheck implements IProcedure<L2PcInstance, Boolean>
 	{
@@ -62,18 +62,16 @@ public class Q10290_LandDragonConqueror extends Quest
 	// NPC
 	private static final int THEODRIC = 30755;
 	
-	private static final int[] ANTHARAS =
-	{
-		29019, // Old
-		29066, // Weak
-		29067, // Normal
-		29068
-	// Strong
-	};
+	// Monster
+	private static final int ANTHARAS = 29068;
+	
 	// Items
 	private static final int PORTAL_STONE = 3865;
 	private static final int SHABBY_NECKLACE = 15522;
 	private static final int MIRACLE_NECKLACE = 15523;
+	
+	// Misc
+	private static final int MIN_LEVEL = 83;
 	
 	private static final int ANTHARAS_SLAYER_CIRCLET = 8568;
 	
@@ -140,7 +138,7 @@ public class Q10290_LandDragonConqueror extends Quest
 		{
 			case State.CREATED:
 			{
-				if (player.getLevel() < 83)
+				if (player.getLevel() < MIN_LEVEL)
 				{
 					htmltext = "30755-00.htm";
 				}
