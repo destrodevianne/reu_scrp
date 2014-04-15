@@ -60,7 +60,7 @@ public final class HellboundEngine extends AbstractNpcAI
 	public HellboundEngine()
 	{
 		super(HellboundEngine.class.getSimpleName(), "hellbound");
-		
+		loadData();
 		addKillId(HellboundPointData.getInstance().getPointsInfo().keySet());
 		
 		startQuestTimer(UPDATE_EVENT, 1000, null, null);
@@ -358,6 +358,25 @@ public final class HellboundEngine extends AbstractNpcAI
 		{
 			setTrust(finalTrust);
 		}
+	}
+	
+	private final void loadData()
+	{
+		if (GlobalVariablesManager.getInstance().hasVariable("HBLevel"))
+		{
+			setLevel(GlobalVariablesManager.getInstance().getInteger("HBLevel"));
+			setTrust(GlobalVariablesManager.getInstance().getInteger("HBTrust"));
+		}
+		else
+		{
+			saveData();
+		}
+	}
+	
+	public final void saveData()
+	{
+		GlobalVariablesManager.getInstance().set("HBLevel", getLevel());
+		GlobalVariablesManager.getInstance().set("HBTrust", getTrust());
 	}
 	
 	public static HellboundEngine getInstance()
