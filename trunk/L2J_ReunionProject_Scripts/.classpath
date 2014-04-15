@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/reunion-engine.jar"/>
 	<classpathentry kind="lib" path="lib/reunion-scripts.jar"/>
 	<classpathentry kind="lib" path="lib/reunion-interface.jar"/>
+	<classpathentry kind="lib" path="lib/reunion-protection.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
