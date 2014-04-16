@@ -57,6 +57,11 @@ public class L2NpcAction implements IActionHandler
 	 * <BR>
 	 * @param activeChar The L2PcInstance that start an action on the L2Npc
 	 */
+	@SuppressWarnings(
+	{
+		"unused",
+		"null"
+	})
 	@Override
 	public boolean action(L2PcInstance activeChar, L2Object target, boolean interact)
 	{
@@ -121,7 +126,30 @@ public class L2NpcAction implements IActionHandler
 					}
 					if ((qlst != null) && (qlst.size() == 1))
 					{
-						qlst.get(0).notifyFirstTalk(npc, activeChar);
+						try
+						{
+							qlst.get(0).notifyFirstTalk(npc, activeChar);
+						}
+						catch (Exception e)
+						{
+							if (npc == null)
+							{
+								_log.error("L2NpcAction[notifyFirstTalk] npc is NULL");
+							}
+							else
+							{
+								_log.error("L2NpcAction[notifyFirstTalk] npc ID is: " + npc.getId());
+							}
+							
+							if (activeChar == null)
+							{
+								_log.error("L2NpcAction[notifyFirstTalk] activeChar is NULL");
+							}
+							else
+							{
+								_log.error("L2NpcAction[notifyFirstTalk] activeChar is: " + activeChar.getName());
+							}
+						}
 					}
 					else
 					{
