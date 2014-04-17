@@ -49,18 +49,21 @@ public class EtisEtina extends AbstractNpcAI
 			{
 				warrior1 = addSpawn(GUARD1, npc.getX() + Rnd.get(10, 50), npc.getY() + Rnd.get(10, 50), npc.getZ(), 0, false, 0L, false, npc.getInstanceId());
 				warrior1.setRunning();
-				((L2Attackable) warrior1).addDamageHate(attacker, 1, 99999);
-				warrior1.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
+				warrior1.setTarget(attacker);
+				((L2Attackable) warrior1).addDamageHate(attacker, 0, 999);
+				warrior1.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker, null);
 				
 				warrior2 = addSpawn(GUARD2, npc.getX() + Rnd.get(10, 80), npc.getY() + Rnd.get(10, 80), npc.getZ(), 0, false, 0L, false, npc.getInstanceId());
 				warrior2.setRunning();
-				((L2Attackable) warrior2).addDamageHate(attacker, 1, 99999);
-				warrior2.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
+				warrior2.setTarget(attacker);
+				((L2Attackable) warrior2).addDamageHate(attacker, 0, 999);
+				warrior2.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker, null);
+				
 				summonsReleased = true;
 			}
 		}
 		
-		return onAttack(npc, attacker, damage, isPet);
+		return null;
 	}
 	
 	@Override
