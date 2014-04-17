@@ -583,11 +583,20 @@ public class Zaken extends Quest
 		{
 			_log.info("Zaken Party Member " + count + ", Member name is: " + member.getName());
 			count++;
-			((ZWorld) world)._playersInInstance.add(player);
+			((ZWorld) world)._playersInInstance.add(member);
 			teleportPlayer(member, loc, world.getInstanceId(), false);
 			world.addAllowed(member.getObjectId());
 			member.sendPacket(new PlaySound("BS01_A"));
 		}
+		
+		for (L2PcInstance pc : ((ZWorld) world)._playersInInstance)
+		{
+			if (pc != null)
+			{
+				savePlayerReenter(pc);
+			}
+		}
+		
 		return instanceId;
 	}
 	
@@ -686,7 +695,7 @@ public class Zaken extends Quest
 					{
 						if (Util.checkIfInRange(2000, npc, obj, true) && !obj.isDead())
 						{
-							if ((obj instanceof L2PcInstance) && ((L2PcInstance) obj).getAppearance().getInvisible())
+							if ((obj instanceof L2PcInstance) && ((L2PcInstance) obj).isInvisible())
 							{
 								continue;
 							}
@@ -757,7 +766,7 @@ public class Zaken extends Quest
 			ZWorld world = (ZWorld) tmpworld;
 			for (L2Character pc : world._playersInInstance)
 			{
-				if (pc instanceof L2PcInstance)
+				if (pc.isPlayer())
 				{
 					((L2PcInstance) pc).sendPacket(new AbstractNpcInfo.NpcInfo(npc, pc));
 				}
@@ -1070,7 +1079,6 @@ public class Zaken extends Quest
 				{
 					if (player != null)
 					{
-						savePlayerReenter(player);
 						player.sendPacket(new PlaySound("BS02_D"));
 					}
 				}
