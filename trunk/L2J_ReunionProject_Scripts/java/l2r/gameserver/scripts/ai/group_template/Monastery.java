@@ -127,7 +127,7 @@ public class Monastery extends AbstractNpcAI
 				return super.onAdvEvent(event, npc, player);
 			}
 			
-			if (player.getAppearance().getInvisible() || player.isSilentMoving())
+			if (player.isInvisible() || player.isSilentMoving())
 			{
 				npc.setTarget(null);
 				npc.getAI().stopFollow();

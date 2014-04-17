@@ -52,7 +52,7 @@ public class Detection implements ISkillHandler
 			
 			for (L2PcInstance target : activeChar.getKnownList().getKnownPlayersInRadius(skill.getAffectRange()))
 			{
-				if ((target != null) && target.getAppearance().getInvisible())
+				if ((target != null) && target.isInvisible())
 				{
 					if (hasParty && (target.getParty() != null) && (player.getParty().getLeaderObjectId() == target.getParty().getLeaderObjectId()))
 					{
