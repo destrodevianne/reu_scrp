@@ -161,6 +161,10 @@ public final class HellboundEngine extends AbstractNpcAI
 	 */
 	public int getLevel()
 	{
+		if (Config.HELLBOUND_ALWAYS_MAX_LEVEL)
+		{
+			return 11;
+		}
 		return GlobalVariablesManager.getInstance().getInteger("HBLevel", 0);
 	}
 	
@@ -173,6 +177,11 @@ public final class HellboundEngine extends AbstractNpcAI
 		if (lvl == getLevel())
 		{
 			return;
+		}
+		
+		if (Config.HELLBOUND_ALWAYS_MAX_LEVEL)
+		{
+			lvl = 11;
 		}
 		
 		_log.info(HellboundEngine.class.getSimpleName() + ": Changing level from " + getLevel() + " to " + lvl + ".");
@@ -201,6 +210,10 @@ public final class HellboundEngine extends AbstractNpcAI
 	 */
 	public int getTrust()
 	{
+		if (Config.HELLBOUND_ALWAYS_MAX_TRUST)
+		{
+			return 4000000;
+		}
 		return GlobalVariablesManager.getInstance().getInteger("HBTrust", 0);
 	}
 	
@@ -210,6 +223,11 @@ public final class HellboundEngine extends AbstractNpcAI
 	 */
 	private void setTrust(int trust)
 	{
+		if (Config.HELLBOUND_ALWAYS_MAX_TRUST)
+		{
+			trust = 4000000;
+		}
+		
 		GlobalVariablesManager.getInstance().set("HBTrust", trust);
 	}
 	
