@@ -271,7 +271,7 @@ public class QueenAnt extends AbstractNpcAI
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		if (npc == null)
+		if ((npc == null) || (player.isGM() && player.isInvisible()))
 		{
 			return null;
 		}
