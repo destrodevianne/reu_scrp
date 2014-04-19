@@ -67,7 +67,7 @@ public final class Beleth extends AbstractNpcAI
 	protected static L2Npc PRIEST;
 	protected static L2ZoneType ZONE = null;
 	private static L2PcInstance BELETH_KILLER;
-	private static boolean DEBUG = false;
+	private static boolean DEBUG = true;
 	protected static boolean MOVIE = false;
 	private static boolean ATTACKED = false;
 	private static int ALLOW_OBJECT_ID = 0;
@@ -78,6 +78,13 @@ public final class Beleth extends AbstractNpcAI
 	private static SkillHolder FIREBALL = new SkillHolder(5496, 1);
 	private static SkillHolder HORN_OF_RISING = new SkillHolder(5497, 1);
 	private static SkillHolder LIGHTENING = new SkillHolder(5499, 1);
+	
+	private static final int _clearEntityTime = 600000; // 10min
+	private static final long _entityInactivityTime = 2 * 60 * 60 * 1000; // 2 hours
+	
+	private static final int THRONE_DOOR = 20240001; // Throne door
+	private static final int CORRDOOR = 20240002; // Corridor door
+	private static final int COFFDOOR = 20240003; // Tomb door
 	
 	protected static final Location BELETH_SPAWN = new Location(16323, 213059, -9357, 49152);
 	
@@ -108,7 +115,7 @@ public final class Beleth extends AbstractNpcAI
 		{
 			GrandBossManager.getInstance().setBossStatus(29118, 0);
 		}
-		DoorTable.getInstance().getDoor(20240001).openMe();
+		DoorTable.getInstance().getDoor(THRONE_DOOR).openMe();
 	}
 	
 	protected static L2Npc spawn(int npcId, Location loc)
@@ -142,7 +149,7 @@ public final class Beleth extends AbstractNpcAI
 		public void run()
 		{
 			GrandBossManager.getInstance().setBossStatus(29118, 0);
-			DoorTable.getInstance().getDoor(20240001).openMe();
+			DoorTable.getInstance().getDoor(THRONE_DOOR).openMe();
 		}
 	}
 	
@@ -220,7 +227,7 @@ public final class Beleth extends AbstractNpcAI
 						ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(6), 2500);
 						break;
 					case 6:
-						L2DoorInstance door = DoorTable.getInstance().getDoor(20240001);
+						L2DoorInstance door = DoorTable.getInstance().getDoor(THRONE_DOOR);
 						door.closeMe();
 						ZONE.broadcastPacket(new StaticObject(door, false));
 						ZONE.broadcastPacket(new DoorStatusUpdate(door));
@@ -312,11 +319,21 @@ public final class Beleth extends AbstractNpcAI
 						break;
 					case 24:
 						BELETH.deleteMe();
-						for (L2Npc bel : MINIONS)
+						if ((MINIONS != null) && !MINIONS.isEmpty())
 						{
-							bel.deleteMe();
+							for (L2Npc npc : MINIONS)
+							{
+								if ((npc == null) || npc.isDead())
+								{
+									continue;
+								}
+								npc.abortCast();
+								npc.setTarget(null);
+								npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+								npc.deleteMe();
+							}
+							MINIONS.clear();
 						}
-						MINIONS.clear();
 						ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(25), 1000);
 						break;
 					case 25:
@@ -367,22 +384,47 @@ public final class Beleth extends AbstractNpcAI
 					case 32:
 						ZONE.broadcastPacket(new SpecialCamera(CAMERA2, 800, 180, 0, 0, 4000, 0, 10, 1, 0, 0));
 						ZONE.broadcastPacket(new SpecialCamera(CAMERA2, 800, 180, 0, 0, 4000, 0, 10, 1, 0, 0));
-						L2DoorInstance door2 = DoorTable.getInstance().getDoor(20240002);
+						L2DoorInstance door2 = DoorTable.getInstance().getDoor(CORRDOOR);
 						door2.openMe();
 						ZONE.broadcastPacket(new StaticObject(door2, false));
 						ZONE.broadcastPacket(new DoorStatusUpdate(door2));
-						DoorTable.getInstance().getDoor(20240003).openMe();
+						DoorTable.getInstance().getDoor(COFFDOOR).openMe();
 						ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(33), 4000);
 						break;
 					case 33:
+						for (L2PcInstance i : ZONE.getPlayersInside())
+						{
+							i.sendMessage("Beleth's Lair will push you out in 10 minutes.");
+						}
+						ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(34), _clearEntityTime);
+						break;
+					case 34:
 						CAMERA.deleteMe();
 						CAMERA2.deleteMe();
 						MOVIE = false;
+						deleteAll();
+						GrandBossManager.getInstance().setBossStatus(29118, 0);
+						
+						// Open throne's doors
+						DoorTable.getInstance().getDoor(THRONE_DOOR).openMe();
+						// Close coffin and corridor doors
+						DoorTable.getInstance().getDoor(CORRDOOR).closeMe();
+						DoorTable.getInstance().getDoor(COFFDOOR).closeMe();
+						
+						// oust players
+						for (L2PcInstance i : ZONE.getPlayersInside())
+						{
+							i.teleToLocation(new Location(-11802, 236360, -3271));
+							i.sendMessage("Beleth's Lair has become unstable so you've been teleported out.");
+						}
+						break;
+					case 35:
+						BELETH.deleteMe();
+						ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(34), _clearEntityTime);
 						break;
 					case 333:
 						BELETH = spawn(29118, new Location(16323, 213170, -9357, 49152));
 						break;
-				
 				}
 			}
 			catch (Exception e)
@@ -399,6 +441,7 @@ public final class Beleth extends AbstractNpcAI
 		{
 			startSpawnTask();
 			GrandBossManager.getInstance().setBossStatus(29118, 2);
+			ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(35), _entityInactivityTime);
 		}
 		return null;
 	}
@@ -678,7 +721,7 @@ public final class Beleth extends AbstractNpcAI
 		}
 	}
 	
-	private static void deleteAll()
+	protected static void deleteAll()
 	{
 		if ((MINIONS != null) && !MINIONS.isEmpty())
 		{
