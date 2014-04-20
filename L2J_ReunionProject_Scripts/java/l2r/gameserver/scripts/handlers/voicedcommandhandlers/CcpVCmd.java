@@ -83,7 +83,7 @@ public class CcpVCmd implements IVoicedCommandHandler
 		return true;
 	}
 	
-	public void sendHtml(L2PcInstance player)
+	public static void sendHtml(L2PcInstance player)
 	{
 		TextBuilder builder = new TextBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(5);
