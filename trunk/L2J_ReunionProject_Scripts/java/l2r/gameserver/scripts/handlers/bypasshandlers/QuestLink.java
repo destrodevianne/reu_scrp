@@ -146,6 +146,7 @@ public class QuestLink implements IBypassHandler
 	 * @param npc the L2NpcInstance that chats with the {@code player}
 	 * @param questId the Id of the quest to display the message
 	 */
+	@SuppressWarnings("null")
 	public static void showQuestWindow(L2PcInstance player, L2Npc npc, String questId)
 	{
 		String content = null;
@@ -199,10 +200,27 @@ public class QuestLink implements IBypassHandler
 		
 		if (qs != null)
 		{
-			// If the quest is already started, no need to show a window
-			if (!qs.getQuest().notifyTalk(npc, qs))
+			try
 			{
-				return;
+				// If the quest is already started, no need to show a window
+				if (!qs.getQuest().notifyTalk(npc, qs))
+				{
+					return;
+				}
+			}
+			catch (Exception e)
+			{
+				_log.error("QuestLink[notifyTalk] quest name is: " + qs.getQuest().getName());
+				_log.error("QuestLink[notifyTalk] player is: " + player.getName());
+				
+				if (npc == null)
+				{
+					_log.error("QuestLink[notifyTalk] NPC is NULL");
+				}
+				else
+				{
+					_log.error("QuestLink[notifyTalk] NPC is: " + npc.getId());
+				}
 			}
 			
 			questId = qs.getQuest().getName();
