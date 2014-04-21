@@ -2,7 +2,7 @@ package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import gr.reunion.voteEngine.dynamicHtmls.GenerateHtmls;
+import gr.reunion.voteEngine.old.dynamicHtmls.GenerateHtmls;
 
 public class VotePanelVCmd implements IVoicedCommandHandler
 {
