@@ -22,13 +22,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import l2r.gameserver.enums.QuestSound;
-import l2r.gameserver.model.PlayerVariables;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.ItemHolder;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
+import l2r.gameserver.model.variables.PlayerVariables;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.serverpackets.ExShowScreenMessage;
 
