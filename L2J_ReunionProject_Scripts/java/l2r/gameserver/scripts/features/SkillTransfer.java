@@ -51,7 +51,7 @@ public final class SkillTransfer extends L2Script
 	private SkillTransfer()
 	{
 		super(-1, SkillTransfer.class.getSimpleName(), "features");
-		addProfessionChangeNotify(null);
+		// addProfessionChangeNotify(null);
 		setOnEnterWorld(Config.SKILL_CHECK_ENABLE);
 	}
 	
@@ -76,13 +76,22 @@ public final class SkillTransfer extends L2Script
 	@Override
 	public String onEnterWorld(L2PcInstance player)
 	{
+		addProfessionChangeNotify(player);
+		final int index = getTransferClassIndex(player);
+		if (index < 0)
+		{
+			return super.onEnterWorld(player);
+		}
+		
+		final String name = HOLY_POMANDER + player.getClassId().getId();
+		if (!player.getVariables().getBool(name, false))
+		{
+			player.getVariables().set(name, true);
+			giveItems(player, PORMANDERS[index]);
+		}
+		
 		if (!player.canOverrideCond(PcCondOverride.SKILL_CONDITIONS) || Config.SKILL_CHECK_GM)
 		{
-			final int index = getTransferClassIndex(player);
-			if (index < 0)
-			{
-				return super.onEnterWorld(player);
-			}
 			long count = PORMANDERS[index].getCount() - player.getInventory().getInventoryItemCount(PORMANDERS[index].getId(), -1, false);
 			for (L2Skill sk : player.getAllSkills())
 			{
