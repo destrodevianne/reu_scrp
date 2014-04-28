@@ -21,8 +21,8 @@ package l2r.gameserver.scripts.handlers.itemhandlers;
 import java.util.List;
 
 import l2r.Config;
-import l2r.gameserver.datatables.PetDataTable;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.PetData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -84,7 +84,7 @@ public class PetFood implements IItemHandler
 				final L2PcInstance player = activeChar.getActingPlayer();
 				if (player.isMounted())
 				{
-					final List<Integer> foodIds = PetDataTable.getInstance().getPetData(player.getMountNpcId()).getFood();
+					final List<Integer> foodIds = PetData.getInstance().getPetData(player.getMountNpcId()).getFood();
 					if (foodIds.contains(Integer.valueOf(item.getId())))
 					{
 						if (player.destroyItem("Consume", item.getObjectId(), 1, null, false))

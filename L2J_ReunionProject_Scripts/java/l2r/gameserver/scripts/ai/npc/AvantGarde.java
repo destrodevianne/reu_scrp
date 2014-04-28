@@ -3,9 +3,9 @@ package l2r.gameserver.scripts.ai.npc;
 import java.util.List;
 
 import l2r.Config;
-import l2r.gameserver.datatables.MultiSell;
-import l2r.gameserver.datatables.SkillData;
-import l2r.gameserver.datatables.SkillTreesData;
+import l2r.gameserver.datatables.xml.MultiSell;
+import l2r.gameserver.datatables.xml.SkillData;
+import l2r.gameserver.datatables.xml.SkillTreesData;
 import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.L2SkillLearn;
 import l2r.gameserver.model.actor.L2Npc;

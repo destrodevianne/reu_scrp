@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.itemhandlers;
 
-import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Spawn;

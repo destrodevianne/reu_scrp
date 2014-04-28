@@ -38,7 +38,7 @@ import javolution.util.FastTable;
 import l2r.gameserver.GameTimeController;
 import l2r.gameserver.LoginServerThread;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.AdminTable;
+import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.enums.ItemLocation;
 import l2r.gameserver.handler.ITelnetHandler;
 import l2r.gameserver.model.L2Object;
@@ -465,7 +465,7 @@ public class DebugHandler implements ITelnetHandler
 	
 	private int getOnlineGMS()
 	{
-		return AdminTable.getInstance().getAllGms(true).size();
+		return AdminData.getInstance().getAllGms(true).size();
 	}
 	
 	private String getUptime(int time)

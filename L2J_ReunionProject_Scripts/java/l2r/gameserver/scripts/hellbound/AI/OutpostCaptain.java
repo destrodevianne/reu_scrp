@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.hellbound.AI;
 
-import l2r.gameserver.datatables.DoorTable;
+import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2DoorInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -78,7 +78,7 @@ public final class OutpostCaptain extends AbstractNpcAI
 		
 		if (npc.getId() == CAPTAIN)
 		{
-			L2DoorInstance door = DoorTable.getInstance().getDoor(20250001);
+			L2DoorInstance door = DoorData.getInstance().getDoor(20250001);
 			if (door != null)
 			{
 				door.closeMe();

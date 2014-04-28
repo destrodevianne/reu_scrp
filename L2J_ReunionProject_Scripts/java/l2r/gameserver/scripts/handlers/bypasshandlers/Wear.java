@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.handlers.bypasshandlers;
 import java.util.StringTokenizer;
 
 import l2r.Config;
-import l2r.gameserver.datatables.BuyListData;
+import l2r.gameserver.datatables.xml.BuyListData;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2PcInstance;

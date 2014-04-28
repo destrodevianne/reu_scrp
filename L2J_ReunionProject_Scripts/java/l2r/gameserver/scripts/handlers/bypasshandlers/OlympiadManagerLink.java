@@ -22,9 +22,9 @@ import java.util.Collection;
 import java.util.List;
 
 import l2r.Config;
-import l2r.gameserver.datatables.MultiSell;
-import l2r.gameserver.datatables.NpcBufferTable;
-import l2r.gameserver.datatables.NpcBufferTable.NpcBufferData;
+import l2r.gameserver.datatables.sql.NpcBufferTable;
+import l2r.gameserver.datatables.sql.NpcBufferTable.NpcBufferData;
+import l2r.gameserver.datatables.xml.MultiSell;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;

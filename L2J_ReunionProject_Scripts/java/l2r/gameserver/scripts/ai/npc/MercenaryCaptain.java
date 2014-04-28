@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import l2r.gameserver.datatables.MultiSell;
+import l2r.gameserver.datatables.xml.MultiSell;
 import l2r.gameserver.instancemanager.TerritoryWarManager;
 import l2r.gameserver.instancemanager.TerritoryWarManager.Territory;
 import l2r.gameserver.instancemanager.TerritoryWarManager.TerritoryNPCSpawn;

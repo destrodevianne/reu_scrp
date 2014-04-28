@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.bypasshandlers;
 
-import l2r.gameserver.datatables.ClanTable;
+import l2r.gameserver.datatables.sql.ClanTable;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.actor.L2Character;

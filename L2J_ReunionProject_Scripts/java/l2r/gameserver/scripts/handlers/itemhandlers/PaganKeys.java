@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.itemhandlers;
 
-import l2r.gameserver.datatables.DoorTable;
+import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Object;
@@ -123,8 +123,8 @@ public class PaganKeys implements IItemHandler
 			case 8056:
 				if ((door.getId() == 23150004) || (door.getId() == 23150003))
 				{
-					DoorTable.getInstance().getDoor(23150003).openMe();
-					DoorTable.getInstance().getDoor(23150004).openMe();
+					DoorData.getInstance().getDoor(23150003).openMe();
+					DoorData.getInstance().getDoor(23150004).openMe();
 				}
 				else
 				{

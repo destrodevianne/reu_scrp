@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.ai.npc.VillageMasters;
 import java.util.HashMap;
 import java.util.Map;
 
-import l2r.gameserver.datatables.ClassListData;
+import l2r.gameserver.datatables.xml.ClassListData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2VillageMasterInstance;

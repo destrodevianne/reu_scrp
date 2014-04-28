@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.ai.npc;
 
-import l2r.gameserver.datatables.MultiSell;
+import l2r.gameserver.datatables.xml.MultiSell;
 import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.instancemanager.CastleManager;
 import l2r.gameserver.instancemanager.QuestManager;

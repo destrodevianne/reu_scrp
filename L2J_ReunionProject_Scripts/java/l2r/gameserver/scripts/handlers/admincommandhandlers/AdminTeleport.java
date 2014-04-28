@@ -26,8 +26,8 @@ import java.util.StringTokenizer;
 
 import l2r.Config;
 import l2r.L2DatabaseFactory;
-import l2r.gameserver.datatables.NpcTable;
 import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.instancemanager.MapRegionManager;

@@ -19,7 +19,7 @@
 package l2r.gameserver.scripts.handlers.actionhandlers;
 
 import l2r.Config;
-import l2r.gameserver.datatables.ItemTable;
+import l2r.gameserver.datatables.xml.ItemData;
 import l2r.gameserver.enums.InstanceType;
 import l2r.gameserver.handler.IActionHandler;
 import l2r.gameserver.instancemanager.WalkingManager;
@@ -197,7 +197,7 @@ public class L2NpcActionShift implements IActionHandler
 				{
 					for (L2DropData drop : cat.getAllDrops())
 					{
-						final L2Item item = ItemTable.getInstance().getTemplate(drop.getId());
+						final L2Item item = ItemData.getInstance().getTemplate(drop.getId());
 						if (item == null)
 						{
 							continue;

@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.hellbound.AI.Zones;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.DoorTable;
+import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.base.ClassId;
@@ -68,7 +68,7 @@ public final class BaseTower extends Quest
 	{
 		if (event.equalsIgnoreCase("close"))
 		{
-			DoorTable.getInstance().getDoor(20260004).closeMe();
+			DoorData.getInstance().getDoor(20260004).closeMe();
 		}
 		return null;
 	}
@@ -93,8 +93,8 @@ public final class BaseTower extends Quest
 			case GUZEN:
 				// Should Kendal be despawned before Guzen's spawn? Or it will be crowd of Kendal's
 				addSpawn(KENDAL, npc.getSpawn().getLocation(), false, npc.getSpawn().getRespawnDelay(), false);
-				DoorTable.getInstance().getDoor(20260003).openMe();
-				DoorTable.getInstance().getDoor(20260004).openMe();
+				DoorData.getInstance().getDoor(20260003).openMe();
+				DoorData.getInstance().getDoor(20260004).openMe();
 				startQuestTimer("close", 60000, npc, null, false);
 				break;
 			case BODY_DESTROYER:

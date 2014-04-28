@@ -19,7 +19,7 @@
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
 import l2r.Config;
-import l2r.gameserver.datatables.ManorData;
+import l2r.gameserver.datatables.xml.ManorData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.handler.ISkillHandler;

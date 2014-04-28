@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 import l2r.Config;
-import l2r.gameserver.datatables.AdminTable;
+import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.olympiad.Olympiad;
@@ -80,13 +80,13 @@ public class AdminAdmin implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_gmliston"))
 		{
-			AdminTable.getInstance().showGm(activeChar);
+			AdminData.getInstance().showGm(activeChar);
 			activeChar.sendMessage("Registered into gm list");
 			AdminHtml.showAdminHtml(activeChar, "gm_menu.htm");
 		}
 		else if (command.startsWith("admin_gmlistoff"))
 		{
-			AdminTable.getInstance().hideGm(activeChar);
+			AdminData.getInstance().hideGm(activeChar);
 			activeChar.sendMessage("Removed from gm list");
 			AdminHtml.showAdminHtml(activeChar, "gm_menu.htm");
 		}

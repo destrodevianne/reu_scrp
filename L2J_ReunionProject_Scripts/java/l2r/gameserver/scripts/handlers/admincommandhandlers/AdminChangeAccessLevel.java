@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
 
 import l2r.Config;
 import l2r.L2DatabaseFactory;
-import l2r.gameserver.datatables.AdminTable;
+import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -52,7 +52,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_changemasterlvl"))
 		{
-			if (activeChar.getTarget() != null && activeChar.getTarget().isPlayer())
+			if ((activeChar.getTarget() != null) && activeChar.getTarget().isPlayer())
 			{
 				try
 				{
@@ -62,7 +62,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 					L2PcInstance target;
 					target = (L2PcInstance) activeChar.getTarget();
 					int masterLevel = Integer.parseInt(level);
-					if (masterLevel >= 0 && masterLevel <= 4)
+					if ((masterLevel >= 0) && (masterLevel <= 4))
 					{
 						if (target.isGM())
 						{
@@ -179,7 +179,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 	{
 		if (lvl >= 0)
 		{
-			if (AdminTable.getInstance().hasAccessLevel(lvl))
+			if (AdminData.getInstance().hasAccessLevel(lvl))
 			{
 				player.setAccessLevel(lvl);
 				player.sendMessage("Your access level has been changed to " + lvl);

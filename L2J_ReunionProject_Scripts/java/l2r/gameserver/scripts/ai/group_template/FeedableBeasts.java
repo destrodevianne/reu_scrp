@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.ai.group_template;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.idfactory.IdFactory;

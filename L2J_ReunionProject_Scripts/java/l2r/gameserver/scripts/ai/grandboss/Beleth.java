@@ -24,8 +24,8 @@ import java.util.concurrent.ScheduledFuture;
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.cache.HtmCache;
-import l2r.gameserver.datatables.DoorTable;
-import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.datatables.sql.NpcTable;
+import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.instancemanager.ZoneManager;
@@ -115,7 +115,7 @@ public final class Beleth extends AbstractNpcAI
 		{
 			GrandBossManager.getInstance().setBossStatus(29118, 0);
 		}
-		DoorTable.getInstance().getDoor(THRONE_DOOR).openMe();
+		DoorData.getInstance().getDoor(THRONE_DOOR).openMe();
 	}
 	
 	protected static L2Npc spawn(int npcId, Location loc)
@@ -149,7 +149,7 @@ public final class Beleth extends AbstractNpcAI
 		public void run()
 		{
 			GrandBossManager.getInstance().setBossStatus(29118, 0);
-			DoorTable.getInstance().getDoor(THRONE_DOOR).openMe();
+			DoorData.getInstance().getDoor(THRONE_DOOR).openMe();
 		}
 	}
 	
@@ -227,7 +227,7 @@ public final class Beleth extends AbstractNpcAI
 						ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(6), 2500);
 						break;
 					case 6:
-						L2DoorInstance door = DoorTable.getInstance().getDoor(THRONE_DOOR);
+						L2DoorInstance door = DoorData.getInstance().getDoor(THRONE_DOOR);
 						door.closeMe();
 						ZONE.broadcastPacket(new StaticObject(door, false));
 						ZONE.broadcastPacket(new DoorStatusUpdate(door));
@@ -384,11 +384,11 @@ public final class Beleth extends AbstractNpcAI
 					case 32:
 						ZONE.broadcastPacket(new SpecialCamera(CAMERA2, 800, 180, 0, 0, 4000, 0, 10, 1, 0, 0));
 						ZONE.broadcastPacket(new SpecialCamera(CAMERA2, 800, 180, 0, 0, 4000, 0, 10, 1, 0, 0));
-						L2DoorInstance door2 = DoorTable.getInstance().getDoor(CORRDOOR);
+						L2DoorInstance door2 = DoorData.getInstance().getDoor(CORRDOOR);
 						door2.openMe();
 						ZONE.broadcastPacket(new StaticObject(door2, false));
 						ZONE.broadcastPacket(new DoorStatusUpdate(door2));
-						DoorTable.getInstance().getDoor(COFFDOOR).openMe();
+						DoorData.getInstance().getDoor(COFFDOOR).openMe();
 						ThreadPoolManager.getInstance().scheduleGeneral(new Spawn(33), 4000);
 						break;
 					case 33:
@@ -406,10 +406,10 @@ public final class Beleth extends AbstractNpcAI
 						GrandBossManager.getInstance().setBossStatus(29118, 0);
 						
 						// Open throne's doors
-						DoorTable.getInstance().getDoor(THRONE_DOOR).openMe();
+						DoorData.getInstance().getDoor(THRONE_DOOR).openMe();
 						// Close coffin and corridor doors
-						DoorTable.getInstance().getDoor(CORRDOOR).closeMe();
-						DoorTable.getInstance().getDoor(COFFDOOR).closeMe();
+						DoorData.getInstance().getDoor(CORRDOOR).closeMe();
+						DoorData.getInstance().getDoor(COFFDOOR).closeMe();
 						
 						// oust players
 						for (L2PcInstance i : ZONE.getPlayersInside())

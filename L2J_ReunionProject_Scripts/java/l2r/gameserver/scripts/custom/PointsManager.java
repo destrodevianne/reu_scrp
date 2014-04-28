@@ -1,7 +1,7 @@
 package l2r.gameserver.scripts.custom;
 
 import l2r.gameserver.cache.HtmCache;
-import l2r.gameserver.datatables.ItemTable;
+import l2r.gameserver.datatables.xml.ItemData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
@@ -90,8 +90,8 @@ public final class PointsManager extends Quest
 			html = html.replaceAll("%player%", player.getName());
 			html = html.replaceAll("%REP_PRICE%", String.valueOf(REP_PRICE));
 			html = html.replaceAll("%FAME_PRICE%", String.valueOf(FAME_PRICE));
-			html = html.replaceAll("%REP_ITEM_ID%", ItemTable.getInstance().getTemplate(REP_ITEM_ID).getName());
-			html = html.replaceAll("%FAME_ITEM_ID%", ItemTable.getInstance().getTemplate(FAME_ITEM_ID).getName());
+			html = html.replaceAll("%REP_ITEM_ID%", ItemData.getInstance().getTemplate(REP_ITEM_ID).getName());
+			html = html.replaceAll("%FAME_ITEM_ID%", ItemData.getInstance().getTemplate(FAME_ITEM_ID).getName());
 			html = html.replaceAll("%REP_SCORE%", String.valueOf(REP_SCORE));
 			html = html.replaceAll("%FAME_SCORE%", String.valueOf(FAME_SCORE));
 			

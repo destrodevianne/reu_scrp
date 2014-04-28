@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.hellbound;
 
 import l2r.Config;
 import l2r.gameserver.Announcements;
-import l2r.gameserver.datatables.DoorTable;
+import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.instancemanager.GlobalVariablesManager;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
@@ -285,7 +285,7 @@ public final class HellboundEngine extends AbstractNpcAI
 		{
 			try
 			{
-				L2DoorInstance door = DoorTable.getInstance().getDoor(doorData[0]);
+				L2DoorInstance door = DoorData.getInstance().getDoor(doorData[0]);
 				if (door.getOpen())
 				{
 					if (newLevel < doorData[1])

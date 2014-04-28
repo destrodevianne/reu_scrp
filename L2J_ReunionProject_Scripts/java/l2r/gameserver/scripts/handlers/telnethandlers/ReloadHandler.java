@@ -26,12 +26,12 @@ import java.util.StringTokenizer;
 import javax.script.ScriptException;
 
 import l2r.gameserver.cache.HtmCache;
-import l2r.gameserver.datatables.ItemTable;
-import l2r.gameserver.datatables.MultiSell;
-import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
-import l2r.gameserver.datatables.TeleportLocationTable;
+import l2r.gameserver.datatables.sql.NpcTable;
+import l2r.gameserver.datatables.sql.TeleportLocationTable;
+import l2r.gameserver.datatables.xml.ItemData;
+import l2r.gameserver.datatables.xml.MultiSell;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.handler.ITelnetHandler;
 import l2r.gameserver.instancemanager.DayNightSpawnManager;
 import l2r.gameserver.instancemanager.QuestManager;
@@ -88,7 +88,7 @@ public class ReloadHandler implements ITelnetHandler
 				else if (type.equals("item"))
 				{
 					_print.print("Reloading item templates... ");
-					ItemTable.getInstance().reload();
+					ItemData.getInstance().reload();
 					_print.println("done");
 				}
 				else if (type.equals("zone"))

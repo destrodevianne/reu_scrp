@@ -19,8 +19,8 @@
 package l2r.gameserver.scripts.features;
 
 import l2r.Config;
-import l2r.gameserver.datatables.ClassListData;
-import l2r.gameserver.datatables.SkillTreesData;
+import l2r.gameserver.datatables.xml.ClassListData;
+import l2r.gameserver.datatables.xml.SkillTreesData;
 import l2r.gameserver.enums.IllegalActionPunishmentType;
 import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.model.L2SkillLearn;

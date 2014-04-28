@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.custom;
 
-import l2r.gameserver.datatables.MultiSell;
+import l2r.gameserver.datatables.xml.MultiSell;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;

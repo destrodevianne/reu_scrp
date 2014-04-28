@@ -21,8 +21,8 @@ package l2r.gameserver.scripts.custom;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.NpcTable;
 import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;

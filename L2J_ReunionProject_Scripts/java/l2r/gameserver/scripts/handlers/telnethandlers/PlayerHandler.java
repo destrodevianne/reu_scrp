@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import l2r.Config;
-import l2r.gameserver.datatables.CharNameTable;
+import l2r.gameserver.datatables.sql.CharNameTable;
 import l2r.gameserver.handler.ITelnetHandler;
 import l2r.gameserver.instancemanager.PunishmentManager;
 import l2r.gameserver.model.L2World;

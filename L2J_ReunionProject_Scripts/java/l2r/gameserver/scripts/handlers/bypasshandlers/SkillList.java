@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.handlers.bypasshandlers;
 import java.util.List;
 
 import l2r.Config;
-import l2r.gameserver.datatables.SkillTreesData;
+import l2r.gameserver.datatables.xml.SkillTreesData;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;

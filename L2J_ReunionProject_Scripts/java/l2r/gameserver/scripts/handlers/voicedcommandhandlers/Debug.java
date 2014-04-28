@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 
-import l2r.gameserver.datatables.AdminTable;
+import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 
@@ -32,7 +32,7 @@ public class Debug implements IVoicedCommandHandler
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String params)
 	{
-		if (!AdminTable.getInstance().hasAccess(command, activeChar.getAccessLevel()))
+		if (!AdminData.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 		{
 			return false;
 		}

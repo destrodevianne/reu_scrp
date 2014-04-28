@@ -19,8 +19,8 @@
 package l2r.gameserver.scripts.ai.zone.Selmahum;
 
 import l2r.gameserver.GameTimeController;
-import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Spawn;

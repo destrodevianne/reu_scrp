@@ -20,7 +20,7 @@ package l2r.gameserver.scripts.ai.zone.StakatoNest;
 
 import java.util.List;
 
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Attackable;

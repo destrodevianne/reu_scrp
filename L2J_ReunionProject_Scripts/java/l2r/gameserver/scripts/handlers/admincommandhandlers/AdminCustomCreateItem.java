@@ -3,7 +3,7 @@ package l2r.gameserver.scripts.handlers.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import l2r.Config;
-import l2r.gameserver.datatables.ItemTable;
+import l2r.gameserver.datatables.xml.ItemData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.Elementals;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -55,7 +55,9 @@ public class AdminCustomCreateItem implements IAdminCommandHandler
 			{
 				L2PcInstance target;
 				if (activeChar.getTarget().isPlayer())
+				{
 					target = (L2PcInstance) activeChar.getTarget();
+				}
 				else
 				{
 					activeChar.sendMessage("Invalid target.");
@@ -84,20 +86,20 @@ public class AdminCustomCreateItem implements IAdminCommandHandler
 	
 	private void createItem(L2PcInstance activeChar, L2PcInstance target, int id, int enchantvalue, String attributeType, int attributeValue)
 	{
-		L2Item template = ItemTable.getInstance().getTemplate(id);
+		L2Item template = ItemData.getInstance().getTemplate(id);
 		if (template == null)
 		{
 			activeChar.sendMessage("This item doesn't exist.");
 			return;
 		}
 		
-		if (template.isEnchantable() == 0 || !template.isElementable())
+		if ((template.isEnchantable() == 0) || !template.isElementable())
 		{
 			activeChar.sendMessage("This item is not enchantable or elementable.");
 			return;
 		}
 		
-		if (enchantvalue < 0 || enchantvalue > Config.MAX_ENCHANT_LEVEL)
+		if ((enchantvalue < 0) || (enchantvalue > Config.MAX_ENCHANT_LEVEL))
 		{
 			activeChar.sendMessage("Incorrect value, max enchant value " + Config.MAX_ENCHANT_LEVEL + ".");
 			return;
@@ -111,7 +113,7 @@ public class AdminCustomCreateItem implements IAdminCommandHandler
 		
 		target.getInventory().addItem("Admin", id, 1, activeChar, null);
 		
-		if (enchantvalue > 0 && enchantvalue <= Config.MAX_ENCHANT_LEVEL)
+		if ((enchantvalue > 0) && (enchantvalue <= Config.MAX_ENCHANT_LEVEL))
 		{
 			target.getInventory().getItemByItemId(id).setEnchantLevel(enchantvalue);
 		}
@@ -123,7 +125,9 @@ public class AdminCustomCreateItem implements IAdminCommandHandler
 		}
 		
 		if (activeChar != target)
+		{
 			target.sendMessage("Admin spawned " + 1 + " " + template.getName() + " in your inventory.");
+		}
 		activeChar.sendMessage("You have spawned " + 1 + " " + template.getName() + "(" + id + ") in " + target.getName() + " inventory.");
 	}
 	

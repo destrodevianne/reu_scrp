@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import l2r.gameserver.datatables.NpcTable;
 import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.engines.DocumentParser;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.Location;

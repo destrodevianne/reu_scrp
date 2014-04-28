@@ -20,8 +20,8 @@ package l2r.gameserver.scripts.handlers.voicedcommandhandlers;
 
 import java.util.StringTokenizer;
 
-import l2r.gameserver.datatables.AdminTable;
-import l2r.gameserver.datatables.CharNameTable;
+import l2r.gameserver.datatables.sql.CharNameTable;
+import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.instancemanager.PunishmentManager;
 import l2r.gameserver.model.L2World;
@@ -42,7 +42,7 @@ public class ChatAdmin implements IVoicedCommandHandler
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String params)
 	{
-		if (!AdminTable.getInstance().hasAccess(command, activeChar.getAccessLevel()))
+		if (!AdminData.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 		{
 			return false;
 		}
@@ -92,7 +92,7 @@ public class ChatAdmin implements IVoicedCommandHandler
 						activeChar.sendMessage("You can't ban GM !");
 						return false;
 					}
-					if (AdminTable.getInstance().hasAccess(command, player.getAccessLevel()))
+					if (AdminData.getInstance().hasAccess(command, player.getAccessLevel()))
 					{
 						activeChar.sendMessage("You can't ban moderator !");
 						return false;

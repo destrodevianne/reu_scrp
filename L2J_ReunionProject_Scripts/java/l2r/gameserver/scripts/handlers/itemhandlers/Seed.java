@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.itemhandlers;
 
-import l2r.gameserver.datatables.ManorData;
+import l2r.gameserver.datatables.xml.ManorData;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.instancemanager.CastleManorManager;
 import l2r.gameserver.instancemanager.MapRegionManager;
