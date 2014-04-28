@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.MobGroup;

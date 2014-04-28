@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -19,11 +19,10 @@
 package l2r.gameserver.scripts.ai.npc;
 
 import java.util.Collection;
-import java.util.List;
 
 import l2r.Config;
-import l2r.gameserver.datatables.SkillData;
-import l2r.gameserver.datatables.SkillTreesData;
+import l2r.gameserver.datatables.xml.SkillData;
+import l2r.gameserver.datatables.xml.SkillTreesData;
 import l2r.gameserver.model.L2SkillLearn;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -37,17 +36,24 @@ import l2r.gameserver.network.serverpackets.AcquireSkillList;
  * Trainer healers AI.
  * @author Zoey76
  */
-public class HealerTrainer extends AbstractNpcAI
+public final class HealerTrainer extends AbstractNpcAI
 {
 	// NPC
 	// @formatter:off
-	private static final int[] HEALER_TRAINERS = { 30022, 30030, 30032, 30036, 30067, 30068, 30116, 30117, 30118, 30119, 30144, 30145, 30188, 30194, 30293, 30330, 30375, 30377, 30464, 30473, 30476, 30680, 30701, 30720, 30721, 30858, 30859, 30860, 30861, 30864, 30906, 30908, 30912, 31280, 31281, 31287, 31329, 31330, 31335, 31969, 31970, 31976, 32155, 32162 };
+	private static final int[] HEALER_TRAINERS =
+	{
+		30022, 30030, 30032, 30036, 30067, 30068, 30116, 30117, 30118, 30119,
+		30144, 30145, 30188, 30194, 30293, 30330, 30375, 30377, 30464, 30473,
+		30476, 30680, 30701, 30720, 30721, 30858, 30859, 30860, 30861, 30864,
+		30906, 30908, 30912, 31280, 31281, 31287, 31329, 31330, 31335, 31969,
+		31970, 31976, 32155, 32162
+	};
 	// @formatter:on
 	// Misc
 	private static final int MIN_LEVEL = 76;
 	private static final int MIN_CLASS_LEVEL = 3;
 	
-	public HealerTrainer()
+	private HealerTrainer()
 	{
 		super(HealerTrainer.class.getSimpleName(), "ai/npc/Trainers");
 		addStartNpc(HEALER_TRAINERS);
@@ -79,12 +85,32 @@ public class HealerTrainer extends AbstractNpcAI
 					htmltext = npc.getId() + "-noteach.html";
 					break;
 				}
+				
 				if ((player.getLevel() < MIN_LEVEL) || (player.getClassId().level() < MIN_CLASS_LEVEL))
 				{
 					htmltext = "learn-lowlevel.html";
 					break;
 				}
-				displayTransferSkillList(player);
+				
+				final AcquireSkillList asl = new AcquireSkillList(AcquireSkillType.TRANSFER);
+				int count = 0;
+				for (L2SkillLearn skillLearn : SkillTreesData.getInstance().getAvailableTransferSkills(player))
+				{
+					if (SkillData.getInstance().getInfo(skillLearn.getSkillId(), skillLearn.getSkillLevel()) != null)
+					{
+						count++;
+						asl.addSkill(skillLearn.getSkillId(), skillLearn.getSkillLevel(), skillLearn.getSkillLevel(), skillLearn.getLevelUpSp(), 0);
+					}
+				}
+				
+				if (count > 0)
+				{
+					player.sendPacket(asl);
+				}
+				else
+				{
+					player.sendPacket(SystemMessageId.NO_MORE_SKILLS_TO_LEARN);
+				}
 				break;
 			}
 			case "SkillTransferCleanse":
@@ -107,17 +133,22 @@ public class HealerTrainer extends AbstractNpcAI
 					break;
 				}
 				
-				boolean hasSkills = false;
-				if (!hasTransferSkillItems(player))
+				if (hasTransferSkillItems(player))
 				{
+					// Come back when you have used all transfer skill items for this class.
+					htmltext = "cleanse-no_skills.html";
+				}
+				else
+				{
+					boolean hasSkills = false;
 					final Collection<L2SkillLearn> skills = SkillTreesData.getInstance().getTransferSkillTree(player.getClassId()).values();
-					for (L2SkillLearn s : skills)
+					for (L2SkillLearn skillLearn : skills)
 					{
-						final L2Skill sk = player.getKnownSkill(s.getSkillId());
-						if (sk != null)
+						final L2Skill skill = player.getKnownSkill(skillLearn.getSkillId());
+						if (skill != null)
 						{
-							player.removeSkill(sk);
-							for (ItemHolder item : s.getRequiredItems())
+							player.removeSkill(skill);
+							for (ItemHolder item : skillLearn.getRequiredItems())
 							{
 								player.addItem("Cleanse", item.getId(), item.getCount(), npc, true);
 							}
@@ -131,44 +162,10 @@ public class HealerTrainer extends AbstractNpcAI
 						player.reduceAdena("Cleanse", Config.FEE_DELETE_TRANSFER_SKILLS, npc, true);
 					}
 				}
-				else
-				{
-					// Come back when you have used all transfer skill items for this class.
-					htmltext = "cleanse-no_skills.html";
-				}
 				break;
 			}
 		}
 		return htmltext;
-	}
-	
-	/**
-	 * Display the Transfer Skill List to the player, if there is any skill available.
-	 * @param player the player
-	 */
-	private static void displayTransferSkillList(L2PcInstance player)
-	{
-		final List<L2SkillLearn> skills = SkillTreesData.getInstance().getAvailableTransferSkills(player);
-		final AcquireSkillList asl = new AcquireSkillList(AcquireSkillType.TRANSFER);
-		int count = 0;
-		
-		for (L2SkillLearn s : skills)
-		{
-			if (SkillData.getInstance().getInfo(s.getSkillId(), s.getSkillLevel()) != null)
-			{
-				count++;
-				asl.addSkill(s.getSkillId(), s.getSkillLevel(), s.getSkillLevel(), s.getLevelUpSp(), 0);
-			}
-		}
-		
-		if (count > 0)
-		{
-			player.sendPacket(asl);
-		}
-		else
-		{
-			player.sendPacket(SystemMessageId.NO_MORE_SKILLS_TO_LEARN);
-		}
 	}
 	
 	/**
@@ -182,16 +179,24 @@ public class HealerTrainer extends AbstractNpcAI
 		switch (player.getClassId())
 		{
 			case cardinal:
+			{
 				itemId = 15307;
 				break;
+			}
 			case evaSaint:
+			{
 				itemId = 15308;
 				break;
+			}
 			case shillienSaint:
+			{
 				itemId = 15309;
 				break;
+			}
 			default:
+			{
 				itemId = -1;
+			}
 		}
 		return (player.getInventory().getInventoryItemCount(itemId, -1) > 0);
 	}

@@ -32,9 +32,9 @@ import java.util.logging.Logger;
 import l2r.Config;
 import l2r.L2DatabaseFactory;
 import l2r.gameserver.cache.HtmCache;
-import l2r.gameserver.datatables.ItemTable;
-import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.sql.NpcTable;
+import l2r.gameserver.datatables.xml.ItemData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2DropCategory;
 import l2r.gameserver.model.L2DropData;
@@ -647,7 +647,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 					replyMSG.append(" ");
 					replyMSG.append(cat.getCategoryType());
 					replyMSG.append("\">");
-					replyMSG.append(ItemTable.getInstance().getTemplate(drop.getId()).getName());
+					replyMSG.append(ItemData.getInstance().getTemplate(drop.getId()).getName());
 					replyMSG.append(" (");
 					replyMSG.append(drop.getId());
 					replyMSG.append(")</a></td><td>");
@@ -713,7 +713,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			return;
 		}
 		
-		L2Item itemData = ItemTable.getInstance().getTemplate(itemId);
+		L2Item itemData = ItemData.getInstance().getTemplate(itemId);
 		if (itemData == null)
 		{
 			activeChar.sendMessage("Unknown item template id " + itemId);

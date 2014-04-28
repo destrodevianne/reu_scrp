@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.handlers.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import l2r.Config;
-import l2r.gameserver.datatables.AdminTable;
+import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.handler.AdminCommandHandler;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2Clan;
@@ -192,7 +192,7 @@ public class AdminMenu implements IAdminCommandHandler
 			if (st.countTokens() > 1)
 			{
 				String subCommand = "admin_ban_char";
-				if (!AdminTable.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
+				if (!AdminData.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access right to use this command!");
 					_log.warn("Character " + activeChar.getName() + " tryed to use admin command " + subCommand + ", but have no access to it!");
@@ -209,7 +209,7 @@ public class AdminMenu implements IAdminCommandHandler
 			if (st.countTokens() > 1)
 			{
 				String subCommand = "admin_unban_char";
-				if (!AdminTable.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
+				if (!AdminData.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access right to use this command!");
 					_log.warn("Character " + activeChar.getName() + " tryed to use admin command " + subCommand + ", but have no access to it!");

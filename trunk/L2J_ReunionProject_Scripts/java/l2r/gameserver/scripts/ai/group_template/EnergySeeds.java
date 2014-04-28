@@ -24,8 +24,8 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.DoorTable;
-import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.datatables.sql.NpcTable;
+import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.idfactory.IdFactory;
 import l2r.gameserver.instancemanager.GraciaSeedsManager;
@@ -1610,7 +1610,7 @@ public class EnergySeeds extends AbstractNpcAI
 		{
 			for (int doorId : SEED_OF_DESTRUCTION_DOORS)
 			{
-				L2DoorInstance doorInstance = DoorTable.getInstance().getDoor(doorId);
+				L2DoorInstance doorInstance = DoorData.getInstance().getDoor(doorId);
 				if (doorInstance != null)
 				{
 					doorInstance.openMe();
@@ -1622,7 +1622,7 @@ public class EnergySeeds extends AbstractNpcAI
 		{
 			for (int doorId : SEED_OF_DESTRUCTION_DOORS)
 			{
-				L2DoorInstance doorInstance = DoorTable.getInstance().getDoor(doorId);
+				L2DoorInstance doorInstance = DoorData.getInstance().getDoor(doorId);
 				if (doorInstance != null)
 				{
 					doorInstance.closeMe();

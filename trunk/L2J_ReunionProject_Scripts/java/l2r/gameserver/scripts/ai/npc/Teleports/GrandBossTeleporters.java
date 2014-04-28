@@ -19,7 +19,7 @@
 package l2r.gameserver.scripts.ai.npc.Teleports;
 
 import l2r.Config;
-import l2r.gameserver.datatables.DoorTable;
+import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.Location;
@@ -156,17 +156,17 @@ public final class GrandBossTeleporters extends AbstractNpcAI
 			}
 			case 31384:
 			{
-				DoorTable.getInstance().getDoor(24210004).openMe();
+				DoorData.getInstance().getDoor(24210004).openMe();
 				break;
 			}
 			case 31686:
 			{
-				DoorTable.getInstance().getDoor(24210006).openMe();
+				DoorData.getInstance().getDoor(24210006).openMe();
 				break;
 			}
 			case 31687:
 			{
-				DoorTable.getInstance().getDoor(24210005).openMe();
+				DoorData.getInstance().getDoor(24210005).openMe();
 				break;
 			}
 			case 31540:

@@ -1,7 +1,7 @@
 package l2r.gameserver.scripts.custom;
 
 import javolution.text.TextBuilder;
-import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;

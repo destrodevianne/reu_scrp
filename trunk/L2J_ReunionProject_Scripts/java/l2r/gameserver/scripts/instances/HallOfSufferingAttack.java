@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Object;

@@ -32,8 +32,8 @@ import java.util.StringTokenizer;
 
 import l2r.Config;
 import l2r.L2DatabaseFactory;
-import l2r.gameserver.datatables.CharNameTable;
-import l2r.gameserver.datatables.ClassListData;
+import l2r.gameserver.datatables.sql.CharNameTable;
+import l2r.gameserver.datatables.xml.ClassListData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2World;

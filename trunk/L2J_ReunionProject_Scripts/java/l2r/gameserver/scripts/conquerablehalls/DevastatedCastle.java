@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import l2r.gameserver.datatables.ClanTable;
-import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.sql.ClanTable;
+import l2r.gameserver.datatables.sql.NpcTable;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.actor.L2Npc;

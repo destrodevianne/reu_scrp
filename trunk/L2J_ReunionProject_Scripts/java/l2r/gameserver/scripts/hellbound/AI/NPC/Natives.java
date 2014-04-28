@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.hellbound.AI.NPC;
 
-import l2r.gameserver.datatables.DoorTable;
+import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2DoorInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -108,7 +108,7 @@ public final class Natives extends Quest
 					
 					for (int doorId : DOORS)
 					{
-						L2DoorInstance door = DoorTable.getInstance().getDoor(doorId);
+						L2DoorInstance door = DoorData.getInstance().getDoor(doorId);
 						if (door != null)
 						{
 							door.openMe();
@@ -131,7 +131,7 @@ public final class Natives extends Quest
 			{
 				for (int doorId : DOORS)
 				{
-					L2DoorInstance door = DoorTable.getInstance().getDoor(doorId);
+					L2DoorInstance door = DoorData.getInstance().getDoor(doorId);
 					if (door != null)
 					{
 						door.closeMe();

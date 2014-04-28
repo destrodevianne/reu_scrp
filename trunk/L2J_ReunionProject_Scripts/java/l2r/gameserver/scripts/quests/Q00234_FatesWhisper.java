@@ -3,7 +3,7 @@ package l2r.gameserver.scripts.quests;
 import java.util.HashMap;
 import java.util.Map;
 
-import l2r.gameserver.datatables.ItemTable;
+import l2r.gameserver.datatables.xml.ItemData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
@@ -139,7 +139,7 @@ public class Q00234_FatesWhisper extends Quest
 				{
 					int aGradeItemId = Integer.parseInt(event.replace("selectAGrade_", ""));
 					
-					htmltext = st.showHtmlFile("31002-12.htm").replace("%weaponname%", ItemTable.getInstance().getTemplate(aGradeItemId).getName());
+					htmltext = st.showHtmlFile("31002-12.htm").replace("%weaponname%", ItemData.getInstance().getTemplate(aGradeItemId).getName());
 					st.takeItems(itemId, 1);
 					st.giveItems(aGradeItemId, 1);
 					st.giveItems(STAR_OF_DESTINY, 1);

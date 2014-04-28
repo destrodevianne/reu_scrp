@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import l2r.gameserver.datatables.TransformData;
+import l2r.gameserver.datatables.xml.TransformData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;

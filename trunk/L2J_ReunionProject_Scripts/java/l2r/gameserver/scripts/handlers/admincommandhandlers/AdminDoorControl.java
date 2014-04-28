@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import l2r.gameserver.datatables.DoorTable;
+import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.instancemanager.CastleManager;
 import l2r.gameserver.model.L2Object;
@@ -33,7 +33,7 @@ import l2r.gameserver.model.entity.Castle;
  */
 public class AdminDoorControl implements IAdminCommandHandler
 {
-	private static DoorTable _doorTable = DoorTable.getInstance();
+	private static DoorData _doorTable = DoorData.getInstance();
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_open",

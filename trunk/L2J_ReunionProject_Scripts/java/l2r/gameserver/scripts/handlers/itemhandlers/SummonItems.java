@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.itemhandlers;
 
-import l2r.gameserver.datatables.PetDataTable;
+import l2r.gameserver.datatables.xml.PetData;
 import l2r.gameserver.model.L2PetData;
 import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -64,7 +64,7 @@ public class SummonItems extends ItemSkillsTemplate
 			return false;
 		}
 		
-		final L2PetData petData = PetDataTable.getInstance().getPetDataByItemId(item.getId());
+		final L2PetData petData = PetData.getInstance().getPetDataByItemId(item.getId());
 		if ((petData == null) || (petData.getNpcId() == -1))
 		{
 			return false;

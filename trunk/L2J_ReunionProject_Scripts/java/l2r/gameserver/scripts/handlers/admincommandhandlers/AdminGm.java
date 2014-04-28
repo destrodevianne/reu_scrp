@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import l2r.gameserver.datatables.AdminTable;
+import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 
@@ -42,7 +42,7 @@ public class AdminGm implements IAdminCommandHandler
 	{
 		if (command.equals("admin_gm") && activeChar.isGM())
 		{
-			AdminTable.getInstance().deleteGm(activeChar);
+			AdminData.getInstance().deleteGm(activeChar);
 			activeChar.setAccessLevel(0);
 			activeChar.sendMessage("You no longer have GM status.");
 			_log.info("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") turned his GM status off");

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import l2r.L2DatabaseFactory;
 import l2r.gameserver.cache.HtmCache;
-import l2r.gameserver.datatables.ExperienceTable;
+import l2r.gameserver.datatables.xml.ExperienceData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
@@ -238,7 +238,7 @@ public class Delevel extends Quest
 				player.setExp(player.getStat().getExpForLevel(player.getLevel()));
 				// sets exp to 0%, if you don't like people abusing this by
 				// deleveling at 99% exp, comment the previous line
-				player.removeExpAndSp(player.getExp() - ExperienceTable.getInstance().getExpForLevel(player.getLevel() - 1), 0);
+				player.removeExpAndSp(player.getExp() - ExperienceData.getInstance().getExpForLevel(player.getLevel() - 1), 0);
 				player.sendPacket(new CreatureSay(npc.getObjectId(), 0, "Delevel Manager", "Congratulations, " + player.getName() + ", Your level has been decreased!"));
 				
 				if (player.getLevel() >= MINLVL)

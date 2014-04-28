@@ -17,7 +17,7 @@ package l2r.gameserver.scripts.instances;
 import java.util.concurrent.ScheduledFuture;
 
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.MapRegionManager;
 import l2r.gameserver.instancemanager.ZoneManager;

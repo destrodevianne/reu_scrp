@@ -27,8 +27,8 @@ import java.util.StringTokenizer;
 
 import l2r.Config;
 import l2r.gameserver.SevenSigns;
-import l2r.gameserver.datatables.ClanTable;
-import l2r.gameserver.datatables.TeleportLocationTable;
+import l2r.gameserver.datatables.sql.ClanTable;
+import l2r.gameserver.datatables.sql.TeleportLocationTable;
 import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.instancemanager.FortManager;
 import l2r.gameserver.model.ClanPrivilege;

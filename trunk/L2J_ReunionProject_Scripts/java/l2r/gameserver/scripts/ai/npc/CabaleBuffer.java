@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import l2r.gameserver.SevenSigns;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.effects.L2Effect;

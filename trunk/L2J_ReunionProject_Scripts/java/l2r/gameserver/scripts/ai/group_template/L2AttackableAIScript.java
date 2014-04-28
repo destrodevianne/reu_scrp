@@ -23,7 +23,7 @@ import static l2r.gameserver.enums.CtrlIntention.AI_INTENTION_ATTACK;
 import java.util.List;
 
 import l2r.Config;
-import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestEventType;

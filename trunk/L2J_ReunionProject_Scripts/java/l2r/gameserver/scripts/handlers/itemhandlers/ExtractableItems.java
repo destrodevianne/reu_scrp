@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.handlers.itemhandlers;
 import java.util.List;
 
 import l2r.Config;
-import l2r.gameserver.datatables.ItemTable;
+import l2r.gameserver.datatables.xml.ItemData;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.model.L2ExtractableProduct;
 import l2r.gameserver.model.actor.L2Playable;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ExtractableItems implements IItemHandler
 {
-	private static Logger _log = LoggerFactory.getLogger(ItemTable.class);
+	private static Logger _log = LoggerFactory.getLogger(ItemData.class);
 	
 	@Override
 	public boolean useItem(L2Playable playable, L2ItemInstance item, boolean forceUse)

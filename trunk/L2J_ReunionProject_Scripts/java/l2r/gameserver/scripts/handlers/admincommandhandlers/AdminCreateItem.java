@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.handlers.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import javolution.util.FastList;
-import l2r.gameserver.datatables.ItemTable;
+import l2r.gameserver.datatables.xml.ItemData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -101,7 +101,7 @@ public class AdminCreateItem implements IAdminCommandHandler
 				numval = 1;
 			}
 			int counter = 0;
-			L2Item template = ItemTable.getInstance().getTemplate(idval);
+			L2Item template = ItemData.getInstance().getTemplate(idval);
 			if (template == null)
 			{
 				activeChar.sendMessage("This item doesn't exist.");
@@ -253,7 +253,7 @@ public class AdminCreateItem implements IAdminCommandHandler
 				numval = 1;
 			}
 			int counter = 0;
-			L2Item template = ItemTable.getInstance().getTemplate(idval);
+			L2Item template = ItemData.getInstance().getTemplate(idval);
 			if (template == null)
 			{
 				activeChar.sendMessage("This item doesn't exist.");
@@ -286,7 +286,7 @@ public class AdminCreateItem implements IAdminCommandHandler
 	
 	private void createItem(L2PcInstance activeChar, L2PcInstance target, int id, long num)
 	{
-		L2Item template = ItemTable.getInstance().getTemplate(id);
+		L2Item template = ItemData.getInstance().getTemplate(id);
 		if (template == null)
 		{
 			activeChar.sendMessage("This item doesn't exist.");

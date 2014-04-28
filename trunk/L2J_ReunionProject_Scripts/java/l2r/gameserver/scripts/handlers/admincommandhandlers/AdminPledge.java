@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.handlers.admincommandhandlers;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import l2r.gameserver.datatables.ClanTable;
+import l2r.gameserver.datatables.sql.ClanTable;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.L2Object;

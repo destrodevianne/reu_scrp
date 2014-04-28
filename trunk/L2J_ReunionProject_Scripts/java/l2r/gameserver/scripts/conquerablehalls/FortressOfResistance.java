@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import l2r.gameserver.cache.HtmCache;
-import l2r.gameserver.datatables.ClanTable;
-import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.datatables.sql.ClanTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.Location;

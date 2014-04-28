@@ -14,10 +14,10 @@ import javolution.util.FastMap;
 import l2r.Config;
 import l2r.L2DatabaseFactory;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.DoorTable;
-import l2r.gameserver.datatables.NpcTable;
-import l2r.gameserver.datatables.SkillData;
 import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.datatables.sql.NpcTable;
+import l2r.gameserver.datatables.xml.DoorData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GrandBossManager;
@@ -204,11 +204,11 @@ public class VanHalter extends Quest
 		_isHelperCalled = false;
 		_isHalterSpawned = false;
 		
-		_doorOfAltar.add(DoorTable.getInstance().getDoor(19160014));
-		_doorOfAltar.add(DoorTable.getInstance().getDoor(19160015));
+		_doorOfAltar.add(DoorData.getInstance().getDoor(19160014));
+		_doorOfAltar.add(DoorData.getInstance().getDoor(19160015));
 		openDoorOfAltar(true);
-		_doorOfSacrifice.add(DoorTable.getInstance().getDoor(19160016));
-		_doorOfSacrifice.add(DoorTable.getInstance().getDoor(19160017));
+		_doorOfSacrifice.add(DoorData.getInstance().getDoor(19160016));
+		_doorOfSacrifice.add(DoorData.getInstance().getDoor(19160017));
 		closeDoorOfSacrifice();
 		
 		loadRoyalGuard();

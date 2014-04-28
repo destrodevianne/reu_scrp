@@ -28,8 +28,8 @@ import java.util.concurrent.ScheduledFuture;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.DoorTable;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.DoorData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.RaidBossStatus;
 import l2r.gameserver.instancemanager.RaidBossSpawnManager;
@@ -740,7 +740,7 @@ public final class TullyWorkshop extends Quest
 			final int[] doors = TULLY_DOORLIST.get(npcId);
 			for (int doorId : doors)
 			{
-				DoorTable.getInstance().getDoor(doorId).closeMe();
+				DoorData.getInstance().getDoor(doorId).closeMe();
 			}
 		}
 		
@@ -837,7 +837,7 @@ public final class TullyWorkshop extends Quest
 			final int[] doors = TULLY_DOORLIST.get(npcId);
 			for (int doorId : doors)
 			{
-				DoorTable.getInstance().getDoor(doorId).openMe();
+				DoorData.getInstance().getDoor(doorId).openMe();
 			}
 			
 			startQuestTimer("close", 120000, npc, null);
@@ -1205,8 +1205,8 @@ public final class TullyWorkshop extends Quest
 				postMortemSpawn.add(spawnedNpc);
 			}
 			
-			DoorTable.getInstance().getDoor(19260051).openMe();
-			DoorTable.getInstance().getDoor(19260052).openMe();
+			DoorData.getInstance().getDoor(19260051).openMe();
+			DoorData.getInstance().getDoor(19260052).openMe();
 			
 			countdownTime = 600000;
 			_countdown = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CountdownTask(), 60000, 10000);
@@ -1526,8 +1526,8 @@ public final class TullyWorkshop extends Quest
 	
 	private void handleDoorsOnDeath()
 	{
-		DoorTable.getInstance().getDoor(20250005).openMe();
-		DoorTable.getInstance().getDoor(20250004).openMe();
+		DoorData.getInstance().getDoor(20250005).openMe();
+		DoorData.getInstance().getDoor(20250004).openMe();
 		ThreadPoolManager.getInstance().scheduleGeneral(new DoorTask(new int[]
 		{
 			20250006,
@@ -1550,8 +1550,8 @@ public final class TullyWorkshop extends Quest
 	
 	private void handleDoorsOnRespawn()
 	{
-		DoorTable.getInstance().getDoor(20250009).closeMe();
-		DoorTable.getInstance().getDoor(20250008).closeMe();
+		DoorData.getInstance().getDoor(20250009).closeMe();
+		DoorData.getInstance().getDoor(20250008).closeMe();
 		ThreadPoolManager.getInstance().scheduleGeneral(new DoorTask(new int[]
 		{
 			20250777,
@@ -1644,7 +1644,7 @@ public final class TullyWorkshop extends Quest
 			L2DoorInstance door;
 			for (int doorId : _doorIds)
 			{
-				door = DoorTable.getInstance().getDoor(doorId);
+				door = DoorData.getInstance().getDoor(doorId);
 				if (door != null)
 				{
 					switch (_state)

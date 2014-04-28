@@ -18,8 +18,8 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import l2r.gameserver.datatables.FishingRodsData;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.FishingRodsData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.ShotType;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;

@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.StringTokenizer;
 
 import l2r.gameserver.SevenSigns;
-import l2r.gameserver.datatables.ClanTable;
+import l2r.gameserver.datatables.sql.ClanTable;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.instancemanager.AuctionManager;
 import l2r.gameserver.instancemanager.CHSiegeManager;

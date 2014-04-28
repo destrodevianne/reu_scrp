@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
-import l2r.gameserver.datatables.AdminTable;
+import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.handler.AdminCommandHandler;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -69,7 +69,7 @@ public class AdminSummon implements IAdminCommandHandler
 		if (id < 1000000)
 		{
 			subCommand = "admin_create_item";
-			if (!AdminTable.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
+			if (!AdminData.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
 			{
 				activeChar.sendMessage("You don't have the access right to use this command!");
 				_log.warn("Character " + activeChar.getName() + " tryed to use admin command " + subCommand + ", but have no access to it!");
@@ -81,7 +81,7 @@ public class AdminSummon implements IAdminCommandHandler
 		else
 		{
 			subCommand = "admin_spawn_once";
-			if (!AdminTable.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
+			if (!AdminData.getInstance().hasAccess(subCommand, activeChar.getAccessLevel()))
 			{
 				activeChar.sendMessage("You don't have the access right to use this command!");
 				_log.warn("Character " + activeChar.getName() + " tryed to use admin command " + subCommand + ", but have no access to it!");

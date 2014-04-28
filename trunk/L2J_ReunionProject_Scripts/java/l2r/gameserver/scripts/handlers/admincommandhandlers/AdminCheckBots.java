@@ -1,7 +1,7 @@
 package l2r.gameserver.scripts.handlers.admincommandhandlers;
 
 import javolution.util.FastList;
-import l2r.gameserver.datatables.ClassListData;
+import l2r.gameserver.datatables.xml.ClassListData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.PageResult;

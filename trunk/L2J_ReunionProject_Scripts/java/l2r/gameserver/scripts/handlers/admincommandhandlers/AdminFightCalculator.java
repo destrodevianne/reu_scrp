@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.handlers.admincommandhandlers;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import l2r.gameserver.datatables.NpcTable;
+import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.idfactory.IdFactory;
 import l2r.gameserver.model.actor.L2Character;

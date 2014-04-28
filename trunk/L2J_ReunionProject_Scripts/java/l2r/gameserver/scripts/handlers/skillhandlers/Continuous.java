@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.ShotType;

@@ -22,7 +22,7 @@ import java.util.List;
 
 import javolution.util.FastList;
 import l2r.Config;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.instancemanager.GrandBossManager;

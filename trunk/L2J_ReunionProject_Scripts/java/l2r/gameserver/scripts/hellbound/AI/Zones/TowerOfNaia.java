@@ -27,8 +27,8 @@ import java.util.Map;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.DoorTable;
-import l2r.gameserver.datatables.SkillData;
+import l2r.gameserver.datatables.xml.DoorData;
+import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.instancemanager.GlobalVariablesManager;
 import l2r.gameserver.instancemanager.ZoneManager;
@@ -1107,7 +1107,7 @@ public final class TowerOfNaia extends Quest
 				if (spawned.isEmpty() && DOORS.containsKey(managerId))
 				{
 					int[] doorList = DOORS.get(managerId);
-					DoorTable.getInstance().getDoor(doorList[1]).openMe();
+					DoorData.getInstance().getDoor(doorList[1]).openMe();
 					_spawns.remove(managerId);
 				}
 			}
@@ -1116,7 +1116,7 @@ public final class TowerOfNaia extends Quest
 		{
 			_challengeState = STATE_SPORE_CHALLENGE_IN_PROGRESS;
 			markElpyRespawn();
-			DoorTable.getInstance().getDoor(18250025).closeMe();
+			DoorData.getInstance().getDoor(18250025).closeMe();
 			ZoneManager.getInstance().getZoneById(200100).setEnabled(true);
 			
 			for (int i = 0; i < 10; i++)
@@ -1215,7 +1215,7 @@ public final class TowerOfNaia extends Quest
 		
 		if ((npcId == MUTATED_ELPY) && !npc.isTeleporting())
 		{
-			DoorTable.getInstance().getDoor(18250025).openMe();
+			DoorData.getInstance().getDoor(18250025).openMe();
 			ZoneManager.getInstance().getZoneById(200100).setEnabled(false);
 			ZoneManager.getInstance().getZoneById(200101).setEnabled(true);
 			ZoneManager.getInstance().getZoneById(200101).setEnabled(false);
@@ -1261,8 +1261,8 @@ public final class TowerOfNaia extends Quest
 		if (DOORS.containsKey(managerId))
 		{
 			int[] doorList = DOORS.get(managerId);
-			DoorTable.getInstance().getDoor(doorList[0]).openMe();
-			DoorTable.getInstance().getDoor(doorList[1]).closeMe();
+			DoorData.getInstance().getDoor(doorList[0]).openMe();
+			DoorData.getInstance().getDoor(doorList[1]).closeMe();
 		}
 		
 		if (_spawns.containsKey(managerId) && (_spawns.get(managerId) != null))
@@ -1356,7 +1356,7 @@ public final class TowerOfNaia extends Quest
 		if (DOORS.containsKey(managerId))
 		{
 			int[] doorList = DOORS.get(managerId);
-			DoorTable.getInstance().getDoor(doorList[0]).closeMe();
+			DoorData.getInstance().getDoor(doorList[0]).closeMe();
 		}
 		
 		if (SPAWNS.containsKey(managerId))
