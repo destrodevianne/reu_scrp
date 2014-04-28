@@ -86,7 +86,10 @@ public final class Warpgate extends AbstractNpcAI
 		}
 		
 		player.teleToLocation(HELLBOUND, true);
-		HellboundEngine.getInstance().setLevel(1);
+		if (HellboundEngine.getInstance().isLocked())
+		{
+			HellboundEngine.getInstance().setLevel(1);
+		}
 		return null;
 	}
 	

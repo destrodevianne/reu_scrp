@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.handlers.targethandlers;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import l2r.gameserver.enums.ZoneIdType;
@@ -37,14 +36,18 @@ public class Aura implements ITargetTypeHandler
 	@Override
 	public L2Object[] getTargetList(L2Skill skill, L2Character activeChar, boolean onlyFirst, L2Character target)
 	{
-		List<L2Character> targetList = new ArrayList<>();
+		final List<L2Character> targetList = new ArrayList<>();
 		final boolean srcInArena = (activeChar.isInsideZone(ZoneIdType.PVP) && !activeChar.isInsideZone(ZoneIdType.SIEGE));
-		final Collection<L2Character> objs = activeChar.getKnownList().getKnownCharactersInRadius(skill.getAffectRange());
-		for (L2Character obj : objs)
+		for (L2Character obj : activeChar.getKnownList().getKnownCharactersInRadius(skill.getAffectRange()))
 		{
 			if (obj.isAttackable() || obj.isPlayable())
 			{
 				if (!L2Skill.checkForAreaOffensiveSkills(activeChar, obj, skill, srcInArena))
+				{
+					continue;
+				}
+				
+				if (activeChar.isPlayable() && obj.isAttackable() && !skill.isOffensive())
 				{
 					continue;
 				}
