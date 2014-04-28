@@ -66,19 +66,31 @@ public class ExtractableItems implements IItemHandler
 		}
 		
 		boolean created = false;
-		// calculate extraction
-		int min;
-		int max;
-		int createitemAmount;
 		for (L2ExtractableProduct expi : exitem)
 		{
 			if (Rnd.get(100000) <= expi.getChance())
 			{
-				min = (int) (expi.getMin() * Config.RATE_EXTRACTABLE);
-				max = (int) (expi.getMax() * Config.RATE_EXTRACTABLE);
+				final int min = (int) (expi.getMin() * Config.RATE_EXTRACTABLE);
+				final int max = (int) (expi.getMax() * Config.RATE_EXTRACTABLE);
 				
-				createitemAmount = (max == min) ? min : (Rnd.get((max - min) + 1) + min);
-				activeChar.addItem("Extract", expi.getId(), createitemAmount, activeChar, true);
+				int createItemAmount = (max == min) ? min : (Rnd.get((max - min) + 1) + min);
+				if (createItemAmount == 0)
+				{
+					continue;
+				}
+				
+				if (item.isStackable() || (createItemAmount == 1))
+				{
+					activeChar.addItem("Extract", expi.getId(), createItemAmount, activeChar, true);
+				}
+				else
+				{
+					while (createItemAmount > 0)
+					{
+						activeChar.addItem("Extract", expi.getId(), 1, activeChar, true);
+						createItemAmount--;
+					}
+				}
 				created = true;
 			}
 		}
