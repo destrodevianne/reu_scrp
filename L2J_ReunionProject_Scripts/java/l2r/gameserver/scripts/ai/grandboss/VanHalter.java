@@ -1129,7 +1129,10 @@ public class VanHalter extends Quest
 					}
 					catch (Exception e)
 					{
-						_log.warn("Logger: notifyEvent failed (VanHalter) Report this to team. ");
+						if (Config.DEBUG_SCRIPT_NOTIFIES)
+						{
+							_log.warn("VanHalter[notifyEvent] failed");
+						}
 					}
 					
 					if (_vanHalter.getZ() >= -10476)

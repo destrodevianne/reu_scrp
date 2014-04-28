@@ -1,5 +1,6 @@
 package l2r.gameserver.scripts.ai.individual;
 
+import l2r.Config;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.model.actor.L2Npc;
@@ -39,7 +40,10 @@ public class Benom extends AbstractNpcAI
 			}
 			catch (Exception e)
 			{
-				_log.warn("Logger: notifyEvent failed (Benom) Report this to team. ");
+				if (Config.DEBUG_SCRIPT_NOTIFIES)
+				{
+					_log.warn("Benom[notifyEvent] failed");
+				}
 			}
 			npc.setTarget(attacker);
 			npc.doCast(skill);

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+import l2r.Config;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
@@ -565,7 +566,10 @@ public class PailakaInjuredDragon extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warn("Logger: notifyEvent failed (PailakaInjuredDragon 1) Report this to team. ");
+				if (Config.DEBUG_SCRIPT_NOTIFIES)
+				{
+					_log.warn("PailakaInjuredDragon[notifyEvent]1 failed");
+				}
 			}
 			return null;
 		}
@@ -807,7 +811,10 @@ public class PailakaInjuredDragon extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.warn("Logger: notifyEvent failed (PailakaInjuredDragon 2) Report this to team. ");
+			if (Config.DEBUG_SCRIPT_NOTIFIES)
+			{
+				_log.warn("PailakaInjuredDragon[notifyEvent]2 failed");
+			}
 		}
 	}
 	

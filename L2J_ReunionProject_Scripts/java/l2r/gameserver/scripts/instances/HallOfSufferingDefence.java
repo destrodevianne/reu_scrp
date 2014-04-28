@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javolution.util.FastMap;
+import l2r.Config;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
@@ -655,7 +656,10 @@ public class HallOfSufferingDefence extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.warn("Logger: notifyEvent failed (DefenceHallOfSuffering 1) Report this to team. ");
+			if (Config.DEBUG_SCRIPT_NOTIFIES)
+			{
+				_log.warn("HallOfSufferingDefence[notifyEvent]1 failed");
+			}
 		}
 		
 		if (boss.getWorldRegion() != null)
@@ -729,7 +733,10 @@ public class HallOfSufferingDefence extends Quest
 					}
 					catch (Exception e)
 					{
-						_log.warn("Logger: notifyEvent failed (DefenceHallOfSuffering 2) Report this to team. ");
+						if (Config.DEBUG_SCRIPT_NOTIFIES)
+						{
+							_log.warn("HallOfSufferingDefence[notifyEvent]2 failed");
+						}
 					}
 				}
 				
