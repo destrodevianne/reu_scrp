@@ -31,8 +31,6 @@ public final class BanditStronghold extends FlagWar
 {
 	static
 	{
-		qn = "BanditStronghold";
-		
 		ROYAL_FLAG = 35422;
 		FLAG_RED = 35423;
 		FLAG_YELLOW = 35424;
@@ -87,9 +85,9 @@ public final class BanditStronghold extends FlagWar
 		CENTER = new Location(82882, -16280, -1894, 0);
 	}
 	
-	public BanditStronghold(int questId, String name, String descr, int hallId)
+	public BanditStronghold()
 	{
-		super(questId, name, descr, hallId);
+		super(BanditStronghold.class.getSimpleName(), BANDIT_STRONGHOLD);
 	}
 	
 	@Override
@@ -148,6 +146,6 @@ public final class BanditStronghold extends FlagWar
 	
 	public static void main(String[] args)
 	{
-		new BanditStronghold(-1, qn, "conquerablehalls/flagwar", BANDIT_STRONGHOLD);
+		new BanditStronghold();
 	}
 }

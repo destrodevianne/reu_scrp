@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -31,7 +31,6 @@ import l2r.L2DatabaseFactory;
 import l2r.gameserver.Announcements;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.ai.L2SpecialSiegeGuardAI;
-import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.sql.ClanTable;
 import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.enums.CtrlIntention;
@@ -59,8 +58,6 @@ import l2r.gameserver.network.serverpackets.SystemMessage;
  */
 public abstract class FlagWar extends ClanHallSiegeEngine
 {
-	protected static String qn;
-	
 	private static final String SQL_LOAD_ATTACKERS = "SELECT * FROM siegable_hall_flagwar_attackers WHERE hall_id = ?";
 	private static final String SQL_SAVE_ATTACKER = "INSERT INTO siegable_hall_flagwar_attackers_members VALUES (?,?,?)";
 	private static final String SQL_LOAD_MEMEBERS = "SELECT object_id FROM siegable_hall_flagwar_attackers_members WHERE clan_id = ?";
@@ -100,10 +97,9 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 	protected L2Clan _winner;
 	private boolean _firstPhase;
 	
-	public FlagWar(int questId, String name, String descr, int hallId)
+	public FlagWar(String name, int hallId)
 	{
-		super(questId, name, descr, hallId);
-		
+		super(-1, name, "conquerablehalls/flagwar", hallId);
 		addStartNpc(MESSENGER);
 		addFirstTalkId(MESSENGER);
 		addTalkId(MESSENGER);
@@ -133,16 +129,13 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		String html = null;
-		/*
-		 * if(player.getQuestState(qn) == null) newQuestState(player);
-		 */
 		if (npc.getId() == MESSENGER)
 		{
 			if (!checkIsAttacker(player.getClan()))
 			{
 				L2Clan clan = ClanTable.getInstance().getClan(_hall.getOwnerId());
-				String content = HtmCache.getInstance().getHtm(null, "data/scripts/conquerablehalls/flagwar/" + qn + "/messenger_initial.htm");
-				content = content.replaceAll("%clanName%", clan == null ? "no owner" : clan.getName());
+				String content = getHtm(player.getHtmlPrefix(), "messenger_initial.htm");
+				content = content.replaceAll("%clanName%", (clan == null) ? "no owner" : clan.getName());
 				content = content.replaceAll("%objectId%", String.valueOf(npc.getObjectId()));
 				html = content;
 			}
@@ -224,7 +217,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 					// Register paying the fee
 					else if (arg[1].equals("wFee") && canPayRegistration())
 					{
-						if (player.reduceAdena(qn + " Siege", 200000, npc, false)) // Fee payed
+						if (player.reduceAdena(getName() + " Siege", 200000, npc, false)) // Fee payed
 						{
 							registerClan(clan);
 							html = getFlagHtml(_data.get(clan.getId()).flag);
@@ -260,7 +253,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 					}
 					catch (Exception e)
 					{
-						_log.warn(qn + "->select_clan_npc->Wrong mahum warrior id: " + var[1]);
+						_log.warn(getName() + "->select_clan_npc->Wrong mahum warrior id: " + var[1]);
 					}
 					if ((id > 0) && ((html = getAllyHtml(id)) != null))
 					{
@@ -270,7 +263,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 				}
 				else
 				{
-					_log.warn(qn + " Siege: Not enough parameters to save clan npc for clan: " + clan.getName());
+					_log.warn(getName() + " Siege: Not enough parameters to save clan npc for clan: " + clan.getName());
 				}
 			}
 		}
@@ -338,7 +331,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 			}
 			else
 			{
-				html = HtmCache.getInstance().getHtm(null, "data/scripts/conquerablehalls/flagwar/" + qn + "/messenger_registeredclans.htm");
+				html = getHtm(player.getHtmlPrefix(), "messenger_registeredclans.htm");
 				int i = 0;
 				for (Entry<Integer, ClanData> clanData : _data.entrySet())
 				{
@@ -514,6 +507,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 		}
 		
 		// Schedule open doors closement and siege start in 2 minutes
+		// FIXME
 		// ThreadPoolManager.getInstance().scheduleGeneral(new CloseOutterDoorsTask(FlagWar.super), 300000);
 	}
 	
@@ -559,7 +553,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 			catch (Exception e)
 			{
 				endSiege();
-				_log.warn(qn + ": Problems in siege initialization!");
+				_log.warn(getName() + ": Problems in siege initialization!");
 				e.printStackTrace();
 			}
 		}
@@ -645,12 +639,12 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 			
 			if (flagTemplate == null)
 			{
-				_log.warn(qn + ": Flag L2NpcTemplate[" + data.flag + "] does not exist!");
+				_log.warn(getName() + ": Flag L2NpcTemplate[" + data.flag + "] does not exist!");
 				throw new NullPointerException();
 			}
 			else if (mahumTemplate == null)
 			{
-				_log.warn(qn + ": Ally L2NpcTemplate[" + data.npc + "] does not exist!");
+				_log.warn(getName() + ": Ally L2NpcTemplate[" + data.npc + "] does not exist!");
 				throw new NullPointerException();
 			}
 			
@@ -680,7 +674,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 		}
 		catch (Exception e)
 		{
-			_log.warn(qn + ": Couldnt make clan spawns: " + e.getMessage());
+			_log.warn(getName() + ": Couldnt make clan spawns: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -778,8 +772,8 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 	
 	private void sendRegistrationPageDate(L2PcInstance player)
 	{
-		NpcHtmlMessage msg = new NpcHtmlMessage(5);
-		msg.setFile(null, "data/scripts/conquerablehalls/flagwar/" + qn + "/siege_date.htm");
+		final NpcHtmlMessage msg = new NpcHtmlMessage(5);
+		msg.setHtml(getHtm(player.getHtmlPrefix(), "siege_date.htm"));
 		msg.replace("%nextSiege%", _hall.getSiegeDate().getTime().toString());
 		player.sendPacket(msg);
 	}
@@ -802,7 +796,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 				
 				if (ClanTable.getInstance().getClan(clanId) == null)
 				{
-					_log.warn(qn + ": Loaded an unexistent clan as attacker! Clan Id: " + clanId);
+					_log.warn(getName() + ": Loaded an unexistent clan as attacker! Clan ID: " + clanId);
 					continue;
 				}
 				
@@ -818,7 +812,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 		}
 		catch (Exception e)
 		{
-			_log.warn(qn + ".loadAttackers()->" + e.getMessage());
+			_log.warn(getName() + ".loadAttackers()->" + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -831,7 +825,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 			
 			if (listInstance == null)
 			{
-				_log.warn(qn + ": Tried to load unregistered clan: " + clanId + "[clan Id]");
+				_log.warn(getName() + ": Tried to load unregistered clan with ID " + clanId);
 				return;
 			}
 			
@@ -848,7 +842,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 		}
 		catch (Exception e)
 		{
-			_log.warn(qn + ".loadAttackerMembers()->" + e.getMessage());
+			_log.warn(getName() + ".loadAttackerMembers()->" + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -867,7 +861,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 		}
 		catch (Exception e)
 		{
-			_log.warn(qn + ".saveClan()->" + e.getMessage());
+			_log.warn(getName() + ".saveClan()->" + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -884,7 +878,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 		}
 		catch (Exception e)
 		{
-			_log.warn(qn + ".saveNpc()->" + e.getMessage());
+			_log.warn(getName() + ".saveNpc()->" + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -902,7 +896,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 		}
 		catch (Exception e)
 		{
-			_log.warn(qn + ".saveMember()->" + e.getMessage());
+			_log.warn(getName() + ".saveMember()->" + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -923,7 +917,7 @@ public abstract class FlagWar extends ClanHallSiegeEngine
 		}
 		catch (Exception e)
 		{
-			_log.warn(qn + ".clearTables()->" + e.getMessage());
+			_log.warn(getName() + ".clearTables()->" + e.getMessage());
 		}
 	}
 	

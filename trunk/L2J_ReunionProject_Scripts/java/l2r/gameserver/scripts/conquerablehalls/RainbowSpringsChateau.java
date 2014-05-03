@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -46,6 +46,7 @@ import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.L2Spawn;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -66,9 +67,9 @@ import org.slf4j.LoggerFactory;
  * Rainbow Springs Chateau clan hall siege script.
  * @author BiggBoss
  */
-public class RainbowSpringsChateau extends Quest
+public final class RainbowSpringsChateau extends Quest
 {
-	private static final Logger _log = LoggerFactory.getLogger(RainbowSpringsChateau.class);
+	private static final Logger _log = LoggerFactory.getLogger(RainbowSpringsChateau.class.getName());
 	
 	protected static class SetFinalAttackers implements Runnable
 	{
@@ -204,8 +205,6 @@ public class RainbowSpringsChateau extends Quest
 		}
 	}
 	
-	private static final String qn = "RainbowSpringsChateau";
-	
 	private static final int RAINBOW_SPRINGS = 62;
 	
 	private static final int WAR_DECREES = 8034;
@@ -235,28 +234,12 @@ public class RainbowSpringsChateau extends Quest
 		35599
 	};
 	
-	private static final int[][] ARENAS =
+	private static final Location[] ARENAS = new Location[]
 	{
-		{
-			151562,
-			-127080,
-			-2214
-		}, // Arena 1
-		{
-			153141,
-			-125335,
-			-2214
-		}, // Arena 2
-		{
-			153892,
-			-127530,
-			-2214
-		}, // Arena 3
-		{
-			155657,
-			-125752,
-			-2214
-		}, // Arena 4
+		new Location(151562, -127080, -2214), // Arena 1
+		new Location(153141, -125335, -2214), // Arena 2
+		new Location(153892, -127530, -2214), // Arena 3
+		new Location(155657, -125752, -2214), // Arena 4
 	};
 	
 	protected static final int[] ARENA_ZONES =
@@ -295,14 +278,9 @@ public class RainbowSpringsChateau extends Quest
 	protected static ScheduledFuture<?> _nextSiege, _siegeEnd;
 	private static String _registrationEnds;
 	
-	/**
-	 * @param questId
-	 * @param name
-	 * @param descr
-	 */
-	public RainbowSpringsChateau(int questId, String name, String descr)
+	private RainbowSpringsChateau()
 	{
-		super(questId, name, descr);
+		super(-1, RainbowSpringsChateau.class.getSimpleName(), "conquerablehalls");
 		
 		addFirstTalkId(MESSENGER);
 		addTalkId(MESSENGER);
@@ -670,21 +648,17 @@ public class RainbowSpringsChateau extends Quest
 			return null;
 		}
 		
-		int yeti = ((L2Npc) target).getId();
-		
+		int yeti = target.getId();
 		if (!isYetiTarget(yeti))
 		{
 			return null;
 		}
 		
 		final L2Clan clan = player.getClan();
-		
 		if ((clan == null) || !_acceptedClans.contains(clan))
 		{
 			return null;
 		}
-		
-		final int itemId = item.getId();
 		
 		// Nectar must spawn the enraged yeti. Dunno if it makes any other thing
 		// Also, the items must execute:
@@ -693,6 +667,7 @@ public class RainbowSpringsChateau extends Quest
 		// - Change arena gourds ( moveGourds() )
 		// - Increase gourd hp ( increaseGourdHp(int) )
 		
+		final int itemId = item.getId();
 		if (itemId == RAINBOW_NECTAR)
 		{
 			// Spawn enraged (where?)
@@ -729,7 +704,7 @@ public class RainbowSpringsChateau extends Quest
 				{
 					pc.getSummon().unSummon(pc);
 				}
-				pc.teleToLocation(ARENAS[arena][0], ARENAS[arena][1], ARENAS[arena][2]);
+				pc.teleToLocation(ARENAS[arena]);
 			}
 		}
 	}
@@ -743,9 +718,9 @@ public class RainbowSpringsChateau extends Quest
 				try
 				{
 					_gourds[i] = new L2Spawn(NpcTable.getInstance().getTemplate(GOURDS[i]));
-					_gourds[i].setX(ARENAS[i][0] + 150);
-					_gourds[i].setY(ARENAS[i][1] + 150);
-					_gourds[i].setZ(ARENAS[i][2]);
+					_gourds[i].setX(ARENAS[i].getX() + 150);
+					_gourds[i].setY(ARENAS[i].getY() + 150);
+					_gourds[i].setZ(ARENAS[i].getZ());
 					_gourds[i].setHeading(1);
 					_gourds[i].setAmount(1);
 				}
@@ -779,11 +754,7 @@ public class RainbowSpringsChateau extends Quest
 			
 			_gourds[(iterator - 1) - i] = curSpawn;
 			
-			int newX = oldSpawn.getX();
-			int newY = oldSpawn.getY();
-			int newZ = oldSpawn.getZ();
-			
-			curSpawn.getLastSpawn().teleToLocation(newX, newY, newZ);
+			curSpawn.getLastSpawn().teleToLocation(oldSpawn.getLocation());
 		}
 	}
 	
@@ -966,6 +937,6 @@ public class RainbowSpringsChateau extends Quest
 	
 	public static void main(String[] args)
 	{
-		new RainbowSpringsChateau(-1, qn, "conquerablehalls");
+		new RainbowSpringsChateau();
 	}
 }
