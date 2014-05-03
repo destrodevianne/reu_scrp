@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -31,8 +31,6 @@ public final class WildBeastReserve extends FlagWar
 {
 	static
 	{
-		qn = "WildBeastReserve";
-		
 		ROYAL_FLAG = 35606;
 		FLAG_RED = 35607; // White flag
 		FLAG_YELLOW = 35608; // Red flag
@@ -87,9 +85,9 @@ public final class WildBeastReserve extends FlagWar
 		CENTER = new Location(57762, -92696, -1359, 0);
 	}
 	
-	public WildBeastReserve(int questId, String name, String descr, int hallId)
+	private WildBeastReserve()
 	{
-		super(questId, name, descr, hallId);
+		super(WildBeastReserve.class.getSimpleName(), BEAST_FARM);
 	}
 	
 	@Override
@@ -154,6 +152,6 @@ public final class WildBeastReserve extends FlagWar
 	
 	public static void main(String[] args)
 	{
-		new WildBeastReserve(-1, qn, "conquerablehalls/flagwar", BEAST_FARM);
+		new WildBeastReserve();
 	}
 }
