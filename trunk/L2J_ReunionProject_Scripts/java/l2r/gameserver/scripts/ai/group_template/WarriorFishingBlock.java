@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -18,7 +18,6 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.Config;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Attackable;
@@ -26,14 +25,13 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;
-import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Warrior Fishing Block AI.
  * @author Zoey76
  */
-public class WarriorFishingBlock extends AbstractNpcAI
+public final class WarriorFishingBlock extends AbstractNpcAI
 {
 	// Monsters
 	private static final int[] MONSTERS =
@@ -68,7 +66,7 @@ public class WarriorFishingBlock extends AbstractNpcAI
 	};
 	// Misc
 	private static final int CHANCE_TO_SHOUT_ON_ATTACK = 33;
-	private static final int DESPAWN_TIME = 50000; // 50 seconds
+	private static final int DESPAWN_TIME = 50; // 50 seconds to despawn
 	
 	public WarriorFishingBlock()
 	{
@@ -81,11 +79,34 @@ public class WarriorFishingBlock extends AbstractNpcAI
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if ((npc != null) && event.equals("DESPAWN"))
+		switch (event)
 		{
-			npc.deleteMe();
+			case "SPAWN":
+			{
+				final L2Object obj = npc.getTarget();
+				if ((obj == null) || !obj.isPlayer())
+				{
+					npc.decayMe();
+				}
+				else
+				{
+					final L2PcInstance target = obj.getActingPlayer();
+					broadcastNpcSay(npc, Say2.NPC_ALL, NPC_STRINGS_ON_SPAWN[getRandom(NPC_STRINGS_ON_SPAWN.length)], target.getName());
+					((L2Attackable) npc).addDamageHate(target, 0, 2000);
+					npc.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, target);
+					npc.addAttackerToAttackByList(target);
+					
+					startQuestTimer("DESPAWN", DESPAWN_TIME * 1000, npc, target);
+				}
+				break;
+			}
+			case "DESPAWN":
+			{
+				npc.decayMe();
+				break;
+			}
 		}
-		return null;
+		return super.onAdvEvent(event, npc, player);
 	}
 	
 	@Override
@@ -93,55 +114,24 @@ public class WarriorFishingBlock extends AbstractNpcAI
 	{
 		if (getRandom(100) < CHANCE_TO_SHOUT_ON_ATTACK)
 		{
-			npc.broadcastPacket(new NpcSay(npc, Say2.NPC_ALL, NPC_STRINGS_ON_ATTACK[getRandom(NPC_STRINGS_ON_ATTACK.length)]));
+			broadcastNpcSay(npc, Say2.NPC_ALL, NPC_STRINGS_ON_ATTACK[getRandom(NPC_STRINGS_ON_ATTACK.length)]);
 		}
-		return null;
+		return super.onAttack(npc, attacker, damage, isSummon);
 	}
 	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		npc.broadcastPacket(new NpcSay(npc, Say2.NPC_ALL, NPC_STRINGS_ON_KILL[getRandom(NPC_STRINGS_ON_KILL.length)]));
+		broadcastNpcSay(npc, Say2.NPC_ALL, NPC_STRINGS_ON_KILL[getRandom(NPC_STRINGS_ON_KILL.length)]);
 		cancelQuestTimer("DESPAWN", npc, killer);
-		return null;
+		return super.onKill(npc, killer, isSummon);
 	}
 	
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if ((npc == null) || !npc.isAttackable())
-		{
-			return null;
-		}
-		
-		final L2Object target = npc.getTarget();
-		if ((target == null) || !target.isPlayer())
-		{
-			npc.deleteMe();
-			return null;
-		}
-		
-		final L2PcInstance player = target.getActingPlayer();
-		final NpcSay say = new NpcSay(npc, Say2.NPC_ALL, NPC_STRINGS_ON_SPAWN[getRandom(NPC_STRINGS_ON_SPAWN.length)]);
-		say.addStringParameter(player.getName());
-		npc.broadcastPacket(say);
-		
-		((L2Attackable) npc).addDamageHate(player, 0, 2000);
-		try
-		{
-			npc.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, player);
-		}
-		catch (Exception e)
-		{
-			if (Config.DEBUG_SCRIPT_NOTIFIES)
-			{
-				_log.warn("WarriorFishingBlock[notifyEvent] failed");
-			}
-		}
-		npc.addAttackerToAttackByList(player);
-		
-		startQuestTimer("DESPAWN", DESPAWN_TIME, npc, player);
-		return null;
+		startQuestTimer("SPAWN", 2000, npc, null);
+		return super.onSpawn(npc);
 	}
 	
 	public static void main(String[] args)
