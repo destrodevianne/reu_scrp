@@ -58,6 +58,7 @@ import l2r.gameserver.network.serverpackets.PlaySound;
 import l2r.gameserver.network.serverpackets.SpecialCamera;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.network.serverpackets.ValidateLocation;
+import l2r.gameserver.scripts.quests.Q00131_BirdInACage;
 import l2r.gameserver.util.Util;
 
 /**
@@ -1863,7 +1864,7 @@ public class CrystalCaverns extends Quest
 		}
 		else if (npc.getId() == 32279)
 		{
-			QuestState st = player.getQuestState("131_BirdInACage");
+			QuestState st = player.getQuestState(Q00131_BirdInACage.class.getSimpleName());
 			String htmltext = "32279.htm";
 			if ((st != null) && !st.isCompleted())
 			{
