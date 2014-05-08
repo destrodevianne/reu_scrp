@@ -31,6 +31,7 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.L2Summon;
 import l2r.gameserver.model.actor.instance.L2OlympiadManagerInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.entity.Hero;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
 import l2r.gameserver.model.olympiad.CompetitionType;
 import l2r.gameserver.model.olympiad.Olympiad;
@@ -108,15 +109,11 @@ public class OlympiadManagerLink implements IBypassHandler
 					case 0: // H5 match selection
 						if (!OlympiadManager.getInstance().isRegistered(activeChar))
 						{
-							final int olympiad_round = 0; // TODO : implement me
-							final int olympiad_week = 0; // TODO: implement me
-							final int olympiad_participant = 0; // TODO: implement me
-							
 							html.setFile(activeChar.getHtmlPrefix(), Olympiad.OLYMPIAD_HTML_PATH + "noble_desc2a.htm");
 							html.replace("%objectId%", String.valueOf(target.getObjectId()));
-							html.replace("%olympiad_round%", String.valueOf(olympiad_round));
-							html.replace("%olympiad_week%", String.valueOf(olympiad_week));
-							html.replace("%olympiad_participant%", String.valueOf(olympiad_participant));
+							html.replace("%olympiad_period%", String.valueOf(Olympiad.getInstance().getPeriod()));
+							html.replace("%olympiad_cycle%", String.valueOf(Olympiad.getInstance().getCurrentCycle()));
+							html.replace("%olympiad_opponent%", String.valueOf(OlympiadManager.getInstance().getCountOpponents()));
 							activeChar.sendPacket(html);
 						}
 						else
@@ -322,6 +319,18 @@ public class OlympiadManagerLink implements IBypassHandler
 						break;
 					case 4: // hero list
 						activeChar.sendPacket(new ExHeroList());
+						break;
+					case 5: // HeroCertification
+						if (Hero.getInstance().isInactiveHero(activeChar.getObjectId()))
+						{
+							Hero.getInstance().activateHero(activeChar);
+							reply.setFile(activeChar.getHtmlPrefix(), Olympiad.OLYMPIAD_HTML_PATH + "hero_receive.htm");
+						}
+						else
+						{
+							reply.setFile(activeChar.getHtmlPrefix(), Olympiad.OLYMPIAD_HTML_PATH + "hero_notreceive.htm");
+						}
+						activeChar.sendPacket(reply);
 						break;
 					default:
 						_log.warn("Olympiad System: Couldnt send packet for request " + val);
