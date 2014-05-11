@@ -68,7 +68,7 @@ public class AdminCheckBots implements IAdminCommandHandler
 		
 		if (command.startsWith("admin_real_onlines"))
 		{
-			int counter = 0;
+			int counter = 1;
 			
 			for (L2PcInstance onlinePlayer : L2World.getInstance().getPlayers())
 			{
