@@ -122,16 +122,9 @@ public class Continuous implements ISkillHandler
 			// Bad buff shield protection
 			if ((skill.getSkillType() == L2SkillType.BUFF) && !(activeChar instanceof L2ClanHallManagerInstance))
 			{
-				if (target != activeChar)
+				if ((target != activeChar) && (trg != null) && trg.isProtected())
 				{
-					if ((trg != null) && !trg.isInSameParty(player) && !trg.isInSameAlly(player) && !trg.isInSameClan(player) && !trg.isInSameChannel(player) && !trg.isInvul())
-					{
-						if (trg.isProtected())
-						{
-							continue;
-						}
-					}
-					else if ((player != null) && player.isProtected())
+					if (!trg.isInSameParty(player) && !trg.isInSameAlly(player) && !trg.isInSameClan(player) && !trg.isInSameChannel(player) && !trg.isInvul())
 					{
 						continue;
 					}
