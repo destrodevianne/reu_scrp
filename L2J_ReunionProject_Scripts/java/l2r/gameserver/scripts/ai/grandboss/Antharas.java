@@ -237,7 +237,6 @@ public final class Antharas extends AbstractNpcAI
 						{
 							if (member.isInsideRadius(npc, 1000, true, false))
 							{
-								takeItems(member, STONE, 1);
 								member.teleToLocation(179700 + getRandom(700), 113800 + getRandom(2100), -7709);
 							}
 						}
@@ -256,7 +255,6 @@ public final class Antharas extends AbstractNpcAI
 					}
 					else
 					{
-						takeItems(player, STONE, 1);
 						player.teleToLocation(179700 + getRandom(700), 113800 + getRandom(2100), -7709);
 						if (getStatus() != WAITING)
 						{
