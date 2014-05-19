@@ -77,7 +77,6 @@ public final class GrandBossTeleporters extends AbstractNpcAI
 		
 		if (st.hasQuestItems(VACUALITE_FLOATING_STONE))
 		{
-			takeItems(player, VACUALITE_FLOATING_STONE, 1);
 			player.teleToLocation(ENTER_HALL_OF_FLAMES);
 			st.set("allowEnter", "1");
 		}
