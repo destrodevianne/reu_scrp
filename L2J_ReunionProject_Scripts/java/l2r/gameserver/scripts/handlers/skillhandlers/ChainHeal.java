@@ -70,7 +70,7 @@ public class ChainHeal implements ISkillHandler
 				continue;
 			}
 			
-			if (!Util.checkIfInRange(350, character, activeChar, true))
+			if (!Util.checkIfInRange(skill.getAffectRange(), character, activeChar, true))
 			{
 				continue;
 			}
