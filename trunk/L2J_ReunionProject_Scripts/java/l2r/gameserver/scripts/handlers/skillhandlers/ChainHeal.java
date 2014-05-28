@@ -32,7 +32,6 @@ import l2r.gameserver.model.skills.L2SkillType;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.StatusUpdate;
 import l2r.gameserver.network.serverpackets.SystemMessage;
-import l2r.gameserver.util.Util;
 import l2r.util.ValueSortMap;
 
 /**
@@ -64,26 +63,6 @@ public class ChainHeal implements ISkillHandler
 		// Get top 10 most damaged and iterate the heal over them
 		for (L2Character character : characters)
 		{
-			// 1505 - sublime self sacrifice
-			if (character.isDead() || character.isInvul())
-			{
-				continue;
-			}
-			
-			if (!Util.checkIfInRange(skill.getAffectRange(), character, activeChar, true))
-			{
-				continue;
-			}
-			
-			// Cursed weapon owner can't heal or be healed
-			if (character != activeChar)
-			{
-				if (character.isPlayer() && character.getActingPlayer().isCursedWeaponEquipped())
-				{
-					continue;
-				}
-			}
-			
 			if (power == 100.)
 			{
 				amount = character.getMaxHp();
@@ -130,8 +109,9 @@ public class ChainHeal implements ISkillHandler
 		
 		for (L2Character target : targets)
 		{
+			// Just in case
 			// 1505 - sublime self sacrifice
-			if (((target == null) || target.isDead() || target.isInvul()))
+			if ((target == null) || target.isDead())
 			{
 				continue;
 			}
