@@ -25,6 +25,7 @@ import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.instancemanager.SoIManager;
+import l2r.gameserver.model.L2CommandChannel;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.Location;
@@ -895,22 +896,33 @@ public class HallOfErosionAttack extends Quest
 			player.sendPacket(SystemMessageId.NOT_IN_PARTY_CANT_ENTER);
 			return false;
 		}
+		
 		if (party.getLeader() != player)
 		{
 			player.sendPacket(SystemMessageId.ONLY_PARTY_LEADER_CAN_ENTER);
 			return false;
 		}
-		if ((party.getCommandChannel() == null) || (party.getCommandChannel().getLeader() != player))
+		
+		L2CommandChannel channel = party.getCommandChannel();
+		if (channel == null)
+		{
+			player.sendPacket(SystemMessageId.NOT_IN_COMMAND_CHANNEL_CANT_ENTER);
+			return false;
+		}
+		
+		if (channel.getLeader() != player)
 		{
 			player.sendPacket(SystemMessageId.ONLY_PARTY_LEADER_CAN_ENTER);
 			return false;
 		}
+		
 		if ((party.getCommandChannel().getMembers().size() < Config.EROSION_ATTACK_MIN_PLAYERS) || (party.getCommandChannel().getMembers().size() > Config.EROSION_ATTACK_MAX_PLAYERS))// 18 27
 		{
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
 			party.getCommandChannel().broadcastPacket(sm);
 			return false;
 		}
+		
 		for (L2PcInstance partyMember : party.getCommandChannel().getMembers())
 		{
 			if ((partyMember.getLevel() < 75) || (partyMember.getLevel() > 85))
