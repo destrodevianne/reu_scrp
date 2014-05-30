@@ -41,6 +41,7 @@ import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.SystemMessage;
+import l2r.gameserver.scripts.quests.Q00694_BreakThroughTheHallOfSuffering;
 import l2r.gameserver.util.Util;
 
 public class HallOfSufferingAttack extends Quest
@@ -515,7 +516,7 @@ public class HallOfSufferingAttack extends Quest
 				return false;
 			}
 			
-			QuestState st = partyMember.getQuestState("_694_BreakThroughTheHallOfSuffering");
+			QuestState st = partyMember.getQuestState(Q00694_BreakThroughTheHallOfSuffering.class.getSimpleName());
 			if ((st == null) || (st.getInt("cond") != 1))
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_QUEST_REQUIREMENT_NOT_SUFFICIENT);
