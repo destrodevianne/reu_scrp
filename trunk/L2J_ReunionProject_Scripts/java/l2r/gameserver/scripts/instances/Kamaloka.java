@@ -1520,7 +1520,6 @@ public class Kamaloka extends Quest
 	 * Spawn all NPCs in kamaloka
 	 * @param world instanceWorld
 	 */
-	@SuppressWarnings("all")
 	private final void spawnKama(KamaWorld world)
 	{
 		int[] npcs;
@@ -1533,7 +1532,7 @@ public class Kamaloka extends Quest
 		spawns = FIRST_ROOM_SPAWNS[index];
 		if (npcs != null)
 		{
-			world.firstRoom = new ArrayList<L2Spawn>(spawns.length - 1);
+			world.firstRoom = new ArrayList<>(spawns.length - 1);
 			int shaman = getRandom(spawns.length); // random position for shaman
 			
 			for (int i = 0; i < spawns.length; i++)
@@ -1562,7 +1561,7 @@ public class Kamaloka extends Quest
 		spawns = SECOND_ROOM_SPAWNS[index];
 		if (npcs != null)
 		{
-			world.secondRoom = new ArrayList<Integer>(spawns.length);
+			world.secondRoom = new ArrayList<>(spawns.length);
 			
 			for (int[] spawn : spawns)
 			{

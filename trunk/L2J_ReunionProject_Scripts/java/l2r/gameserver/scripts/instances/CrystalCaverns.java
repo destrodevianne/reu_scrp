@@ -2304,7 +2304,7 @@ public class CrystalCaverns extends Quest
 			}
 			else if (event.equalsIgnoreCase("Baylor"))
 			{
-				world._baylor = addSpawn(29099, 153572, 142075, -12738, 10800, false, 0, false, world.getInstanceId());
+				world._baylor = addSpawn(BAYLOR, 153572, 142075, -12738, 10800, false, 0, false, world.getInstanceId());
 				world._baylor.setIsParalyzed(true);
 				world._camera = addSpawn(29120, 153273, 141400, -12738, 10800, false, 0, false, world.getInstanceId());
 				world._camera.broadcastPacket(new SpecialCamera(world._camera, 700, -45, 160, 500, 15200, 0, 0, 1, 0, 0));
