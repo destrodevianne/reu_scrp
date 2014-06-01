@@ -30,6 +30,7 @@ import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
  */
 public final class NaiaLock extends AbstractNpcAI
 {
+	// NPCs
 	private static final int LOCK = 18491;
 	
 	public NaiaLock()

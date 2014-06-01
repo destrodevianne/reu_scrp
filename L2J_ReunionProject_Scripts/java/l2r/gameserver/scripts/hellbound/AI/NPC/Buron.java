@@ -20,14 +20,14 @@ package l2r.gameserver.scripts.hellbound.AI.NPC;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.hellbound.HellboundEngine;
 
 /**
  * Buron AI.
  * @author DS
  */
-public final class Buron extends Quest
+public final class Buron extends AbstractNpcAI
 {
 	private static final int BURON = 32345;
 	private static final int HELMET = 9669;
@@ -37,7 +37,7 @@ public final class Buron extends Quest
 	
 	public Buron()
 	{
-		super(-1, Buron.class.getSimpleName(), "hellbound/AI/NPC");
+		super(Buron.class.getSimpleName(), "hellbound/AI/NPC");
 		addFirstTalkId(BURON);
 		addStartNpc(BURON);
 		addTalkId(BURON);

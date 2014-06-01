@@ -25,7 +25,7 @@ import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.hellbound.HellboundEngine;
 import l2r.gameserver.util.Util;
 
@@ -33,16 +33,16 @@ import l2r.gameserver.util.Util;
  * Tower Of Infinitum.
  * @author GKR
  */
-public final class TowerOfInfinitum extends Quest
+public final class TowerOfInfinitum extends AbstractNpcAI
 {
+	// NPCs
 	private static final int JERIAN = 32302;
 	private static final int GK_FIRST = 32745;
 	private static final int GK_LAST = 32752;
-	
+	// Skills
 	private static final int PASS_SKILL = 2357;
-	
+	// Misc
 	private static final Map<Integer, Location[]> TELE_COORDS = new HashMap<>();
-	
 	static
 	{
 		TELE_COORDS.put(32745, new Location[]
@@ -89,7 +89,7 @@ public final class TowerOfInfinitum extends Quest
 	
 	public TowerOfInfinitum()
 	{
-		super(-1, TowerOfInfinitum.class.getSimpleName(), "hellbound/AI/Zones");
+		super(TowerOfInfinitum.class.getSimpleName(), "hellbound/AI/Zones");
 		addStartNpc(JERIAN);
 		addTalkId(JERIAN);
 		
@@ -106,7 +106,7 @@ public final class TowerOfInfinitum extends Quest
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
-		int npcId = npc.getId();
+		final int npcId = npc.getId();
 		
 		if (event.equalsIgnoreCase("enter") && (npcId == JERIAN))
 		{
@@ -140,13 +140,14 @@ public final class TowerOfInfinitum extends Quest
 		}
 		else if ((event.equalsIgnoreCase("up") || event.equalsIgnoreCase("down")) && (npcId >= GK_FIRST) && (npcId <= GK_LAST))
 		{
-			int direction = event.equalsIgnoreCase("up") ? 0 : 1;
-			L2Party party = player.getParty();
+			final int direction = event.equalsIgnoreCase("up") ? 0 : 1;
+			final L2Party party = player.getParty();
+			
 			if (party == null)
 			{
 				htmltext = "gk-noparty.htm";
 			}
-			else if (party.getLeaderObjectId() != player.getObjectId())
+			else if (!party.isLeader(player))
 			{
 				htmltext = "gk-noreq.htm";
 			}
