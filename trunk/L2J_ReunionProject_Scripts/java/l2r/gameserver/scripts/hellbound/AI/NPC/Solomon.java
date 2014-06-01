@@ -20,20 +20,21 @@ package l2r.gameserver.scripts.hellbound.AI.NPC;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.hellbound.HellboundEngine;
 
 /**
  * Solomon AI.
  * @author DS
  */
-public final class Solomon extends Quest
+public final class Solomon extends AbstractNpcAI
 {
+	// NPCs
 	private static final int SOLOMON = 32355;
 	
 	public Solomon()
 	{
-		super(-1, Solomon.class.getSimpleName(), "hellbound/AI/NPC");
+		super(Solomon.class.getSimpleName(), "hellbound/AI/NPC");
 		addFirstTalkId(SOLOMON);
 	}
 	
@@ -48,6 +49,6 @@ public final class Solomon extends Quest
 		{
 			return "32355-01a.htm";
 		}
-		return null;
+		return super.onFirstTalk(npc, player);
 	}
 }

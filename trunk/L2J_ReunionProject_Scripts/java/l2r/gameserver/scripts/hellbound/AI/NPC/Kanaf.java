@@ -20,19 +20,20 @@ package l2r.gameserver.scripts.hellbound.AI.NPC;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Kanaf AI.
  * @author GKR
  */
-public final class Kanaf extends Quest
+public final class Kanaf extends AbstractNpcAI
 {
+	// NPCs
 	private static final int KANAF = 32346;
 	
 	public Kanaf()
 	{
-		super(-1, Kanaf.class.getSimpleName(), "hellbound/AI/NPC");
+		super(Kanaf.class.getSimpleName(), "hellbound/AI/NPC");
 		addStartNpc(KANAF);
 		addTalkId(KANAF);
 	}
@@ -40,11 +41,10 @@ public final class Kanaf extends Quest
 	@Override
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (event.equalsIgnoreCase("info"))
+		if (event.equals("info"))
 		{
 			return "32346-0" + getRandom(1, 3) + ".htm";
 		}
-		
 		return super.onAdvEvent(event, npc, player);
 	}
 }

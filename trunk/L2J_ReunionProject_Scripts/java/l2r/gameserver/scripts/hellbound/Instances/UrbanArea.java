@@ -32,13 +32,13 @@ import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.instancezone.InstanceWorld;
-import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.network.serverpackets.SystemMessage;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.hellbound.HellboundEngine;
 import l2r.gameserver.util.Util;
 
@@ -46,7 +46,7 @@ import l2r.gameserver.util.Util;
  * Urban Area instance zone.
  * @author GKR
  */
-public final class UrbanArea extends Quest
+public final class UrbanArea extends AbstractNpcAI
 {
 	protected class UrbanAreaWorld extends InstanceWorld
 	{
@@ -85,7 +85,7 @@ public final class UrbanArea extends Quest
 	
 	public UrbanArea()
 	{
-		super(-1, UrbanArea.class.getSimpleName(), "hellbound/Instances");
+		super(UrbanArea.class.getSimpleName(), "hellbound/Instances");
 		addFirstTalkId(DOWNTOWN_NATIVE);
 		addStartNpc(KANAF);
 		addStartNpc(DOWNTOWN_NATIVE);
@@ -129,9 +129,9 @@ public final class UrbanArea extends Quest
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 			if ((tmpworld != null) && (tmpworld instanceof UrbanAreaWorld))
 			{
-				UrbanAreaWorld world = (UrbanAreaWorld) tmpworld;
+				final UrbanAreaWorld world = (UrbanAreaWorld) tmpworld;
 				
-				L2Party party = player.getParty();
+				final L2Party party = player.getParty();
 				
 				if (party == null)
 				{
@@ -174,7 +174,7 @@ public final class UrbanArea extends Quest
 	@Override
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
+		final InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 		if ((tmpworld != null) && (tmpworld instanceof UrbanAreaWorld))
 		{
 			UrbanAreaWorld world = (UrbanAreaWorld) tmpworld;
@@ -345,14 +345,14 @@ public final class UrbanArea extends Quest
 	
 	private boolean checkTeleport(L2PcInstance player)
 	{
-		L2Party party = player.getParty();
+		final L2Party party = player.getParty();
 		
 		if (party == null)
 		{
 			return false;
 		}
 		
-		if (player.getObjectId() != party.getLeaderObjectId())
+		if (!party.isLeader(player))
 		{
 			player.sendPacket(SystemMessageId.ONLY_PARTY_LEADER_CAN_ENTER);
 			return false;

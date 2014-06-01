@@ -21,14 +21,12 @@ package l2r.gameserver.scripts.hellbound.AI;
 import java.util.List;
 
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;
-import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.hellbound.HellboundEngine;
 import l2r.gameserver.taskmanager.DecayTaskManager;
@@ -37,20 +35,24 @@ import l2r.gameserver.taskmanager.DecayTaskManager;
  * Hellbound Slaves AI.
  * @author DS
  */
-public class Slaves extends AbstractNpcAI
+public final class Slaves extends AbstractNpcAI
 {
+	// NPCs
 	private static final int[] MASTERS =
 	{
-		22320,
-		22321
+		22320, // Junior Watchman
+		22321, // Junior Summoner
 	};
+	// Locations
 	private static final Location MOVE_TO = new Location(-25451, 252291, -3252, 3500);
+	// Misc
 	private static final int TRUST_REWARD = 10;
 	
 	public Slaves()
 	{
 		super(Slaves.class.getSimpleName(), "hellbound/AI");
-		registerMobs(MASTERS, QuestEventType.ON_SPAWN, QuestEventType.ON_KILL);
+		addSpawnId(MASTERS);
+		addKillId(MASTERS);
 	}
 	
 	@Override
@@ -58,11 +60,9 @@ public class Slaves extends AbstractNpcAI
 	{
 		((L2MonsterInstance) npc).enableMinions(HellboundEngine.getInstance().getLevel() < 5);
 		((L2MonsterInstance) npc).setOnKillDelay(1000);
-		
 		return super.onSpawn(npc);
 	}
 	
-	// Let's count trust points for killing in Engine
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
@@ -77,17 +77,15 @@ public class Slaves extends AbstractNpcAI
 					{
 						continue;
 					}
-					
 					slave.clearAggroList();
 					slave.abortAttack();
 					slave.abortCast();
-					slave.broadcastPacket(new NpcSay(slave.getObjectId(), Say2.NPC_ALL, slave.getId(), NpcStringId.THANK_YOU_FOR_SAVING_ME_FROM_THE_CLUTCHES_OF_EVIL));
+					broadcastNpcSay(slave, Say2.NPC_ALL, NpcStringId.THANK_YOU_FOR_SAVING_ME_FROM_THE_CLUTCHES_OF_EVIL);
 					
 					if ((HellboundEngine.getInstance().getLevel() >= 1) && (HellboundEngine.getInstance().getLevel() <= 2))
 					{
 						HellboundEngine.getInstance().updateTrust(TRUST_REWARD, false);
 					}
-					
 					slave.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, MOVE_TO);
 					DecayTaskManager.getInstance().addDecayTask(slave);
 				}

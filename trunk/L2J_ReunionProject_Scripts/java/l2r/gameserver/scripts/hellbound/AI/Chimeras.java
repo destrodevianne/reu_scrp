@@ -21,7 +21,6 @@ package l2r.gameserver.scripts.hellbound.AI;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.Location;
-import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -32,18 +31,17 @@ import l2r.gameserver.scripts.hellbound.HellboundEngine;
  * Chimeras AI.
  * @author DS
  */
-public class Chimeras extends AbstractNpcAI
+public final class Chimeras extends AbstractNpcAI
 {
 	// NPCs
 	private static final int[] NPCS =
 	{
-		22349,
-		22350,
-		22351,
-		22352
+		22349, // Chimera of Earth
+		22350, // Chimera of Darkness
+		22351, // Chimera of Wind
+		22352, // Chimera of Fire
 	};
 	private static final int CELTUS = 22353;
-	
 	// Locations
 	private static final Location[] LOCATIONS =
 	{
@@ -52,9 +50,9 @@ public class Chimeras extends AbstractNpcAI
 		new Location(7222, 240617, -2033),
 		new Location(9969, 235570, -1993)
 	};
-	
+	// Skills
+	private static final int BOTTLE = 2359; // Magic Bottle
 	// Items
-	private static final int BOTTLE = 2359;
 	private static final int DIM_LIFE_FORCE = 9680;
 	private static final int LIFE_FORCE = 9681;
 	private static final int CONTAINED_LIFE_FORCE = 9682;
@@ -105,11 +103,11 @@ public class Chimeras extends AbstractNpcAI
 					{
 						if (getRandom(100) < 80)
 						{
-							((L2Attackable) npc).dropItem(caster, DIM_LIFE_FORCE, 1);
+							npc.dropItem(caster, DIM_LIFE_FORCE, 1);
 						}
 						else if (getRandom(100) < 80)
 						{
-							((L2Attackable) npc).dropItem(caster, LIFE_FORCE, 1);
+							npc.dropItem(caster, LIFE_FORCE, 1);
 						}
 					}
 					npc.onDecay();

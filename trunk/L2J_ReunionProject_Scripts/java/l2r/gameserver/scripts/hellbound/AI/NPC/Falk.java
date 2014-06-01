@@ -20,23 +20,25 @@ package l2r.gameserver.scripts.hellbound.AI.NPC;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Falk AI.
  * @author DS
  */
-public final class Falk extends Quest
+public final class Falk extends AbstractNpcAI
 {
+	// NPCs
 	private static final int FALK = 32297;
-	private static final int BASIC_CERT = 9850;
-	private static final int STANDART_CERT = 9851;
-	private static final int PREMIUM_CERT = 9852;
+	// Items
 	private static final int DARION_BADGE = 9674;
+	private static final int BASIC_CERT = 9850; // Basic Caravan Certificate
+	private static final int STANDART_CERT = 9851; // Standard Caravan Certificate
+	private static final int PREMIUM_CERT = 9852; // Premium Caravan Certificate
 	
 	public Falk()
 	{
-		super(-1, Falk.class.getSimpleName(), "hellbound/AI/NPC");
+		super(Falk.class.getSimpleName(), "hellbound/AI/NPC");
 		addFirstTalkId(FALK);
 		addStartNpc(FALK);
 		addTalkId(FALK);
@@ -78,6 +80,6 @@ public final class Falk extends Quest
 				return "32297-02b.htm";
 			}
 		}
-		return event;
+		return super.onAdvEvent(event, npc, player);
 	}
 }
