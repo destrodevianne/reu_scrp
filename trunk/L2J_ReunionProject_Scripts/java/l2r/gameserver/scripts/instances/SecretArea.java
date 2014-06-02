@@ -47,6 +47,14 @@ public class SecretArea extends Quest
 		new Location(-185057, 242821, 1576)
 	};
 	
+	public SecretArea()
+	{
+		super(-1, SecretArea.class.getSimpleName(), "instances");
+		addStartNpc(GINBY);
+		addTalkId(GINBY);
+		addTalkId(LELRIKIA);
+	}
+	
 	protected void enterInstance(L2PcInstance player)
 	{
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
@@ -94,17 +102,8 @@ public class SecretArea extends Quest
 		return htmltext;
 	}
 	
-	public SecretArea(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		addStartNpc(GINBY);
-		addTalkId(GINBY);
-		addTalkId(LELRIKIA);
-	}
-	
 	public static void main(String[] args)
 	{
-		new SecretArea(-1, SecretArea.class.getSimpleName(), "instances");
+		new SecretArea();
 	}
 }

@@ -71,6 +71,18 @@ public class SeerUgoros extends AbstractNpcAI
 	// Skill
 	private static final L2Skill _ugoros_skill = SkillData.getInstance().getInfo(6426, 1);
 	
+	public SeerUgoros()
+	{
+		super(SeerUgoros.class.getSimpleName(), "ai");
+		
+		addStartNpc(_batracos);
+		addTalkId(_batracos);
+		addKillId(_seer_ugoros);
+		addAttackId(_weed_id);
+		
+		startQuestTimer("ugoros_respawn", 60000, null, null);
+	}
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -378,20 +390,8 @@ public class SeerUgoros extends AbstractNpcAI
 		((L2Attackable) _ugoros).getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, _attack);
 	}
 	
-	public SeerUgoros(String name, String descr)
-	{
-		super(name, descr);
-		
-		addStartNpc(_batracos);
-		addTalkId(_batracos);
-		addKillId(_seer_ugoros);
-		addAttackId(_weed_id);
-		
-		startQuestTimer("ugoros_respawn", 60000, null, null);
-	}
-	
 	public static void main(String[] args)
 	{
-		new SeerUgoros("SeerUgoros", "ai");
+		new SeerUgoros();
 	}
 }

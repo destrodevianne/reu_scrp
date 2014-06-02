@@ -13,8 +13,6 @@ import l2r.gameserver.network.serverpackets.SystemMessage;
 
 public class SecretAreaKeucereus extends Quest
 {
-	private static final String qn = "SecretAreaKeucereus";
-	
 	private class KSAWorld extends InstanceWorld
 	{
 		public KSAWorld()
@@ -42,9 +40,9 @@ public class SecretAreaKeucereus extends Quest
 		return "";
 	}
 	
-	public SecretAreaKeucereus(int questId, String name, String descr)
+	public SecretAreaKeucereus()
 	{
-		super(questId, name, descr);
+		super(-1, SecretAreaKeucereus.class.getSimpleName(), "instances");
 		addTalkId(32566);
 		addTalkId(32567);
 	}
@@ -67,7 +65,9 @@ public class SecretAreaKeucereus extends Quest
 		}
 		// New instance
 		if (!checkCond(player))
+		{
 			return;
+		}
 		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
 		world = new KSAWorld();
 		
@@ -98,7 +98,9 @@ public class SecretAreaKeucereus extends Quest
 		}
 		// New instance
 		if (!checkCond118(player))
+		{
 			return;
+		}
 		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
 		world = new KSAWorld();
 		
@@ -128,8 +130,10 @@ public class SecretAreaKeucereus extends Quest
 	{
 		if (QuestManager.getInstance().getQuest(10270) != null)
 		{
-			if (player.getQuestState(QuestManager.getInstance().getQuest(10270).getName()).getState() == State.STARTED && player.getQuestState(QuestManager.getInstance().getQuest(10270).getName()).getInt("cond") == 4)
+			if ((player.getQuestState(QuestManager.getInstance().getQuest(10270).getName()).getState() == State.STARTED) && (player.getQuestState(QuestManager.getInstance().getQuest(10270).getName()).getInt("cond") == 4))
+			{
 				return true;
+			}
 		}
 		return false;
 	}
@@ -138,14 +142,16 @@ public class SecretAreaKeucereus extends Quest
 	{
 		if (QuestManager.getInstance().getQuest(10272) != null)
 		{
-			if (player.getQuestState(QuestManager.getInstance().getQuest(10272).getName()).getState() == State.STARTED && player.getQuestState(QuestManager.getInstance().getQuest(10272).getName()).getInt("cond") == 3)
+			if ((player.getQuestState(QuestManager.getInstance().getQuest(10272).getName()).getState() == State.STARTED) && (player.getQuestState(QuestManager.getInstance().getQuest(10272).getName()).getInt("cond") == 3))
+			{
 				return true;
+			}
 		}
 		return false;
 	}
 	
 	public static void main(String[] args)
 	{
-		new SecretAreaKeucereus(-1, qn, "instances");
+		new SecretAreaKeucereus();
 	}
 }

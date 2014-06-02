@@ -393,6 +393,23 @@ public class Zaken extends Quest
 		
 	}
 	
+	public Zaken()
+	{
+		super(-1, Zaken.class.getSimpleName(), "instances");
+		addStartNpc(PATHFINDER);
+		addTalkId(PATHFINDER);
+		addFirstTalkId(PATHFINDER, BARREL);
+		addKillId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
+		addAttackId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
+		addAggroRangeEnterId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
+		
+		for (int i = 120111; i <= 120125; i++)
+		{
+			addEnterZoneId(i);
+			addExitZoneId(i);
+		}
+	}
+	
 	private boolean checkConditions(L2PcInstance player, String choice)
 	{
 		if (DEBUG || player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS))
@@ -1419,26 +1436,8 @@ public class Zaken extends Quest
 		return super.onExitZone(character, zone);
 	}
 	
-	public Zaken(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		addStartNpc(PATHFINDER);
-		addTalkId(PATHFINDER);
-		addFirstTalkId(PATHFINDER, BARREL);
-		addKillId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
-		addAttackId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
-		addAggroRangeEnterId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
-		
-		for (int i = 120111; i <= 120125; i++)
-		{
-			addEnterZoneId(i);
-			addExitZoneId(i);
-		}
-	}
-	
 	public static void main(String[] args)
 	{
-		new Zaken(-1, Zaken.class.getSimpleName(), "instances");
+		new Zaken();
 	}
 }

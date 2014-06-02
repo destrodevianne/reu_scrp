@@ -216,8 +216,7 @@ public final class Stage1 extends Quest
 	
 	private Stage1()
 	{
-		// TODO change name to use actual class name
-		super(-1, "SoDStage1", "instances");
+		super(-1, Stage1.class.getSimpleName(), "instances");
 		load();
 		addStartNpc(ALENOS);
 		addTalkId(ALENOS);
@@ -1072,7 +1071,6 @@ public final class Stage1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		// now call the constructor (starts up the)
 		new Stage1();
 	}
 }
