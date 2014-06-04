@@ -1,18 +1,24 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.SagasScripts;
+
+import l2r.gameserver.model.Location;
 
 /**
  * Saga of the Wind Rider (80)
@@ -20,13 +26,9 @@ package l2r.gameserver.scripts.SagasScripts;
  */
 public class SagaOfTheWindRider extends SagasSuperClass
 {
-	public static String qn1 = "80_SagaOfTheWindRider";
-	public static int qnu = 80;
-	public static String qna = "Saga of the Wind Rider";
-	
 	public SagaOfTheWindRider()
 	{
-		super(qnu, qn1, qna);
+		super(80, "80_SagaOfTheWindRider", "Saga of the Wind Rider");
 		NPC = new int[]
 		{
 			31603,
@@ -63,7 +65,6 @@ public class SagaOfTheWindRider extends SagasSuperClass
 			27229,
 			27303
 		};
-		qn = qn1;
 		classid = new int[]
 		{
 			101
@@ -72,23 +73,11 @@ public class SagaOfTheWindRider extends SagasSuperClass
 		{
 			0x17
 		};
-		X = new int[]
+		npcSpawnLocations = new Location[]
 		{
-			161719,
-			124314,
-			124355
-		};
-		Y = new int[]
-		{
-			-92823,
-			82155,
-			82155
-		};
-		Z = new int[]
-		{
-			-1893,
-			-2803,
-			-2803
+			new Location(161719, -92823, -1893),
+			new Location(124314, 82155, -2803),
+			new Location(124355, 82155, -2803)
 		};
 		Text = new String[]
 		{

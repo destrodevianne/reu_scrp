@@ -6,7 +6,6 @@ import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.PageResult;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.interfaces.IProcedure;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.util.Comparators;
 import l2r.gameserver.util.HtmlUtil;
@@ -130,45 +129,37 @@ public class AdminCheckBots implements IAdminCommandHandler
 			html.setFile(activeChar.getHtmlPrefix(), "data/html/admin/enchantbotlist.htm");
 		}
 		
-		final PageResult result = HtmlUtil.createPage(players, page, 20, new IProcedure<Integer, String>()
+		final PageResult result = HtmlUtil.createPage(players, page, 20, i ->
 		{
-			@Override
-			public String execute(Integer i)
+			String whatToReturn = null;
+			if (type.equals("farm"))
 			{
-				String whatToReturn = null;
-				if (type.equals("farm"))
-				{
-					whatToReturn = "<td align=center><a action=\"bypass -h admin_check_farm_bots " + i + "\">Page " + (i + 1) + "</a></td>";
-				}
-				else if (type.equals("enchant"))
-				{
-					whatToReturn = "<td align=center><a action=\"bypass -h admin_check_enchant_bots " + i + "\">Page " + (i + 1) + "</a></td>";
-				}
-				return whatToReturn;
+				whatToReturn = "<td align=center><a action=\"bypass -h admin_check_farm_bots " + i + "\">Page " + (i + 1) + "</a></td>";
 			}
-		}, new IProcedure<L2PcInstance, String>()
+			else if (type.equals("enchant"))
+			{
+				whatToReturn = "<td align=center><a action=\"bypass -h admin_check_enchant_bots " + i + "\">Page " + (i + 1) + "</a></td>";
+			}
+			return whatToReturn;
+		}, player ->
 		{
-			@Override
-			public String execute(L2PcInstance player)
+			StringBuilder sb = new StringBuilder();
+			String typeToSend = null;
+			sb.append("<tr>");
+			sb.append("<td width=80><a action=\"bypass -h admin_character_info " + player.getName() + "\">" + player.getName() + "</a></td>");
+			
+			if (type.equals("farm"))
 			{
-				StringBuilder sb = new StringBuilder();
-				String typeToSend = null;
-				sb.append("<tr>");
-				sb.append("<td width=80><a action=\"bypass -h admin_character_info " + player.getName() + "\">" + player.getName() + "</a></td>");
-				
-				if (type.equals("farm"))
-				{
-					typeToSend = ClassListData.getInstance().getClass(player.getClassId()).getClientCode();
-				}
-				else if (type.equals("enchant"))
-				{
-					typeToSend = String.valueOf(player.getEnchantChance());
-				}
-				
-				sb.append("<tr><td width=80><a action=\"bypass -h admin_teleportto " + player.getName() + "\">" + player.getName() + "</a></td><td width=110>" + typeToSend + "</td><td width=40>" + String.valueOf(player.getLevel()) + "</td></tr>");
-				sb.append("</tr>");
-				return sb.toString();
+				typeToSend = ClassListData.getInstance().getClass(player.getClassId()).getClientCode();
 			}
+			else if (type.equals("enchant"))
+			{
+				typeToSend = String.valueOf(player.getEnchantChance());
+			}
+			
+			sb.append("<tr><td width=80><a action=\"bypass -h admin_teleportto " + player.getName() + "\">" + player.getName() + "</a></td><td width=110>" + typeToSend + "</td><td width=40>" + String.valueOf(player.getLevel()) + "</td></tr>");
+			sb.append("</tr>");
+			return sb.toString();
 		});
 		
 		if (result.getPages() > 0)

@@ -1,18 +1,24 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.SagasScripts;
+
+import l2r.gameserver.model.Location;
 
 /**
  * Saga of the Doombringer (67)
@@ -20,13 +26,9 @@ package l2r.gameserver.scripts.SagasScripts;
  */
 public class SagaOfTheDoombringer extends SagasSuperClass
 {
-	public static String qn1 = "67_SagaOfTheDoombringer";
-	public static int qnu = 67;
-	public static String qna = "Saga of the Doombringer";
-	
 	public SagaOfTheDoombringer()
 	{
-		super(qnu, qn1, qna);
+		super(67, "67_SagaOfTheDoombringer", "Saga of the Doombringer");
 		NPC = new int[]
 		{
 			32138,
@@ -63,7 +65,6 @@ public class SagaOfTheDoombringer extends SagasSuperClass
 			27325,
 			27326
 		};
-		qn = qn1;
 		classid = new int[]
 		{
 			131
@@ -72,23 +73,11 @@ public class SagaOfTheDoombringer extends SagasSuperClass
 		{
 			0x7f
 		};
-		X = new int[]
+		npcSpawnLocations = new Location[]
 		{
-			191046,
-			47429,
-			47391
-		};
-		Y = new int[]
-		{
-			-40640,
-			-56923,
-			-56929
-		};
-		Z = new int[]
-		{
-			-3042,
-			-2383,
-			-2370
+			new Location(191046, -40640, -3042),
+			new Location(47429, -56923, -2383),
+			new Location(47391, -56929, -2370)
 		};
 		Text = new String[]
 		{

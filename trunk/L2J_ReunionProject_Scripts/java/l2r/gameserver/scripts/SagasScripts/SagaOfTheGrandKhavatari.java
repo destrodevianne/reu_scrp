@@ -1,18 +1,24 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.SagasScripts;
+
+import l2r.gameserver.model.Location;
 
 /**
  * Saga of the Grand Khavatari (76)
@@ -20,13 +26,9 @@ package l2r.gameserver.scripts.SagasScripts;
  */
 public class SagaOfTheGrandKhavatari extends SagasSuperClass
 {
-	public static String qn1 = "76_SagaOfTheGrandKhavatari";
-	public static int qnu = 76;
-	public static String qna = "Saga of the Grand Khavatari";
-	
 	public SagaOfTheGrandKhavatari()
 	{
-		super(qnu, qn1, qna);
+		super(76, "76_SagaOfTheGrandKhavatari", "Saga of the Grand Khavatari");
 		NPC = new int[]
 		{
 			31339,
@@ -63,7 +65,6 @@ public class SagaOfTheGrandKhavatari extends SagasSuperClass
 			27226,
 			27284
 		};
-		qn = qn1;
 		classid = new int[]
 		{
 			114
@@ -72,23 +73,11 @@ public class SagaOfTheGrandKhavatari extends SagasSuperClass
 		{
 			0x30
 		};
-		X = new int[]
+		npcSpawnLocations = new Location[]
 		{
-			161719,
-			124355,
-			124376
-		};
-		Y = new int[]
-		{
-			-92823,
-			82155,
-			82127
-		};
-		Z = new int[]
-		{
-			-1893,
-			-2803,
-			-2796
+			new Location(161719, -92823, -1893),
+			new Location(124355, 82155, -2803),
+			new Location(124376, 82127, -2796)
 		};
 		Text = new String[]
 		{

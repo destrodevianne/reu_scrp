@@ -1,18 +1,18 @@
 /*
 d * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +20,7 @@ package l2r.gameserver.scripts.ai.individual;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javolution.util.FastSet;
 import l2r.gameserver.datatables.sql.NpcTable;
@@ -30,7 +31,6 @@ import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
-import l2r.util.L2FastMap;
 
 /**
  * Dark Water Dragon's AI.
@@ -45,8 +45,8 @@ public class DarkWaterDragon extends AbstractNpcAI
 	private static final int DETRACTOR2 = 22271;
 	private static Set<Integer> SECOND_SPAWN = new FastSet<>(); // Used to track if second Shades were already spawned
 	private static Set<Integer> MY_TRACKING_SET = new FastSet<>(); // Used to track instances of npcs
-	private static Map<Integer, L2PcInstance> ID_MAP = new L2FastMap<>(true); // Used to track instances of npcs
-	
+	private static Map<Integer, L2PcInstance> ID_MAP = new ConcurrentHashMap<>(); // Used to track instances of npcs
+
 	private DarkWaterDragon(String name, String descr)
 	{
 		super(name, descr);
@@ -63,7 +63,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		MY_TRACKING_SET.clear();
 		SECOND_SPAWN.clear();
 	}
-	
+
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -108,14 +108,14 @@ public class DarkWaterDragon extends AbstractNpcAI
 				cancelQuestTimer("2", npc, null);
 				cancelQuestTimer("3", npc, null);
 				cancelQuestTimer("4", npc, null);
-				
+
 				MY_TRACKING_SET.remove(npc.getObjectId());
 				player = ID_MAP.remove(npc.getObjectId());
 				if (player != null)
 				{
 					((L2Attackable) npc).doItemDrop(NpcTable.getInstance().getTemplate(18485), player);
 				}
-				
+
 				npc.deleteMe();
 			}
 			else if (event.equalsIgnoreCase("fafurion_poison")) // Reduces Fafurions hp like it is poisoned
@@ -139,7 +139,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
-	
+
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
@@ -172,7 +172,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		}
 		return super.onAttack(npc, attacker, damage, isSummon);
 	}
-	
+
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
@@ -202,7 +202,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
@@ -230,7 +230,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		}
 		return super.onSpawn(npc);
 	}
-	
+
 	public void spawnShade(L2Character attacker, int npcId, int x, int y, int z)
 	{
 		final L2Npc shade = addSpawn(npcId, x, y, z, 0, false, 0);
@@ -238,7 +238,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		((L2Attackable) shade).addDamageHate(attacker, 0, 999);
 		shade.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
 	}
-	
+
 	public static void main(String[] args)
 	{
 		new DarkWaterDragon(DarkWaterDragon.class.getSimpleName(), "ai");

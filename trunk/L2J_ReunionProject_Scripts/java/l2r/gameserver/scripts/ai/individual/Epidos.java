@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +20,7 @@ package l2r.gameserver.scripts.ai.individual;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.actor.L2Npc;
@@ -27,7 +28,6 @@ import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.MinionList;
-import l2r.util.L2FastMap;
 
 /**
  * Manages minion's spawn, idle despawn and Teleportation Cube spawn.
@@ -42,7 +42,7 @@ public class Epidos extends AbstractNpcAI
 		25611,
 		25612
 	};
-	
+
 	private static final int[] MINIONS =
 	{
 		25605,
@@ -50,23 +50,23 @@ public class Epidos extends AbstractNpcAI
 		25607,
 		25608
 	};
-	
+
 	private static final int[] MINIONS_COUNT =
 	{
 		3,
 		6,
 		11
 	};
-	
-	private final Map<Integer, Double> _lastHp = new L2FastMap<>(true);
-	
+
+	private final Map<Integer, Double> _lastHp = new ConcurrentHashMap<>();
+
 	private Epidos(String name, String descr)
 	{
 		super(name, descr);
 		addKillId(EPIDOSES);
 		addSpawnId(EPIDOSES);
 	}
-	
+
 	@Override
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -77,7 +77,7 @@ public class Epidos extends AbstractNpcAI
 				int hpDecreasePercent = (int) (((_lastHp.get(npc.getObjectId()) - npc.getCurrentHp()) * 100) / npc.getMaxHp());
 				int minionsCount = 0;
 				int spawnedMinions = ((L2MonsterInstance) npc).getMinionList().countSpawnedMinions();
-				
+
 				if ((hpDecreasePercent > 5) && (hpDecreasePercent <= 15) && (spawnedMinions <= 9))
 				{
 					minionsCount = MINIONS_COUNT[0];
@@ -90,15 +90,15 @@ public class Epidos extends AbstractNpcAI
 				{
 					minionsCount = MINIONS_COUNT[2];
 				}
-				
+
 				for (int i = 0; i < minionsCount; i++)
 				{
 					MinionList.spawnMinion((L2MonsterInstance) npc, MINIONS[Arrays.binarySearch(EPIDOSES, npc.getId())]);
 				}
-				
+
 				_lastHp.put(npc.getObjectId(), npc.getCurrentHp());
 			}
-			
+
 			startQuestTimer("check_minions", 10000, npc, null);
 		}
 		else if (event.equalsIgnoreCase("check_idle"))
@@ -114,7 +114,7 @@ public class Epidos extends AbstractNpcAI
 		}
 		return null;
 	}
-	
+
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
@@ -122,21 +122,21 @@ public class Epidos extends AbstractNpcAI
 		{
 			addSpawn(32376, -45482, 246277, -14184, 0, false, 0, false);
 		}
-		
+
 		_lastHp.remove(npc.getObjectId());
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
 		startQuestTimer("check_minions", 10000, npc, null);
 		startQuestTimer("check_idle", 600000, npc, null);
 		_lastHp.put(npc.getObjectId(), (double) npc.getMaxHp());
-		
+
 		return super.onSpawn(npc);
 	}
-	
+
 	public static void main(String[] args)
 	{
 		new Epidos(Epidos.class.getSimpleName(), "ai");

@@ -1,18 +1,27 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.SagasScripts;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import l2r.Config;
 import l2r.gameserver.enums.CtrlIntention;
@@ -20,6 +29,7 @@ import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.L2World;
+import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -29,8 +39,6 @@ import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.serverpackets.MagicSkillUse;
 import l2r.gameserver.network.serverpackets.NpcSay;
-import l2r.util.L2FastList;
-import l2r.util.L2FastMap;
 
 /**
  * Saga quests superclass.
@@ -38,21 +46,17 @@ import l2r.util.L2FastMap;
  */
 public class SagasSuperClass extends Quest
 {
-	private static L2FastList<Quest> _scripts = new L2FastList<>();
-	public String qn = SagasSuperClass.class.getSimpleName();
-	public int qnu;
+	private static List<Quest> _scripts = new ArrayList<>();
 	public int[] NPC = {};
 	public int[] Items = {};
 	public int[] Mob = {};
 	public int[] classid = {};
 	public int[] prevclass = {};
-	public int[] X = {};
-	public int[] Y = {};
-	public int[] Z = {};
+	public Location[] npcSpawnLocations = {};
 	public String[] Text = {};
-	private static final L2FastMap<L2Npc, Integer> _spawnList = new L2FastMap<>();
+	private static final Map<L2Npc, Integer> _spawnList = new HashMap<>();
 	// @formatter:off
-	private static int[] QuestClass[] =
+	private static int[][] QuestClass =
 	{
 		{ 0x7f }, { 0x80, 0x81 }, { 0x82 }, { 0x05 }, { 0x14 }, { 0x15 },
 		{ 0x02 }, { 0x03 }, { 0x2e }, { 0x30 }, { 0x33 }, { 0x34 }, { 0x08 },
@@ -65,15 +69,14 @@ public class SagasSuperClass extends Quest
 	public SagasSuperClass(int id, String name, String descr)
 	{
 		super(id, name, descr);
-		qnu = id;
 	}
 	
 	private QuestState findQuest(L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st != null)
 		{
-			if (qnu == 68)
+			if (getId() == 68)
 			{
 				for (int q = 0; q < 2; q++)
 				{
@@ -83,7 +86,7 @@ public class SagasSuperClass extends Quest
 					}
 				}
 			}
-			else if (player.getClassId().getId() == QuestClass[qnu - 67][0])
+			else if (player.getClassId().getId() == QuestClass[getId() - 67][0])
 			{
 				return st;
 			}
@@ -100,7 +103,7 @@ public class SagasSuperClass extends Quest
 			player = L2World.getInstance().getPlayer(_spawnList.get(npc));
 			if (player != null)
 			{
-				st = player.getQuestState(qn);
+				st = player.getQuestState(getName());
 			}
 		}
 		return st;
@@ -156,7 +159,7 @@ public class SagasSuperClass extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		String htmltext = null;
 		if (st != null)
 		{
@@ -290,7 +293,7 @@ public class SagasSuperClass extends Quest
 					}
 					else if (st.getInt("spawned") == 0)
 					{
-						L2Npc Mob_1 = st.addSpawn(Mob[0], X[0], Y[0], Z[0]);
+						L2Npc Mob_1 = addSpawn(Mob[0], npcSpawnLocations[0], false, 0);
 						st.set("spawned", "1");
 						st.startQuestTimer("Mob_1 Timer 1", 500, Mob_1);
 						st.startQuestTimer("Mob_1 has despawned", 300000, Mob_1);
@@ -323,8 +326,8 @@ public class SagasSuperClass extends Quest
 				case "10-1":
 					if (st.getInt("Quest0") == 0)
 					{
-						L2Npc Mob_3 = st.addSpawn(Mob[2], X[1], Y[1], Z[1]);
-						L2Npc Mob_2 = st.addSpawn(NPC[4], X[2], Y[2], Z[2]);
+						L2Npc Mob_3 = addSpawn(Mob[2], npcSpawnLocations[1], false, 0);
+						L2Npc Mob_2 = addSpawn(NPC[4], npcSpawnLocations[2], false, 0);
 						addSpawn(st, Mob_3);
 						addSpawn(st, Mob_2);
 						st.set("Mob_2", String.valueOf(Mob_2.getObjectId()));
@@ -400,7 +403,7 @@ public class SagasSuperClass extends Quest
 					if (st.getInt("Quest0") == 0)
 					{
 						st.startQuestTimer("Mob_2 Timer 3", 13000, npc);
-						if (getRandom(2) == 0)
+						if (getRandomBoolean())
 						{
 							autoChat(npc, Text[9].replace("PLAYERNAME", player.getName()));
 						}
@@ -443,7 +446,7 @@ public class SagasSuperClass extends Quest
 		if (st2 != null)
 		{
 			int cond = st2.getCond();
-			QuestState st = player.getQuestState(qn);
+			QuestState st = player.getQuestState(getName());
 			int npcId = npc.getId();
 			if ((npcId == Mob[2]) && (st == st2) && (cond == 17))
 			{
@@ -482,7 +485,7 @@ public class SagasSuperClass extends Quest
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = "";
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		int npcId = npc.getId();
 		if (st != null)
 		{
@@ -554,7 +557,7 @@ public class SagasSuperClass extends Quest
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
 		int npcId = npc.getId();
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		for (int Archon_Minion = 21646; Archon_Minion < 21652; Archon_Minion++)
 		{
 			if (npcId == Archon_Minion)
@@ -562,7 +565,7 @@ public class SagasSuperClass extends Quest
 				L2Party party = player.getParty();
 				if (party != null)
 				{
-					L2FastList<QuestState> PartyQuestMembers = new L2FastList<>();
+					List<QuestState> partyQuestMembers = new ArrayList<>();
 					for (L2PcInstance player1 : party.getMembers())
 					{
 						QuestState st1 = findQuest(player1);
@@ -570,13 +573,13 @@ public class SagasSuperClass extends Quest
 						{
 							if (st1.isCond(15))
 							{
-								PartyQuestMembers.add(st1);
+								partyQuestMembers.add(st1);
 							}
 						}
 					}
-					if (PartyQuestMembers.size() > 0)
+					if (partyQuestMembers.size() > 0)
 					{
-						QuestState st2 = PartyQuestMembers.get(getRandom(PartyQuestMembers.size()));
+						QuestState st2 = partyQuestMembers.get(getRandom(partyQuestMembers.size()));
 						giveHalishaMark(st2);
 					}
 				}
@@ -744,7 +747,7 @@ public class SagasSuperClass extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st != null)
 		{
 			int npcId = npc.getId();

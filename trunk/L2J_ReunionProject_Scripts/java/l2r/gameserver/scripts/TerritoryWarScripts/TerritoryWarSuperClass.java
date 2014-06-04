@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -19,6 +19,8 @@
 package l2r.gameserver.scripts.TerritoryWarScripts;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import l2r.gameserver.instancemanager.CastleManager;
 import l2r.gameserver.instancemanager.GlobalVariablesManager;
@@ -40,7 +42,6 @@ import l2r.gameserver.scripts.quests.Q00147_PathtoBecominganEliteMercenary;
 import l2r.gameserver.scripts.quests.Q00148_PathtoBecominganExaltedMercenary;
 import l2r.gameserver.scripts.quests.Q00176_StepsForHonor;
 import l2r.gameserver.util.Util;
-import l2r.util.L2FastMap;
 
 /**
  * Territory War quests superclass.
@@ -48,9 +49,9 @@ import l2r.util.L2FastMap;
  */
 public class TerritoryWarSuperClass extends Quest
 {
-	private static L2FastMap<Integer, TerritoryWarSuperClass> _forTheSakeScripts = new L2FastMap<>();
-	private static L2FastMap<Integer, TerritoryWarSuperClass> _protectTheScripts = new L2FastMap<>();
-	private static L2FastMap<Integer, TerritoryWarSuperClass> _killTheScripts = new L2FastMap<>();
+	private static Map<Integer, TerritoryWarSuperClass> _forTheSakeScripts = new HashMap<>();
+	private static Map<Integer, TerritoryWarSuperClass> _protectTheScripts = new HashMap<>();
+	private static Map<Integer, TerritoryWarSuperClass> _killTheScripts = new HashMap<>();
 	
 	// "For the Sake of the Territory ..." quests variables
 	public int CATAPULT_ID;

@@ -1,26 +1,27 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.quests;
 
+import java.util.function.Function;
+
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.interfaces.IProcedure;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -32,33 +33,6 @@ import l2r.gameserver.util.Util;
  */
 public final class Q10290_LandDragonConqueror extends Quest
 {
-	public class RewardCheck implements IProcedure<L2PcInstance, Boolean>
-	{
-		private final L2Npc _npc;
-		
-		public RewardCheck(L2Npc npc)
-		{
-			_npc = npc;
-		}
-		
-		@Override
-		public Boolean execute(L2PcInstance member)
-		{
-			if (Util.checkIfInRange(8000, _npc, member, false))
-			{
-				QuestState st = member.getQuestState(getName());
-				
-				if ((st != null) && st.isCond(1) && st.hasQuestItems(SHABBY_NECKLACE))
-				{
-					st.takeItems(SHABBY_NECKLACE, -1);
-					st.giveItems(MIRACLE_NECKLACE, 1);
-					st.setCond(2, true);
-				}
-			}
-			return true;
-		}
-	}
-	
 	// NPC
 	private static final int THEODRIC = 30755;
 	
@@ -110,14 +84,29 @@ public final class Q10290_LandDragonConqueror extends Quest
 			return super.onKill(npc, player, isSummon);
 		}
 		
+		Function<L2PcInstance, Boolean> rewardCheck = p -> {
+			if (Util.checkIfInRange(8000, npc, p, false))
+			{
+				QuestState st = p.getQuestState(getName());
+				
+				if ((st != null) && st.isCond(1) && st.hasQuestItems(SHABBY_NECKLACE))
+				{
+					st.takeItems(SHABBY_NECKLACE, -1);
+					st.giveItems(MIRACLE_NECKLACE, 1);
+					st.setCond(2, true);
+				}
+			}
+			return true;
+		};
+		
 		// rewards go only to command channel, not to a single party or player (retail Freya AI)
 		if (player.getParty().isInCommandChannel())
 		{
-			player.getParty().getCommandChannel().forEachMember(new RewardCheck(npc));
+			player.getParty().getCommandChannel().forEachMember(rewardCheck);
 		}
 		else
 		{
-			player.getParty().forEachMember(new RewardCheck(npc));
+			player.getParty().forEachMember(rewardCheck);
 		}
 		
 		return super.onKill(npc, player, isSummon);
