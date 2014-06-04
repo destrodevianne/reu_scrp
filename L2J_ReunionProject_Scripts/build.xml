@@ -16,15 +16,15 @@
 	</path>
 
 	<target name="checkRequirements" description="Check Requirements.">
-		<fail message="Ant 1.8.2 is required. But your version is ${ant.version} and if you are using Eclipse probably is outdated.">
+		<fail message="Ant 1.9.1 is required. But your version is ${ant.version} and if you are using Eclipse probably is outdated.">
 			<condition>
 				<not>
-					<antversion atleast="1.8.2" />
+					<antversion atleast="1.9.1" />
 				</not>
 			</condition>
 		</fail>
-		<available classname="java.lang.AutoCloseable" property="JDK7.present" />
-		<fail unless="JDK7.present" message="Java 1.7 is required. But your version is Java ${ant.java.version} and probably JDK is not installed." />
+		<available classname="java.util.stream.Stream" property="JDK8.present" />
+		<fail unless="JDK8.present" message="Java 1.8 is required. But your version is Java ${ant.java.version} and probably JDK is not installed." />
 	</target>
 
 	<target name="init" depends="checkRequirements" description="Create the output directories.">
@@ -33,18 +33,10 @@
 	</target>
 
 	<target name="compile" depends="init" description="Compile the source.">
-		<javac destdir="${build.classes}" debug="true" debuglevel="lines,vars,source" includeantruntime="false" source="1.7" target="1.7">
+		<javac destdir="${build.classes}" debug="true" debuglevel="lines,vars,source" includeantruntime="false" source="1.8" target="1.8">
 			<src path="${src}" />
 			<classpath refid="classpath" />
 		</javac>
-		<echo message="Protecting Reunion Scripts...." />
-		<java classname="ru.catssoftware.CatsByteGuard">
-			<arg value="${build.classes}" />
-			<classpath>
-				<path location="CatsByteGuard.jar"/>
-			</classpath>
-		</java>
-		<echo message="Protecting Reunion Scripts Done...." />
 	</target>
 
 	<target name="jar" depends="compile" description="Create the jar file">

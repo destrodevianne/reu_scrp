@@ -1,18 +1,24 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.SagasScripts;
+
+import l2r.gameserver.model.Location;
 
 /**
  * Saga of the Elemental Master (92)
@@ -20,13 +26,9 @@ package l2r.gameserver.scripts.SagasScripts;
  */
 public class SagaOfTheElementalMaster extends SagasSuperClass
 {
-	public static String qn1 = "92_SagaOfTheElementalMaster";
-	public static int qnu = 92;
-	public static String qna = "Saga of the Elemental Master";
-	
 	public SagaOfTheElementalMaster()
 	{
-		super(qnu, qn1, qna);
+		super(92, "92_SagaOfTheElementalMaster", "Saga of the Elemental Master");
 		NPC = new int[]
 		{
 			30174,
@@ -63,7 +65,6 @@ public class SagaOfTheElementalMaster extends SagasSuperClass
 			27241,
 			27311
 		};
-		qn = qn1;
 		classid = new int[]
 		{
 			104
@@ -72,23 +73,11 @@ public class SagaOfTheElementalMaster extends SagasSuperClass
 		{
 			0x1c
 		};
-		X = new int[]
+		npcSpawnLocations = new Location[]
 		{
-			161719,
-			124376,
-			124355
-		};
-		Y = new int[]
-		{
-			-92823,
-			82127,
-			82155
-		};
-		Z = new int[]
-		{
-			-1893,
-			-2796,
-			-2803
+			new Location(161719, -92823, -1893),
+			new Location(124376, 82127, -2796),
+			new Location(124355, 82155, -2803)
 		};
 		Text = new String[]
 		{

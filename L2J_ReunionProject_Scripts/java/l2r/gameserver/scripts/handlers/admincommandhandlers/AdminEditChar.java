@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,7 +44,6 @@ import l2r.gameserver.model.actor.L2Summon;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2PetInstance;
 import l2r.gameserver.model.base.ClassId;
-import l2r.gameserver.model.interfaces.IProcedure;
 import l2r.gameserver.network.L2GameClient;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.ExBrExtraUserInfo;
@@ -56,7 +55,6 @@ import l2r.gameserver.network.serverpackets.PartySmallWindowDeleteAll;
 import l2r.gameserver.network.serverpackets.SetSummonRemainTime;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.network.serverpackets.UserInfo;
-import l2r.gameserver.util.Comparators;
 import l2r.gameserver.util.HtmlUtil;
 import l2r.gameserver.util.Util;
 import l2r.util.StringUtil;
@@ -905,30 +903,22 @@ public class AdminEditChar implements IAdminCommandHandler
 	
 	private void listCharacters(L2PcInstance activeChar, int page)
 	{
-		final L2PcInstance[] players = L2World.getInstance().getPlayersSortedBy(Comparators.PLAYER_UPTIME_COMPARATOR);
+		final L2PcInstance[] players = L2World.getInstance().getPlayersSortedBy(Comparator.comparingLong(L2PcInstance::getUptime));
 		
 		final NpcHtmlMessage html = new NpcHtmlMessage(5);
 		html.setFile(activeChar.getHtmlPrefix(), "data/html/admin/charlist.htm");
 		
-		final PageResult result = HtmlUtil.createPage(players, page, 20, new IProcedure<Integer, String>()
+		final PageResult result = HtmlUtil.createPage(players, page, 20, i ->
 		{
-			@Override
-			public String execute(Integer i)
-			{
-				return "<td align=center><a action=\"bypass -h admin_show_characters " + i + "\">Page " + (i + 1) + "</a></td>";
-			}
-		}, new IProcedure<L2PcInstance, String>()
+			return "<td align=center><a action=\"bypass -h admin_show_characters " + i + "\">Page " + (i + 1) + "</a></td>";
+		}, player ->
 		{
-			@Override
-			public String execute(L2PcInstance player)
-			{
-				StringBuilder sb = new StringBuilder();
-				sb.append("<tr>");
-				sb.append("<td width=80><a action=\"bypass -h admin_character_info " + player.getName() + "\">" + player.getName() + "</a></td>");
-				sb.append("<td width=110>" + ClassListData.getInstance().getClass(player.getClassId()).getClientCode() + "</td><td width=40>" + player.getLevel() + "</td>");
-				sb.append("</tr>");
-				return sb.toString();
-			}
+			StringBuilder sb = new StringBuilder();
+			sb.append("<tr>");
+			sb.append("<td width=80><a action=\"bypass -h admin_character_info " + player.getName() + "\">" + player.getName() + "</a></td>");
+			sb.append("<td width=110>" + ClassListData.getInstance().getClass(player.getClassId()).getClientCode() + "</td><td width=40>" + player.getLevel() + "</td>");
+			sb.append("</tr>");
+			return sb.toString();
 		});
 		
 		if (result.getPages() > 0)
@@ -1330,14 +1320,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		}
 		
 		List<String> keys = new ArrayList<>(dualboxIPs.keySet());
-		Collections.sort(keys, new Comparator<String>()
-		{
-			@Override
-			public int compare(String left, String right)
-			{
-				return dualboxIPs.get(left).compareTo(dualboxIPs.get(right));
-			}
-		});
+		Collections.sort(keys, (left, right) -> dualboxIPs.get(left).compareTo(dualboxIPs.get(right)));
 		Collections.reverse(keys);
 		
 		final StringBuilder results = new StringBuilder();
@@ -1394,14 +1377,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		}
 		
 		List<IpPack> keys = new ArrayList<>(dualboxIPs.keySet());
-		Collections.sort(keys, new Comparator<IpPack>()
-		{
-			@Override
-			public int compare(IpPack left, IpPack right)
-			{
-				return dualboxIPs.get(left).compareTo(dualboxIPs.get(right));
-			}
-		});
+		Collections.sort(keys, (left, right) -> dualboxIPs.get(left).compareTo(dualboxIPs.get(right)));
 		Collections.reverse(keys);
 		
 		final StringBuilder results = new StringBuilder();

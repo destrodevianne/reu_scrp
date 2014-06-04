@@ -1,18 +1,24 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.SagasScripts;
+
+import l2r.gameserver.model.Location;
 
 /**
  * Saga of the Ghost Hunter (81)
@@ -20,13 +26,9 @@ package l2r.gameserver.scripts.SagasScripts;
  */
 public class SagaOfTheGhostHunter extends SagasSuperClass
 {
-	public static String qn1 = "81_SagaOfTheGhostHunter";
-	public static int qnu = 81;
-	public static String qna = "Saga of the Ghost Hunter";
-	
 	public SagaOfTheGhostHunter()
 	{
-		super(qnu, qn1, qna);
+		super(81, "81_SagaOfTheGhostHunter", "Saga of the Ghost Hunter");
 		NPC = new int[]
 		{
 			31603,
@@ -63,7 +65,6 @@ public class SagaOfTheGhostHunter extends SagasSuperClass
 			27230,
 			27304
 		};
-		qn = qn1;
 		classid = new int[]
 		{
 			108
@@ -72,23 +73,11 @@ public class SagaOfTheGhostHunter extends SagasSuperClass
 		{
 			0x24
 		};
-		X = new int[]
+		npcSpawnLocations = new Location[]
 		{
-			164650,
-			47391,
-			47429
-		};
-		Y = new int[]
-		{
-			-74121,
-			-56929,
-			-56923
-		};
-		Z = new int[]
-		{
-			-2871,
-			-2370,
-			-2383
+			new Location(164650, -74121, -2871),
+			new Location(47391, -56929, -2370),
+			new Location(47429, -56923, -2383)
 		};
 		Text = new String[]
 		{

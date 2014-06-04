@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2004-2013 L2J DataPack
- * 
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,7 +43,6 @@ import l2r.gameserver.network.serverpackets.InventoryUpdate;
 import l2r.gameserver.network.serverpackets.MagicSkillUse;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.network.serverpackets.SystemMessage;
-import l2r.util.L2FastList;
 
 /**
  * @author DS
@@ -57,11 +56,11 @@ public class OlympiadManagerLink implements IBypassHandler
 		"olybuff",
 		"olympiad"
 	};
-	
+
 	private static final String FEWER_THAN = "Fewer than " + String.valueOf(Config.ALT_OLY_REG_DISPLAY);
 	private static final String MORE_THAN = "More than " + String.valueOf(Config.ALT_OLY_REG_DISPLAY);
 	private static final int GATE_PASS = Config.ALT_OLY_COMP_RITEM;
-	
+
 	@Override
 	public final boolean useBypass(String command, L2PcInstance activeChar, L2Character target)
 	{
@@ -69,7 +68,7 @@ public class OlympiadManagerLink implements IBypassHandler
 		{
 			return false;
 		}
-		
+
 		try
 		{
 			if (command.toLowerCase().startsWith("olympiaddesc"))
@@ -101,7 +100,7 @@ public class OlympiadManagerLink implements IBypassHandler
 					activeChar.sendPacket(html);
 					return false;
 				}
-				
+
 				int passes;
 				int val = Integer.parseInt(command.substring(14));
 				switch (val)
@@ -203,11 +202,11 @@ public class OlympiadManagerLink implements IBypassHandler
 						if (passes > 0)
 						{
 							L2ItemInstance item = activeChar.getInventory().addItem("Olympiad", GATE_PASS, passes, activeChar, target);
-							
+
 							InventoryUpdate iu = new InventoryUpdate();
 							iu.addModifiedItem(item);
 							activeChar.sendPacket(iu);
-							
+
 							final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 							sm.addLong(passes);
 							sm.addItemName(item);
@@ -228,28 +227,28 @@ public class OlympiadManagerLink implements IBypassHandler
 				{
 					return false;
 				}
-				
+
 				NpcHtmlMessage html = new NpcHtmlMessage(target.getObjectId());
 				String[] params = command.split(" ");
-				
+
 				if (params[1] == null)
 				{
 					_log.warn("Olympiad Buffer Warning: npcId = " + ((L2Npc) target).getId() + " has no buffGroup set in the bypass for the buff selected.");
 					return false;
 				}
 				int buffGroup = Integer.parseInt(params[1]);
-				
+
 				NpcBufferData npcBuffGroupInfo = NpcBufferTable.getInstance().getSkillInfo(((L2Npc) target).getId(), buffGroup);
-				
+
 				if (npcBuffGroupInfo == null)
 				{
 					_log.warn("Olympiad Buffer Warning: npcId = " + ((L2Npc) target).getId() + " Location: " + target.getX() + ", " + target.getY() + ", " + target.getZ() + " Player: " + activeChar.getName() + " has tried to use skill group (" + buffGroup + ") not assigned to the NPC Buffer!");
 					return false;
 				}
-				
+
 				L2Skill skill = npcBuffGroupInfo.getSkill().getSkill();
 				target.setTarget(activeChar);
-				
+
 				if (activeChar.olyBuff > 0)
 				{
 					if (skill != null)
@@ -265,7 +264,7 @@ public class OlympiadManagerLink implements IBypassHandler
 						}
 					}
 				}
-				
+
 				if (activeChar.olyBuff > 0)
 				{
 					html.setFile(activeChar.getHtmlPrefix(), activeChar.olyBuff == 5 ? Olympiad.OLYMPIAD_HTML_PATH + "olympiad_buffs.htm" : Olympiad.OLYMPIAD_HTML_PATH + "olympiad_5buffs.htm");
@@ -283,9 +282,9 @@ public class OlympiadManagerLink implements IBypassHandler
 			else if (command.toLowerCase().startsWith("olympiad"))
 			{
 				int val = Integer.parseInt(command.substring(9, 10));
-				
+
 				NpcHtmlMessage reply = new NpcHtmlMessage(target.getObjectId());
-				
+
 				switch (val)
 				{
 					case 2: // show rank for a specific class
@@ -293,9 +292,9 @@ public class OlympiadManagerLink implements IBypassHandler
 						int classId = Integer.parseInt(command.substring(11));
 						if (((classId >= 88) && (classId <= 118)) || ((classId >= 131) && (classId <= 134)) || (classId == 136))
 						{
-							L2FastList<String> names = Olympiad.getInstance().getClassLeaderBoard(classId);
+							List<String> names = Olympiad.getInstance().getClassLeaderBoard(classId);
 							reply.setFile(activeChar.getHtmlPrefix(), Olympiad.OLYMPIAD_HTML_PATH + "olympiad_ranking.htm");
-							
+
 							int index = 1;
 							for (String name : names)
 							{
@@ -312,7 +311,7 @@ public class OlympiadManagerLink implements IBypassHandler
 								reply.replace("%place" + index + "%", "");
 								reply.replace("%rank" + index + "%", "");
 							}
-							
+
 							reply.replace("%objectId%", String.valueOf(target.getObjectId()));
 							activeChar.sendPacket(reply);
 						}
@@ -342,10 +341,10 @@ public class OlympiadManagerLink implements IBypassHandler
 		{
 			_log.warn("Exception in " + getClass().getSimpleName(), e);
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public final String[] getBypassList()
 	{

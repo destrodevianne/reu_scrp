@@ -1,18 +1,24 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.SagasScripts;
+
+import l2r.gameserver.model.Location;
 
 /**
  * Saga of the Storm Screamer (90)
@@ -20,13 +26,9 @@ package l2r.gameserver.scripts.SagasScripts;
  */
 public class SagaOfTheStormScreamer extends SagasSuperClass
 {
-	public static String qn1 = "90_SagaOfTheStormScreamer";
-	public static int qnu = 90;
-	public static String qna = "Saga of the Storm Screamer";
-	
 	public SagaOfTheStormScreamer()
 	{
-		super(qnu, qn1, qna);
+		super(90, "90_SagaOfTheStormScreamer", "Saga of the Storm Screamer");
 		NPC = new int[]
 		{
 			30175,
@@ -63,7 +65,6 @@ public class SagaOfTheStormScreamer extends SagasSuperClass
 			27239,
 			27256
 		};
-		qn = qn1;
 		classid = new int[]
 		{
 			110
@@ -72,23 +73,11 @@ public class SagaOfTheStormScreamer extends SagasSuperClass
 		{
 			0x28
 		};
-		X = new int[]
+		npcSpawnLocations = new Location[]
 		{
-			161719,
-			124376,
-			124355
-		};
-		Y = new int[]
-		{
-			-92823,
-			82127,
-			82155
-		};
-		Z = new int[]
-		{
-			-1893,
-			-2796,
-			-2803
+			new Location(161719, -92823, -1893),
+			new Location(124376, 82127, -2796),
+			new Location(124355, 82155, -2803)
 		};
 		Text = new String[]
 		{
