@@ -73,36 +73,23 @@ public class Blow implements ISkillHandler
 			
 			if (!skillIsEvaded && Formulas.calcBlowSuccess(activeChar, target, skill))
 			{
-				final byte reflect = Formulas.calcSkillReflect(target, skill);
-				
 				if (skill.hasEffects())
 				{
-					if (reflect == Formulas.SKILL_REFLECT_SUCCEED)
+					final byte shld = Formulas.calcShldUse(activeChar, target, skill);
+					target.stopSkillEffects(skill.getId());
+					if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, ss, sps, bss))
 					{
-						activeChar.stopSkillEffects(skill.getId());
-						skill.getEffects(target, activeChar);
+						skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss));
 						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(skill);
-						activeChar.sendPacket(sm);
+						target.sendPacket(sm);
 					}
 					else
 					{
-						final byte shld = Formulas.calcShldUse(activeChar, target, skill);
-						target.stopSkillEffects(skill.getId());
-						if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, ss, sps, bss))
-						{
-							skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss));
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-							sm.addSkillName(skill);
-							target.sendPacket(sm);
-						}
-						else
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_RESISTED_YOUR_S2);
-							sm.addCharName(target);
-							sm.addSkillName(skill);
-							activeChar.sendPacket(sm);
-						}
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_RESISTED_YOUR_S2);
+						sm.addCharName(target);
+						sm.addSkillName(skill);
+						activeChar.sendPacket(sm);
 					}
 				}
 				
@@ -140,27 +127,6 @@ public class Blow implements ISkillHandler
 				
 				target.reduceCurrentHp(damage, activeChar, skill);
 				
-				// vengeance reflected damage
-				if ((reflect & Formulas.SKILL_REFLECT_VENGEANCE) != 0)
-				{
-					if (target.isPlayer())
-					{
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.COUNTERED_C1_ATTACK);
-						sm.addCharName(activeChar);
-						target.sendPacket(sm);
-					}
-					if (activeChar.isPlayer())
-					{
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_PERFORMING_COUNTERATTACK);
-						sm.addCharName(target);
-						activeChar.sendPacket(sm);
-					}
-					// Formula from Diego Vargas post: http://www.l2guru.com/forum/showthread.php?p=3122630
-					// 1189 x Your PATK / PDEF of target
-					double vegdamage = ((1189 * target.getPAtk(activeChar)) / activeChar.getPDef(target));
-					activeChar.reduceCurrentHp(vegdamage, target, skill);
-				}
-				
 				// Manage attack or cast break of the target (calculating rate, sending message...)
 				if (!target.isRaid() && Formulas.calcAtkBreak(target, damage))
 				{
@@ -171,9 +137,11 @@ public class Blow implements ISkillHandler
 				if (activeChar.isPlayer())
 				{
 					L2PcInstance activePlayer = activeChar.getActingPlayer();
-					
 					activePlayer.sendDamageMessage(target, (int) damage, false, true, false);
 				}
+				
+				// Check if damage should be reflected
+				Formulas.calcDamageReflected(activeChar, target, skill, damage);
 			}
 			
 			// Sending system messages
