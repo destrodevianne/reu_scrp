@@ -70,6 +70,9 @@ public class CpDamPercent implements ISkillHandler
 			skill.getEffects(activeChar, target, new Env(shld, ss, sps, bss));
 			activeChar.sendDamageMessage(target, damage, false, false, false);
 			target.setCurrentCp(target.getCurrentCp() - damage);
+			
+			// Check if damage should be reflected
+			Formulas.calcDamageReflected(activeChar, target, skill, damage);
 		}
 		
 		activeChar.setChargedShot(bss ? ShotType.BLESSED_SPIRITSHOTS : ShotType.SPIRITSHOTS, false);

@@ -108,35 +108,21 @@ public class Pdam implements ISkillHandler
 			}
 			
 			final boolean skillIsEvaded = Formulas.calcPhysicalSkillEvasion(target, skill);
-			final byte reflect = Formulas.calcSkillReflect(target, skill);
 			
 			if (!skillIsEvaded)
 			{
 				if (skill.hasEffects())
 				{
 					L2Effect[] effects;
-					if ((reflect & Formulas.SKILL_REFLECT_SUCCEED) != 0)
+					
+					// activate attacked effects, if any
+					target.stopSkillEffects(skill.getId());
+					effects = skill.getEffects(activeChar, target, new Env(shld, false, false, false));
+					if ((effects != null) && (effects.length > 0))
 					{
-						activeChar.stopSkillEffects(skill.getId());
-						effects = skill.getEffects(target, activeChar);
-						if ((effects != null) && (effects.length > 0))
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-							sm.addSkillName(skill);
-							activeChar.sendPacket(sm);
-						}
-					}
-					else
-					{
-						// activate attacked effects, if any
-						target.stopSkillEffects(skill.getId());
-						effects = skill.getEffects(activeChar, target, new Env(shld, false, false, false));
-						if ((effects != null) && (effects.length > 0))
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-							sm.addSkillName(skill);
-							target.sendPacket(sm);
-						}
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+						sm.addSkillName(skill);
+						target.sendPacket(sm);
 					}
 				}
 				
@@ -165,26 +151,8 @@ public class Pdam implements ISkillHandler
 					
 					target.reduceCurrentHp(damage, activeChar, skill);
 					
-					// vengeance reflected damage
-					if ((reflect & Formulas.SKILL_REFLECT_VENGEANCE) != 0)
-					{
-						if (target.isPlayer())
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.COUNTERED_C1_ATTACK);
-							sm.addCharName(activeChar);
-							target.sendPacket(sm);
-						}
-						if (activeChar.isPlayer())
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_PERFORMING_COUNTERATTACK);
-							sm.addCharName(target);
-							activeChar.sendPacket(sm);
-						}
-						// Formula from Diego Vargas post: http://www.l2guru.com/forum/showthread.php?p=3122630
-						// 1189 x Your PATK / PDEF of target
-						double vegdamage = ((1189 * target.getPAtk(activeChar)) / activeChar.getPDef(target));
-						activeChar.reduceCurrentHp(vegdamage, target, skill);
-					}
+					// Check if damage should be reflected
+					Formulas.calcDamageReflected(activeChar, target, skill, damage);
 				}
 				else
 				{
