@@ -235,6 +235,7 @@ public class QuestLoader
 		Q00295_DreamingOfTheSkies.class,
 		Q00296_TarantulasSpiderSilk.class,
 		Q00297_GatekeepersFavor.class,
+		Q00298_LizardmensConspiracy.class,
 		Q00300_HuntingLetoLizardman.class,
 		Q00303_CollectArrowheads.class,
 		Q00306_CrystalOfFireAndIce.class,
