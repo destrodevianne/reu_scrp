@@ -79,6 +79,14 @@ public class AreaSummon implements ITargetTypeHandler
 				continue;
 			}
 			
+			if (obj.isPlayer())
+			{
+				if (obj.getActingPlayer().getPvpFlag() == 0)
+				{
+					continue;
+				}
+			}
+			
 			if (targetList.size() >= maxTargets)
 			{
 				break;

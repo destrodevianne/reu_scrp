@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
- * 
+ * Copyright (C) 2004-2014 L2J DataPack
+ *
  * This file is part of L2J DataPack.
- * 
+ *
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,7 +41,7 @@ public class Q00297_GatekeepersFavor extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 15;
 	private static final int STARSTONE_COUT = 20;
-	
+
 	public Q00297_GatekeepersFavor()
 	{
 		super(297, Q00297_GatekeepersFavor.class.getSimpleName(), "Gatekeeper's Favor");
@@ -50,7 +50,7 @@ public class Q00297_GatekeepersFavor extends Quest
 		addKillId(WHINSTONE_GOLEM);
 		registerQuestItems(STARSTONE);
 	}
-	
+
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -66,7 +66,7 @@ public class Q00297_GatekeepersFavor extends Quest
 		}
 		return null;
 	}
-	
+
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
@@ -85,7 +85,7 @@ public class Q00297_GatekeepersFavor extends Quest
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-	
+
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
@@ -95,7 +95,7 @@ public class Q00297_GatekeepersFavor extends Quest
 		{
 			return htmltext;
 		}
-		
+
 		switch (st.getState())
 		{
 			case State.CREATED:
