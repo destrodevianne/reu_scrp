@@ -144,6 +144,11 @@ public final class Kief extends AbstractNpcAI
 				}
 				break;
 			}
+			case "bottleInfo":
+			{
+				htmltext = "32354-11g.htm";
+				break;
+			}
 		}
 		return htmltext;
 	}
