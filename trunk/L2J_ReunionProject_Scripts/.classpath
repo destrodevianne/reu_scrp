@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="lib/reunion-events.jar"/>
 	<classpathentry kind="lib" path="lib/reunion-core.jar"/>
 	<classpathentry kind="lib" path="lib/reunion-engine.jar"/>
-	<classpathentry kind="lib" path="lib/reunion-scripts.jar"/>
 	<classpathentry kind="lib" path="lib/reunion-interface.jar"/>
 	<classpathentry kind="lib" path="lib/reunion-protection.jar"/>
 	<classpathentry kind="lib" path="lib/L2JGeoAbstraction.jar"/>
