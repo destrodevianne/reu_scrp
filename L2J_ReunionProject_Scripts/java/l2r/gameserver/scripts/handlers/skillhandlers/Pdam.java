@@ -23,7 +23,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import l2r.Config;
-import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.ShotType;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
@@ -177,37 +176,6 @@ public class Pdam implements ISkillHandler
 				
 				// Possibility of a lethal strike despite skill is evaded
 				Formulas.calcLethalHit(activeChar, target, skill);
-			}
-			
-			if (activeChar.isPlayer())
-			{
-				int soulMasteryLevel = activeChar.getSkillLevel(467);
-				if (soulMasteryLevel > 0)
-				{
-					L2Skill soulmastery = SkillData.getInstance().getInfo(467, soulMasteryLevel);
-					if (soulmastery != null)
-					{
-						if (activeChar.getActingPlayer().getChargedSouls() < soulmastery.getNumSouls())
-						{
-							int count = 0;
-							
-							if ((activeChar.getActingPlayer().getChargedSouls() + skill.getNumSouls()) <= soulmastery.getNumSouls())
-							{
-								count = skill.getNumSouls();
-							}
-							else
-							{
-								count = soulmastery.getNumSouls() - activeChar.getActingPlayer().getChargedSouls();
-							}
-							activeChar.getActingPlayer().increaseSouls(count);
-						}
-						else
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SOUL_CANNOT_BE_INCREASED_ANYMORE);
-							activeChar.getActingPlayer().sendPacket(sm);
-						}
-					}
-				}
 			}
 		}
 		
