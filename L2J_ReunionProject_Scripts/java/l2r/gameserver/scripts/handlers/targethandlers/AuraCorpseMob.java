@@ -40,27 +40,24 @@ public class AuraCorpseMob implements ITargetTypeHandler
 		// Go through the L2Character _knownList
 		final Collection<L2Character> objs = activeChar.getKnownList().getKnownCharactersInRadius(skill.getAffectRange());
 		int maxTargets = skill.getAffectLimit();
-		if (objs != null)
+		for (L2Character obj : objs)
 		{
-			for (L2Character obj : objs)
+			if (obj.isAttackable() && obj.isDead())
 			{
-				if (obj.isAttackable() && obj.isDead())
+				if (onlyFirst)
 				{
-					if (onlyFirst)
+					return new L2Character[]
 					{
-						return new L2Character[]
-						{
-							obj
-						};
-					}
-					
-					if (targetList.size() >= maxTargets)
-					{
-						break;
-					}
-					
-					targetList.add(obj);
+						obj
+					};
 				}
+				
+				if (targetList.size() >= maxTargets)
+				{
+					break;
+				}
+				
+				targetList.add(obj);
 			}
 		}
 		return targetList.toArray(new L2Character[targetList.size()]);
