@@ -40,6 +40,11 @@ public class AreaCorpseMob implements ITargetTypeHandler
 	public L2Object[] getTargetList(L2Skill skill, L2Character activeChar, boolean onlyFirst, L2Character target)
 	{
 		List<L2Character> targetList = new ArrayList<>();
+		if (target == null)
+		{
+			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
+			return _emptyTargetList;
+		}
 		if (!target.isAttackable() || !target.isDead())
 		{
 			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
