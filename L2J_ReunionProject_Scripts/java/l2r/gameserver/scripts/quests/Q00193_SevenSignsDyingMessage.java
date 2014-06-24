@@ -18,6 +18,9 @@
  */
 package l2r.gameserver.scripts.quests;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.model.actor.L2Npc;
@@ -49,7 +52,7 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 	private static final int SCULPTURE_OF_DOUBT = 14353;
 	// Misc
 	private static final int MIN_LEVEL = 79;
-	private boolean isBusy = false;
+	private static Map<Integer, L2MonsterInstance> spawns = new HashMap<>();
 	// Skill
 	private static SkillHolder NPC_HEAL = new SkillHolder(4065, 8);
 	
@@ -69,7 +72,6 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 		{
 			if (!npc.isDead())
 			{
-				isBusy = false;
 				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.NEXT_TIME_YOU_WILL_NOT_ESCAPE));
 				npc.deleteMe();
 			}
@@ -157,12 +159,12 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 				htmltext = "32569-14.html";
 				if (st.isCond(4))
 				{
-					isBusy = true;
 					NpcSay ns = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_THAT_STRANGER_MUST_BE_DEFEATED_HERE_IS_THE_ULTIMATE_HELP);
 					ns.addStringParameter(player.getName());
 					npc.broadcastPacket(ns);
 					startQuestTimer("heal", 30000 - getRandom(20000), npc, player);
 					L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, 82425, 47232, -3216, 0, false, 0, false);
+					spawns.put(player.getObjectId(), monster);
 					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getId(), NpcStringId.YOU_ARE_NOT_THE_OWNER_OF_THAT_ITEM));
 					monster.setRunning();
 					monster.addDamageHate(player, 0, 999);
@@ -225,7 +227,12 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 			st.setCond(5);
 		}
 		
-		isBusy = false;
+		final L2MonsterInstance monster = spawns.get(player.getObjectId());
+		if ((monster != null) && (monster.getObjectId() == npc.getObjectId()))
+		{
+			spawns.remove(player.getObjectId());
+		}
+		
 		cancelQuestTimers("despawn");
 		cancelQuestTimers("heal");
 		npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_YOU_MAY_HAVE_WON_THIS_TIME_BUT_NEXT_TIME_I_WILL_SURELY_CAPTURE_YOU).addStringParameter(partyMember.getName()));
@@ -292,7 +299,8 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 							}
 							case 4:
 							{
-								if (isBusy)
+								final L2MonsterInstance monster = spawns.get(player.getObjectId());
+								if ((monster != null) && !monster.isDead())
 								{
 									htmltext = "32569-13.html";
 								}
