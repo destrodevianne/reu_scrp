@@ -18,6 +18,9 @@
  */
 package l2r.gameserver.scripts.quests;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
@@ -47,7 +50,7 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 	private static final int SACRED_SWORD_OF_EINHASAD = 15310;
 	// Misc
 	private static final int MIN_LEVEL = 79;
-	private boolean isBusy = false;
+	private static Map<Integer, L2Npc> spawns = new HashMap<>();
 	
 	public Q00196_SevenSignsSealOfTheEmperor()
 	{
@@ -63,7 +66,12 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 	{
 		if ((npc.getId() == MERCHANT_OF_MAMMON) && "DESPAWN".equals(event))
 		{
-			isBusy = false;
+			final L2Npc merchant = spawns.get(player.getObjectId());
+			if ((merchant != null) && (merchant.getObjectId() == npc.getObjectId()))
+			{
+				spawns.remove(player.getObjectId());
+			}
+			
 			npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.THE_ANCIENT_PROMISE_TO_THE_EMPEROR_HAS_BEEN_FULFILLED));
 			npc.deleteMe();
 			return super.onAdvEvent(event, npc, player);
@@ -95,18 +103,19 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 			{
 				if (st.isCond(1))
 				{
-					if (!isBusy)
+					final L2Npc monster = spawns.get(player.getObjectId());
+					if ((monster != null) && !monster.isDead())
 					{
-						isBusy = true;
-						npc.setScriptValue(1);
-						final L2Npc merchant = addSpawn(MERCHANT_OF_MAMMON, 109743, 219975, -3512, 0, false, 0, false);
-						merchant.broadcastPacket(new NpcSay(merchant.getObjectId(), Say2.NPC_ALL, merchant.getId(), NpcStringId.WHO_DARES_SUMMON_THE_MERCHANT_OF_MAMMON));
-						htmltext = "30969-06.html";
-						startQuestTimer("DESPAWN", 120000, merchant, null);
+						htmltext = "30969-07.html";
 					}
 					else
 					{
-						htmltext = "30969-07.html";
+						npc.setScriptValue(1);
+						final L2Npc merchant = addSpawn(MERCHANT_OF_MAMMON, 109743, 219975, -3512, 0, false, 0, false);
+						spawns.put(player.getObjectId(), merchant);
+						merchant.broadcastPacket(new NpcSay(merchant.getObjectId(), Say2.NPC_ALL, merchant.getId(), NpcStringId.WHO_DARES_SUMMON_THE_MERCHANT_OF_MAMMON));
+						htmltext = "30969-06.html";
+						startQuestTimer("DESPAWN", 120000, merchant, null);
 					}
 				}
 				break;
@@ -146,7 +155,11 @@ public final class Q00196_SevenSignsSealOfTheEmperor extends Quest
 					htmltext = event;
 					cancelQuestTimers("DESPAWN");
 					npc.deleteMe();
-					isBusy = false;
+					final L2Npc merchant = spawns.get(player.getObjectId());
+					if ((merchant != null) && (merchant.getObjectId() == npc.getObjectId()))
+					{
+						spawns.remove(player.getObjectId());
+					}
 				}
 				break;
 			}

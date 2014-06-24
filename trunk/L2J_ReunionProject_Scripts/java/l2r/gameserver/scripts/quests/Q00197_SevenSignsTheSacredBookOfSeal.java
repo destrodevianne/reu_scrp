@@ -18,6 +18,9 @@
  */
 package l2r.gameserver.scripts.quests;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.model.actor.L2Npc;
@@ -48,7 +51,7 @@ public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 	private static final int SCULPTURE_OF_DOUBT = 14354;
 	// Misc
 	private static final int MIN_LEVEL = 79;
-	private boolean isBusy = false;
+	private static Map<Integer, L2MonsterInstance> spawns = new HashMap<>();
 	
 	public Q00197_SevenSignsTheSacredBookOfSeal()
 	{
@@ -66,7 +69,12 @@ public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 		{
 			if (!npc.isDead())
 			{
-				isBusy = false;
+				final L2MonsterInstance monster = spawns.get(player.getObjectId());
+				if ((monster != null) && (monster.getObjectId() == npc.getObjectId()))
+				{
+					spawns.remove(player.getObjectId());
+				}
+				
 				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.NEXT_TIME_YOU_WILL_NOT_ESCAPE));
 				npc.deleteMe();
 			}
@@ -167,9 +175,9 @@ public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 			{
 				if (st.isCond(3))
 				{
-					isBusy = true;
 					npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_THAT_STRANGER_MUST_BE_DEFEATED_HERE_IS_THE_ULTIMATE_HELP).addStringParameter(player.getName()));
 					final L2MonsterInstance monster = (L2MonsterInstance) addSpawn(SHILENS_EVIL_THOUGHTS, 152520, -57502, -3408, 0, false, 0, false);
+					spawns.put(player.getObjectId(), monster);
 					monster.broadcastPacket(new NpcSay(monster.getObjectId(), Say2.NPC_ALL, monster.getId(), NpcStringId.YOU_ARE_NOT_THE_OWNER_OF_THAT_ITEM));
 					monster.setRunning();
 					monster.addDamageHate(player, 0, 999);
@@ -237,7 +245,12 @@ public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 			st.setCond(4);
 		}
 		
-		isBusy = false;
+		final L2MonsterInstance monster = spawns.get(player.getObjectId());
+		if ((monster != null) && (monster.getObjectId() == npc.getObjectId()))
+		{
+			spawns.remove(player.getObjectId());
+		}
+		
 		cancelQuestTimers("despawn");
 		npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_YOU_MAY_HAVE_WON_THIS_TIME_BUT_NEXT_TIME_I_WILL_SURELY_CAPTURE_YOU).addStringParameter(partyMember.getName()));
 		return super.onKill(npc, player, isSummon);
@@ -311,7 +324,8 @@ public final class Q00197_SevenSignsTheSacredBookOfSeal extends Quest
 					{
 						if (st.isCond(3))
 						{
-							if (isBusy)
+							final L2MonsterInstance monster = spawns.get(player.getObjectId());
+							if ((monster != null) && !monster.isDead())
 							{
 								htmltext = "32595-05.html";
 							}
