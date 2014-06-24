@@ -72,6 +72,12 @@ public final class Q00193_SevenSignsDyingMessage extends Quest
 		{
 			if (!npc.isDead())
 			{
+				final L2MonsterInstance monster = spawns.get(player.getObjectId());
+				if ((monster != null) && (monster.getObjectId() == npc.getObjectId()))
+				{
+					spawns.remove(player.getObjectId());
+				}
+				
 				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.NEXT_TIME_YOU_WILL_NOT_ESCAPE));
 				npc.deleteMe();
 			}
