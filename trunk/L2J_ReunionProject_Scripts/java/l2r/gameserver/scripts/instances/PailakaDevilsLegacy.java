@@ -50,7 +50,7 @@ public class PailakaDevilsLegacy extends Quest
 	private static final int MIN_LEVEL = 61;
 	private static final int MAX_LEVEL = 67;
 	private static final int EXIT_TIME = 5;
-	private static final int INSTANCE_ID = 44;
+	private static final int TEMPLATE_ID = 44;
 	protected static final int[] TELEPORT =
 	{
 		76428,
@@ -223,7 +223,7 @@ public class PailakaDevilsLegacy extends Quest
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		if (world != null)
 		{
-			if (world.getTemplateId() != INSTANCE_ID)
+			if (world.getTemplateId() == TEMPLATE_ID)
 			{
 				player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
 				return;
@@ -239,7 +239,7 @@ public class PailakaDevilsLegacy extends Quest
 		final int instanceId = InstanceManager.getInstance().createDynamicInstance("PailakaDevilsLegacy.xml");
 		world = new InstanceWorld();
 		world.setInstanceId(instanceId);
-		world.setTemplateId(INSTANCE_ID);
+		world.setTemplateId(TEMPLATE_ID);
 		InstanceManager.getInstance().addWorld(world);
 		
 		world.addAllowed(player.getObjectId());
@@ -588,7 +588,7 @@ public class PailakaDevilsLegacy extends Quest
 		if ((character instanceof L2PcInstance) && !character.isDead() && !character.isTeleporting() && ((L2PcInstance) character).isOnline())
 		{
 			InstanceWorld world = InstanceManager.getInstance().getWorld(character.getInstanceId());
-			if ((world != null) && (world.getTemplateId() == INSTANCE_ID))
+			if ((world != null) && (world.getTemplateId() == TEMPLATE_ID))
 			{
 				ThreadPoolManager.getInstance().scheduleGeneral(new Teleport(character, world.getInstanceId()), 1000);
 			}
