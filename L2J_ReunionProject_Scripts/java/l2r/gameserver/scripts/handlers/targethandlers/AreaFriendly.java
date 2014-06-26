@@ -127,33 +127,31 @@ public class AreaFriendly implements ITargetTypeHandler
 			return false;
 		}
 		
-		if (target.isPlayable())
+		if (activeChar.getActingPlayer().isInSameParty(target.getActingPlayer()))
 		{
-			if ((target != activeChar) && activeChar.isInParty() && target.isInParty())
-			{
-				return (activeChar.getParty().getLeader() == target.getParty().getLeader());
-			}
-			
-			if ((activeChar.getClanId() != 0) && (target.getClanId() != 0))
-			{
-				return (activeChar.getClanId() == target.getClanId());
-			}
-			
-			if ((activeChar.getAllyId() != 0) && (target.getAllyId() != 0))
-			{
-				return (activeChar.getAllyId() == target.getAllyId());
-			}
-			
-			if ((target != activeChar) && (target.getActingPlayer().getPvpFlag() > 0))
-			{
-				return false;
-			}
-			
-			if ((target != activeChar) && (target.getActingPlayer().getKarma() > 0))
-			{
-				return false;
-			}
+			return true;
 		}
+		
+		if (activeChar.getActingPlayer().isInSameClan(target.getActingPlayer()))
+		{
+			return true;
+		}
+		
+		if (activeChar.getActingPlayer().isInSameAlly(target.getActingPlayer()))
+		{
+			return true;
+		}
+		
+		if ((target != activeChar) && (target.getActingPlayer().getPvpFlag() > 0))
+		{
+			return false;
+		}
+		
+		if ((target != activeChar) && (target.getActingPlayer().getKarma() > 0))
+		{
+			return false;
+		}
+		
 		return true;
 	}
 	
