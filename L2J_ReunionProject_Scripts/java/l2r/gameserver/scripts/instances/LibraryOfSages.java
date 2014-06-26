@@ -35,7 +35,7 @@ public class LibraryOfSages extends Quest
 {
 	private static final String qn = "LibraryOfSages";
 	// Values
-	private static final int INSTANCE_ID = 156;
+	private static final int TEMPLATE_ID = 156;
 	// NPC's
 	private static final int Sophia = 32596;
 	private static final int Sophia2 = 32861;
@@ -89,7 +89,7 @@ public class LibraryOfSages extends Quest
 	private void teleportPlayer(L2Npc npc, L2PcInstance player, int[] coords, int instanceId)
 	{
 		InstanceHolder holder = instanceWorlds.get(instanceId);
-		if (holder == null && instanceId > 0)
+		if ((holder == null) && (instanceId > 0))
 		{
 			holder = new InstanceHolder();
 			instanceWorlds.put(instanceId, holder);
@@ -111,7 +111,9 @@ public class LibraryOfSages extends Quest
 		{
 			L2Npc support = addSpawn(Elcadia_Support, player.getX(), player.getY(), player.getZ(), 0, false, 0, false, player.getInstanceId());
 			if (holder != null)
+			{
 				holder.mobs.add(support);
+			}
 			startQuestTimer("check_follow", 3000, support, player);
 		}
 	}
@@ -137,7 +139,7 @@ public class LibraryOfSages extends Quest
 		
 		world = new LibraryOfSagesWorld();
 		world.setInstanceId(instanceId);
-		world.setTemplateId(INSTANCE_ID);
+		world.setTemplateId(TEMPLATE_ID);
 		world.setStatus(0);
 		InstanceManager.getInstance().addWorld(world);
 		
@@ -153,7 +155,9 @@ public class LibraryOfSages extends Quest
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
+		{
 			st = newQuestState(player);
+		}
 		
 		if (event.equalsIgnoreCase("check_follow"))
 		{

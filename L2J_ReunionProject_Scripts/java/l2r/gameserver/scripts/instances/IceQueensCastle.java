@@ -47,7 +47,7 @@ public final class IceQueensCastle extends Quest
 		long storeTime = 0;
 	}
 	
-	private static final int INSTANCEID = 137;
+	private static final int TEMPLATE_ID = 137;
 	// NPCs
 	private static final int FREYA = 18847;
 	private static final int BATTALION_LEADER = 18848;
@@ -204,7 +204,7 @@ public final class IceQueensCastle extends Quest
 		// New instance
 		world = new IQCWorld();
 		world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
-		world.setTemplateId(INSTANCEID);
+		world.setTemplateId(TEMPLATE_ID);
 		world.setStatus(0);
 		((IQCWorld) world).storeTime = System.currentTimeMillis();
 		InstanceManager.getInstance().addWorld(world);
@@ -213,7 +213,7 @@ public final class IceQueensCastle extends Quest
 		teleportPlayer(player, loc, world.getInstanceId(), false);
 		world.addAllowed(player.getObjectId());
 		openDoor(ICE_QUEEN_DOOR, world.getInstanceId());
-		addSpawn(INVISIBLE_NPC, 114394, -112383, -11200, 0, false, 0, false, INSTANCEID);
+		addSpawn(INVISIBLE_NPC, 114394, -112383, -11200, 0, false, 0, false, TEMPLATE_ID);
 		return world.getInstanceId();
 	}
 	

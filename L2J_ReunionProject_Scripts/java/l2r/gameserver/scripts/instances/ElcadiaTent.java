@@ -30,7 +30,7 @@ public class ElcadiaTent extends Quest
 {
 	private static final String qn = "ElcadiaTent";
 	// Values
-	private static final int INSTANCE_ID = 158;
+	private static final int TEMPLATE_ID = 158;
 	// NPC's
 	private static final int Gruff_looking_Man = 32862;
 	private static final int Elcadia = 32784;
@@ -87,7 +87,7 @@ public class ElcadiaTent extends Quest
 		
 		world = new ElcadiaTentWorld();
 		world.setInstanceId(instanceId);
-		world.setTemplateId(INSTANCE_ID);
+		world.setTemplateId(TEMPLATE_ID);
 		world.setStatus(0);
 		InstanceManager.getInstance().addWorld(world);
 		
@@ -103,31 +103,33 @@ public class ElcadiaTent extends Quest
 		String htmltext = getNoQuestMsg(player);
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
+		{
 			st = newQuestState(player);
+		}
 		
 		if (npc.getId() == Gruff_looking_Man)
 		{
-			if (player.getQuestState("Q10292_SevenSignsGirlofDoubt") != null && player.getQuestState("Q10292_SevenSignsGirlofDoubt").getState() == State.STARTED)
+			if ((player.getQuestState("Q10292_SevenSignsGirlofDoubt") != null) && (player.getQuestState("Q10292_SevenSignsGirlofDoubt").getState() == State.STARTED))
 			{
 				enterInstance(player);
 				return null;
 			}
-			else if (player.getQuestState("Q10292_SevenSignsGirlofDoubt") != null && player.getQuestState("Q10292_SevenSignsGirlofDoubt").getState() == State.COMPLETED && player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom") == null)
+			else if ((player.getQuestState("Q10292_SevenSignsGirlofDoubt") != null) && (player.getQuestState("Q10292_SevenSignsGirlofDoubt").getState() == State.COMPLETED) && (player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom") == null))
 			{
 				enterInstance(player);
 				return null;
 			}
-			else if (player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom") != null && player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom").getState() != State.COMPLETED)
+			else if ((player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom") != null) && (player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom").getState() != State.COMPLETED))
 			{
 				enterInstance(player);
 				return null;
 			}
-			else if (player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom") != null && player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom").getState() == State.COMPLETED && player.getQuestState("Q10294_SevenSignsToTheMonasteryOfSilence") == null)
+			else if ((player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom") != null) && (player.getQuestState("Q10293_SevenSignsForbiddenBookOfTheElmoreAdenKingdom").getState() == State.COMPLETED) && (player.getQuestState("Q10294_SevenSignsToTheMonasteryOfSilence") == null))
 			{
 				enterInstance(player);
 				return null;
 			}
-			else if (player.getQuestState("Q10296_SevenSignsOneWhoSeeksThePowerOfTheSeal") != null && player.getQuestState("Q10296_SevenSignsOneWhoSeeksThePowerOfTheSeal").getInt("cond") == 3)
+			else if ((player.getQuestState("Q10296_SevenSignsOneWhoSeeksThePowerOfTheSeal") != null) && (player.getQuestState("Q10296_SevenSignsOneWhoSeeksThePowerOfTheSeal").getInt("cond") == 3))
 			{
 				enterInstance(player);
 				return null;
