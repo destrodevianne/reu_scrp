@@ -23,7 +23,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javolution.util.FastSet;
-import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.actor.L2Attackable;
@@ -31,22 +30,29 @@ import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
+import l2r.util.Rnd;
 
 /**
  * Dark Water Dragon's AI.
  */
 public class DarkWaterDragon extends AbstractNpcAI
 {
+	// Npcs
 	private static final int DRAGON = 22267;
 	private static final int SHADE1 = 22268;
 	private static final int SHADE2 = 22269;
 	private static final int FAFURION = 18482;
 	private static final int DETRACTOR1 = 22270;
 	private static final int DETRACTOR2 = 22271;
+	
+	// Items
+	private static final int WATER_DRAGON_SCALE = 9691;
+	private static final int WATER_DRAGON_CLAW = 9700;
+	
 	private static Set<Integer> SECOND_SPAWN = new FastSet<>(); // Used to track if second Shades were already spawned
 	private static Set<Integer> MY_TRACKING_SET = new FastSet<>(); // Used to track instances of npcs
 	private static Map<Integer, L2PcInstance> ID_MAP = new ConcurrentHashMap<>(); // Used to track instances of npcs
-
+	
 	private DarkWaterDragon(String name, String descr)
 	{
 		super(name, descr);
@@ -63,7 +69,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		MY_TRACKING_SET.clear();
 		SECOND_SPAWN.clear();
 	}
-
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -108,14 +114,18 @@ public class DarkWaterDragon extends AbstractNpcAI
 				cancelQuestTimer("2", npc, null);
 				cancelQuestTimer("3", npc, null);
 				cancelQuestTimer("4", npc, null);
-
+				
 				MY_TRACKING_SET.remove(npc.getObjectId());
 				player = ID_MAP.remove(npc.getObjectId());
 				if (player != null)
 				{
-					((L2Attackable) npc).doItemDrop(NpcTable.getInstance().getTemplate(18485), player);
+					npc.dropItem(player, WATER_DRAGON_SCALE, Rnd.get(1, 2));
+					if (Rnd.chance(36))
+					{
+						npc.dropItem(player, WATER_DRAGON_CLAW, Rnd.get(1, 3));
+					}
 				}
-
+				
 				npc.deleteMe();
 			}
 			else if (event.equalsIgnoreCase("fafurion_poison")) // Reduces Fafurions hp like it is poisoned
@@ -139,7 +149,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
-
+	
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
@@ -172,7 +182,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		}
 		return super.onAttack(npc, attacker, damage, isSummon);
 	}
-
+	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
@@ -202,7 +212,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-
+	
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
@@ -230,7 +240,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		}
 		return super.onSpawn(npc);
 	}
-
+	
 	public void spawnShade(L2Character attacker, int npcId, int x, int y, int z)
 	{
 		final L2Npc shade = addSpawn(npcId, x, y, z, 0, false, 0);
@@ -238,7 +248,7 @@ public class DarkWaterDragon extends AbstractNpcAI
 		((L2Attackable) shade).addDamageHate(attacker, 0, 999);
 		shade.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
 	}
-
+	
 	public static void main(String[] args)
 	{
 		new DarkWaterDragon(DarkWaterDragon.class.getSimpleName(), "ai");
