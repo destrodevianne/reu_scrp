@@ -33,6 +33,7 @@ public final class IsleOfPrayer extends AbstractNpcAI
 	private static final int GREEN_SEED_OF_EVIL_SHARD = 9594;
 	private static final int BLUE_SEED_OF_EVIL_SHARD = 9595;
 	private static final int RED_SEED_OF_EVIL_SHARD = 9596;
+	private static final int SPIRIT_OF_LAKE = 9689;
 	// Monsters
 	private static final int ISLAND_GUARDIAN = 22257;
 	private static final int WHITE_SAND_MIRAGE = 22258;
@@ -129,6 +130,7 @@ public final class IsleOfPrayer extends AbstractNpcAI
 			case WATER_DRAGON_DETRACTOR1:
 			case WATER_DRAGON_DETRACTOR2:
 			{
+				doDrop(killer, npc, SPIRIT_OF_LAKE, 1000); // Confirm chances
 				doDrop(killer, npc, BLUE_SEED_OF_EVIL_SHARD, 1008);
 				break;
 			}
