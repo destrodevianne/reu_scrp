@@ -50,14 +50,21 @@ public final class FreyasSteward extends AbstractNpcAI
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (player.getLevel() >= MIN_LEVEL)
+		String htmltext = "";
+		if ("teleToJinia".equals(event))
 		{
-			player.teleToLocation(TELEPORT_LOC);
-			return null;
+			if (player.getLevel() >= MIN_LEVEL)
+			{
+				player.teleToLocation(TELEPORT_LOC);
+			}
+			else
+			{
+				htmltext = "32029-1.html";
+			}
 		}
-		return "32029-1.html";
+		return htmltext;
 	}
 	
 	public static void main(String[] args)
