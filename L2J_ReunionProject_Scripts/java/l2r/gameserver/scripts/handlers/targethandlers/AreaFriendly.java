@@ -112,17 +112,17 @@ public class AreaFriendly implements ITargetTypeHandler
 			return false;
 		}
 		
-		if ((target == null) || target.isAlikeDead() || target.isDoor() || (target instanceof L2SiegeFlagInstance) || target.isMonster() || target.isInvul())
+		if ((target == null) || (target.getActingPlayer() == null) || target.isAlikeDead() || target.isDoor() || (target instanceof L2SiegeFlagInstance) || target.isMonster() || target.isInvul())
 		{
 			return false;
 		}
 		
-		if ((target.getActingPlayer() != null) && (target.getActingPlayer() != activeChar) && (target.getActingPlayer().inObserverMode() || target.getActingPlayer().isInOlympiadMode()))
+		if ((target.getActingPlayer() != activeChar) && (target.getActingPlayer().inObserverMode() || target.getActingPlayer().isInOlympiadMode()))
 		{
 			return false;
 		}
 		
-		if ((target.getActingPlayer() != null) && target.getActingPlayer().isCursedWeaponEquipped())
+		if (target.getActingPlayer().isCursedWeaponEquipped())
 		{
 			return false;
 		}
