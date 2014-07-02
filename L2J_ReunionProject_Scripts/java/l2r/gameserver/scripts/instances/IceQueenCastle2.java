@@ -334,7 +334,7 @@ public class IceQueenCastle2 extends AbstractNpcAI
 						L2Attackable mob = (L2Attackable) spawnNpc(glacier, spawnXY[0], spawnXY[1], -11200, 20016, _world.getInstanceId());
 						_world._glaciers.put(mob.getObjectId(), mob);
 					}
-					if (_world.getStatus() < 44)
+					if ((_world != null) && (_world.getStatus() < 44))
 					{
 						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(5, _world.getInstanceId()), (Rnd.get(10, 40) * 1000) + 20000);
 					}
