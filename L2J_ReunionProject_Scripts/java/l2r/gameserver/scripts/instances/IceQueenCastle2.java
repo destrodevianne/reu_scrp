@@ -37,7 +37,6 @@ import l2r.gameserver.model.actor.templates.L2NpcTemplate;
 import l2r.gameserver.model.effects.L2EffectType;
 import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.instancezone.InstanceWorld;
-import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
 import l2r.gameserver.model.skills.L2Skill;
@@ -47,23 +46,20 @@ import l2r.gameserver.network.serverpackets.ExSendUIEvent;
 import l2r.gameserver.network.serverpackets.ExShowScreenMessage2;
 import l2r.gameserver.network.serverpackets.OnEventTrigger;
 import l2r.gameserver.network.serverpackets.SystemMessage;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.quests.Q10286_ReunionWithSirra;
 import l2r.gameserver.util.Broadcast;
 import l2r.gameserver.util.Util;
 import l2r.util.Rnd;
 
-public class IceQueenCastle2 extends Quest
+public class IceQueenCastle2 extends AbstractNpcAI
 {
-	private static final String qn = "IceQueenCastle2";
-	
-	private static final int INSTANCE_ID = 139;
+	private static final int TEMPLATE_ID = 139;
 	
 	// Npc
 	public static int _sirra = 32762;
 	public static int Jinia = 32781;
-	private static int Superior_Knight = 32777;
 	// Mobs
-	public static int freya_controller = 18930; // TODO: Custom Npc
 	public static int glacier = 18853;
 	public static int archery_knight = 18855;
 	// Boss
@@ -247,7 +243,6 @@ public class IceQueenCastle2 extends Quest
 	
 	private class FreyaWorld extends InstanceWorld
 	{
-		public L2Attackable _freya_controller = null;
 		public L2Attackable _freyaThrone = null;
 		public L2Npc _freyaSpelling = null;
 		public L2Attackable _freyaStand = null;
@@ -287,9 +282,6 @@ public class IceQueenCastle2 extends Quest
 			switch (_waveId)
 			{
 				case 1:
-					// Freya controller
-					_world._freya_controller = (L2Attackable) spawnNpc(freya_controller, 114707, -114793, -11199, 0, _world.getInstanceId());
-					_world._freya_controller.setIsInvul(true);
 					// Sirra
 					spawnNpc(_sirra, 114766, -113141, -11200, 15956, _world.getInstanceId());
 					handleWorldState(1, _world.getInstanceId());
@@ -1153,40 +1145,6 @@ public class IceQueenCastle2 extends Quest
 		return super.onSpawn(npc);
 	}
 	
-	@Override
-	public String onTalk(L2Npc npc, L2PcInstance talker)
-	{
-		if ((npc.getId() == Jinia) || (npc.getId() == Superior_Knight))
-		{
-			return npc.getId() + ".htm";
-		}
-		return null;
-	}
-	
-	@Override
-	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
-	{
-		FreyaWorld world = getWorld(player);
-		if ((world != null) && (npc.getId() == freya_controller))
-		{
-			world._freya_controller.deleteMe();
-			world._freya_controller = null;
-			ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(2, world.getInstanceId()), 100);
-			handleWorldState(31, world.getInstanceId());
-		}
-		return null;
-	}
-	
-	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
-	{
-		if ((npc.getId() == Jinia) || (npc.getId() == Superior_Knight))
-		{
-			return npc.getId() + ".htm";
-		}
-		return null;
-	}
-	
 	private void enterInstance(L2PcInstance player, String template)
 	{
 		int instanceId = 0;
@@ -1213,7 +1171,7 @@ public class IceQueenCastle2 extends Quest
 		world = new FreyaWorld();
 		
 		world.setInstanceId(instanceId);
-		world.setTemplateId(INSTANCE_ID);
+		world.setTemplateId(TEMPLATE_ID);
 		world.setStatus(0);
 		
 		InstanceManager.getInstance().addWorld(world);
@@ -1351,7 +1309,7 @@ public class IceQueenCastle2 extends Quest
 				return false;
 			}
 			
-			Long reentertime = InstanceManager.getInstance().getInstanceTime(partyMember.getObjectId(), INSTANCE_ID);
+			Long reentertime = InstanceManager.getInstance().getInstanceTime(partyMember.getObjectId(), TEMPLATE_ID);
 			if (System.currentTimeMillis() < reentertime)
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(2100);
@@ -1427,13 +1385,13 @@ public class IceQueenCastle2 extends Quest
 		}
 		
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.INSTANT_ZONE_S1_RESTRICTED);
-		sm.addString(InstanceManager.getInstance().getInstanceIdName(INSTANCE_ID));
+		sm.addString(InstanceManager.getInstance().getInstanceIdName(TEMPLATE_ID));
 		
 		// set instance reenter time for all allowed players
 		for (int objectId : world.getAllowed())
 		{
 			L2PcInstance player = L2World.getInstance().getPlayer(objectId);
-			InstanceManager.getInstance().setInstanceTime(objectId, INSTANCE_ID, reenter.getTimeInMillis());
+			InstanceManager.getInstance().setInstanceTime(objectId, TEMPLATE_ID, reenter.getTimeInMillis());
 			if ((player != null) && player.isOnline())
 			{
 				player.sendPacket(sm);
@@ -1444,23 +1402,18 @@ public class IceQueenCastle2 extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (event.equalsIgnoreCase("enter"))
+		if (event.equalsIgnoreCase("normalEnter"))
 		{
-			if (npc.getId() == Jinia)
-			{
-				_isHard = false;
-				_isEasy = true;
-				enterInstance(player, "IceQueenCastle2.xml");
-			}
-			
-			if (npc.getId() == Superior_Knight)
-			{
-				_isHard = true;
-				_isEasy = false;
-				enterInstance(player, "IceQueenCastle2.xml");
-			}
+			_isHard = false;
+			_isEasy = true;
+			enterInstance(player, "IceQueenCastle2.xml");
 		}
-		
+		else if (event.equalsIgnoreCase("hardEnter"))
+		{
+			_isHard = true;
+			_isEasy = false;
+			enterInstance(player, "IceQueenCastle2.xml");
+		}
 		else if (event.startsWith("spawndeco"))
 		{
 			String[] params = event.split("_");
@@ -1650,20 +1603,23 @@ public class IceQueenCastle2 extends Quest
 		}
 	}
 	
-	public IceQueenCastle2(int questId, String name, String descr)
+	public IceQueenCastle2()
 	{
-		super(questId, name, descr);
-		addTalkId(Jinia, Superior_Knight);
-		addStartNpc(Jinia, Superior_Knight);
-		addFirstTalkId(Superior_Knight);
+		super(IceQueenCastle2.class.getSimpleName(), "instances");
+		addTalkId(Jinia);
+		
+		// Easy and hard
+		addAttackId(freyaStand);
+		addSpawnId(glacier, 18854);
+		addKillId(freyaOnThrone, freyaSpelling, glacier);
+		
+		// Easy
 		addAttackId(archery_knight, freyaStand);
-		addKillId(freyaOnThrone, freyaStand, freyaSpelling, archery_knight, glacier, Glakias);
+		addKillId(freyaStand, archery_knight, Glakias);
 		addSpawnId(archery_knight);
-		addSpawnId(18854, glacier);
-		addAggroRangeEnterId(freya_controller);
+		
 		// Hard
-		addAttackId(archery_knight_hard);
-		addAttackId(freyaStand_hard);
+		addAttackId(archery_knight_hard, freyaStand_hard);
 		addKillId(freyaStand_hard, Glakias_hard, archery_knight_hard);
 		addSpawnId(archery_knight_hard);
 		// Hard - end
@@ -1671,6 +1627,6 @@ public class IceQueenCastle2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new IceQueenCastle2(-1, qn, "instances");
+		new IceQueenCastle2();
 	}
 }
