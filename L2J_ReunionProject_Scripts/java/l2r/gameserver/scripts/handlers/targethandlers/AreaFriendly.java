@@ -112,7 +112,7 @@ public class AreaFriendly implements ITargetTypeHandler
 			return false;
 		}
 		
-		if ((target == null) || (target.getActingPlayer() == null) || target.isAlikeDead() || target.isDoor() || (target instanceof L2SiegeFlagInstance) || target.isMonster() || target.isInvul())
+		if ((target == null) || (target.getActingPlayer() == null) || target.isNpc() || target.isAlikeDead() || target.isDoor() || (target instanceof L2SiegeFlagInstance) || target.isMonster() || target.isInvul())
 		{
 			return false;
 		}
@@ -127,27 +127,7 @@ public class AreaFriendly implements ITargetTypeHandler
 			return false;
 		}
 		
-		if (activeChar.getActingPlayer().isInSameParty(target.getActingPlayer()))
-		{
-			return true;
-		}
-		
-		if (activeChar.getActingPlayer().isInSameClan(target.getActingPlayer()))
-		{
-			return true;
-		}
-		
-		if (activeChar.getActingPlayer().isInSameAlly(target.getActingPlayer()))
-		{
-			return true;
-		}
-		
-		if ((target != activeChar) && (target.getActingPlayer().getPvpFlag() > 0))
-		{
-			return false;
-		}
-		
-		if ((target != activeChar) && (target.getActingPlayer().getKarma() > 0))
+		if (!activeChar.getActingPlayer().isInSameParty(target.getActingPlayer()) && !activeChar.getActingPlayer().isInSameChannel(target.getActingPlayer()) && !activeChar.getActingPlayer().isInSameClan(target.getActingPlayer()) && !activeChar.getActingPlayer().isInSameAlly(target.getActingPlayer()))
 		{
 			return false;
 		}
