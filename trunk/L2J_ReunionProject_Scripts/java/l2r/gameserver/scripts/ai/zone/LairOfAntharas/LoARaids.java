@@ -13,47 +13,47 @@ public class LoARaids extends AbstractNpcAI
 	L2Npc BehemothLeader = null;
 	L2Npc DrakeLord = null;
 	
-	public LoARaids(int questId, String name, String descr)
+	public LoARaids()
 	{
-		super(name, descr);
+		super(LoARaids.class.getSimpleName(), "ai");
 		addKillId(new int[]
 		{
-			25725,
-			25726,
-			25727
+			DRAKE_LORD,
+			BEHEMOTH_LEADER,
+			DRAGON_BEAST
 		});
 		addSpawnId(new int[]
 		{
-			25725,
-			25726,
-			25727
+			DRAKE_LORD,
+			BEHEMOTH_LEADER,
+			DRAGON_BEAST
 		});
 	}
 	
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (npc.getId() == 25725)
+		if (npc.getId() == DRAKE_LORD)
 		{
-			if (this.DrakeLord != null)
+			if (DrakeLord != null)
 			{
-				this.DrakeLord.deleteMe();
+				DrakeLord.deleteMe();
 			}
 		}
 		
-		if (npc.getId() == 25726)
+		if (npc.getId() == BEHEMOTH_LEADER)
 		{
-			if (this.BehemothLeader != null)
+			if (BehemothLeader != null)
 			{
-				this.BehemothLeader.deleteMe();
+				BehemothLeader.deleteMe();
 			}
 		}
 		
-		if (npc.getId() == 25727)
+		if (npc.getId() == DRAGON_BEAST)
 		{
-			if (this.DragonBeast != null)
+			if (DragonBeast != null)
 			{
-				this.DragonBeast.deleteMe();
+				DragonBeast.deleteMe();
 			}
 		}
 		return null;
@@ -62,57 +62,32 @@ public class LoARaids extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if ((killer.getParty() != null) && (killer.getParty().getCommandChannel() != null))
+		if (killer.isInParty() && killer.getParty().isInCommandChannel() && (killer.getParty().getCommandChannel().getMemberCount() > 18))
 		{
-			if (killer.getParty().getCommandChannel().getMemberCount() < 18)
+			switch (npc.getId())
 			{
-				return null;
+				case DRAKE_LORD:
+				{
+					DrakeLord = addSpawn(32884, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 300000, true);
+					break;
+				}
+				case BEHEMOTH_LEADER:
+				{
+					BehemothLeader = addSpawn(32885, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 300000, true);
+					break;
+				}
+				case DRAGON_BEAST:
+				{
+					DragonBeast = addSpawn(32886, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 300000, true);
+					break;
+				}
 			}
-		}
-		
-		if (npc.getId() == 25725)
-		{
-			this.DragonBeast = addSpawn(32884, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 300000L, true);
-		}
-		
-		if (npc.getId() == 25726)
-		{
-			this.BehemothLeader = addSpawn(32885, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 300000L, true);
-		}
-		
-		if (npc.getId() == 25727)
-		{
-			this.DrakeLord = addSpawn(32886, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 300000L, true);
 		}
 		return super.onKill(npc, killer, isPet);
 	}
 	
-	/**
-	 * @return the drakeLord
-	 */
-	public static int getDrakeLord()
-	{
-		return DRAKE_LORD;
-	}
-	
-	/**
-	 * @return the behemothLeader
-	 */
-	public static int getBehemothLeader()
-	{
-		return BEHEMOTH_LEADER;
-	}
-	
-	/**
-	 * @return the dragonBeast
-	 */
-	public static int getDragonBeast()
-	{
-		return DRAGON_BEAST;
-	}
-	
 	public static void main(String[] args)
 	{
-		new LoARaids(-1, LoARaids.class.getSimpleName(), "ai");
+		new LoARaids();
 	}
 }
