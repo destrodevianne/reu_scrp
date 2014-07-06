@@ -112,7 +112,7 @@ public class AreaFriendly implements ITargetTypeHandler
 			return false;
 		}
 		
-		if ((target == null) || (target.getActingPlayer() == null) || target.isNpc() || target.isAlikeDead() || target.isDoor() || (target instanceof L2SiegeFlagInstance) || target.isMonster() || target.isInvul())
+		if ((target == null) || (target.getActingPlayer() == null) || target.isNpc() || target.isAlikeDead() || target.isDoor() || (target instanceof L2SiegeFlagInstance) || target.isMonster())
 		{
 			return false;
 		}

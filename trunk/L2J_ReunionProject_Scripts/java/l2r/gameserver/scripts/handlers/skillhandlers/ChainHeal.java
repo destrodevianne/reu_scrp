@@ -111,7 +111,7 @@ public class ChainHeal implements ISkillHandler
 		{
 			// Just in case
 			// 1505 - sublime self sacrifice
-			if ((target == null) || target.isDead())
+			if ((target == null) || target.isDead() || target.isInvul())
 			{
 				continue;
 			}
