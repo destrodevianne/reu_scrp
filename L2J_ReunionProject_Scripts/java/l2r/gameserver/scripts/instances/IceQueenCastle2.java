@@ -1308,7 +1308,7 @@ public class IceQueenCastle2 extends AbstractNpcAI
 		player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		player.setInstanceId(world.getInstanceId());
 		player.teleToLocation(113991, -112297, -11200);
-		if (player.getSummon() != null)
+		if (player.hasSummon())
 		{
 			player.getSummon().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 			player.getSummon().setInstanceId(world.getInstanceId());
