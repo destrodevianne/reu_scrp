@@ -40,11 +40,13 @@ import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.zone.type.L2NoRestartZone;
 import l2r.gameserver.network.NpcStringId;
+import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.Earthquake;
 import l2r.gameserver.network.serverpackets.ExShowScreenMessage;
 import l2r.gameserver.network.serverpackets.PlaySound;
 import l2r.gameserver.network.serverpackets.SocialAction;
 import l2r.gameserver.network.serverpackets.SpecialCamera;
+import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Broadcast;
 import l2r.gameserver.util.Util;
@@ -233,6 +235,18 @@ public final class Antharas extends AbstractNpcAI
 					}
 					else
 					{
+						for (L2PcInstance member : members)
+						{
+							if (!hasQuestItems(member, STONE))
+							{
+								SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
+								sm.addPcName(member);
+								party.broadcastPacket(sm);
+								htmltext = "13001-03.html";
+								return htmltext;
+							}
+						}
+						
 						for (L2PcInstance member : members)
 						{
 							if (member.isInsideRadius(npc, 1000, true, false))
