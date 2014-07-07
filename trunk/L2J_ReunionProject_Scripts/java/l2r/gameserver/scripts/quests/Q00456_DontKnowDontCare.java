@@ -313,15 +313,7 @@ public class Q00456_DontKnowDontCare extends Quest
 			return null;
 		}
 		
-		if ((player.getParty() != null) && (player.getParty().getCommandChannel() != null))
-		{
-			if (player.getParty().getCommandChannel().getMemberCount() < 18)
-			{
-				return null;
-			}
-		}
-		
-		if (st.getInt("cond") == 1)
+		if ((st.getInt("cond") == 1) && player.isInParty() && player.getParty().isInCommandChannel() && (player.getParty().getCommandChannel().getMemberCount() > 18))
 		{
 			/** Location loc = npc.getLocation(); handled by script */
 			
@@ -341,6 +333,6 @@ public class Q00456_DontKnowDontCare extends Quest
 					break;
 			}
 		}
-		return null;
+		return super.onKill(npc, player, isPet);
 	}
 }

@@ -15,86 +15,80 @@
 package l2r.gameserver.scripts.ai.group_template;
 
 import l2r.gameserver.datatables.xml.SkillData;
+import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
-import l2r.gameserver.util.Util;
-import l2r.util.Rnd;
 
 public class HotSpringDisease extends AbstractNpcAI
 {
-	static final int[] disease1mobs =
-	{
-		21314,
-		21316,
-		21317,
-		21319,
-		21321,
-		21322
-	}; // Monsters which cast Hot Spring Malaria (4554)
-	static final int[] disease2mobs =
-	{
-		21317,
-		21322
-	}; // Monsters which cast Hot Springs Flu (4553)
-	static final int[] disease3mobs =
-	{
-		21316,
-		21319
-	}; // Monsters which cast Hot Springs Cholera (4552)
-	static final int[] disease4mobs =
-	{
-		21314,
-		21321
-	}; // Monsters which cast Hot Springs Rheumatism (4551)
-		// Chance to get infected by disease
-	private static final int DISEASE_CHANCE = 5;
+	// NPCs
+	private static final int BANDERSNATCHLING = 21314;
+	private static final int FLAVA = 21316;
+	private static final int ATROXSPAWN = 21317;
+	private static final int NEPENTHES = 21319;
+	private static final int ATROX = 21321;
+	private static final int BANDERSNATCH = 21322;
+	// Skills
+	private static final int RHEUMATISM = 4551;
+	private static final int CHOLERA = 4552;
+	private static final int FLU = 4553;
+	private static final int MALARIA = 4554;
+	// Misc
+	private static final int DISEASE_CHANCE = 10;
 	
 	public HotSpringDisease(int questId, String name, String descr)
 	{
 		super(name, descr);
-		registerMobs(disease1mobs);
-		registerMobs(disease2mobs);
-		registerMobs(disease3mobs);
-		registerMobs(disease4mobs);
+		addAttackId(BANDERSNATCHLING, FLAVA, ATROXSPAWN, NEPENTHES, ATROX, BANDERSNATCH);
 	}
 	
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (Util.contains(disease1mobs, npc.getId()))
+		if (getRandom(100) < DISEASE_CHANCE)
 		{
-			if (Rnd.get(100) < DISEASE_CHANCE)
-			{
-				npc.setTarget(attacker);
-				npc.doCast(SkillData.getInstance().getInfo(4554, Rnd.get(10) + 1));
-			}
+			tryToInfect(npc, attacker, MALARIA);
 		}
-		if (Util.contains(disease2mobs, npc.getId()))
+		
+		if (getRandom(100) < DISEASE_CHANCE)
 		{
-			if (Rnd.get(100) < DISEASE_CHANCE)
+			switch (npc.getId())
 			{
-				npc.setTarget(attacker);
-				npc.doCast(SkillData.getInstance().getInfo(4553, Rnd.get(10) + 1));
-			}
-		}
-		if (Util.contains(disease3mobs, npc.getId()))
-		{
-			if (Rnd.get(100) < DISEASE_CHANCE)
-			{
-				npc.setTarget(attacker);
-				npc.doCast(SkillData.getInstance().getInfo(4552, Rnd.get(10) + 1));
-			}
-		}
-		if (Util.contains(disease4mobs, npc.getId()))
-		{
-			if (Rnd.get(100) < DISEASE_CHANCE)
-			{
-				npc.setTarget(attacker);
-				npc.doCast(SkillData.getInstance().getInfo(4551, Rnd.get(10) + 1));
+				case BANDERSNATCHLING:
+				case ATROX:
+				{
+					tryToInfect(npc, attacker, RHEUMATISM);
+					break;
+				}
+				case FLAVA:
+				case NEPENTHES:
+				{
+					tryToInfect(npc, attacker, CHOLERA);
+					break;
+				}
+				case ATROXSPAWN:
+				case BANDERSNATCH:
+				{
+					tryToInfect(npc, attacker, FLU);
+					break;
+				}
 			}
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
+	}
+	
+	private void tryToInfect(L2Npc npc, L2Character player, int diseaseId)
+	{
+		int skillLevel = getRandom(10) + 1;
+		final L2Skill skill = SkillData.getInstance().getInfo(diseaseId, skillLevel);
+		
+		if ((skill != null) && !npc.isCastingNow() && npc.checkDoCastConditions(skill))
+		{
+			npc.setTarget(player);
+			npc.doCast(skill);
+		}
 	}
 	
 	public static void main(String[] args)
