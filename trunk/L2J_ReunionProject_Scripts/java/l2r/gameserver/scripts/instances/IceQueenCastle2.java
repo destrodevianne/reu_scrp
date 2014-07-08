@@ -36,6 +36,7 @@ import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.templates.L2NpcTemplate;
+import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.effects.L2EffectType;
 import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.instancezone.InstanceWorld;
@@ -50,7 +51,6 @@ import l2r.gameserver.network.serverpackets.OnEventTrigger;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.quests.Q10286_ReunionWithSirra;
-//import l2r.gameserver.scripts.quests.Q10286_ReunionWithSirra;
 import l2r.gameserver.util.Broadcast;
 import l2r.gameserver.util.Util;
 import l2r.util.Rnd;
@@ -64,6 +64,7 @@ public class IceQueenCastle2 extends AbstractNpcAI
 	public static int Jinia = 32781;
 	// Mobs
 	public static int glacier = 18853;
+	private static int archery_breathe = 18854;
 	public static int archery_knight = 18855;
 	// Boss
 	private static int Glakias = 25699;
@@ -1016,12 +1017,24 @@ public class IceQueenCastle2 extends AbstractNpcAI
 		}
 		else if (npcId == freyaStand)
 		{
+			if (!npc.isCastingNow())
+			{
+				callSkillAI(npc);
+			}
+			
 			double cur_hp = npc.getCurrentHp();
 			double max_hp = npc.getMaxHp();
 			int percent = (int) Math.round((cur_hp / max_hp) * 100);
 			if ((percent <= 20) && (getWorldStatus(attacker) < 40))
 			{
 				handleWorldState(40, attacker.getInstanceId());
+			}
+		}
+		else if (npcId == freyaOnThrone)
+		{
+			if (!npc.isCastingNow())
+			{
+				callSkillAI(npc);
 			}
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
@@ -1039,6 +1052,12 @@ public class IceQueenCastle2 extends AbstractNpcAI
 			{
 				world._glaciers.remove(npc.getObjectId());
 			}
+			npc.setDisplayEffect(3);
+			L2Npc mob = spawnNpc(archery_breathe, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), npc.getInstanceId());
+			mob.setRunning();
+			mob.setTarget(killer);
+			((L2Attackable) mob).addDamageHate(killer, 0, 99999);
+			mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, killer);
 		}
 		else if (npcId == freyaOnThrone)
 		{
@@ -1120,12 +1139,22 @@ public class IceQueenCastle2 extends AbstractNpcAI
 		{
 			npc.deleteMe();
 		}
+		
 		if ((world != null) && world.isMovieNow && (npc instanceof L2Attackable))
 		{
 			npc.abortAttack();
 			npc.abortCast();
 			npc.setIsImmobilized(true);
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+		}
+		
+		if (npc.getId() == glacier)
+		{
+			npc.setDisplayEffect(1);
+			npc.setIsImmobilized(true);
+			((L2Attackable) npc).setOnKillDelay(0);
+			startQuestTimer("setDisplayEffect2", 1000, npc, null);
+			startQuestTimer("cast", 20000, npc, null);
 		}
 		return super.onSpawn(npc);
 	}
@@ -1390,7 +1419,62 @@ public class IceQueenCastle2 extends AbstractNpcAI
 				world._simple_knights.put(mob.getObjectId(), mob);
 			}
 		}
+		else if (event.equalsIgnoreCase("setDisplayEffect2"))
+		{
+			if (!npc.isDead())
+			{
+				npc.setDisplayEffect(2);
+			}
+		}
+		else if (event.equalsIgnoreCase("show_string"))
+		{
+			if ((npc != null) && !npc.isDead())
+			{
+				broadcastString(1801111, npc.getInstanceId());
+			}
+		}
+		else if (event.equalsIgnoreCase("summon_breathe"))
+		{
+			L2Npc mob = spawnNpc(archery_breathe, npc.getX() + getRandom(-90, 90), npc.getY() + getRandom(-90, 90), npc.getZ(), npc.getHeading(), npc.getInstanceId());
+			mob.setRunning();
+			if (npc.getTarget() != null)
+			{
+				mob.setTarget(npc.getTarget());
+				((L2Attackable) mob).addDamageHate((L2Character) npc.getTarget(), 0, 99999);
+				mob.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, npc.getTarget());
+			}
+		}
+		else if (event.equalsIgnoreCase("cast"))
+		{
+			if ((npc != null) && !npc.isDead())
+			{
+				L2Skill skill = SkillData.getInstance().getInfo(6437, getRandom(1, 3));
+				for (L2PcInstance plr : npc.getKnownList().getKnownPlayersInRadius(skill.getAffectRange()))
+				{
+					if (!hasBuff(6437, plr) && !plr.isDead() && !plr.isAlikeDead())
+					{
+						skill.getEffects(npc, plr);
+					}
+				}
+				startQuestTimer("cast", 20000, npc, null);
+			}
+		}
 		return null;
+	}
+	
+	@Override
+	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isSummon)
+	{
+		if ((npc.getId() == archery_breathe) || (npc.getId() == archery_knight) || (npc.getId() == archery_knight_hard))
+		{
+			if (npc.isImmobilized())
+			{
+				npc.abortAttack();
+				npc.abortCast();
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+			}
+		}
+		return super.onAggroRangeEnter(npc, player, isSummon);
 	}
 	
 	public int[] getRandomPoint(int min_x, int max_x, int min_y, int max_y)
@@ -1558,6 +1642,79 @@ public class IceQueenCastle2 extends AbstractNpcAI
 		}
 	}
 	
+	private void callSkillAI(L2Npc mob)
+	{
+		int[][] freya_skills =
+		{
+			{
+				6274,
+				1,
+				4000,
+				10
+			},
+			{
+				6276,
+				1,
+				-1,
+				100
+			},
+			{
+				6277,
+				1,
+				-1,
+				100
+			},
+			{
+				6278,
+				1,
+				-1,
+				100
+			},
+			{
+				6279,
+				1,
+				2000,
+				100
+			},
+			{
+				6282,
+				1,
+				-1,
+				100
+			}
+		};
+		
+		int iter = getRandom(0, 2);
+		
+		if ((freya_skills[iter][3] < 100) && (getRandom(100) > freya_skills[iter][3]))
+		{
+			iter = 3;
+		}
+		
+		mob.doCast(SkillData.getInstance().getInfo(freya_skills[iter][0], freya_skills[iter][1]));
+		if (freya_skills[iter][2] > 0)
+		{
+			startQuestTimer("show_string", freya_skills[iter][2], mob, null);
+		}
+		
+		if (freya_skills[iter][0] == 6277)
+		{
+			startQuestTimer("summon_breathe", 10000, mob, null);
+		}
+	}
+	
+	private boolean hasBuff(int id, L2PcInstance player)
+	{
+		for (L2Effect e : player.getAllEffects())
+		{
+			if (e.getSkill().getId() == id)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public IceQueenCastle2()
 	{
 		super(IceQueenCastle2.class.getSimpleName(), "instances");
@@ -1572,11 +1729,13 @@ public class IceQueenCastle2 extends AbstractNpcAI
 		addAttackId(archery_knight, freyaStand);
 		addKillId(freyaStand, archery_knight, Glakias);
 		addSpawnId(archery_knight);
+		addAggroRangeEnterId(archery_knight);
 		
 		// Hard
 		addAttackId(archery_knight_hard, freyaStand_hard);
 		addKillId(freyaStand_hard, Glakias_hard, archery_knight_hard);
 		addSpawnId(archery_knight_hard);
+		addAggroRangeEnterId(archery_knight_hard);
 	}
 	
 	public static void main(String[] args)
