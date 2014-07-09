@@ -46,22 +46,15 @@ public class ClanSearcher extends Quest
 	private static final int UPDATE_TIME = 60;
 	private static final int CLAN_PRESENTATION_DURATION = 604800000; // 604800000 = 1 week
 	
-	public ClanSearcher(int questId, String name, String descr)
+	public ClanSearcher()
 	{
-		super(questId, name, descr);
+		super(-1, "ClanSearcher", "custom");
+		
 		addFirstTalkId(NpcId);
 		addTalkId(NpcId);
 		addStartNpc(NpcId);
 		
-		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				updateClans();
-			}
-			
-		}, UPDATE_TIME * 60000, UPDATE_TIME * 60000);
+		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(() -> updateClans(), UPDATE_TIME * 60000, UPDATE_TIME * 60000);
 	}
 	
 	@Override
@@ -510,7 +503,6 @@ public class ClanSearcher extends Quest
 	
 	public static void main(String[] args)
 	{
-		new ClanSearcher(-1, "ClanSearcher", "custom");
-		_log.info("CUSTOM: ClanSearcher Manager loaded");
+		new ClanSearcher();
 	}
 }

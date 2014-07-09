@@ -22,9 +22,10 @@ public class PremiumNpc extends Quest
 	private static String qn = "PremiumNpc";
 	private static final String UPDATE_PREMIUMSERVICE = "UPDATE characters_premium SET premium_service=?,enddate=? WHERE account_name=?";
 	
-	public PremiumNpc(int questId, String name, String descr)
+	public PremiumNpc()
 	{
-		super(questId, name, descr);
+		super(-1, "PremiumNpc", "custom");
+		
 		ConsumableItemId = PremiumServiceConfigs.PREMIUM_COIN;
 		addStartNpc(NpcId);
 		addFirstTalkId(NpcId);
@@ -140,7 +141,6 @@ public class PremiumNpc extends Quest
 	
 	public static void main(String args[])
 	{
-		new PremiumNpc(-1, "PremiumNpc", "custom");
-		_log.info("CUSTOM: Premium Manager loaded");
+		new PremiumNpc();
 	}
 }

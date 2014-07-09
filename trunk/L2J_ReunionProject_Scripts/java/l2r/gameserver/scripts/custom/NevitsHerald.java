@@ -205,9 +205,9 @@ public class NevitsHerald extends Quest
 		return null;
 	}
 	
-	public NevitsHerald(int questId, String name, String descr)
+	public NevitsHerald()
 	{
-		super(questId, name, descr);
+		super(-1, "NevitsHerald", "custom");
 		
 		addFirstTalkId(NevitsHerald);
 		addStartNpc(NevitsHerald);
@@ -221,7 +221,6 @@ public class NevitsHerald extends Quest
 	
 	public static void main(String[] args)
 	{
-		new NevitsHerald(-1, "NevitsHerald", "custom");
-		_log.info("CUSTOM: NevitsHerald loaded");
+		new NevitsHerald();
 	}
 }
