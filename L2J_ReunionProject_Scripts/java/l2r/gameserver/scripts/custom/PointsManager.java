@@ -23,9 +23,10 @@ public final class PointsManager extends Quest
 	private static final int FAME_PRICE = 500; // payment price for fame points
 	private static final int FAME_SCORE = 500; // amount of fame points
 	
-	public PointsManager(int questId, String name, String descr)
+	public PointsManager()
 	{
-		super(questId, name, descr);
+		super(-1, "PointsManager", "custom");
+		
 		addFirstTalkId(NpcId);
 		addTalkId(NpcId);
 		addStartNpc(NpcId);
@@ -104,7 +105,6 @@ public final class PointsManager extends Quest
 	
 	public static void main(String[] args)
 	{
-		new PointsManager(-1, "PointsManager", "custom");
-		_log.info("CUSTOM: PointsManager Manager loaded");
+		new PointsManager();
 	}
 }

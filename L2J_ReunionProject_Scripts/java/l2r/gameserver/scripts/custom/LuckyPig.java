@@ -52,12 +52,11 @@ public class LuckyPig extends AbstractNpcAI
 		22823,
 	};
 	
-	public LuckyPig(int questId, String name, String descr)
+	public LuckyPig()
 	{
-		super(name, descr);
+		super(LuckyPig.class.getSimpleName(), "custom");
 		
 		_ADENAS = new FastMap<Integer, List<Long>>().shared();
-		
 		registerMobs(_MOBS, QuestEventType.ON_KILL);
 	}
 	
@@ -166,6 +165,6 @@ public class LuckyPig extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new LuckyPig(-1, LuckyPig.class.getSimpleName(), "custom");
+		new LuckyPig();
 	}
 }

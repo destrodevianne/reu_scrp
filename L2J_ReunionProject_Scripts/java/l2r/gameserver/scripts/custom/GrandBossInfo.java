@@ -26,9 +26,10 @@ public class GrandBossInfo extends Quest
 		29028
 	};
 	
-	public GrandBossInfo(int questId, String name, String descr)
+	public GrandBossInfo()
 	{
-		super(questId, name, descr);
+		super(-1, "GrandBossInfo", "custom");
+		
 		addFirstTalkId(NpcId);
 		addTalkId(NpcId);
 		addStartNpc(NpcId);
@@ -95,7 +96,6 @@ public class GrandBossInfo extends Quest
 	
 	public static void main(final String[] args)
 	{
-		new GrandBossInfo(-1, "GrandBossInfo", "custom");
-		_log.info("CUSTOM: GrandBossInfo Manager loaded");
+		new GrandBossInfo();
 	}
 }

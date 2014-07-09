@@ -46,6 +46,15 @@ public class Delevel extends Quest
 		return DYNAMIC_PRICES ? COST3 * player.getVitalityLevel() : COST3;
 	}
 	
+	public Delevel()
+	{
+		super(-1, "Delevel", "custom");
+		
+		addStartNpc(NPC);
+		addFirstTalkId(NPC);
+		addTalkId(NPC);
+	}
+	
 	private void setupAccessLevels()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -75,14 +84,6 @@ public class Delevel extends Quest
 		{
 			_log.warn("Could not store Delevel Manager access level:" + e);
 		}
-	}
-	
-	public Delevel(final int questId, final String name, final String descr)
-	{
-		super(questId, name, descr);
-		addStartNpc(NPC);
-		addFirstTalkId(NPC);
-		addTalkId(NPC);
 	}
 	
 	@Override
@@ -239,6 +240,8 @@ public class Delevel extends Quest
 				// sets exp to 0%, if you don't like people abusing this by
 				// deleveling at 99% exp, comment the previous line
 				player.removeExpAndSp(player.getExp() - ExperienceData.getInstance().getExpForLevel(player.getLevel() - 1), 0);
+				// Lets see if this will fix skill learn
+				player.rewardSkills();
 				player.sendPacket(new CreatureSay(npc.getObjectId(), 0, "Delevel Manager", "Congratulations, " + player.getName() + ", Your level has been decreased!"));
 				
 				if (player.getLevel() >= MINLVL)
@@ -317,7 +320,6 @@ public class Delevel extends Quest
 	
 	public static void main(final String[] args)
 	{
-		new Delevel(-1, "Delevel", "custom");
-		_log.info("CUSTOM: Delevel Manager loaded");
+		new Delevel();
 	}
 }
