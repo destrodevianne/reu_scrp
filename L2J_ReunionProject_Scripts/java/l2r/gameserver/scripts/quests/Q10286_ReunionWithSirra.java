@@ -241,7 +241,11 @@ public final class Q10286_ReunionWithSirra extends Quest
 					}
 					case JINIA2:
 					{
-						if (st.isMemoState(10))
+						if (st.isMemoState(2))
+						{
+							htmltext = "32781-02.html";
+						}
+						else if (st.isMemoState(10))
 						{
 							st.addExpAndSp(2152200, 181070);
 							st.exitQuest(false, true);

@@ -1063,6 +1063,30 @@ public class IceQueenCastle2 extends AbstractNpcAI
 		{
 			handleWorldState(11, killer.getInstanceId());
 		}
+		else if ((npcId == archery_knight) && (world != null))
+		{
+			if (world._archery_knights.containsKey(npc.getObjectId()))
+			{
+				world._archery_knights.remove(npc.getObjectId());
+				
+				if ((world.getStatus() > 20) && (world.getStatus() < 24))
+				{
+					if (world._archery_knights.size() == 0)
+					{
+						ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(6, killer.getInstanceId()), 30000);
+					}
+				}
+				else if (world.getStatus() < 44)
+				{
+					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(3, killer.getInstanceId()), (getRandom(10, 40) * 1000) + 30000);
+				}
+			}
+			else if (world._simple_knights.containsKey(npc.getObjectId()))
+			{
+				world._simple_knights.remove(npc.getObjectId());
+				startQuestTimer("spawndeco_" + npc.getSpawn().getX() + "_" + npc.getSpawn().getY() + "_" + npc.getSpawn().getZ() + "_" + npc.getSpawn().getHeading() + "_" + npc.getInstanceId(), 30000, null, null);
+			}
+		}
 		else if ((npcId == archery_knight_hard) && (world != null))
 		{
 			if (world._archery_knights_hard.containsKey(npc.getObjectId()))
@@ -1084,16 +1108,8 @@ public class IceQueenCastle2 extends AbstractNpcAI
 			else if (world._simple_knights.containsKey(npc.getObjectId()))
 			{
 				world._simple_knights.remove(npc.getObjectId());
-				startQuestTimer("spawndeco_" + npc.getSpawn().getX() + "_" + npc.getSpawn().getY() + "_" + npc.getSpawn().getZ() + "_" + npc.getSpawn().getHeading() + "_" + npc.getInstanceId(), 20000, null, null);
+				startQuestTimer("spawndeco_" + npc.getSpawn().getX() + "_" + npc.getSpawn().getY() + "_" + npc.getSpawn().getZ() + "_" + npc.getSpawn().getHeading() + "_" + npc.getInstanceId(), 30000, null, null);
 			}
-		}
-		else if (npcId == Glakias_hard)
-		{
-			handleWorldState(29, killer.getInstanceId());
-		}
-		else if (npcId == freyaStand_hard)
-		{
-			handleWorldState(44, killer.getInstanceId());
 		}
 		else if ((npcId == archery_knight) && (world != null))
 		{
@@ -1119,7 +1135,14 @@ public class IceQueenCastle2 extends AbstractNpcAI
 				startQuestTimer("spawndeco_" + npc.getSpawn().getX() + "_" + npc.getSpawn().getY() + "_" + npc.getSpawn().getZ() + "_" + npc.getSpawn().getHeading() + "_" + npc.getInstanceId(), 20000, null, null);
 			}
 		}
-		
+		else if (npcId == Glakias_hard)
+		{
+			handleWorldState(29, killer.getInstanceId());
+		}
+		else if (npcId == freyaStand_hard)
+		{
+			handleWorldState(44, killer.getInstanceId());
+		}
 		else if (npcId == Glakias)
 		{
 			handleWorldState(29, killer.getInstanceId());
