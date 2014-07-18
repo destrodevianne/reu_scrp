@@ -115,6 +115,17 @@ public class Mdam implements ISkillHandler
 					target.reduceCurrentHp(damage, activeChar, skill);
 				}
 				
+				// Maybe launch chance skills on us
+				if (activeChar.getChanceSkills() != null)
+				{
+					activeChar.getChanceSkills().onSkillHit(target, skill, false, damage);
+				}
+				// Maybe launch chance skills on target
+				if (target.getChanceSkills() != null)
+				{
+					target.getChanceSkills().onSkillHit(activeChar, skill, true, damage);
+				}
+				
 				if (skill.hasEffects())
 				{
 					if ((reflect & Formulas.SKILL_REFLECT_SUCCEED) != 0) // reflect skill effects

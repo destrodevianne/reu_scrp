@@ -26,12 +26,10 @@ import java.util.List;
 
 import l2r.Config;
 import l2r.gameserver.GeoData;
-import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.ITargetTypeHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
-import l2r.gameserver.model.actor.instance.L2GuardInstance;
-import l2r.gameserver.model.actor.instance.L2SiegeFlagInstance;
+import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.targets.L2TargetType;
 import l2r.gameserver.network.SystemMessageId;
@@ -59,13 +57,6 @@ public class AreaFriendly implements ITargetTypeHandler
 			};
 		}
 		
-		if (activeChar.getActingPlayer().isInOlympiadMode())
-		{
-			return new L2Character[]
-			{
-				activeChar
-			};
-		}
 		targetList.add(target); // Add target to target list
 		
 		if (target != null)
@@ -79,12 +70,6 @@ public class AreaFriendly implements ITargetTypeHandler
 			for (L2Character obj : objs)
 			{
 				if (!checkTarget(activeChar, obj) || (obj == activeChar))
-				{
-					continue;
-				}
-				
-				// TODO: check if this is retail like
-				if ((obj instanceof L2GuardInstance) && (skill.getId() == 1553) && (obj.isInsideZone(ZoneIdType.CASTLE) || obj.isInsideZone(ZoneIdType.FORT)))
 				{
 					continue;
 				}
@@ -112,22 +97,24 @@ public class AreaFriendly implements ITargetTypeHandler
 			return false;
 		}
 		
-		if ((target == null) || (target.getActingPlayer() == null) || target.isNpc() || target.isAlikeDead() || target.isDoor() || (target instanceof L2SiegeFlagInstance) || target.isMonster())
+		if ((target == null) || !target.isPlayer())
 		{
 			return false;
 		}
 		
-		if ((target.getActingPlayer() != activeChar) && (target.getActingPlayer().inObserverMode() || target.getActingPlayer().isInOlympiadMode()))
+		L2PcInstance targetPlayer = target.getActingPlayer();
+		L2PcInstance actingPlayer = activeChar.getActingPlayer();
+		if ((targetPlayer != actingPlayer) && (targetPlayer.inObserverMode() || targetPlayer.isInOlympiadMode()))
 		{
 			return false;
 		}
 		
-		if (target.getActingPlayer().isCursedWeaponEquipped())
+		if (targetPlayer.isCursedWeaponEquipped())
 		{
 			return false;
 		}
 		
-		if (!activeChar.getActingPlayer().isInSameParty(target.getActingPlayer()) && !activeChar.getActingPlayer().isInSameChannel(target.getActingPlayer()) && !activeChar.getActingPlayer().isInSameClan(target.getActingPlayer()) && !activeChar.getActingPlayer().isInSameAlly(target.getActingPlayer()))
+		if (!actingPlayer.isInSameParty(targetPlayer) && !actingPlayer.isInSameChannel(targetPlayer) && !actingPlayer.isInSameClan(targetPlayer) && !actingPlayer.isInSameAlly(targetPlayer))
 		{
 			return false;
 		}

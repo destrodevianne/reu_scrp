@@ -127,6 +127,17 @@ public class Blow implements ISkillHandler
 				
 				target.reduceCurrentHp(damage, activeChar, skill);
 				
+				// Maybe launch chance skills on us
+				if (activeChar.getChanceSkills() != null)
+				{
+					activeChar.getChanceSkills().onSkillHit(target, skill, false, damage);
+				}
+				// Maybe launch chance skills on target
+				if (target.getChanceSkills() != null)
+				{
+					target.getChanceSkills().onSkillHit(activeChar, skill, true, damage);
+				}
+				
 				// Manage attack or cast break of the target (calculating rate, sending message...)
 				if (!target.isRaid() && Formulas.calcAtkBreak(target, damage))
 				{

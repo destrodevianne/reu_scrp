@@ -389,7 +389,7 @@ public final class Q00512_BladeUnderFoot extends Quest
 			tele[0] = 12188;
 			tele[1] = -48770;
 			tele[2] = -3008;
-			return enterInstance(player, "castledungeon.xml", tele, _castleDungeons.get(npc.getId()), checkCastleCondition(player, npc, true));
+			return enterInstance(player, "RimPailakaCastle.xml", tele, _castleDungeons.get(npc.getId()), checkCastleCondition(player, npc, true));
 		}
 		QuestState st = player.getQuestState(getName());
 		if (st == null)

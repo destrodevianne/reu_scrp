@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -38,23 +38,15 @@ import l2r.gameserver.network.clientpackets.Say2;
  */
 public final class FortressOfTheDead extends ClanHallSiegeEngine
 {
-	private static final String qn = "FortressOfTheDead";
-	
 	private static final int LIDIA = 35629;
 	private static final int ALFRED = 35630;
 	private static final int GISELLE = 35631;
 	
 	private static Map<Integer, Integer> _damageToLidia = new HashMap<>();
 	
-	/**
-	 * @param questId
-	 * @param name
-	 * @param descr
-	 * @param hallId
-	 */
-	public FortressOfTheDead(int questId, String name, String descr, final int hallId)
+	public FortressOfTheDead()
 	{
-		super(questId, name, descr, hallId);
+		super(FortressOfTheDead.class.getSimpleName(), "conquerablehalls", FORTRESS_OF_DEAD);
 		addKillId(LIDIA);
 		addKillId(ALFRED);
 		addKillId(GISELLE);
@@ -179,6 +171,6 @@ public final class FortressOfTheDead extends ClanHallSiegeEngine
 	
 	public static void main(String[] args)
 	{
-		new FortressOfTheDead(-1, qn, "conquerablehalls", FORTRESS_OF_DEAD);
+		new FortressOfTheDead();
 	}
 }

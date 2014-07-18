@@ -739,8 +739,12 @@ public class IceQueenCastle2 extends AbstractNpcAI
 						world._archery_knights.put(mob.getObjectId(), mob);
 					}
 				}
-				world._freyaSpelling.deleteMe();
-				world._freyaSpelling = null;
+				
+				if (world._freyaSpelling != null)
+				{
+					world._freyaSpelling.deleteMe();
+					world._freyaSpelling = null;
+				}
 				broadcastMovie(17, world);
 				ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(13, world.getInstanceId()), 21500);
 				break;
