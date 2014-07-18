@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -39,8 +39,6 @@ import l2r.gameserver.network.clientpackets.Say2;
  */
 public final class DevastatedCastle extends ClanHallSiegeEngine
 {
-	private static final String qn = "DevastatedCastle";
-	
 	private static final int GUSTAV = 35410;
 	private static final int MIKHAIL = 35409;
 	private static final int DIETRICH = 35408;
@@ -48,14 +46,12 @@ public final class DevastatedCastle extends ClanHallSiegeEngine
 	
 	private static Map<Integer, Integer> _damageToGustav = new HashMap<>();
 	
-	public DevastatedCastle(int questId, String name, String descr, int hallId)
+	private DevastatedCastle()
 	{
-		super(questId, name, descr, hallId);
+		super(DevastatedCastle.class.getSimpleName(), "conquerablehalls", DEVASTATED_CASTLE);
 		addKillId(GUSTAV);
-		
 		addSpawnId(MIKHAIL);
 		addSpawnId(DIETRICH);
-		
 		addAttackId(GUSTAV);
 	}
 	
@@ -150,6 +146,6 @@ public final class DevastatedCastle extends ClanHallSiegeEngine
 	
 	public static void main(String[] args)
 	{
-		new DevastatedCastle(-1, qn, "conquerablehalls", DEVASTATED_CASTLE);
+		new DevastatedCastle();
 	}
 }

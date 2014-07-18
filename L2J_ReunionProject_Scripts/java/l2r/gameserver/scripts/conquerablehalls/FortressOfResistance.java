@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -40,8 +40,6 @@ import l2r.gameserver.util.Util;
  */
 public final class FortressOfResistance extends ClanHallSiegeEngine
 {
-	private static final String qn = "FortressOfResistance";
-	
 	private final int MESSENGER = 35382;
 	private final int BLOODY_LORD_NURKA = 35375;
 	
@@ -57,15 +55,9 @@ public final class FortressOfResistance extends ClanHallSiegeEngine
 	private final Map<Integer, Long> _damageToNurka = new HashMap<>();
 	private NpcHtmlMessage _messengerMsg;
 	
-	/**
-	 * @param questId
-	 * @param name
-	 * @param descr
-	 * @param hallId
-	 */
-	public FortressOfResistance(int questId, String name, String descr, final int hallId)
+	private FortressOfResistance()
 	{
-		super(questId, name, descr, hallId);
+		super(FortressOfResistance.class.getSimpleName(), "conquerablehalls", FORTRESS_RESSISTANCE);
 		addFirstTalkId(MESSENGER);
 		addKillId(BLOODY_LORD_NURKA);
 		addAttackId(BLOODY_LORD_NURKA);
@@ -187,6 +179,6 @@ public final class FortressOfResistance extends ClanHallSiegeEngine
 	
 	public static void main(String[] args)
 	{
-		new FortressOfResistance(-1, qn, "conquerablehalls", FORTRESS_RESSISTANCE);
+		new FortressOfResistance();
 	}
 }

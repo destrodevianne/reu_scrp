@@ -150,6 +150,17 @@ public class Pdam implements ISkillHandler
 					
 					target.reduceCurrentHp(damage, activeChar, skill);
 					
+					// Maybe launch chance skills on us
+					if (activeChar.getChanceSkills() != null)
+					{
+						activeChar.getChanceSkills().onSkillHit(target, skill, false, damage);
+					}
+					// Maybe launch chance skills on target
+					if (target.getChanceSkills() != null)
+					{
+						target.getChanceSkills().onSkillHit(activeChar, skill, true, damage);
+					}
+					
 					// Check if damage should be reflected
 					Formulas.calcDamageReflected(activeChar, target, skill, damage);
 				}
