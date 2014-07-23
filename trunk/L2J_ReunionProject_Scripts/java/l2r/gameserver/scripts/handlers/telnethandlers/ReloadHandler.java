@@ -30,7 +30,7 @@ import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.datatables.sql.TeleportLocationTable;
 import l2r.gameserver.datatables.xml.ItemData;
-import l2r.gameserver.datatables.xml.MultiSell;
+import l2r.gameserver.datatables.xml.MultisellData;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.handler.ITelnetHandler;
 import l2r.gameserver.instancemanager.DayNightSpawnManager;
@@ -63,7 +63,7 @@ public class ReloadHandler implements ITelnetHandler
 				if (type.equals("multisell"))
 				{
 					_print.print("Reloading multisell... ");
-					MultiSell.getInstance().reload();
+					MultisellData.getInstance().load();
 					_print.println("done");
 				}
 				else if (type.equals("skill"))

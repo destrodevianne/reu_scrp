@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.hellbound.AI.NPC;
 
-import l2r.gameserver.datatables.xml.MultiSell;
+import l2r.gameserver.datatables.xml.MultisellData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -90,7 +90,7 @@ public final class Hude extends AbstractNpcAI
 			{
 				if (hasQuestItems(player, STANDART_CERT) || hasQuestItems(player, PREMIUM_CERT))
 				{
-					MultiSell.getInstance().separateAndSend(322980001, player, npc, false);
+					MultisellData.getInstance().separateAndSend(322980001, player, npc, false);
 				}
 				break;
 			}
@@ -98,7 +98,7 @@ public final class Hude extends AbstractNpcAI
 			{
 				if (hasQuestItems(player, PREMIUM_CERT))
 				{
-					MultiSell.getInstance().separateAndSend(322980002, player, npc, false);
+					MultisellData.getInstance().separateAndSend(322980002, player, npc, false);
 				}
 				break;
 			}
