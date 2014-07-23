@@ -35,7 +35,7 @@ import l2r.gameserver.datatables.xml.DoorData;
 import l2r.gameserver.datatables.xml.EnchantItemData;
 import l2r.gameserver.datatables.xml.EnchantItemGroupsData;
 import l2r.gameserver.datatables.xml.ItemData;
-import l2r.gameserver.datatables.xml.MultiSell;
+import l2r.gameserver.datatables.xml.MultisellData;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.datatables.xml.TransformData;
 import l2r.gameserver.handler.IAdminCommandHandler;
@@ -173,7 +173,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				case "multisell":
 				{
-					MultiSell.getInstance().reload();
+					MultisellData.getInstance().load();
 					AdminData.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded Multisells.");
 					break;
 				}

@@ -18,7 +18,7 @@
  */
 package l2r.gameserver.scripts.ai.npc;
 
-import l2r.gameserver.datatables.xml.MultiSell;
+import l2r.gameserver.datatables.xml.MultisellData;
 import l2r.gameserver.enums.PcRace;
 import l2r.gameserver.instancemanager.CastleManager;
 import l2r.gameserver.instancemanager.QuestManager;
@@ -97,7 +97,7 @@ public class TerritoryManagers extends AbstractNpcAI
 				{
 					// If the player has at least one Territory Badges then show the multisell.
 					final int multiSellId = 364900001 + ((npcId - 36490) * 10000);
-					MultiSell.getInstance().separateAndSend(multiSellId, player, npc, false);
+					MultisellData.getInstance().separateAndSend(multiSellId, player, npc, false);
 				}
 				else
 				{

@@ -3,7 +3,7 @@ package l2r.gameserver.scripts.ai.npc;
 import java.util.List;
 
 import l2r.Config;
-import l2r.gameserver.datatables.xml.MultiSell;
+import l2r.gameserver.datatables.xml.MultisellData;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.datatables.xml.SkillTreesData;
 import l2r.gameserver.instancemanager.QuestManager;
@@ -110,7 +110,7 @@ public class AvantGarde extends AbstractNpcAI
 			{
 				if (RequestAcquireSkill.canTransform(player))
 				{
-					MultiSell.getInstance().separateAndSend(32323001, player, npc, false);
+					MultisellData.getInstance().separateAndSend(32323001, player, npc, false);
 				}
 				else
 				{
