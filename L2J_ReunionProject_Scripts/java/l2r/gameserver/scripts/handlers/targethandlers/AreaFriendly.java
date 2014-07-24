@@ -97,13 +97,18 @@ public class AreaFriendly implements ITargetTypeHandler
 			return false;
 		}
 		
-		if ((target == null) || !target.isPlayer())
+		if ((target == null) || (!target.isPlayer() && !target.isSummon()))
 		{
 			return false;
 		}
 		
-		L2PcInstance targetPlayer = target.getActingPlayer();
 		L2PcInstance actingPlayer = activeChar.getActingPlayer();
+		L2PcInstance targetPlayer = target.getActingPlayer();
+		if ((actingPlayer == null) || (targetPlayer == null))
+		{
+			return false;
+		}
+		
 		if ((targetPlayer != actingPlayer) && (targetPlayer.inObserverMode() || targetPlayer.isInOlympiadMode()))
 		{
 			return false;
