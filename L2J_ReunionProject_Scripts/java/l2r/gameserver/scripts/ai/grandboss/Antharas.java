@@ -35,7 +35,6 @@ import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.zone.type.L2NoRestartZone;
@@ -349,75 +348,30 @@ public final class Antharas extends AbstractNpcAI
 			{
 				if (npc != null)
 				{
-					boolean hasbuff = false;
-					final L2Effect[] effects = npc.getAllEffects();
 					if (npc.getCurrentHp() < (npc.getMaxHp() * 0.25))
 					{
-						if ((effects != null) && (effects.length != 0))
-						{
-							for (L2Effect e : effects)
-							{
-								if (e.getSkill().getId() == ANTH_REGEN_4.getSkillId())
-								{
-									hasbuff = true;
-								}
-							}
-						}
-						if (!hasbuff)
+						if (!npc.isAffectedBySkill(ANTH_REGEN_4.getSkillId()))
 						{
 							npc.doCast(ANTH_REGEN_4.getSkill());
 						}
 					}
 					else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.5))
 					{
-						if ((effects != null) && (effects.length != 0))
-						{
-							for (L2Effect e : effects)
-							{
-								if (e.getSkill().getId() == ANTH_REGEN_3.getSkillId())
-								{
-									hasbuff = true;
-								}
-							}
-						}
-						if (!hasbuff)
+						if (!npc.isAffectedBySkill(ANTH_REGEN_3.getSkillId()))
 						{
 							npc.doCast(ANTH_REGEN_3.getSkill());
 						}
 					}
 					else if (npc.getCurrentHp() < (npc.getMaxHp() * 0.75))
 					{
-						if ((effects != null) && (effects.length != 0))
-						{
-							for (L2Effect e : effects)
-							{
-								if (e.getSkill().getId() == ANTH_REGEN_2.getSkillId())
-								{
-									hasbuff = true;
-								}
-							}
-						}
-						if (!hasbuff)
+						if (!npc.isAffectedBySkill(ANTH_REGEN_2.getSkillId()))
 						{
 							npc.doCast(ANTH_REGEN_2.getSkill());
 						}
 					}
-					else
+					else if (!npc.isAffectedBySkill(ANTH_REGEN_1.getSkillId()))
 					{
-						if ((effects != null) && (effects.length != 0))
-						{
-							for (L2Effect e : effects)
-							{
-								if (e.getSkill().getId() == ANTH_REGEN_1.getSkillId())
-								{
-									hasbuff = true;
-								}
-							}
-						}
-						if (!hasbuff)
-						{
-							npc.doCast(ANTH_REGEN_1.getSkill());
-						}
+						npc.doCast(ANTH_REGEN_1.getSkill());
 					}
 					startQuestTimer("SET_REGEN", 60000, npc, null);
 				}
@@ -698,21 +652,9 @@ public final class Antharas extends AbstractNpcAI
 				attacker.teleToLocation(80464, 152294, -3534);
 			}
 			
-			if (attacker.getMountType() == MountType.STRIDER)
+			if ((attacker.getMountType() == MountType.STRIDER) && !attacker.isAffectedBySkill(ANTH_ANTI_STRIDER.getSkillId()))
 			{
-				boolean hasStriderDebuff = false;
-				final L2Effect[] effects = npc.getAllEffects();
-				if ((effects != null) && (effects.length != 0))
-				{
-					for (L2Effect e : effects)
-					{
-						if (e.getSkill().getId() == ANTH_ANTI_STRIDER.getSkillId())
-						{
-							hasStriderDebuff = true;
-						}
-					}
-				}
-				if (!hasStriderDebuff)
+				if (npc.checkDoCastConditions(ANTH_ANTI_STRIDER.getSkill()))
 				{
 					npc.setTarget(attacker);
 					npc.doCast(ANTH_ANTI_STRIDER.getSkill());
