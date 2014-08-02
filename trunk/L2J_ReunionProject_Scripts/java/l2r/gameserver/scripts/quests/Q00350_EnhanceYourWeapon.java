@@ -510,10 +510,10 @@ public class Q00350_EnhanceYourWeapon extends Quest
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
 			
-			File file = new File(Config.DATAPACK_ROOT, "data/xml/levelUpCrystalData.xml");
+			File file = new File(Config.DATAPACK_ROOT, "data/xml/other/levelUpCrystalData.xml");
 			if (!file.exists())
 			{
-				_log.error("[EnhanceYourWeapon] Missing levelUpCrystalData.xml. The quest wont work without it!");
+				_log.error("EnhanceYourWeapon: Missing data/xml/other/levelUpCrystalData.xml.");
 				return;
 			}
 			
@@ -533,7 +533,7 @@ public class Q00350_EnhanceYourWeapon extends Quest
 								Node att = attrs.getNamedItem("itemId");
 								if (att == null)
 								{
-									_log.error("[EnhanceYourWeapon] Missing itemId in Crystal List, skipping");
+									_log.error("EnhanceYourWeapon: Missing itemId in Crystal List, skipping");
 									continue;
 								}
 								int itemId = Integer.parseInt(attrs.getNamedItem("itemId").getNodeValue());
@@ -541,7 +541,7 @@ public class Q00350_EnhanceYourWeapon extends Quest
 								att = attrs.getNamedItem("level");
 								if (att == null)
 								{
-									_log.error("[EnhanceYourWeapon] Missing level in Crystal List itemId: " + itemId + ", skipping");
+									_log.error("EnhanceYourWeapon: Missing level in Crystal List itemId: " + itemId + ", skipping");
 									continue;
 								}
 								int level = Integer.parseInt(attrs.getNamedItem("level").getNodeValue());
@@ -549,7 +549,7 @@ public class Q00350_EnhanceYourWeapon extends Quest
 								att = attrs.getNamedItem("leveledItemId");
 								if (att == null)
 								{
-									_log.error("[EnhanceYourWeapon] Missing leveledItemId in Crystal List itemId: " + itemId + ", skipping");
+									_log.error("EnhanceYourWeapon: Missing leveledItemId in Crystal List itemId: " + itemId + ", skipping");
 									continue;
 								}
 								int leveledItemId = Integer.parseInt(attrs.getNamedItem("leveledItemId").getNodeValue());
@@ -568,7 +568,7 @@ public class Q00350_EnhanceYourWeapon extends Quest
 								Node att = attrs.getNamedItem("npcId");
 								if (att == null)
 								{
-									_log.error("[EnhanceYourWeapon] Missing npcId in NPC List, skipping");
+									_log.error("EnhanceYourWeapon: Missing npcId in NPC List, skipping");
 									continue;
 								}
 								int npcId = Integer.parseInt(att.getNodeValue());
@@ -607,7 +607,7 @@ public class Q00350_EnhanceYourWeapon extends Quest
 										Node att2 = attrs.getNamedItem("levelList");
 										if ((att1 == null) && (att2 == null))
 										{
-											_log.error("[EnhanceYourWeapon] Missing maxlevel/levelList in NPC List npcId: " + npcId + ", skipping");
+											_log.error("EnhanceYourWeapon: Missing maxlevel/levelList in NPC List npcId: " + npcId + ", skipping");
 											continue;
 										}
 										LevelingInfo info = new LevelingInfo(absorbType, isSkillNeeded, chance);
@@ -628,7 +628,7 @@ public class Q00350_EnhanceYourWeapon extends Quest
 												Integer value = Integer.decode(st.nextToken().trim());
 												if (value == null)
 												{
-													_log.error("[EnhanceYourWeapon] Bad Level value!! npcId: " + npcId + " token: " + i);
+													_log.error("EnhanceYourWeapon: Bad Level value!! npcId: " + npcId + " token: " + i);
 													value = 0;
 												}
 												temp.put(value, info);
@@ -639,7 +639,7 @@ public class Q00350_EnhanceYourWeapon extends Quest
 								
 								if (temp.isEmpty())
 								{
-									_log.error("[EnhanceYourWeapon] No leveling info for npcId: " + npcId + ", skipping");
+									_log.error("EnhanceYourWeapon: No leveling info for npcId: " + npcId + ", skipping");
 									continue;
 								}
 								_npcLevelingInfos.put(npcId, temp);
@@ -651,9 +651,9 @@ public class Q00350_EnhanceYourWeapon extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.warn("[EnhanceYourWeapon] Could not parse levelUpCrystalData.xml file: " + e.getMessage(), e);
+			_log.warn("EnhanceYourWeapon: Could not parse levelUpCrystalData.xml file: " + e.getMessage(), e);
 		}
-		_log.info("[EnhanceYourWeapon] Loaded " + _soulCrystals.size() + " Soul Crystal data.");
-		_log.info("[EnhanceYourWeapon] Loaded " + _npcLevelingInfos.size() + " npc Leveling info data.");
+		_log.info("EnhanceYourWeapon: Loaded " + _soulCrystals.size() + " Soul Crystal data.");
+		_log.info("EnhanceYourWeapon: Loaded " + _npcLevelingInfos.size() + " npc Leveling info data.");
 	}
 }

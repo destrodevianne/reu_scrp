@@ -32,7 +32,6 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.variables.NpcVariables;
@@ -488,21 +487,9 @@ public final class Baium extends AbstractNpcAI
 		
 		if (npc.getId() == BAIUM)
 		{
-			if (attacker.getMountType() == MountType.STRIDER)
+			if ((attacker.getMountType() == MountType.STRIDER) && !attacker.isAffectedBySkill(ANTI_STRIDER.getSkillId()))
 			{
-				boolean hasStriderDebuff = false;
-				final L2Effect[] effects = npc.getAllEffects();
-				if ((effects != null) && (effects.length != 0))
-				{
-					for (L2Effect e : effects)
-					{
-						if (e.getSkill().getId() == ANTI_STRIDER.getSkillId())
-						{
-							hasStriderDebuff = true;
-						}
-					}
-				}
-				if (!hasStriderDebuff)
+				if (!npc.isSkillDisabled(ANTI_STRIDER.getSkill()))
 				{
 					npc.setTarget(attacker);
 					npc.doCast(ANTI_STRIDER.getSkill());
