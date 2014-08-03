@@ -32,8 +32,9 @@ public class NonLethalableNpcs extends AbstractNpcAI
 	
 	public NonLethalableNpcs()
 	{
-		super(NonLethalableNpcs.class.getSimpleName(), "ai/group_template");
+		super(NonLethalableNpcs.class.getSimpleName(), "ai/modifiers");
 		addSpawnId(HEADQUARTERS);
+		
 		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(HEADQUARTERS))
 		{
 			onSpawn(spawn.getLastSpawn());

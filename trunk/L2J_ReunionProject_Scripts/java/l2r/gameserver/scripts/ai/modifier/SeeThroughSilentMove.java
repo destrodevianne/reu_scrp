@@ -52,19 +52,16 @@ public class SeeThroughSilentMove extends AbstractNpcAI
 	
 	private SeeThroughSilentMove()
 	{
-		super(SeeThroughSilentMove.class.getSimpleName(), "ai/group_template");
+		super(SeeThroughSilentMove.class.getSimpleName(), "ai/modifiers");
+		addSpawnId(MONSTERS);
+		
 		for (int npcId : MONSTERS)
 		{
 			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
 			{
-				final L2Npc npc = spawn.getLastSpawn();
-				if ((npc != null) && npc.isAttackable())
-				{
-					((L2Attackable) npc).setSeeThroughSilentMove(true);
-				}
+				onSpawn(spawn.getLastSpawn());
 			}
 		}
-		addSpawnId(MONSTERS);
 	}
 	
 	@Override

@@ -14,9 +14,8 @@
  */
 package l2r.gameserver.scripts.ai.modifier;
 
-import l2r.gameserver.enums.QuestEventType;
-import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.L2World;
+import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
@@ -62,35 +61,29 @@ public class NoMovingNpcs extends AbstractNpcAI
 	};
 	// @formatter:on
 	
-	public NoMovingNpcs(String name, String descr)
+	public NoMovingNpcs()
 	{
-		super(name, descr);
+		super(NoMovingNpcs.class.getSimpleName(), "ai/modifiers");
+		addSpawnId(NO_MOVING_NPCS_LIST);
 		
-		// set mobs not random walk on start server
-		for (L2Object obj : L2World.getInstance().getVisibleObjects())
+		for (int npcId : NO_MOVING_NPCS_LIST)
 		{
-			if ((obj instanceof L2Npc) && contains(NO_MOVING_NPCS_LIST, ((L2Npc) obj).getId()))
+			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
 			{
-				((L2Npc) obj).setIsImmobilized(true);
+				onSpawn(spawn.getLastSpawn());
 			}
 		}
-		
-		registerMobs(NO_MOVING_NPCS_LIST, QuestEventType.ON_SPAWN);
 	}
 	
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (contains(NO_MOVING_NPCS_LIST, npc.getId()))
-		{
-			npc.setIsImmobilized(true);
-		}
-		
+		npc.setIsImmobilized(true);
 		return super.onSpawn(npc);
 	}
 	
 	public static void main(String[] args)
 	{
-		new NoMovingNpcs("NoMovingNpcs", "ai");
+		new NoMovingNpcs();
 	}
 }

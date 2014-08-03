@@ -1,27 +1,30 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2004-2013 L2J DataPack
+ * 
+ * This file is part of L2J DataPack.
+ * 
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.ai.modifier;
 
-import l2r.gameserver.enums.QuestEventType;
-import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.L2World;
+import l2r.gameserver.datatables.SpawnTable;
+import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
- * @author Kazumi
+ * @author DoctorNo
  */
 public class NoRandomAnimation extends AbstractNpcAI
 {
@@ -38,34 +41,29 @@ public class NoRandomAnimation extends AbstractNpcAI
 	};
 	// @formatter:on
 	
-	public NoRandomAnimation(String name, String descr)
+	public NoRandomAnimation()
 	{
-		super(name, descr);
+		super(NoRandomAnimation.class.getSimpleName(), "ai/modifiers");
+		addSpawnId(NO_ANIMATION_MOBS_LIST);
 		
-		for (L2Object obj : L2World.getInstance().getVisibleObjects())
+		for (int npcId : NO_ANIMATION_MOBS_LIST)
 		{
-			if ((obj instanceof L2Npc) && contains(NO_ANIMATION_MOBS_LIST, ((L2Npc) obj).getId()))
+			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
 			{
-				((L2Npc) obj).setRandomAnimationEnabled(false);
+				onSpawn(spawn.getLastSpawn());
 			}
 		}
-		
-		registerMobs(NO_ANIMATION_MOBS_LIST, QuestEventType.ON_SPAWN);
 	}
 	
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (contains(NO_ANIMATION_MOBS_LIST, npc.getId()))
-		{
-			npc.setRandomAnimationEnabled(false);
-		}
-		
+		npc.setRandomAnimationEnabled(false);
 		return super.onSpawn(npc);
 	}
 	
 	public static void main(String[] args)
 	{
-		new NoRandomAnimation("NoRandomAnimation", "ai");
+		new NoRandomAnimation();
 	}
 }

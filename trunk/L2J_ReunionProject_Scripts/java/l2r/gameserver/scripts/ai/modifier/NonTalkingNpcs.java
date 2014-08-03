@@ -57,7 +57,7 @@ public final class NonTalkingNpcs extends AbstractNpcAI
 	
 	public NonTalkingNpcs()
 	{
-		super(NonTalkingNpcs.class.getSimpleName(), "ai/group_template");
+		super(NonTalkingNpcs.class.getSimpleName(), "ai/modifiers");
 		addSpawnId(NONTALKINGNPCS);
 		
 		for (int npcId : NONTALKINGNPCS)
