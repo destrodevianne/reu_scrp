@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -21,11 +21,9 @@ package l2r.gameserver.scripts.handlers.itemhandlers;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.handler.IItemHandler;
 import l2r.gameserver.model.actor.L2Playable;
-import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
 import l2r.gameserver.model.items.type.ActionType;
-import l2r.gameserver.model.items.type.EtcItemType;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.SystemMessage;
@@ -64,9 +62,6 @@ public class ItemSkillsTemplate implements IItemHandler
 			return false;
 		}
 		
-		int skillId;
-		int skillLvl;
-		final L2PcInstance activeChar = playable.getActingPlayer();
 		for (SkillHolder skillInfo : skills)
 		{
 			if (skillInfo == null)
@@ -93,13 +88,13 @@ public class ItemSkillsTemplate implements IItemHandler
 					return false;
 				}
 				
-				if (!item.isPotion() && !item.isElixir() && playable.isCastingNow())
+				if (!item.isPotion() && !item.isElixir() && !item.isScroll() && playable.isCastingNow())
 				{
 					return false;
 				}
 				
 				final boolean isCapsuleItem = item.getItem().getDefaultAction() == ActionType.CAPSULE;
-				if (isCapsuleItem || ((itemSkill.getItemConsumeId() == 0) && (itemSkill.getItemConsume() > 0) && (item.isPotion() || item.isElixir() || itemSkill.isSimultaneousCast())))
+				if (isCapsuleItem || ((itemSkill.getItemConsumeId() == 0) && (itemSkill.getItemConsume() > 0) && (item.isPotion() || item.isElixir() || item.isScroll() || itemSkill.isSimultaneousCast())))
 				{
 					if (!playable.destroyItem("Consume", item.getObjectId(), isCapsuleItem && (itemSkill.getItemConsume() == 0) ? 1 : itemSkill.getItemConsume(), playable, false))
 					{
@@ -115,46 +110,10 @@ public class ItemSkillsTemplate implements IItemHandler
 					sm.addSkillName(itemSkill);
 					playable.sendPacket(sm);
 				}
-				else
-				{
-					skillId = skillInfo.getSkillId();
-					skillLvl = skillInfo.getSkillLvl();
-					// Short buff icon for healing potions.
-					switch (skillId)
-					{
-						case 2031:
-						case 2032:
-						case 2037:
-						case 26025:
-						case 26026:
-							final int buffId = activeChar.getShortBuffTaskSkillId();
-							if ((skillId == 2037) || (skillId == 26025))
-							{
-								activeChar.shortBuffStatusUpdate(skillId, skillLvl, itemSkill.getBuffDuration() / 1000);
-							}
-							else if (((skillId == 2032) || (skillId == 26026)) && (buffId != 2037) && (buffId != 26025))
-							{
-								activeChar.shortBuffStatusUpdate(skillId, skillLvl, itemSkill.getBuffDuration() / 1000);
-							}
-							else
-							{
-								if ((buffId != 2037) && (buffId != 26025) && (buffId != 2032) && (buffId != 26026))
-								{
-									activeChar.shortBuffStatusUpdate(skillId, skillLvl, itemSkill.getBuffDuration() / 1000);
-								}
-							}
-							break;
-					}
-				}
 				
-				if (item.isPotion() || item.isElixir() || (item.getItemType() == EtcItemType.HERB) || itemSkill.isSimultaneousCast())
+				if (itemSkill.isSimultaneousCast() || ((item.getItem().hasImmediateEffect() || item.getItem().hasExImmediateEffect()) && itemSkill.isStatic()))
 				{
 					playable.doSimultaneousCast(itemSkill);
-					// Summons should be affected by herbs too, self time effect is handled at L2Effect constructor
-					if (!playable.isSummon() && activeChar.hasSummon())
-					{
-						activeChar.getSummon().doSimultaneousCast(itemSkill);
-					}
 				}
 				else
 				{
