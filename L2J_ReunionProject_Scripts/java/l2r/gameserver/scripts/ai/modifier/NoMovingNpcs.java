@@ -70,7 +70,10 @@ public class NoMovingNpcs extends AbstractNpcAI
 		{
 			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
 			{
-				onSpawn(spawn.getLastSpawn());
+				if ((spawn != null) && (spawn.getLastSpawn() != null))
+				{
+					onSpawn(spawn.getLastSpawn());
+				}
 			}
 		}
 	}

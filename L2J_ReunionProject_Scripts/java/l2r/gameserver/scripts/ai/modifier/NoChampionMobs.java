@@ -85,7 +85,7 @@ public class NoChampionMobs extends AbstractNpcAI
 		{
 			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
 			{
-				if (spawn.getLastSpawn() != null)
+				if ((spawn != null) && (spawn.getLastSpawn() != null))
 				{
 					onSpawn(spawn.getLastSpawn());
 				}

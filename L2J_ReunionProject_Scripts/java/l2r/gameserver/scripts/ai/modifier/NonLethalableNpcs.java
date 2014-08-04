@@ -37,7 +37,10 @@ public class NonLethalableNpcs extends AbstractNpcAI
 		
 		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(HEADQUARTERS))
 		{
-			onSpawn(spawn.getLastSpawn());
+			if ((spawn != null) && (spawn.getLastSpawn() != null))
+			{
+				onSpawn(spawn.getLastSpawn());
+			}
 		}
 	}
 	
