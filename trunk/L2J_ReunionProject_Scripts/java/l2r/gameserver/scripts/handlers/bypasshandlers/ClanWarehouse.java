@@ -26,6 +26,7 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2ClanHallManagerInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2WarehouseInstance;
+import l2r.gameserver.model.items.instance.L2ItemInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.ActionFailed;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -144,6 +145,14 @@ public class ClanWarehouse implements IBypassHandler
 		{
 			player.sendPacket(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH);
 			return;
+		}
+		
+		for (L2ItemInstance i : player.getActiveWarehouse().getItems())
+		{
+			if (i.isTimeLimitedItem() && (i.getRemainingTime() <= 0))
+			{
+				player.getActiveWarehouse().destroyItem("L2ItemInstance", i, player, null);
+			}
 		}
 		
 		if (itemtype != null)
