@@ -37,6 +37,7 @@ import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.actor.instance.L2QuestGuardInstance;
 import l2r.gameserver.model.actor.instance.L2RaidBossInstance;
 import l2r.gameserver.model.actor.templates.L2NpcTemplate;
 import l2r.gameserver.model.effects.L2Effect;
@@ -49,6 +50,7 @@ import l2r.gameserver.model.quest.State;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.SystemMessageId;
+import l2r.gameserver.network.serverpackets.ActionFailed;
 import l2r.gameserver.network.serverpackets.ExChangeNpcState;
 import l2r.gameserver.network.serverpackets.ExSendUIEvent;
 import l2r.gameserver.network.serverpackets.OnEventTrigger;
@@ -166,6 +168,23 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 		{ 115459, -115079, -11202, 27936 }
 	};
 	//@formatter:on
+	
+	public IceQueenCastleNormal()
+	{
+		super(IceQueenCastleNormal.class.getSimpleName(), "instances");
+		addStartNpc(SIRRA, SUPP_KEGOR, SUPP_JINIA);
+		addFirstTalkId(SUPP_KEGOR, SUPP_JINIA);
+		addTalkId(JINIA);
+		
+		addSpawnId(GLACIER, BREATH);
+		addKillId(FREYA_THRONE, FREYA_SPELLING, GLACIER);
+		addAggroRangeEnterId(BREATH);
+		
+		addAttackId(KNIGHT, FREYA_STAND);
+		addKillId(KNIGHT, FREYA_STAND, GLAKIAS);
+		addSpawnId(KNIGHT);
+		addAggroRangeEnterId(KNIGHT);
+	}
 	
 	private class spawnWave implements Runnable
 	{
@@ -350,7 +369,7 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 		}
 	}
 	
-	public void handleWorldState(int statusId, int instanceId)
+	protected void handleWorldState(int statusId, int instanceId)
 	{
 		FreyaWorld world = getWorld(instanceId);
 		if (world != null)
@@ -363,7 +382,7 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 		}
 	}
 	
-	public void handleWorldState(int statusId, FreyaWorld world)
+	protected void handleWorldState(int statusId, FreyaWorld world)
 	{
 		int instanceId = world.getInstanceId();
 		
@@ -555,12 +574,12 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 					archeryAttack(mob, world);
 				}
 				
-				world._jinia = (L2Attackable) addSpawn(SUPP_JINIA, SUPP_JINIA_SPAWN, false, 0, true, world.getInstanceId());
+				world._jinia = (L2QuestGuardInstance) addSpawn(SUPP_JINIA, SUPP_JINIA_SPAWN, false, 0, true, world.getInstanceId());
 				world._jinia.setIsRunning(true);
 				world._jinia.setAutoAttackable(false);
 				world._jinia.setIsInvul(true);
 				world._jinia.setCanReturnToSpawnPoint(false);
-				world._kegor = (L2Attackable) addSpawn(SUPP_KEGOR, SUPP_KEGOR_SPAWN, false, 0, true, world.getInstanceId());
+				world._kegor = (L2QuestGuardInstance) addSpawn(SUPP_KEGOR, SUPP_KEGOR_SPAWN, false, 0, true, world.getInstanceId());
 				world._kegor.setIsRunning(true);
 				world._kegor.setAutoAttackable(false);
 				world._kegor.setIsInvul(true);
@@ -814,6 +833,33 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 	}
 	
 	@Override
+	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	{
+		final InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
+		
+		if ((tmpworld != null) && (tmpworld instanceof FreyaWorld))
+		{
+			// final FreyaWorld world = (FreyaWorld) tmpworld;
+			
+			if (npc.getId() == SUPP_JINIA)
+			{
+				player.sendPacket(ActionFailed.STATIC_PACKET);
+				return null;
+			}
+			else if (npc.getId() == SUPP_JINIA)
+			{
+				player.sendPacket(ActionFailed.STATIC_PACKET);
+				return null;
+			}
+			/**
+			 * else if (npc.getId() == SUPP_KEGOR) { if (world.isSupportActive) { player.sendPacket(ActionFailed.STATIC_PACKET); return null; } return "18851.html"; }
+			 */
+		}
+		player.sendPacket(ActionFailed.STATIC_PACKET);
+		return null;
+	}
+	
+	@Override
 	public String onSpawn(L2Npc npc)
 	{
 		FreyaWorld world = getWorld(npc.getInstanceId());
@@ -844,7 +890,6 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 	private void enterInstance(L2PcInstance player, String template)
 	{
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
-		
 		if (world != null)
 		{
 			if (world instanceof FreyaWorld)
@@ -1333,20 +1378,6 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 				showOnScreenMsg(player, stringId, 2, 6000);
 			}
 		}
-	}
-	
-	public IceQueenCastleNormal()
-	{
-		super(IceQueenCastleNormal.class.getSimpleName(), "instances");
-		addTalkId(JINIA);
-		
-		addSpawnId(GLACIER, BREATH);
-		addKillId(FREYA_THRONE, FREYA_SPELLING, GLACIER);
-		
-		addAttackId(KNIGHT, FREYA_STAND);
-		addKillId(KNIGHT, FREYA_STAND, GLAKIAS);
-		addSpawnId(KNIGHT);
-		addAggroRangeEnterId(KNIGHT);
 	}
 	
 	public static void main(String[] args)
