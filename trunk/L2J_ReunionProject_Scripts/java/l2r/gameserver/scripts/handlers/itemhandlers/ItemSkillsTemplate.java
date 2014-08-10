@@ -93,10 +93,15 @@ public class ItemSkillsTemplate implements IItemHandler
 					return false;
 				}
 				
+				boolean alreadyConsumed = false;
 				final boolean isCapsuleItem = item.getItem().getDefaultAction() == ActionType.CAPSULE;
 				if (isCapsuleItem || ((itemSkill.getItemConsumeId() == 0) && (itemSkill.getItemConsume() > 0) && (item.isPotion() || item.isElixir() || item.isScroll() || itemSkill.isSimultaneousCast())))
 				{
-					if (!playable.destroyItem("Consume", item.getObjectId(), isCapsuleItem && (itemSkill.getItemConsume() == 0) ? 1 : itemSkill.getItemConsume(), playable, false))
+					if (playable.destroyItem("Consume", item.getObjectId(), isCapsuleItem && (itemSkill.getItemConsume() == 0) ? 1 : itemSkill.getItemConsume(), playable, false))
+					{
+						alreadyConsumed = true;
+					}
+					else
 					{
 						playable.sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 						return false;
@@ -126,10 +131,13 @@ public class ItemSkillsTemplate implements IItemHandler
 					// Consume.
 					if ((itemSkill.getItemConsumeId() == 0) && (itemSkill.getItemConsume() > 0))
 					{
-						if (!playable.destroyItem("Consume", item.getObjectId(), itemSkill.getItemConsume(), null, false))
+						if (!alreadyConsumed)
 						{
-							playable.sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
-							return false;
+							if (!playable.destroyItem("Consume", item.getObjectId(), itemSkill.getItemConsume(), null, false))
+							{
+								playable.sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
+								return false;
+							}
 						}
 					}
 				}
