@@ -1,184 +1,143 @@
+/*
+ * Copyright (C) 2004-2014 L2J DataPack
+ * 
+ * This file is part of L2J DataPack.
+ * 
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package l2r.gameserver.scripts.quests;
 
+import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
-import l2r.util.Rnd;
+import l2r.gameserver.util.Util;
 
+/**
+ * Freya Embroidered Soul Cloak (10502)
+ * @author Zoey76
+ */
 public class Q10502_FreyaEmbroideredSoulCloak extends Quest
 {
-	
 	// NPC
-	private static final int Olfadams = 32612;
-	private static final int Freya = 29179;
-	// Item
-	private static final int Freyasoulfragment = 21723;
-	
-	// Reward
-	private static final int CloakofFreya = 21720;
+	private static final int OLF_ADAMS = 32612;
+	// Monster
+	private static final int FREYA = 29180;
+	// Items
+	private static final int FREYAS_SOUL_FRAGMENT = 21723;
+	private static final int SOUL_CLOAK_OF_FREYA = 21720;
+	// Misc
+	private static final int MIN_LEVEL = 82;
+	private static final int FRAGMENT_COUNT = 20;
 	
 	public Q10502_FreyaEmbroideredSoulCloak()
 	{
 		super(10502, Q10502_FreyaEmbroideredSoulCloak.class.getSimpleName(), "Freya Embroidered Soul Cloak");
-		addStartNpc(Olfadams);
-		addTalkId(Olfadams);
-		addKillId(Freya);
-		
-		questItemIds = new int[]
+		addStartNpc(OLF_ADAMS);
+		addTalkId(OLF_ADAMS);
+		addKillId(FREYA);
+		registerQuestItems(FREYAS_SOUL_FRAGMENT);
+	}
+	
+	@Override
+	public void actionForEachPlayer(L2PcInstance player, L2Npc npc, boolean isSummon)
+	{
+		final QuestState st = player.getQuestState(getName());
+		if ((st != null) && st.isCond(1) && Util.checkIfInRange(1500, npc, player, false))
 		{
-			Freyasoulfragment
-		};
+			final long currentCount = st.getQuestItemsCount(FREYAS_SOUL_FRAGMENT);
+			final long count = getRandom(1, 3);
+			if (count >= (FRAGMENT_COUNT - currentCount))
+			{
+				st.giveItems(FREYAS_SOUL_FRAGMENT, FRAGMENT_COUNT - currentCount);
+				st.setCond(2, true);
+			}
+			else
+			{
+				st.giveItems(FREYAS_SOUL_FRAGMENT, count);
+				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
+			}
+		}
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
-		if (st == null)
+		if ((st != null) && (player.getLevel() >= MIN_LEVEL) && event.equals("32612-04.html"))
 		{
-			return htmltext;
+			st.startQuest();
+			return event;
 		}
-		
-		if (event.equalsIgnoreCase("32612-01.htm"))
-		{
-			st.set("cond", "1");
-			st.setState(State.STARTED);
-			st.playSound("ItemSound.quest_accept");
-			htmltext = "32612-01.htm";
-		}
-		else if (event.equalsIgnoreCase("32612-03.htm"))
-		{
-			if (st.getQuestItemsCount(Freyasoulfragment) < 20)
-			{
-				st.set("cond", "1");
-				st.playSound("ItemSound.quest_middle");
-				htmltext = "32612-error.htm";
-			}
-			else
-			{
-				st.giveItems(CloakofFreya, 1);
-				st.takeItems(Freyasoulfragment, 20);
-				st.playSound("ItemSound.quest_finish");
-				st.exitQuest(false);
-				htmltext = "32612-reward.htm";
-			}
-		}
-		return htmltext;
+		return null;
+	}
+	
+	@Override
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	{
+		executeForEachPlayer(killer, npc, isSummon, true, true);
+		return super.onKill(npc, killer, isSummon);
 	}
 	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
-			return htmltext;
+			return getNoQuestMsg(player);
 		}
 		
-		if (st.isCompleted())
+		String htmltext = getNoQuestMsg(player);
+		switch (st.getState())
 		{
-			htmltext = getAlreadyCompletedMsg(player);
-		}
-		else if (st.isCreated())
-		{
-			if (player.getLevel() < 82)
+			case State.CREATED:
 			{
-				htmltext = "32612-level_error.htm";
+				htmltext = (player.getLevel() < MIN_LEVEL) ? "32612-02.html" : "32612-01.htm";
+				break;
 			}
-			else
+			case State.STARTED:
 			{
-				htmltext = "32612-00.htm";
-			}
-		}
-		else if (st.getInt("cond") == 2)
-		{
-			htmltext = "32612-02.htm";
-		}
-		else
-		{
-			htmltext = "32612-01.htm";
-		}
-		return htmltext;
-	}
-	
-	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
-	{
-		L2PcInstance partyMember = getRandomPartyMember(player, 1);
-		
-		if (partyMember == null)
-		{
-			return super.onKill(npc, player, isPet);
-		}
-		
-		QuestState st = partyMember.getQuestState(getName());
-		
-		if (st != null)
-		{
-			if (st.getQuestItemsCount(Freyasoulfragment) <= 19)
-			{
-				if (st.getQuestItemsCount(Freyasoulfragment) == 18)
+				switch (st.getCond())
 				{
-					st.giveItems(Freyasoulfragment, Rnd.get(1, 2));
-					st.playSound("ItemSound.quest_itemget");
-				}
-				else if (st.getQuestItemsCount(Freyasoulfragment) == 19)
-				{
-					st.giveItems(Freyasoulfragment, 1);
-					st.playSound("ItemSound.quest_itemget");
-				}
-				else
-				{
-					st.giveItems(Freyasoulfragment, Rnd.get(1, 3));
-					st.playSound("ItemSound.quest_itemget");
-				}
-				if (st.getQuestItemsCount(Freyasoulfragment) >= 20)
-				{
-					st.set("cond", "2");
-					st.playSound("ItemSound.quest_middle");
-				}
-			}
-		}
-		
-		if (player.getParty() != null)
-		{
-			QuestState st2;
-			for (L2PcInstance pmember : player.getParty().getMembers())
-			{
-				st2 = pmember.getQuestState(getName());
-				
-				if ((st2 != null) && (st2.getInt("cond") == 1) && (pmember.getObjectId() != partyMember.getObjectId()))
-				{
-					if (st2.getQuestItemsCount(Freyasoulfragment) <= 19)
+					case 1:
 					{
-						if (st2.getQuestItemsCount(Freyasoulfragment) == 18)
+						htmltext = "32612-05.html";
+						break;
+					}
+					case 2:
+					{
+						if (st.getQuestItemsCount(FREYAS_SOUL_FRAGMENT) >= FRAGMENT_COUNT)
 						{
-							st2.giveItems(Freyasoulfragment, Rnd.get(1, 2));
-							st2.playSound("ItemSound.quest_itemget");
+							st.giveItems(SOUL_CLOAK_OF_FREYA, 1);
+							st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
+							st.exitQuest(false, true);
+							htmltext = "32612-06.html";
 						}
-						else if (st2.getQuestItemsCount(Freyasoulfragment) == 19)
-						{
-							st2.giveItems(Freyasoulfragment, 1);
-							st2.playSound("ItemSound.quest_itemget");
-						}
-						else
-						{
-							st2.giveItems(Freyasoulfragment, Rnd.get(1, 3));
-							st2.playSound("ItemSound.quest_itemget");
-						}
-						if (st2.getQuestItemsCount(Freyasoulfragment) >= 20)
-						{
-							st2.set("cond", "2");
-							st2.playSound("ItemSound.quest_middle");
-						}
+						break;
 					}
 				}
+				break;
+			}
+			case State.COMPLETED:
+			{
+				htmltext = "32612-03.html";
+				break;
 			}
 		}
-		return super.onKill(npc, player, isPet);
+		return htmltext;
 	}
 }

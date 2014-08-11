@@ -1,186 +1,144 @@
+/*
+ * Copyright (C) 2004-2014 L2J DataPack
+ * 
+ * This file is part of L2J DataPack.
+ * 
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package l2r.gameserver.scripts.quests;
 
+import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
-import l2r.util.Rnd;
+import l2r.gameserver.util.Util;
 
+/**
+ * Frintezza Embroidered Soul Cloak (10503)
+ * @author Zoey76
+ */
 public class Q10503_FrintezzaEmbroideredSoulCloak extends Quest
 {
-	// NPCs
-	private static final int Olfadams = 32612;
-	private static final int Frintezza = 29045;
-	private static final int tezzaPet = 29047;
-	
-	// Item
-	private static final int Frintezzasoulfragment = 21724;
-	
-	// Reward
-	private static final int CloakofFrintezza = 21721;
+	// NPC
+	private static final int OLF_ADAMS = 32612;
+	// Monster
+	// private static final int FRINTEZZA = 29045;
+	private static final int SCARLET_VAN_HALISHA = 29047;
+	// Items
+	private static final int FRINTEZZAS_SOUL_FRAGMENT = 21724;
+	private static final int SOUL_CLOAK_OF_FRINTEZZA = 21721;
+	// Misc
+	private static final int MIN_LEVEL = 80;
+	private static final int FRAGMENT_COUNT = 20;
 	
 	public Q10503_FrintezzaEmbroideredSoulCloak()
 	{
 		super(10503, Q10503_FrintezzaEmbroideredSoulCloak.class.getSimpleName(), "Frintezza Embroidered Soul Cloak");
-		addStartNpc(Olfadams);
-		addTalkId(Olfadams);
-		addKillId(Frintezza);
-		addKillId(tezzaPet);
-		
-		questItemIds = new int[]
+		addStartNpc(OLF_ADAMS);
+		addTalkId(OLF_ADAMS);
+		addKillId(SCARLET_VAN_HALISHA);
+		registerQuestItems(FRINTEZZAS_SOUL_FRAGMENT);
+	}
+	
+	@Override
+	public void actionForEachPlayer(L2PcInstance player, L2Npc npc, boolean isSummon)
+	{
+		final QuestState st = player.getQuestState(getName());
+		if ((st != null) && st.isCond(1) && Util.checkIfInRange(1500, npc, player, false))
 		{
-			Frintezzasoulfragment
-		};
+			final long currentCount = st.getQuestItemsCount(FRINTEZZAS_SOUL_FRAGMENT);
+			final long count = getRandom(1, 3);
+			if (count >= (FRAGMENT_COUNT - currentCount))
+			{
+				st.giveItems(FRINTEZZAS_SOUL_FRAGMENT, FRAGMENT_COUNT - currentCount);
+				st.setCond(2, true);
+			}
+			else
+			{
+				st.giveItems(FRINTEZZAS_SOUL_FRAGMENT, count);
+				st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
+			}
+		}
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		String htmltext = event;
 		final QuestState st = player.getQuestState(getName());
-		if (st == null)
+		if ((st != null) && (player.getLevel() >= MIN_LEVEL) && event.equals("32612-04.html"))
 		{
-			return htmltext;
+			st.startQuest();
+			return event;
 		}
-		
-		if (event.equalsIgnoreCase("32612-01.htm"))
-		{
-			st.set("cond", "1");
-			st.setState(State.STARTED);
-			st.playSound("ItemSound.quest_accept");
-			htmltext = "32612-01.htm";
-		}
-		else if (event.equalsIgnoreCase("32612-03.htm"))
-		{
-			if (st.getQuestItemsCount(Frintezzasoulfragment) < 20)
-			{
-				st.set("cond", "1");
-				st.playSound("ItemSound.quest_middle");
-				htmltext = "32612-error.htm";
-			}
-			else
-			{
-				st.giveItems(CloakofFrintezza, 1);
-				st.takeItems(Frintezzasoulfragment, 20);
-				st.playSound("ItemSound.quest_finish");
-				st.exitQuest(false);
-				htmltext = "32612-reward.htm";
-			}
-		}
-		return htmltext;
+		return null;
+	}
+	
+	@Override
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
+	{
+		executeForEachPlayer(killer, npc, isSummon, true, true);
+		return super.onKill(npc, killer, isSummon);
 	}
 	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		String htmltext = getNoQuestMsg(player);
 		final QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
-			return htmltext;
+			return getNoQuestMsg(player);
 		}
 		
-		if (st.isCompleted())
+		String htmltext = getNoQuestMsg(player);
+		switch (st.getState())
 		{
-			htmltext = getAlreadyCompletedMsg(player);
-		}
-		else if (st.isCreated())
-		{
-			if (player.getLevel() < 80)
+			case State.CREATED:
 			{
-				htmltext = "32612-level_error.htm";
+				htmltext = (player.getLevel() < MIN_LEVEL) ? "32612-02.html" : "32612-01.htm";
+				break;
 			}
-			else
+			case State.STARTED:
 			{
-				htmltext = "32612-00.htm";
-			}
-		}
-		else if (st.getInt("cond") == 2)
-		{
-			htmltext = "32612-02.htm";
-		}
-		else
-		{
-			htmltext = "32612-01.htm";
-		}
-		return htmltext;
-	}
-	
-	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
-	{
-		L2PcInstance partyMember = getRandomPartyMember(player, 1);
-		
-		if (partyMember == null)
-		{
-			return super.onKill(npc, player, isPet);
-		}
-		
-		final QuestState st = player.getQuestState(getName());
-		
-		if (st != null)
-		{
-			if (st.getQuestItemsCount(Frintezzasoulfragment) <= 19)
-			{
-				if (st.getQuestItemsCount(Frintezzasoulfragment) == 18)
+				switch (st.getCond())
 				{
-					st.giveItems(Frintezzasoulfragment, Rnd.get(1, 2));
-					st.playSound("ItemSound.quest_itemget");
-				}
-				else if (st.getQuestItemsCount(Frintezzasoulfragment) == 19)
-				{
-					st.giveItems(Frintezzasoulfragment, 1);
-					st.playSound("ItemSound.quest_itemget");
-				}
-				else
-				{
-					st.giveItems(Frintezzasoulfragment, Rnd.get(1, 3));
-					st.playSound("ItemSound.quest_itemget");
-				}
-				if (st.getQuestItemsCount(Frintezzasoulfragment) >= 20)
-				{
-					st.set("cond", "2");
-					st.playSound("ItemSound.quest_middle");
-				}
-			}
-		}
-		
-		if (player.getParty() != null)
-		{
-			QuestState st2;
-			for (L2PcInstance pmember : player.getParty().getMembers())
-			{
-				st2 = pmember.getQuestState(getName());
-				
-				if ((st2 != null) && (st2.getInt("cond") == 1) && (pmember.getObjectId() != partyMember.getObjectId()))
-				{
-					if (st2.getQuestItemsCount(Frintezzasoulfragment) <= 19)
+					case 1:
 					{
-						if (st2.getQuestItemsCount(Frintezzasoulfragment) == 18)
+						htmltext = "32612-05.html";
+						break;
+					}
+					case 2:
+					{
+						if (st.getQuestItemsCount(FRINTEZZAS_SOUL_FRAGMENT) >= FRAGMENT_COUNT)
 						{
-							st2.giveItems(Frintezzasoulfragment, Rnd.get(1, 2));
-							st2.playSound("ItemSound.quest_itemget");
+							st.giveItems(SOUL_CLOAK_OF_FRINTEZZA, 1);
+							st.playSound(QuestSound.ITEMSOUND_QUEST_ITEMGET);
+							st.exitQuest(false, true);
+							htmltext = "32612-06.html";
 						}
-						else if (st2.getQuestItemsCount(Frintezzasoulfragment) == 19)
-						{
-							st2.giveItems(Frintezzasoulfragment, 1);
-							st2.playSound("ItemSound.quest_itemget");
-						}
-						else
-						{
-							st2.giveItems(Frintezzasoulfragment, Rnd.get(1, 3));
-							st2.playSound("ItemSound.quest_itemget");
-						}
-						if (st2.getQuestItemsCount(Frintezzasoulfragment) >= 20)
-						{
-							st2.set("cond", "2");
-							st2.playSound("ItemSound.quest_middle");
-						}
+						break;
 					}
 				}
+				break;
+			}
+			case State.COMPLETED:
+			{
+				htmltext = "32612-03.html";
+				break;
 			}
 		}
-		return super.onKill(npc, player, isPet);
+		return htmltext;
 	}
 }
