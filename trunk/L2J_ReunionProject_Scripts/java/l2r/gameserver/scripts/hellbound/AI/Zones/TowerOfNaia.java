@@ -251,7 +251,7 @@ public final class TowerOfNaia extends AbstractNpcAI
 			{22439, -48144, 248711, -9124, 16368},
 			{22439, -48704, 249597, -9104, -16380},
 			{22439, -49219, 249596, -9104, -16400},
-			{-49715, 249601, -9104, -16360},
+			{22439, -49715, 249601, -9104, -16360},
 			{22439, -49714, 248696, -9104, 15932},
 			{22439, -49225, 248710, -9104, 16512},
 			{22439, -48705, 248708, -9104, 16576},
@@ -873,14 +873,7 @@ public final class TowerOfNaia extends AbstractNpcAI
 		}
 		else
 		{
-			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					addSpawn(MUTATED_ELPY, -45474, 247450, -13994, 49152, false, 0, false);
-				}
-			}, respawnTime - System.currentTimeMillis());
+			ThreadPoolManager.getInstance().scheduleGeneral(() -> addSpawn(MUTATED_ELPY, -45474, 247450, -13994, 49152, false, 0, false), respawnTime - System.currentTimeMillis());
 		}
 	}
 	
