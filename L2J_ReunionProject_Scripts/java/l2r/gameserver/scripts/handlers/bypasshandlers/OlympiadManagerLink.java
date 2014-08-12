@@ -20,6 +20,8 @@ package l2r.gameserver.scripts.handlers.bypasshandlers;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import l2r.Config;
 import l2r.gameserver.datatables.sql.NpcBufferTable;
@@ -57,7 +59,7 @@ public class OlympiadManagerLink implements IBypassHandler
 		"olybuff",
 		"olympiad"
 	};
-	
+	protected static final java.util.logging.Logger _logResults = java.util.logging.Logger.getLogger("olympiadPoints");
 	private static final String FEWER_THAN = "Fewer than " + String.valueOf(Config.ALT_OLY_REG_DISPLAY);
 	private static final String MORE_THAN = "More than " + String.valueOf(Config.ALT_OLY_REG_DISPLAY);
 	private static final int GATE_PASS = Config.ALT_OLY_COMP_RITEM;
@@ -226,6 +228,17 @@ public class OlympiadManagerLink implements IBypassHandler
 							sm.addLong(passes);
 							sm.addItemName(item);
 							activeChar.sendPacket(sm);
+							
+							LogRecord record;
+							_logResults.info("PlayerName, isActiveHero, isInActiveHero, passes");
+							record = new LogRecord(Level.INFO, activeChar.getName());
+							record.setParameters(new Object[]
+							{
+								activeChar.isHero(),
+								Hero.getInstance().isInactiveHero(activeChar.getObjectId()),
+								passes
+							});
+							_logResults.log(record);
 						}
 						break;
 					case 11: // register team
@@ -253,7 +266,14 @@ public class OlympiadManagerLink implements IBypassHandler
 					return false;
 				}
 				
-				final NpcBufferData npcBuffGroupInfo = NpcBufferTable.getInstance().getSkillInfo(target.getId(), BUFFS[Integer.parseInt(params[1])]);
+				final int index = Integer.parseInt(params[1]);
+				if ((index < 0) || (index > BUFFS.length))
+				{
+					_log.warn("Olympiad Buffer Warning: npcId = " + target.getId() + " has invalid index sent in the bypass: " + index);
+					return false;
+				}
+				
+				final NpcBufferData npcBuffGroupInfo = NpcBufferTable.getInstance().getSkillInfo(target.getId(), BUFFS[index]);
 				if (npcBuffGroupInfo == null)
 				{
 					_log.warn("Olympiad Buffer Warning: npcId = " + target.getId() + " Location: " + target.getX() + ", " + target.getY() + ", " + target.getZ() + " Player: " + activeChar.getName() + " has tried to use skill group (" + params[1] + ") not assigned to the NPC Buffer!");
