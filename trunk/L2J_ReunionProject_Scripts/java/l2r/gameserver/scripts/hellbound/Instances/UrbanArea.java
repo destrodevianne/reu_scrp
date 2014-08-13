@@ -91,6 +91,7 @@ public final class UrbanArea extends AbstractNpcAI
 		addStartNpc(DOWNTOWN_NATIVE);
 		addTalkId(KANAF);
 		addTalkId(DOWNTOWN_NATIVE);
+		addTalkId(TOMBSTONE);
 		addAttackId(TOWN_GUARD);
 		addAttackId(KEYMASTER);
 		addAggroRangeEnterId(TOWN_GUARD);
@@ -104,7 +105,7 @@ public final class UrbanArea extends AbstractNpcAI
 	@Override
 	public final String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (npc.getFirstEffect(STONE.getSkill()) == null)
+		if (!npc.isAffectedBySkill(STONE.getSkillId()))
 		{
 			return "32358-02.htm";
 		}
@@ -336,7 +337,7 @@ public final class UrbanArea extends AbstractNpcAI
 			return "32346-lvl.htm";
 		}
 		
-		if (player.getParty() == null)
+		if ((player.getParty() == null) && !player.isGM())
 		{
 			return "32346-party.htm";
 		}
@@ -345,6 +346,11 @@ public final class UrbanArea extends AbstractNpcAI
 	
 	private boolean checkTeleport(L2PcInstance player)
 	{
+		if (player.isGM())
+		{
+			return true;
+		}
+		
 		final L2Party party = player.getParty();
 		
 		if (party == null)
