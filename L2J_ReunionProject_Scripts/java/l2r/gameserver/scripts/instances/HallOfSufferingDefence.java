@@ -46,7 +46,6 @@ import l2r.util.Rnd;
 
 public class HallOfSufferingDefence extends Quest
 {
-	
 	private class DHSWorld extends InstanceWorld
 	{
 		public Map<L2Npc, Boolean> npcList = new FastMap<>();
