@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.instancemanager.GraciaSeedsManager;
+import l2r.gameserver.instancemanager.SoIManager;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 
@@ -32,7 +33,8 @@ public class AdminGraciaSeeds implements IAdminCommandHandler
 	{
 		"admin_gracia_seeds",
 		"admin_kill_tiat",
-		"admin_set_sodstate"
+		"admin_set_sodstate",
+		"admin_set_soistage"
 	};
 	
 	@Override
@@ -55,6 +57,10 @@ public class AdminGraciaSeeds implements IAdminCommandHandler
 		{
 			GraciaSeedsManager.getInstance().setSoDState(Integer.parseInt(val), true);
 		}
+		else if (actualCommand.equalsIgnoreCase("admin_set_soistage"))
+		{
+			SoIManager.setCurrentStage(Integer.parseInt(val));
+		}
 		
 		showMenu(activeChar);
 		return true;
@@ -76,6 +82,7 @@ public class AdminGraciaSeeds implements IAdminCommandHandler
 		{
 			html.replace("%sodtime%", "-1");
 		}
+		html.replace("%soistage%", SoIManager.getCurrentStage());
 		activeChar.sendPacket(html);
 	}
 	
