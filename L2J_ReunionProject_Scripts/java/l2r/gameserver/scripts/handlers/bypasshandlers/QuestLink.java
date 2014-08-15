@@ -23,12 +23,13 @@ import java.util.List;
 import javolution.util.FastList;
 import l2r.Config;
 import l2r.gameserver.cache.HtmCache;
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.events.EventType;
+import l2r.gameserver.model.events.listeners.AbstractEventListener;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -146,7 +147,6 @@ public class QuestLink implements IBypassHandler
 	 * @param npc the L2NpcInstance that chats with the {@code player}
 	 * @param questId the Id of the quest to display the message
 	 */
-	@SuppressWarnings("null")
 	public static void showQuestWindow(L2PcInstance player, L2Npc npc, String questId)
 	{
 		String content = null;
@@ -178,13 +178,12 @@ public class QuestLink implements IBypassHandler
 					}
 				}
 				// check for start point
-				List<Quest> qlst = npc.getTemplate().getEventQuests(QuestEventType.QUEST_START);
-				
-				if ((qlst != null) && !qlst.isEmpty())
+				for (AbstractEventListener listener : npc.getListeners(EventType.ON_NPC_QUEST_START))
 				{
-					for (Quest temp : qlst)
+					if (listener.getOwner() instanceof Quest)
 					{
-						if (temp == q)
+						final Quest quest = (Quest) listener.getOwner();
+						if (quest == q)
 						{
 							qs = q.newQuestState(player);
 							break;
@@ -198,32 +197,15 @@ public class QuestLink implements IBypassHandler
 			content = Quest.getNoQuestMsg(player); // no quests found
 		}
 		
-		if (qs != null)
+		if ((q != null) && (qs != null))
 		{
-			try
+			// If the quest is already started, no need to show a window
+			if (!q.notifyTalk(npc, player))
 			{
-				// If the quest is already started, no need to show a window
-				if (!qs.getQuest().notifyTalk(npc, qs))
-				{
-					return;
-				}
-			}
-			catch (Exception e)
-			{
-				_log.error("QuestLink[notifyTalk] quest name is: " + qs.getQuest().getName());
-				_log.error("QuestLink[notifyTalk] player is: " + player.getName());
-				
-				if (npc == null)
-				{
-					_log.error("QuestLink[notifyTalk] NPC is NULL");
-				}
-				else
-				{
-					_log.error("QuestLink[notifyTalk] NPC is: " + npc.getId());
-				}
+				return;
 			}
 			
-			questId = qs.getQuest().getName();
+			questId = q.getName();
 			String stateId = State.getStateName(qs.getState());
 			String path = "data/scripts/quests/" + questId + "/" + stateId + ".htm";
 			content = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), path); // TODO path for quests html
@@ -262,7 +244,6 @@ public class QuestLink implements IBypassHandler
 		List<Quest> options = new FastList<>();
 		
 		QuestState[] awaits = player.getQuestsForTalk(npc.getTemplate().getId());
-		List<Quest> starts = npc.getTemplate().getEventQuests(QuestEventType.QUEST_START);
 		
 		// Quests are limited between 1 and 999 because those are the quests that are supported by the client.
 		// By limiting them there, we are allowed to create custom quests at higher IDs without interfering
@@ -280,16 +261,14 @@ public class QuestLink implements IBypassHandler
 			}
 		}
 		
-		if (starts != null)
+		for (AbstractEventListener listener : npc.getListeners(EventType.ON_NPC_QUEST_START))
 		{
-			for (Quest x : starts)
+			if (listener.getOwner() instanceof Quest)
 			{
-				if (!options.contains(x))
+				final Quest quest = (Quest) listener.getOwner();
+				if (!options.contains(quest) && (quest.getId() > 0) && (quest.getId() < 20000))
 				{
-					if ((x.getId() > 0) && (x.getId() < 20000))
-					{
-						options.add(x);
-					}
+					options.add(quest);
 				}
 			}
 		}

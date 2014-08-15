@@ -20,7 +20,6 @@ package l2r.gameserver.scripts.ai.group_template;
 
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -45,7 +44,7 @@ public class FairyTrees extends AbstractNpcAI
 	private FairyTrees()
 	{
 		super(FairyTrees.class.getSimpleName(), "ai/group_template");
-		registerMobs(MOBS, QuestEventType.ON_KILL);
+		addKillId(MOBS);
 		addSpawnId(27189); // TODO why is this here?
 	}
 	

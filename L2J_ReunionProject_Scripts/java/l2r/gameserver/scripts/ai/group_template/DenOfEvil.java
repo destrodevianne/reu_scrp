@@ -20,7 +20,6 @@ package l2r.gameserver.scripts.ai.group_template;
 
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.datatables.xml.SkillData;
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.instancemanager.ZoneManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Character;
@@ -99,7 +98,8 @@ public class DenOfEvil extends AbstractNpcAI
 	private DenOfEvil()
 	{
 		super(DenOfEvil.class.getSimpleName(), "ai/group_template");
-		registerMobs(EYE_IDS, QuestEventType.ON_KILL, QuestEventType.ON_SPAWN);
+		addKillId(EYE_IDS);
+		addSpawnId(EYE_IDS);
 		spawnEyes();
 	}
 	

@@ -24,7 +24,6 @@ import javolution.util.FastList;
 import l2r.Config;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.StatsSet;
@@ -90,7 +89,9 @@ public class QueenAnt extends AbstractNpcAI
 	{
 		super(name, descr);
 		
-		registerMobs(MOBS, QuestEventType.ON_SPAWN, QuestEventType.ON_KILL, QuestEventType.ON_AGGRO_RANGE_ENTER);
+		addSpawnId(MOBS);
+		addKillId(MOBS);
+		addAggroRangeEnterId(MOBS);
 		addFactionCallId(NURSE);
 		
 		_zone = GrandBossManager.getInstance().getZone(QUEEN_X, QUEEN_Y, QUEEN_Z);

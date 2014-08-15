@@ -24,7 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javolution.util.FastSet;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -65,7 +64,9 @@ public class DarkWaterDragon extends AbstractNpcAI
 			DETRACTOR1,
 			DETRACTOR2
 		};
-		registerMobs(mobs, QuestEventType.ON_KILL, QuestEventType.ON_SPAWN, QuestEventType.ON_ATTACK);
+		addKillId(mobs);
+		addAttackId(mobs);
+		addSpawnId(mobs);
 		MY_TRACKING_SET.clear();
 		SECOND_SPAWN.clear();
 	}

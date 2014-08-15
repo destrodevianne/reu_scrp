@@ -1058,24 +1058,20 @@ public class HallOfErosionDefence extends Quest
 			}
 		}
 		
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+		ThreadPoolManager.getInstance().scheduleGeneral(() ->
 		{
-			@Override
-			public void run()
+			if (!conquestEnded)
 			{
-				if (!conquestEnded)
+				stopDeadTumors(world);
+				for (int[] spawn : TUMOR_ALIVE_SPAWN)
 				{
-					stopDeadTumors(world);
-					for (int[] spawn : TUMOR_ALIVE_SPAWN)
+					for (int i = 0; i < spawn[6]; i++)
 					{
-						for (int i = 0; i < spawn[6]; i++)
-						{
-							L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
-							world.alivetumor.add(npc);
-						}
+						L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
+						world.alivetumor.add(npc);
 					}
-					broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NRECOVERED_NEARBY_UNDEAD_ARE_SWARMING_TOWARD_SEED_OF_LIFE, 2, 8000));
 				}
+				broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NRECOVERED_NEARBY_UNDEAD_ARE_SWARMING_TOWARD_SEED_OF_LIFE, 2, 8000));
 			}
 		}, 180 * 1000);
 		broadCastPacket(world, new ExShowScreenMessage(NpcStringId.YOU_CAN_HEAR_THE_UNDEAD_OF_EKIMUS_RUSHING_TOWARD_YOU_S1_S2_IT_HAS_NOW_BEGUN, 2, 8000));
@@ -1210,16 +1206,12 @@ public class HallOfErosionDefence extends Quest
 				world.deadTumor = spawnNpc(TUMOR_DEAD, npc.getLocation(), 0, world.getInstanceId());
 				world.deadTumors.add(world.deadTumor);
 				broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_BEEN_DESTROYED_NTHE_NEARBY_UNDEAD_THAT_WERE_ATTACKING_SEED_OF_LIFE_START_LOSING_THEIR_ENERGY_AND_RUN_AWAY, 2, 8000));
-				ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+				ThreadPoolManager.getInstance().scheduleGeneral(() ->
 				{
-					@Override
-					public void run()
-					{
-						world.deadTumor.deleteMe();
-						L2Npc tumor = spawnNpc(TUMOR_ALIVE, world.deadTumor.getLocation(), 0, world.getInstanceId());
-						world.alivetumor.add(tumor);
-						broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NRECOVERED_NEARBY_UNDEAD_ARE_SWARMING_TOWARD_SEED_OF_LIFE, 2, 8000));
-					}
+					world.deadTumor.deleteMe();
+					L2Npc tumor = spawnNpc(TUMOR_ALIVE, world.deadTumor.getLocation(), 0, world.getInstanceId());
+					world.alivetumor.add(tumor);
+					broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NRECOVERED_NEARBY_UNDEAD_ARE_SWARMING_TOWARD_SEED_OF_LIFE, 2, 8000));
 				}, tumorRespawnTime);
 			}
 			
@@ -1231,7 +1223,7 @@ public class HallOfErosionDefence extends Quest
 		return super.onKill(npc, player, isSummon);
 	}
 	
-	@Override
+	// TODO: NEED FIX?
 	public String onKillByMob(L2Npc npc, L2Npc killer)
 	{
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());

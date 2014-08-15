@@ -18,14 +18,13 @@
  */
 package l2r.gameserver.scripts.handlers.bypasshandlers;
 
-import java.util.List;
-
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
+import l2r.gameserver.model.events.EventDispatcher;
+import l2r.gameserver.model.events.EventType;
+import l2r.gameserver.model.events.impl.character.npc.OnNpcFirstTalk;
 
 public class ChatLink implements IBypassHandler
 {
@@ -53,10 +52,9 @@ public class ChatLink implements IBypassHandler
 		}
 		
 		final L2Npc npc = (L2Npc) target;
-		final List<Quest> firstTalk = npc.getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
-		if ((val == 0) && (firstTalk != null) && (firstTalk.size() == 1))
+		if ((val == 0) && npc.hasListener(EventType.ON_NPC_FIRST_TALK))
 		{
-			firstTalk.get(0).notifyFirstTalk(npc, activeChar);
+			EventDispatcher.getInstance().notifyEventAsync(new OnNpcFirstTalk(npc, activeChar), npc);
 		}
 		else
 		{

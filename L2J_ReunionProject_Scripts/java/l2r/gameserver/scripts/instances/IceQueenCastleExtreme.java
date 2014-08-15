@@ -21,8 +21,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
-import l2r.gameserver.datatables.SpawnTable;
-import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.MountType;
@@ -31,7 +29,6 @@ import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2CommandChannel;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Attackable;
@@ -41,10 +38,8 @@ import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2QuestGuardInstance;
 import l2r.gameserver.model.actor.instance.L2RaidBossInstance;
-import l2r.gameserver.model.actor.templates.L2NpcTemplate;
 import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.effects.L2EffectType;
-import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.QuestState;
@@ -1096,31 +1091,6 @@ public class IceQueenCastleExtreme extends AbstractNpcAI
 		ret[0] = Rnd.get(min_x, max_x);
 		ret[1] = Rnd.get(min_y, max_y);
 		return ret;
-	}
-	
-	@Override
-	public L2Npc spawnNpc(int npcId, int x, int y, int z, int heading, int instId)
-	{
-		L2NpcTemplate npcTemplate = NpcTable.getInstance().getTemplate(npcId);
-		Instance inst = InstanceManager.getInstance().getInstance(instId);
-		try
-		{
-			L2Spawn npcSpawn = new L2Spawn(npcTemplate);
-			npcSpawn.setX(x);
-			npcSpawn.setY(y);
-			npcSpawn.setZ(z);
-			npcSpawn.setHeading(heading);
-			npcSpawn.setAmount(1);
-			npcSpawn.setInstanceId(instId);
-			SpawnTable.getInstance().addNewSpawn(npcSpawn, false);
-			L2Npc npc = npcSpawn.spawnOne(false);
-			inst.addNpc(npc);
-			return npc;
-		}
-		catch (Exception ignored)
-		{
-		}
-		return null;
 	}
 	
 	private void archerySpawn(L2Npc mob)

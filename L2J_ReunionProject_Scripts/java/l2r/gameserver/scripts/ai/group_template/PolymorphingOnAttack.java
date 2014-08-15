@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -82,7 +81,7 @@ public class PolymorphingOnAttack extends AbstractNpcAI
 	private PolymorphingOnAttack()
 	{
 		super(PolymorphingOnAttack.class.getSimpleName(), "ai/group_template");
-		registerMobs(MOBSPAWNS.keySet(), QuestEventType.ON_ATTACK);
+		addAttackId(MOBSPAWNS.keySet());
 	}
 	
 	@Override

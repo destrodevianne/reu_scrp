@@ -22,6 +22,7 @@ import l2r.gameserver.enums.QuestType;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.olympiad.CompetitionType;
+import l2r.gameserver.model.olympiad.Participant;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -49,7 +50,7 @@ public class Q00551_OlympiadStarter extends Quest
 		addStartNpc(MANAGER);
 		addTalkId(MANAGER);
 		registerQuestItems(CERT_3, CERT_5, CERT_10);
-		setOlympiadUse(true);
+		addOlympiadMatchFinishId();
 	}
 	
 	@Override
@@ -122,11 +123,52 @@ public class Q00551_OlympiadStarter extends Quest
 	}
 	
 	@Override
-	public void onOlympiadWin(L2PcInstance winner, CompetitionType type)
+	public void onOlympiadMatchFinish(Participant winner, Participant looser, CompetitionType type)
 	{
 		if (winner != null)
 		{
-			final QuestState st = winner.getQuestState(getName());
+			final L2PcInstance player = winner.getPlayer();
+			if (player == null)
+			{
+				return;
+			}
+			final QuestState st = player.getQuestState(getName());
+			if ((st != null) && st.isStarted())
+			{
+				final int matches = st.getInt("matches") + 1;
+				switch (matches)
+				{
+					case 3:
+						if (!st.hasQuestItems(CERT_3))
+						{
+							st.giveItems(CERT_3, 1);
+						}
+						break;
+					case 5:
+						if (!st.hasQuestItems(CERT_5))
+						{
+							st.giveItems(CERT_5, 1);
+						}
+						break;
+					case 10:
+						if (!st.hasQuestItems(CERT_10))
+						{
+							st.giveItems(CERT_10, 1);
+						}
+						break;
+				}
+				st.set("matches", String.valueOf(matches));
+			}
+		}
+		
+		if (looser != null)
+		{
+			final L2PcInstance player = looser.getPlayer();
+			if (player == null)
+			{
+				return;
+			}
+			final QuestState st = player.getQuestState(getName());
 			if ((st != null) && st.isStarted())
 			{
 				final int matches = st.getInt("matches") + 1;

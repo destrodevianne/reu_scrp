@@ -19,7 +19,6 @@
 package l2r.gameserver.scripts.ai.group_template;
 
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.Location;
@@ -44,14 +43,15 @@ public final class TurekOrcs extends AbstractNpcAI
 		20497, // Turek Orc Skirmisher
 		20498, // Turek Orc Supplier
 		20499, // Turek Orc Footman
-		20500
-	// Turek Orc Sentinel
+		20500, // Turek Orc Sentinel
 	};
 	
 	private TurekOrcs()
 	{
 		super(TurekOrcs.class.getSimpleName(), "ai/group_template");
-		registerMobs(MOBS, QuestEventType.ON_ATTACK, QuestEventType.ON_EVENT_RECEIVED, QuestEventType.ON_MOVE_FINISHED);
+		addAttackId(MOBS);
+		addEventReceivedId(MOBS);
+		addMoveFinishedId(MOBS);
 	}
 	
 	@Override

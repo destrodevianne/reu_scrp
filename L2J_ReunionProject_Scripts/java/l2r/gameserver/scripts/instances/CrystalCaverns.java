@@ -27,6 +27,7 @@ import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
+import l2r.gameserver.enums.TrapAction;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;
