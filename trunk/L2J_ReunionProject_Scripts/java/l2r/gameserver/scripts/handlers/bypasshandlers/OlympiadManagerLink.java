@@ -20,8 +20,6 @@ package l2r.gameserver.scripts.handlers.bypasshandlers;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 
 import l2r.Config;
 import l2r.gameserver.datatables.sql.NpcBufferTable;
@@ -47,6 +45,9 @@ import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.util.Util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author DS
  */
@@ -59,7 +60,7 @@ public class OlympiadManagerLink implements IBypassHandler
 		"olybuff",
 		"olympiad"
 	};
-	protected static final java.util.logging.Logger _logResults = java.util.logging.Logger.getLogger("olympiadPoints");
+	protected static final Logger _log = LoggerFactory.getLogger(OlympiadManagerLink.class);
 	private static final String FEWER_THAN = "Fewer than " + String.valueOf(Config.ALT_OLY_REG_DISPLAY);
 	private static final String MORE_THAN = "More than " + String.valueOf(Config.ALT_OLY_REG_DISPLAY);
 	private static final int GATE_PASS = Config.ALT_OLY_COMP_RITEM;
@@ -229,16 +230,8 @@ public class OlympiadManagerLink implements IBypassHandler
 							sm.addItemName(item);
 							activeChar.sendPacket(sm);
 							
-							LogRecord record;
-							_logResults.info("PlayerName, isActiveHero, isInActiveHero, passes");
-							record = new LogRecord(Level.INFO, activeChar.getName());
-							record.setParameters(new Object[]
-							{
-								activeChar.isHero(),
-								Hero.getInstance().isInactiveHero(activeChar.getObjectId()),
-								passes
-							});
-							_logResults.log(record);
+							_log.info("PlayerName - isActiveHero - isInActiveHero - passes");
+							_log.info(activeChar.getName() + " - " + String.valueOf(activeChar.isHero()) + " - " + Hero.getInstance().isInactiveHero(activeChar.getObjectId()) + " - " + String.valueOf(passes));
 						}
 						break;
 					case 11: // register team
