@@ -29,6 +29,7 @@ import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.instancemanager.ZoneManager;
+import l2r.gameserver.model.L2CommandChannel;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.Location;
@@ -116,7 +117,6 @@ public class Zaken extends Quest
 	private static final int INSTANCEID_NIGHT = 114; // this is the client number
 	private static final int INSTANCEID_DAY = 133; // this is the client number
 	private static final int INSTANCEID_DAY83 = 135; // this is the client number
-	private static final boolean DEBUG = false;
 	
 	// NPCs
 	// Bosses
@@ -238,115 +238,27 @@ public class Zaken extends Quest
 		_room11_zone,
 	};
 	
+	//@formatter:off
 	private static final FastMap<Integer, Integer[]> zoneBarrels = new FastMap<>();
 	static
 	{
-		zoneBarrels.put(_room1_zone, new Integer[]
-		{
-			3,
-			4,
-			5,
-			12
-		});
-		zoneBarrels.put(_room2_zone, new Integer[]
-		{
-			5,
-			9,
-			10,
-			11
-		});
-		zoneBarrels.put(_room3_zone, new Integer[]
-		{
-			3,
-			5,
-			6,
-			9
-		});
-		zoneBarrels.put(_room4_zone, new Integer[]
-		{
-			1,
-			2,
-			3,
-			6
-		});
-		zoneBarrels.put(_room5_zone, new Integer[]
-		{
-			6,
-			7,
-			8,
-			9
-		});
-		zoneBarrels.put(_room6_zone, new Integer[]
-		{
-			15,
-			16,
-			17,
-			24
-		});
-		zoneBarrels.put(_room7_zone, new Integer[]
-		{
-			17,
-			21,
-			22,
-			23
-		});
-		zoneBarrels.put(_room8_zone, new Integer[]
-		{
-			15,
-			17,
-			18,
-			21
-		});
-		zoneBarrels.put(_room9_zone, new Integer[]
-		{
-			13,
-			14,
-			15,
-			18
-		});
-		zoneBarrels.put(_room10_zone, new Integer[]
-		{
-			18,
-			19,
-			20,
-			21
-		});
-		zoneBarrels.put(_room11_zone, new Integer[]
-		{
-			27,
-			28,
-			29,
-			36
-		});
-		zoneBarrels.put(_room12_zone, new Integer[]
-		{
-			29,
-			33,
-			34,
-			35
-		});
-		zoneBarrels.put(_room13_zone, new Integer[]
-		{
-			27,
-			29,
-			30,
-			33
-		});
-		zoneBarrels.put(_room14_zone, new Integer[]
-		{
-			25,
-			26,
-			27,
-			30
-		});
-		zoneBarrels.put(_room15_zone, new Integer[]
-		{
-			30,
-			31,
-			32,
-			33
-		});
+		zoneBarrels.put(_room1_zone, new Integer[]{3,4,5,12});
+		zoneBarrels.put(_room2_zone, new Integer[]{5,9,10,11});
+		zoneBarrels.put(_room3_zone, new Integer[]{3,5,6,9});
+		zoneBarrels.put(_room4_zone, new Integer[]{1,2,3,6});
+		zoneBarrels.put(_room5_zone, new Integer[]{6,7,8,9});
+		zoneBarrels.put(_room6_zone, new Integer[]{15,16,17,24});
+		zoneBarrels.put(_room7_zone, new Integer[]{17,21,22,23});
+		zoneBarrels.put(_room8_zone, new Integer[]{15,17,18,21});
+		zoneBarrels.put(_room9_zone, new Integer[]{13,14,15,18});
+		zoneBarrels.put(_room10_zone, new Integer[]{18,19,20,21});
+		zoneBarrels.put(_room11_zone, new Integer[]{27,28,29,36});
+		zoneBarrels.put(_room12_zone, new Integer[]{29,33,34,35});
+		zoneBarrels.put(_room13_zone, new Integer[]{27,29,30,33});
+		zoneBarrels.put(_room14_zone, new Integer[]{25,26,27,30});
+		zoneBarrels.put(_room15_zone, new Integer[]{30,31,32,33});
 	}
+	//@formatter:on
 	
 	private static final FastList<Location> _spawnPcLocationDaytime = new FastList<>();
 	static
@@ -412,7 +324,7 @@ public class Zaken extends Quest
 	
 	private boolean checkConditions(L2PcInstance player, String choice)
 	{
-		if (DEBUG || player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS))
+		if (player.isGM() || player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS))
 		{
 			return true;
 		}
@@ -519,102 +431,88 @@ public class Zaken extends Quest
 		return true;
 	}
 	
-	protected int enterInstance(L2PcInstance player, String template, String choice, Location loc)
+	protected void enterInstance(L2PcInstance player, String template, String choice, Location loc)
 	{
-		int instanceId = 0;
-		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
-		// existing instance
 		if (world != null)
 		{
-			if (!(world instanceof ZWorld))
+			if (world instanceof ZWorld)
 			{
-				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER));
-				return 0;
+				teleportPlayer(player, loc, world.getInstanceId(), false);
+				return;
 			}
-			teleportPlayer(player, loc, world.getInstanceId(), false);
-			return world.getInstanceId();
+			player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
+			return;
 		}
 		
-		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-		world = new ZWorld();
-		if (choice.equalsIgnoreCase("daytime"))
+		if (checkConditions(player, choice))
 		{
-			world.setTemplateId(INSTANCEID_DAY);
-		}
-		else if (choice.equalsIgnoreCase("daytime83"))
-		{
-			world.setTemplateId(INSTANCEID_DAY83);
-		}
-		else if (choice.equalsIgnoreCase("nighttime"))
-		{
-			world.setTemplateId(INSTANCEID_NIGHT);
-		}
-		
-		world.setInstanceId(instanceId);
-		world.setStatus(0);
-		InstanceManager.getInstance().addWorld(world);
-		_log.info("Zaken (" + choice + ") started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
-		
-		if (choice.equalsIgnoreCase("nighttime"))
-		{
-			startQuestTimer("ZakenSpawn", 1000, null, player);
-			for (int i = _room1_zone; i <= _room15_zone; i++)
+			world = new ZWorld();
+			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			if (choice.equalsIgnoreCase("daytime"))
 			{
-				spawnRoom(world.getInstanceId(), i);
+				world.setTemplateId(INSTANCEID_DAY);
 			}
-		}
-		else
-		{
-			startQuestTimer("ChooseZakenRoom", 1000, null, player);
-		}
-		
-		// teleport players
-		List<L2PcInstance> players;
-		L2Party party = player.getParty();
-		if (party == null) // this can happen only if debug is true
-		{
-			players = new FastList<>();
-			players.add(player);
-		}
-		else if (party.isInCommandChannel())
-		{
-			players = party.getCommandChannel().getMembers();
-		}
-		else
-		{
-			players = party.getMembers();
-		}
-		
-		for (L2PcInstance member : players)
-		{
-			// new instance
-			if (!checkConditions(member, choice))
+			else if (choice.equalsIgnoreCase("daytime83"))
 			{
-				return 0;
+				world.setTemplateId(INSTANCEID_DAY83);
 			}
-		}
-		
-		int count = 1;
-		for (L2PcInstance member : players)
-		{
-			_log.info("Zaken Party Member " + count + ", Member name is: " + member.getName());
-			count++;
-			((ZWorld) world)._playersInInstance.add(member);
-			teleportPlayer(member, loc, world.getInstanceId(), false);
-			world.addAllowed(member.getObjectId());
-			member.sendPacket(new PlaySound("BS01_A"));
-		}
-		
-		for (L2PcInstance pc : ((ZWorld) world)._playersInInstance)
-		{
-			if (pc != null)
+			else if (choice.equalsIgnoreCase("nighttime"))
 			{
-				savePlayerReenter(pc);
+				world.setTemplateId(INSTANCEID_NIGHT);
+			}
+			world.setStatus(0);
+			InstanceManager.getInstance().addWorld(world);
+			_log.info("Zaken (" + choice + ") started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			
+			if (choice.equalsIgnoreCase("nighttime"))
+			{
+				startQuestTimer("ZakenSpawn", 1000, null, player);
+				for (int i = _room1_zone; i <= _room15_zone; i++)
+				{
+					spawnRoom(world.getInstanceId(), i);
+				}
+			}
+			else
+			{
+				startQuestTimer("ChooseZakenRoom", 1000, null, player);
+			}
+			
+			int count = 1;
+			List<L2PcInstance> players = new FastList<>();
+			final L2Party party = player.getParty();
+			final L2CommandChannel channel = party != null ? party.getCommandChannel() : null;
+			if (channel != null)
+			{
+				players = channel.getMembers();
+			}
+			else if (party != null)
+			{
+				players = party.getMembers();
+			}
+			
+			for (L2PcInstance member : players)
+			{
+				if (member != null)
+				{
+					_log.info("Zaken Member " + count + ", Name is: " + member.getName());
+					count++;
+					((ZWorld) world)._playersInInstance.add(member);
+					teleportPlayer(member, loc, world.getInstanceId(), false);
+					world.addAllowed(member.getObjectId());
+					member.sendPacket(new PlaySound("BS01_A"));
+				}
+			}
+			players.clear();
+			
+			for (L2PcInstance pc : ((ZWorld) world)._playersInInstance)
+			{
+				if (pc != null)
+				{
+					savePlayerReenter(pc);
+				}
 			}
 		}
-		
-		return instanceId;
 	}
 	
 	private void spawnRoom(int instanceId, int zoneId)
@@ -685,11 +583,6 @@ public class Zaken extends Quest
 				}
 			}
 		}
-		
-		if (DEBUG)
-		{
-			_log.info("Zaken minions spawned");
-		}
 	}
 	
 	private L2Character getRandomTarget(L2Npc npc)
@@ -730,49 +623,6 @@ public class Zaken extends Quest
 			}
 		}
 		return character;
-	}
-	
-	private void savePlayerReenter(L2PcInstance player)
-	{
-		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
-		Calendar reuseTime = Calendar.getInstance();
-		int dayWeek = reuseTime.get(Calendar.DAY_OF_WEEK);
-		
-		if ((tmpworld.getTemplateId() == INSTANCEID_DAY) || (tmpworld.getTemplateId() == INSTANCEID_DAY83)) // Monday, Wednesday, Friday (confirmed at leaked Freya)
-		{
-			if ((dayWeek == Calendar.MONDAY) || (dayWeek == Calendar.TUESDAY))
-			{
-				reuseTime.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
-			}
-			else if ((dayWeek == Calendar.WEDNESDAY) || (dayWeek == Calendar.THURSDAY))
-			{
-				reuseTime.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-			}
-			else
-			{
-				reuseTime.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-			}
-		}
-		else if (tmpworld.getTemplateId() == INSTANCEID_NIGHT)
-		{
-			reuseTime.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
-		}
-		
-		if (reuseTime.getTimeInMillis() <= System.currentTimeMillis())
-		{
-			reuseTime.add(Calendar.DAY_OF_WEEK, 7);
-		}
-		
-		reuseTime.set(Calendar.HOUR_OF_DAY, 6);
-		reuseTime.set(Calendar.MINUTE, 30);
-		reuseTime.set(Calendar.SECOND, 0);
-		
-		InstanceManager.getInstance().setInstanceTime(player.getObjectId(), tmpworld.getTemplateId(), reuseTime.getTimeInMillis());
-		
-		if (DEBUG)
-		{
-			_log.info("Player " + player + " Zaken reuse set to: " + reuseTime.getTime());
-		}
 	}
 	
 	protected void npcUpdate(L2Npc npc)
@@ -904,7 +754,7 @@ public class Zaken extends Quest
 		else if (event.equalsIgnoreCase("nighttime") || event.equalsIgnoreCase("daytime") || event.equalsIgnoreCase("daytime83"))
 		{
 			L2Party party = player.getParty();
-			if (!DEBUG && !player.isGM())
+			if (!player.isGM() || !player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS))
 			{
 				if (party == null)
 				{
@@ -973,7 +823,7 @@ public class Zaken extends Quest
 				world._blueCandles++;
 				if (player != null)
 				{
-					_log.warn("Player: " + player.getName() + " fires a blue candle. Candle count is: " + world._blueCandles);
+					_log.info("Player: " + player.getName() + " find a blue candle. Candle count is: " + world._blueCandles);
 				}
 				if (world._blueCandles == 4)
 				{
@@ -986,7 +836,7 @@ public class Zaken extends Quest
 				{
 					int[] position = ZoneManager.getInstance().getZoneById(world._zakenZone).getZone().getRandomPoint();
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_DAY, position[0], position[1], position[2], 32768, false, 0, false, world.getInstanceId());
-					_log.warn("Zaken Day:  spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
+					_log.info("Zaken Day: spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4216, 1));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4217, 1));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4218, 1));
@@ -1002,7 +852,7 @@ public class Zaken extends Quest
 				{
 					int[] position = ZoneManager.getInstance().getZoneById(world._zakenZone).getZone().getRandomPoint();
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_DAY83, position[0], position[1], position[2], 32768, false, 0, false, world.getInstanceId());
-					_log.warn("Zaken Day 83:  spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
+					_log.warn("Zaken Day 83: spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4216, 1));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4217, 1));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(6689, 1));
@@ -1018,7 +868,7 @@ public class Zaken extends Quest
 				{
 					Location loc = _spawnsZaken.get(Rnd.get(_spawnsZaken.size()));
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_NIGHT, loc.getX(), loc.getY(), loc.getZ(), 32768, false, 0, false, world.getInstanceId());
-					_log.warn("Zaken Night:  spawned at: X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
+					_log.info("Zaken Night: spawned at: X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4216, 1));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4217, 1));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4218, 1));
@@ -1434,6 +1284,47 @@ public class Zaken extends Quest
 			}
 		}
 		return super.onExitZone(character, zone);
+	}
+	
+	private void savePlayerReenter(L2PcInstance player)
+	{
+		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(player.getInstanceId());
+		Calendar reuseTime = Calendar.getInstance();
+		int dayWeek = reuseTime.get(Calendar.DAY_OF_WEEK);
+		
+		if ((tmpworld.getTemplateId() == INSTANCEID_DAY) || (tmpworld.getTemplateId() == INSTANCEID_DAY83)) // Monday, Wednesday, Friday (confirmed at leaked Freya)
+		{
+			if ((dayWeek == Calendar.MONDAY) || (dayWeek == Calendar.TUESDAY))
+			{
+				reuseTime.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+			}
+			else if ((dayWeek == Calendar.WEDNESDAY) || (dayWeek == Calendar.THURSDAY))
+			{
+				reuseTime.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+			}
+			else
+			{
+				reuseTime.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+			}
+		}
+		else if (tmpworld.getTemplateId() == INSTANCEID_NIGHT)
+		{
+			reuseTime.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+		}
+		
+		if (reuseTime.getTimeInMillis() <= System.currentTimeMillis())
+		{
+			reuseTime.add(Calendar.DAY_OF_WEEK, 7);
+		}
+		
+		reuseTime.set(Calendar.HOUR_OF_DAY, 6);
+		reuseTime.set(Calendar.MINUTE, 30);
+		reuseTime.set(Calendar.SECOND, 0);
+		
+		final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.INSTANT_ZONE_S1_RESTRICTED);
+		sm.addInstanceName(tmpworld.getTemplateId());
+		InstanceManager.getInstance().setInstanceTime(player.getObjectId(), tmpworld.getTemplateId(), reuseTime.getTimeInMillis());
+		player.sendPacket(sm);
 	}
 	
 	public static void main(String[] args)
