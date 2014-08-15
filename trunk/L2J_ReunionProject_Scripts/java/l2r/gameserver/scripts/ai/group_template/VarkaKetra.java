@@ -21,7 +21,6 @@ package l2r.gameserver.scripts.ai.group_template;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
-import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -201,9 +200,9 @@ public class VarkaKetra extends AbstractNpcAI
 	}
 	
 	@Override
-	public boolean onNpcHate(L2Attackable mob, L2Playable playable)
+	public boolean onNpcHate(L2Attackable mob, L2PcInstance player, boolean isSummon)
 	{
-		return stopAttack(playable.getActingPlayer(), mob) ? false : super.onNpcHate(mob, playable);
+		return stopAttack(player, mob) ? false : super.onNpcHate(mob, player, isSummon);
 	}
 	
 	private final boolean stopAttack(L2PcInstance player, L2Character monster)

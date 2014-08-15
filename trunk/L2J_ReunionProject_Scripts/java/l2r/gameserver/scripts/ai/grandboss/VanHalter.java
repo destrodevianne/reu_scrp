@@ -1869,4 +1869,16 @@ public class VanHalter extends Quest
 		// FIXME
 		// player.sendPacket(new SpecialCamera(l2NpcInstance.getObjectId(), dist, yaw, pitch, time, duration));
 	}
+	
+	private static boolean isIntInArray(int i, int[] ia)
+	{
+		for (int v : ia)
+		{
+			if (i == v)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }

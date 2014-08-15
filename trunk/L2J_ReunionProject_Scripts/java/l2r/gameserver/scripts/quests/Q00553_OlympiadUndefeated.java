@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -22,6 +22,7 @@ import l2r.gameserver.enums.QuestType;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.olympiad.CompetitionType;
+import l2r.gameserver.model.olympiad.Participant;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -49,7 +50,7 @@ public class Q00553_OlympiadUndefeated extends Quest
 		addStartNpc(MANAGER);
 		addTalkId(MANAGER);
 		registerQuestItems(WIN_CONF_2, WIN_CONF_5, WIN_CONF_10);
-		setOlympiadUse(true);
+		addOlympiadMatchFinishId();
 	}
 	
 	@Override
@@ -88,27 +89,17 @@ public class Q00553_OlympiadUndefeated extends Quest
 	}
 	
 	@Override
-	public void onOlympiadLose(L2PcInstance loser, CompetitionType type)
-	{
-		if (loser != null)
-		{
-			final QuestState st = loser.getQuestState(getName());
-			if ((st != null) && st.isStarted() && (st.isCond(1)))
-			{
-				st.unset("undefeatable");
-				st.takeItems(WIN_CONF_2, -1);
-				st.takeItems(WIN_CONF_5, -1);
-				st.takeItems(WIN_CONF_10, -1);
-			}
-		}
-	}
-	
-	@Override
-	public void onOlympiadWin(L2PcInstance winner, CompetitionType type)
+	public void onOlympiadMatchFinish(Participant winner, Participant looser, CompetitionType type)
 	{
 		if (winner != null)
 		{
-			final QuestState st = winner.getQuestState(getName());
+			final L2PcInstance player = winner.getPlayer();
+			if (player == null)
+			{
+				return;
+			}
+			
+			final QuestState st = player.getQuestState(getName());
 			if ((st != null) && st.isStarted() && (st.isCond(1)))
 			{
 				final int matches = st.getInt("undefeatable") + 1;
@@ -135,6 +126,24 @@ public class Q00553_OlympiadUndefeated extends Quest
 						}
 						break;
 				}
+			}
+		}
+		
+		if (looser != null)
+		{
+			final L2PcInstance player = looser.getPlayer();
+			if (player == null)
+			{
+				return;
+			}
+			
+			final QuestState st = player.getQuestState(getName());
+			if ((st != null) && st.isStarted() && (st.isCond(1)))
+			{
+				st.unset("undefeatable");
+				st.takeItems(WIN_CONF_2, -1);
+				st.takeItems(WIN_CONF_5, -1);
+				st.takeItems(WIN_CONF_10, -1);
 			}
 		}
 	}

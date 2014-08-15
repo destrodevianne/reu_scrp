@@ -25,17 +25,17 @@ import l2r.gameserver.enums.IllegalActionPunishmentType;
 import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.model.L2SkillLearn;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.events.impl.character.player.OnPlayerProfessionChange;
 import l2r.gameserver.model.holders.ItemHolder;
 import l2r.gameserver.model.skills.L2Skill;
-import l2r.gameserver.scripting.scriptengine.events.ProfessionChangeEvent;
-import l2r.gameserver.scripting.scriptengine.impl.L2Script;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
 
 /**
  * Skill Transfer feature.
  * @author Zoey76
  */
-public final class SkillTransfer extends L2Script
+public final class SkillTransfer extends AbstractNpcAI
 {
 	private static final String HOLY_POMANDER = "HOLY_POMANDER_";
 	private static final ItemHolder[] PORMANDERS =
@@ -50,15 +50,14 @@ public final class SkillTransfer extends L2Script
 	
 	private SkillTransfer()
 	{
-		super(-1, SkillTransfer.class.getSimpleName(), "features");
-		// addProfessionChangeNotify(null);
+		super(SkillTransfer.class.getSimpleName(), "features");
+		setPlayerProfessionChangeId(this::onProfessionChange);
 		setOnEnterWorld(Config.SKILL_CHECK_ENABLE);
 	}
 	
-	@Override
-	public void onProfessionChange(ProfessionChangeEvent event)
+	public void onProfessionChange(OnPlayerProfessionChange event)
 	{
-		final L2PcInstance player = event.getPlayer();
+		final L2PcInstance player = event.getActiveChar();
 		final int index = getTransferClassIndex(player);
 		if (index < 0)
 		{
@@ -76,22 +75,13 @@ public final class SkillTransfer extends L2Script
 	@Override
 	public String onEnterWorld(L2PcInstance player)
 	{
-		addProfessionChangeNotify(player);
-		final int index = getTransferClassIndex(player);
-		if (index < 0)
-		{
-			return super.onEnterWorld(player);
-		}
-		
-		final String name = HOLY_POMANDER + player.getClassId().getId();
-		if (!player.getVariables().getBool(name, false))
-		{
-			player.getVariables().set(name, true);
-			giveItems(player, PORMANDERS[index]);
-		}
-		
 		if (!player.canOverrideCond(PcCondOverride.SKILL_CONDITIONS) || Config.SKILL_CHECK_GM)
 		{
+			final int index = getTransferClassIndex(player);
+			if (index < 0)
+			{
+				return super.onEnterWorld(player);
+			}
 			long count = PORMANDERS[index].getCount() - player.getInventory().getInventoryItemCount(PORMANDERS[index].getId(), -1, false);
 			for (L2Skill sk : player.getAllSkills())
 			{

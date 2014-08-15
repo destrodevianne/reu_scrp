@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -19,16 +19,15 @@
 package l2r.gameserver.scripts.ai.npc;
 
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.enums.QuestEventType;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.network.serverpackets.SocialAction;
-import l2r.gameserver.scripting.scriptengine.impl.L2Script;
 import l2r.gameserver.util.Broadcast;
 
 import org.slf4j.Logger;
@@ -38,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * Abstract NPC AI class for datapack based AIs.
  * @author UnAfraid, Zoey76
  */
-public abstract class AbstractNpcAI extends L2Script
+public abstract class AbstractNpcAI extends Quest
 {
 	public Logger _log = LoggerFactory.getLogger(getClass());
 	
@@ -78,30 +77,6 @@ public abstract class AbstractNpcAI extends L2Script
 		addSkillSeeId(mobs);
 		addAggroRangeEnterId(mobs);
 		addFactionCallId(mobs);
-	}
-	
-	/**
-	 * This is used to register all monsters contained in mobs for a particular script event types defined in types.
-	 * @param mobs
-	 * @param types
-	 */
-	public void registerMobs(int[] mobs, QuestEventType... types)
-	{
-		for (QuestEventType type : types)
-		{
-			addEventId(type, mobs);
-		}
-	}
-	
-	public void registerMobs(Iterable<Integer> mobs, QuestEventType... types)
-	{
-		for (int id : mobs)
-		{
-			for (QuestEventType type : types)
-			{
-				addEventId(type, id);
-			}
-		}
 	}
 	
 	/**
