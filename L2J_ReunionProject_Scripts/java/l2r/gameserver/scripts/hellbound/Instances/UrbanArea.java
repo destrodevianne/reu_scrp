@@ -28,7 +28,6 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2QuestGuardInstance;
-import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.instancezone.InstanceWorld;
@@ -188,7 +187,7 @@ public final class UrbanArea extends AbstractNpcAI
 				}
 				else if (event.equalsIgnoreCase("break_chains"))
 				{
-					if ((npc.getFirstEffect(STONE.getSkill()) == null) || world.isAmaskariDead)
+					if (!npc.isAffectedBySkill(STONE.getSkillId()) || world.isAmaskariDead)
 					{
 						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NATIVES_NPCSTRING_ID[0]));
 						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NATIVES_NPCSTRING_ID[2]));
@@ -196,12 +195,9 @@ public final class UrbanArea extends AbstractNpcAI
 					else
 					{
 						cancelQuestTimer("rebuff", npc, null);
-						for (L2Effect e : npc.getAllEffects())
+						if (npc.isAffectedBySkill(STONE.getSkillId()))
 						{
-							if (e.getSkill() == STONE.getSkill())
-							{
-								e.exit();
-							}
+							npc.stopSkillEffects(STONE.getSkillId());
 						}
 						
 						npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NATIVES_NPCSTRING_ID[0]));
