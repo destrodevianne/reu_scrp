@@ -49,7 +49,6 @@ public class SecretAreaKeucereus extends Quest
 	
 	private void enterInstance(L2PcInstance player, String template)
 	{
-		int instanceId = 0;
 		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		// existing instance
@@ -64,25 +63,21 @@ public class SecretAreaKeucereus extends Quest
 			return;
 		}
 		// New instance
-		if (!checkCond(player))
+		if (checkCond(player))
 		{
-			return;
+			world = new KSAWorld();
+			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			world.setTemplateId(127);
+			world.setStatus(0);
+			
+			InstanceManager.getInstance().addWorld(world);
+			_log.info("SecretAreaKeucereus started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			teleportPlayer(player, (KSAWorld) world);
 		}
-		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-		world = new KSAWorld();
-		
-		world.setInstanceId(instanceId);
-		world.setTemplateId(127);
-		world.setStatus(0);
-		
-		InstanceManager.getInstance().addWorld(world);
-		_log.info("SecretAreaKeucereus started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
-		teleportPlayer(player, (KSAWorld) world);
 	}
 	
 	private void enterInstance118(L2PcInstance player, String template)
 	{
-		int instanceId = 0;
 		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		// existing instance
@@ -97,20 +92,17 @@ public class SecretAreaKeucereus extends Quest
 			return;
 		}
 		// New instance
-		if (!checkCond118(player))
+		if (checkCond118(player))
 		{
-			return;
+			world = new KSAWorld();
+			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			world.setTemplateId(118);
+			world.setStatus(0);
+			
+			InstanceManager.getInstance().addWorld(world);
+			_log.info("SecretAreaKeucereus started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			teleportPlayer(player, (KSAWorld) world);
 		}
-		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-		world = new KSAWorld();
-		
-		world.setInstanceId(instanceId);
-		world.setTemplateId(118);
-		world.setStatus(0);
-		
-		InstanceManager.getInstance().addWorld(world);
-		_log.info("SecretAreaKeucereus started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
-		teleportPlayer(player, (KSAWorld) world);
 	}
 	
 	private void teleportPlayer(L2PcInstance player, KSAWorld world)

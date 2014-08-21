@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.instances;
+package l2r.gameserver.scripts.gracia.instances;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -453,9 +453,9 @@ public class HallOfSufferingAttack extends Quest
 	
 	private static final int INSTANCEPENALTY = 24;
 	
-	public HallOfSufferingAttack(int questId, String name, String descr)
+	public HallOfSufferingAttack()
 	{
-		super(questId, name, descr);
+		super(-1, HallOfSufferingAttack.class.getSimpleName(), "gracia/instances");
 		
 		addStartNpc(MOUTHOFEKIMUS);
 		addStartNpc(TEPIOS);
@@ -534,9 +534,8 @@ public class HallOfSufferingAttack extends Quest
 		player.teleToLocation(coords[0], coords[1], coords[2]);
 	}
 	
-	protected int enterInstance(L2PcInstance player, String template, int[] coords)
+	protected void enterInstance(L2PcInstance player, String template, int[] coords)
 	{
-		int instanceId = 0;
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		
 		if (world != null)
@@ -544,44 +543,41 @@ public class HallOfSufferingAttack extends Quest
 			if (!(world instanceof HSWorld))
 			{
 				player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-				return 0;
+				return;
 			}
 			teleportPlayer(player, coords, world.getInstanceId());
-			return world.getInstanceId();
+			return;
 		}
 		
-		if (!checkConditions(player))
+		if (checkConditions(player))
 		{
-			return 0;
-		}
-		
-		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-		world = new HSWorld();
-		world.setInstanceId(instanceId);
-		world.setTemplateId(INSTANCEID);
-		world.setStatus(0);
-		((HSWorld) world).storeTime[0] = System.currentTimeMillis();
-		InstanceManager.getInstance().addWorld(world);
-		runTumors((HSWorld) world);
-		
-		if (player.getParty() == null)
-		{
-			teleportPlayer(player, coords, instanceId);
-			world.addAllowed(player.getObjectId());
-		}
-		else
-		{
-			for (L2PcInstance partyMember : player.getParty().getMembers())
+			world = new HSWorld();
+			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			world.setTemplateId(INSTANCEID);
+			world.setStatus(0);
+			((HSWorld) world).storeTime[0] = System.currentTimeMillis();
+			InstanceManager.getInstance().addWorld(world);
+			_log.info("Hall Of Suffering Attack started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			runTumors((HSWorld) world);
+			
+			if (player.getParty() == null)
 			{
-				teleportPlayer(partyMember, coords, instanceId);
-				world.addAllowed(partyMember.getObjectId());
-				if (partyMember.getQuestState(qn) == null)
+				teleportPlayer(player, coords, world.getInstanceId());
+				world.addAllowed(player.getObjectId());
+			}
+			else
+			{
+				for (L2PcInstance partyMember : player.getParty().getMembers())
 				{
-					newQuestState(partyMember);
+					teleportPlayer(partyMember, coords, world.getInstanceId());
+					world.addAllowed(partyMember.getObjectId());
+					if (partyMember.getQuestState(qn) == null)
+					{
+						newQuestState(partyMember);
+					}
 				}
 			}
 		}
-		return instanceId;
 	}
 	
 	protected boolean checkKillProgress(L2Npc mob, HSWorld world)
@@ -861,10 +857,5 @@ public class HallOfSufferingAttack extends Quest
 			return null;
 		}
 		return "";
-	}
-	
-	public static void main(String[] args)
-	{
-		new HallOfSufferingAttack(-1, HallOfSufferingAttack.class.getSimpleName(), "instances");
 	}
 }

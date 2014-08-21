@@ -16,26 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.instances;
+package l2r.gameserver.scripts.gracia.instances;
 
-import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.ScheduledFuture;
 
 import javolution.util.FastList;
 import l2r.Config;
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.instancemanager.InstanceManager;
-import l2r.gameserver.instancemanager.SoIManager;
 import l2r.gameserver.model.L2CommandChannel;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.Location;
+import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.actor.instance.L2QuestGuardInstance;
 import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
-import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.clientpackets.Say2;
@@ -43,46 +44,43 @@ import l2r.gameserver.network.serverpackets.ExShowScreenMessage;
 import l2r.gameserver.network.serverpackets.L2GameServerPacket;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.network.serverpackets.SystemMessage;
-import l2r.gameserver.scripts.quests.Q00696_ConquertheHallofErosion;
+import l2r.gameserver.scripts.quests.Q00697_DefendtheHallofErosion;
 import l2r.gameserver.util.Util;
 import l2r.util.Rnd;
 
-public class HallOfErosionAttack extends Quest
+public class HallOfErosionDefence extends Quest
 {
-	protected class HEWorld extends InstanceWorld
+	protected class HEDWorld extends InstanceWorld
 	{
-		public FastList<L2Npc> npcList = new FastList<>();
+		public List<L2Attackable> npcList;
+		public FastList<L2Npc> alivetumor = new FastList<>();
 		public FastList<L2Npc> deadTumors = new FastList<>();
-		public int tumorCount = 0;
-		public L2Npc cohemenes = null;
 		protected L2Npc deadTumor;
-		public boolean isBossAttacked = false;
 		public long startTime = 0;
-		
-		public synchronized void addTumorCount(int value)
-		{
-			tumorCount += value;
-		}
+		public ScheduledFuture<?> finishTask = null;
 		
 		public synchronized void addTag(int value)
 		{
 			tag += value;
 		}
 		
-		public HEWorld()
+		public HEDWorld()
 		{
 			tag = -1;
 		}
 	}
 	
-	private static final int INSTANCEID = 119;
-	private static final int INSTANCEPENALTY = 24;
+	private static final String qn = "HallOfErosionDefence";
+	private static final int INSTANCEID = 120;
 	private static final int MOUTHOFEKIMUS = 32537;
-	public static int TUMOR = 18708;
-	private static final int DEADTUMOR = 32535;
-	private static int COHEMENES = 25634;
+	private static final int TUMOR_ALIVE = 18708;
+	private static final int TUMOR_DEAD = 32535;
+	private static final int SEED = 32541;
 	
+	public int tumorKillCount = 0;
 	protected boolean conquestEnded = false;
+	private boolean soulwagonSpawned = false;
+	private static int seedKills = 0;
 	private long tumorRespawnTime;
 	
 	private static final int[] ENTER_TELEPORT =
@@ -94,10 +92,12 @@ public class HallOfErosionAttack extends Quest
 	
 	private static int[] NOTMOVE =
 	{
+		18667,
 		18668,
-		18711,
 		18708,
-		DEADTUMOR
+		18709,
+		18711,
+		TUMOR_DEAD
 	};
 	
 	private static final int[] mobs =
@@ -105,7 +105,129 @@ public class HallOfErosionAttack extends Quest
 		22516,
 		22520,
 		22522,
-		22524
+		22524,
+		22526,
+		22532
+	};
+	
+	private static final int[][] SEEDS_SPAWN =
+	{
+		{
+			SEED,
+			-178418,
+			211653,
+			-12029,
+			49151,
+			0,
+			1
+		},
+		{
+			SEED,
+			-178417,
+			206558,
+			-12029,
+			16384,
+			0,
+			1
+		},
+		{
+			SEED,
+			-180911,
+			206551,
+			-12029,
+			16384,
+			0,
+			1
+		},
+		{
+			SEED,
+			-180911,
+			211652,
+			-12029,
+			49151,
+			0,
+			1
+		}
+	};
+	
+	private static final int[][] TUMOR_DEAD_SPAWN =
+	{
+		{
+			TUMOR_DEAD,
+			-176036,
+			210002,
+			-11948,
+			36863,
+			0,
+			1
+		},
+		{
+			TUMOR_DEAD,
+			-176039,
+			208203,
+			-11948,
+			28672,
+			0,
+			1
+		},
+		{
+			TUMOR_DEAD,
+			-183288,
+			208205,
+			-11948,
+			4096,
+			0,
+			1
+		},
+		{
+			TUMOR_DEAD,
+			-183290,
+			210004,
+			-11948,
+			61439,
+			0,
+			1
+		}
+	};
+	
+	protected static final int[][] TUMOR_ALIVE_SPAWN =
+	{
+		{
+			TUMOR_ALIVE,
+			-176036,
+			210002,
+			-11948,
+			36863,
+			0,
+			1
+		},
+		{
+			TUMOR_ALIVE,
+			-176039,
+			208203,
+			-11948,
+			28672,
+			0,
+			1
+		},
+		{
+			TUMOR_ALIVE,
+			-183288,
+			208205,
+			-11948,
+			4096,
+			0,
+			1
+		},
+		{
+			TUMOR_ALIVE,
+			-183290,
+			210004,
+			-11948,
+			61439,
+			0,
+			1
+		}
 	};
 	
 	private static final int[][] ROOMS_MOBS =
@@ -629,85 +751,9 @@ public class HallOfErosionAttack extends Quest
 			0,
 			60,
 			1
-		}
-	};
-	
-	private static final int[][] ROOMS_TUMORS =
-	{
-		{
-			18780,
-			-180911,
-			211652,
-			-12029,
-			49151,
-			240,
-			1
 		},
 		{
-			18780,
-			-180911,
-			206551,
-			-12029,
-			16384,
-			240,
-			1
-		},
-		{
-			18780,
-			-178417,
-			206558,
-			-12032,
-			16384,
-			240,
-			1
-		},
-		{
-			18780,
-			-178418,
-			211653,
-			-12029,
-			49151,
-			240,
-			1
-		},
-		{
-			18708,
-			-183290,
-			210004,
-			-11948,
-			61439,
-			0,
-			1
-		},
-		{
-			18708,
-			-183288,
-			208205,
-			-11948,
-			4096,
-			0,
-			1
-		},
-		{
-			18708,
-			-176039,
-			208203,
-			-11948,
-			28672,
-			0,
-			1
-		},
-		{
-			18708,
-			-176036,
-			210002,
-			-11948,
-			36863,
-			0,
-			1
-		},
-		{
-			18668,
+			18667,
 			-179664,
 			209443,
 			-12476,
@@ -716,7 +762,7 @@ public class HallOfErosionAttack extends Quest
 			1
 		},
 		{
-			18668,
+			18711,
 			-179093,
 			209738,
 			-12480,
@@ -725,7 +771,7 @@ public class HallOfErosionAttack extends Quest
 			1
 		},
 		{
-			18668,
+			18667,
 			-178248,
 			209688,
 			-12479,
@@ -743,7 +789,7 @@ public class HallOfErosionAttack extends Quest
 			1
 		},
 		{
-			18668,
+			18711,
 			-178246,
 			208493,
 			-12480,
@@ -761,7 +807,7 @@ public class HallOfErosionAttack extends Quest
 			1
 		},
 		{
-			18668,
+			18711,
 			-179663,
 			208738,
 			-12480,
@@ -770,7 +816,7 @@ public class HallOfErosionAttack extends Quest
 			1
 		},
 		{
-			18668,
+			18711,
 			-180498,
 			208330,
 			-12467,
@@ -779,7 +825,7 @@ public class HallOfErosionAttack extends Quest
 			1
 		},
 		{
-			18668,
+			18667,
 			-181070,
 			208502,
 			-12467,
@@ -797,7 +843,7 @@ public class HallOfErosionAttack extends Quest
 			1
 		},
 		{
-			18668,
+			18711,
 			-181069,
 			209698,
 			-12467,
@@ -816,67 +862,25 @@ public class HallOfErosionAttack extends Quest
 		}
 	};
 	
-	private static int[][] COHEMENES_SPAWN =
+	public HallOfErosionDefence()
 	{
-		{
-			25634,
-			-178472,
-			211823,
-			-12025,
-			0,
-			0,
-			-1
-		},
-		{
-			25634,
-			-180926,
-			211887,
-			-12029,
-			0,
-			0,
-			-1
-		},
-		{
-			25634,
-			-180906,
-			206635,
-			-12032,
-			0,
-			0,
-			-1
-		},
-		{
-			25634,
-			-178492,
-			206426,
-			-12023,
-			0,
-			0,
-			-1
-		}
-	};
-	
-	public HallOfErosionAttack(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
+		super(-1, HallOfErosionDefence.class.getSimpleName(), "gracia/instances");
 		
 		addStartNpc(MOUTHOFEKIMUS);
 		addTalkId(MOUTHOFEKIMUS);
-		addStartNpc(DEADTUMOR);
-		addTalkId(DEADTUMOR);
+		addStartNpc(TUMOR_DEAD);
+		addTalkId(TUMOR_DEAD);
 		
-		addSpawnId(COHEMENES);
 		for (int id : NOTMOVE)
 		{
 			addSpawnId(id);
 		}
+		addSpawnId(SEED);
 		
 		addAggroRangeEnterId(18668);
 		
-		addAttackId(COHEMENES);
-		
-		addKillId(TUMOR);
-		addKillId(COHEMENES);
+		addKillId(TUMOR_ALIVE);
+		addKillId(SEED);
 		addKillId(18711);
 		
 		tumorRespawnTime = 180 * 1000;
@@ -916,7 +920,7 @@ public class HallOfErosionAttack extends Quest
 			return false;
 		}
 		
-		if ((party.getCommandChannel().getMembers().size() < Config.EROSION_ATTACK_MIN_PLAYERS) || (party.getCommandChannel().getMembers().size() > Config.EROSION_ATTACK_MAX_PLAYERS))// 18 27
+		if ((party.getCommandChannel().getMembers().size() < Config.EROSION_DEFENCE_MIN_PLAYERS) || (party.getCommandChannel().getMembers().size() > Config.EROSION_DEFENCE_MAX_PLAYERS))// 18 27
 		{
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_LEVEL_REQUIREMENT_NOT_SUFFICIENT);
 			party.getCommandChannel().broadcastPacket(sm);
@@ -950,7 +954,7 @@ public class HallOfErosionAttack extends Quest
 				return false;
 			}
 			
-			QuestState st = partyMember.getQuestState(Q00696_ConquertheHallofErosion.class.getSimpleName());
+			QuestState st = partyMember.getQuestState(Q00697_DefendtheHallofErosion.class.getSimpleName());
 			if ((st == null) || (st.getInt("cond") != 1))
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.C1_QUEST_REQUIREMENT_NOT_SUFFICIENT);
@@ -962,82 +966,60 @@ public class HallOfErosionAttack extends Quest
 		return true;
 	}
 	
-	protected int enterInstance(L2PcInstance player, String template, int[] coords)
+	protected void enterInstance(L2PcInstance player, String template, int[] coords)
 	{
-		int instanceId = 0;
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
-		
 		if (world != null)
 		{
-			if (!(world instanceof HEWorld))
+			if (!(world instanceof HEDWorld))
 			{
 				player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-				return 0;
+				return;
 			}
 			teleportPlayer(player, coords, world.getInstanceId());
-			return instanceId;
+			return;
 		}
 		
-		if (!checkConditions(player))
+		if (checkConditions(player))
 		{
-			return 0;
-		}
-		
-		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-		world = new HEWorld();
-		world.setTemplateId(INSTANCEID);
-		world.setInstanceId(instanceId);
-		world.setStatus(0);
-		((HEWorld) world).startTime = System.currentTimeMillis();
-		InstanceManager.getInstance().addWorld(world);
-		
-		if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
-		{
-			teleportPlayer(player, coords, instanceId);
-			world.addAllowed(player.getObjectId());
-		}
-		else
-		{
-			for (L2PcInstance partyMember : player.getParty().getCommandChannel().getMembers())
+			world = new HEDWorld();
+			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			world.setTemplateId(INSTANCEID);
+			world.setStatus(0);
+			((HEDWorld) world).startTime = System.currentTimeMillis();
+			InstanceManager.getInstance().addWorld(world);
+			_log.info("Hall Of Erosion Defence started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			
+			if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
 			{
-				teleportPlayer(partyMember, coords, instanceId);
-				world.addAllowed(partyMember.getObjectId());
-				if (partyMember.getQuestState(getName()) == null)
+				teleportPlayer(player, coords, world.getInstanceId());
+				world.addAllowed(player.getObjectId());
+			}
+			else
+			{
+				for (L2PcInstance partyMember : player.getParty().getCommandChannel().getMembers())
 				{
-					newQuestState(partyMember);
+					teleportPlayer(partyMember, coords, world.getInstanceId());
+					world.addAllowed(partyMember.getObjectId());
+					if (partyMember.getQuestState(qn) == null)
+					{
+						newQuestState(partyMember);
+					}
 				}
 			}
+			((HEDWorld) world).finishTask = ThreadPoolManager.getInstance().scheduleGeneral(new FinishTask((HEDWorld) world), 20 * 60000);
+			runTumors((HEDWorld) world);
 		}
-		runTumors((HEWorld) world);
-		
-		return instanceId;
 	}
 	
-	protected void runTumors(HEWorld world)
+	protected void runTumors(final HEDWorld world)
 	{
 		for (int[] spawn : ROOMS_MOBS)
 		{
 			for (int i = 0; i < spawn[6]; i++)
 			{
-				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
-				npc.getSpawn().setRespawnDelay(spawn[5]);
-				npc.getSpawn().setAmount(1);
-				if (spawn[5] > 0)
-				{
-					npc.getSpawn().startRespawn();
-				}
-				else
-				{
-					npc.getSpawn().stopRespawn();
-				}
-			}
-		}
-		
-		for (int[] spawn : ROOMS_TUMORS)
-		{
-			for (int i = 0; i < spawn[6]; i++)
-			{
-				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
+				world.npcList = new FastList<>();
+				L2Attackable npc = (L2Attackable) addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
 				npc.getSpawn().setRespawnDelay(spawn[5]);
 				npc.getSpawn().setAmount(1);
 				if (spawn[5] > 0)
@@ -1051,14 +1033,49 @@ public class HallOfErosionAttack extends Quest
 				world.npcList.add(npc);
 			}
 		}
+		
+		for (int[] spawn : TUMOR_DEAD_SPAWN)
+		{
+			for (int i = 0; i < spawn[6]; i++)
+			{
+				L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
+				world.deadTumors.add(npc);
+				ThreadPoolManager.getInstance().scheduleGeneral(new RegenerationCoffinSpawn(npc, world), 1000);
+			}
+		}
+		
+		for (int[] spawn : SEEDS_SPAWN)
+		{
+			for (int i = 0; i < spawn[6]; i++)
+			{
+				addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
+			}
+		}
+		
+		ThreadPoolManager.getInstance().scheduleGeneral(() ->
+		{
+			if (!conquestEnded)
+			{
+				stopDeadTumors(world);
+				for (int[] spawn : TUMOR_ALIVE_SPAWN)
+				{
+					for (int i = 0; i < spawn[6]; i++)
+					{
+						L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
+						world.alivetumor.add(npc);
+					}
+				}
+				broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NRECOVERED_NEARBY_UNDEAD_ARE_SWARMING_TOWARD_SEED_OF_LIFE, 2, 8000));
+			}
+		}, 180 * 1000);
 		broadCastPacket(world, new ExShowScreenMessage(NpcStringId.YOU_CAN_HEAR_THE_UNDEAD_OF_EKIMUS_RUSHING_TOWARD_YOU_S1_S2_IT_HAS_NOW_BEGUN, 2, 8000));
 	}
 	
-	protected void stopTumors(HEWorld world)
+	protected void stopDeadTumors(HEDWorld world)
 	{
-		if (!world.npcList.isEmpty())
+		if (!world.deadTumors.isEmpty())
 		{
-			for (L2Npc npc : world.npcList)
+			for (L2Npc npc : world.deadTumors)
 			{
 				if (npc != null)
 				{
@@ -1066,16 +1083,16 @@ public class HallOfErosionAttack extends Quest
 				}
 			}
 		}
-		world.npcList.clear();
+		world.deadTumors.clear();
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		InstanceWorld tmpworld = InstanceManager.getInstance().getPlayerWorld(player);
-		if (tmpworld instanceof HEWorld)
+		if (tmpworld instanceof HEDWorld)
 		{
-			HEWorld world = (HEWorld) tmpworld;
+			HEDWorld world = (HEDWorld) tmpworld;
 			
 			if (event.startsWith("warp"))
 			{
@@ -1108,7 +1125,7 @@ public class HallOfErosionAttack extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		int npcId = npc.getId();
-		QuestState st = player.getQuestState(getName());
+		QuestState st = player.getQuestState(qn);
 		if (st == null)
 		{
 			st = newQuestState(player);
@@ -1116,7 +1133,7 @@ public class HallOfErosionAttack extends Quest
 		
 		if (npcId == MOUTHOFEKIMUS)
 		{
-			enterInstance(player, "HallOfErosionAttack.xml", ENTER_TELEPORT);
+			enterInstance(player, "HallOfErosionDefence.xml", ENTER_TELEPORT);
 			return "";
 		}
 		return "";
@@ -1126,9 +1143,9 @@ public class HallOfErosionAttack extends Quest
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-		if (tmpworld instanceof HEWorld)
+		if (tmpworld instanceof HEDWorld)
 		{
-			final HEWorld world = (HEWorld) tmpworld;
+			final HEDWorld world = (HEDWorld) tmpworld;
 			
 			if (npc.getId() == 18668)
 			{
@@ -1136,40 +1153,10 @@ public class HallOfErosionAttack extends Quest
 				{
 					spawnNpc(mobs[Rnd.get(mobs.length)], npc.getLocation(), 0, world.getInstanceId());
 				}
-				npc.doDie(npc);
+				npc.deleteMe();
 			}
 		}
 		return super.onAggroRangeEnter(npc, player, isSummon);
-	}
-	
-	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon, L2Skill skill)
-	{
-		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-		if (tmpworld instanceof HEWorld)
-		{
-			final HEWorld world = (HEWorld) tmpworld;
-			if (!world.isBossAttacked)
-			{
-				world.isBossAttacked = true;
-				Calendar reenter = Calendar.getInstance();
-				reenter.add(Calendar.HOUR, INSTANCEPENALTY);
-				
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.INSTANT_ZONE_S1_RESTRICTED);
-				sm.addInstanceName(tmpworld.getTemplateId());
-				
-				for (int objectId : tmpworld.getAllowed())
-				{
-					L2PcInstance player = L2World.getInstance().getPlayer(objectId);
-					if ((player != null) && player.isOnline())
-					{
-						InstanceManager.getInstance().setInstanceTime(objectId, tmpworld.getTemplateId(), reenter.getTimeInMillis());
-						player.sendPacket(sm);
-					}
-				}
-			}
-		}
-		return super.onAttack(npc, attacker, damage, isSummon, skill);
 	}
 	
 	@Override
@@ -1181,24 +1168,16 @@ public class HallOfErosionAttack extends Quest
 			npc.setIsImmobilized(true);
 		}
 		
-		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-		if (tmpworld instanceof HEWorld)
+		if (npc.getId() == SEED)
 		{
-			HEWorld world = (HEWorld) tmpworld;
-			if (npc.getId() == TUMOR)
-			{
-				world.addTumorCount(1);
-				if ((world.tumorCount == 4) && (world.cohemenes != null))
-				{
-					world.cohemenes.deleteMe();
-					broadCastPacket(world, new ExShowScreenMessage(NpcStringId.YOU_HAVE_FAILED_AT_S1_S2_THE_INSTANCE_WILL_SHORTLY_EXPIRE, 2, 8000));
-					finishInstance(world);
-					conquestEnded = true;
-					stopTumors(world);
-				}
-			}
-			
-			if (npc.getId() == DEADTUMOR)
+			((L2QuestGuardInstance) npc).setPassive(true);
+		}
+		
+		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
+		if (tmpworld instanceof HEDWorld)
+		{
+			HEDWorld world = (HEDWorld) tmpworld;
+			if (npc.getId() == TUMOR_DEAD)
 			{
 				world.addTag(1);
 			}
@@ -1210,126 +1189,71 @@ public class HallOfErosionAttack extends Quest
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
 		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
-		if (tmpworld instanceof HEWorld)
+		if (tmpworld instanceof HEDWorld)
 		{
-			HEWorld world = (HEWorld) tmpworld;
-			Location loc = npc.getLocation();
-			if (npc.getId() == TUMOR)
+			final HEDWorld world = (HEDWorld) tmpworld;
+			if (npc.getId() == TUMOR_ALIVE)
 			{
-				world.addTumorCount(-1);
 				npc.dropItem(player, 13797, Rnd.get(2, 5));
 				npc.deleteMe();
-				world.deadTumor = spawnNpc(DEADTUMOR, loc, 0, world.getInstanceId());
+				notifyTumorDeath(npc, world);
+				world.deadTumor = spawnNpc(TUMOR_DEAD, npc.getLocation(), 0, world.getInstanceId());
 				world.deadTumors.add(world.deadTumor);
-				ThreadPoolManager.getInstance().scheduleGeneral(new TumorRevival(world.deadTumor, world), tumorRespawnTime);
-				ThreadPoolManager.getInstance().scheduleGeneral(new RegenerationCoffinSpawn(world.deadTumor, world), 20000);
-				if (world.tumorCount >= 1)
+				broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_BEEN_DESTROYED_NTHE_NEARBY_UNDEAD_THAT_WERE_ATTACKING_SEED_OF_LIFE_START_LOSING_THEIR_ENERGY_AND_RUN_AWAY, 2, 8000));
+				ThreadPoolManager.getInstance().scheduleGeneral(() ->
 				{
-					broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_BEEN_DESTROYED_NIN_ORDER_TO_DRAW_OUT_THE_COWARDLY_COHEMENES_YOU_MUST_DESTROY_ALL_THE_TUMORS, 2, 8000));
-				}
-				
-				if ((world.tumorCount == 0) && (world.cohemenes == null))
-				{
-					broadCastPacket(world, new ExShowScreenMessage(NpcStringId.ALL_THE_TUMORS_INSIDE_S1_HAVE_BEEN_DESTROYED_DRIVEN_INTO_A_CORNER_COHEMENES_APPEARS_CLOSE_BY, 2, 8000));
-					int[] spawn = COHEMENES_SPAWN[Rnd.get(0, COHEMENES_SPAWN.length - 1)];
-					L2Npc n = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
-					n.broadcastPacket(new NpcSay(n.getObjectId(), Say2.SHOUT, n.getId(), NpcStringId.CMON_CMON_SHOW_YOUR_FACE_YOU_LITTLE_RATS_LET_ME_SEE_WHAT_THE_DOOMED_WEAKLINGS_ARE_SCHEMING));
-					world.cohemenes = n;
-				}
-			}
-			if (npc.getId() == COHEMENES)
-			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.SHOUT, npc.getId(), NpcStringId.KEU_I_WILL_LEAVE_FOR_NOW_BUT_DONT_THINK_THIS_IS_OVER_THE_SEED_OF_INFINITY_CAN_NEVER_DIE));
-				for (int objId : world.getAllowed())
-				{
-					L2PcInstance pl = L2World.getInstance().getPlayer(objId);
-					QuestState st = pl.getQuestState(Q00696_ConquertheHallofErosion.class.getSimpleName());
-					if ((st != null) && (st.getInt("cond") == 1))
-					{
-						st.set("cohemenes", "1");
-					}
-				}
-				broadCastPacket(world, new ExShowScreenMessage(NpcStringId.CONGRATULATIONS_YOU_HAVE_SUCCEEDED_AT_S1_S2_THE_INSTANCE_WILL_SHORTLY_EXPIRE, 2, 8000));
-				world.cohemenes = null;
-				conquestEnded = true;
-				finishInstance(world);
-				stopTumors(world);
-				SoIManager.notifyCohemenesKill();
+					world.deadTumor.deleteMe();
+					L2Npc tumor = spawnNpc(TUMOR_ALIVE, world.deadTumor.getLocation(), 0, world.getInstanceId());
+					world.alivetumor.add(tumor);
+					broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NRECOVERED_NEARBY_UNDEAD_ARE_SWARMING_TOWARD_SEED_OF_LIFE, 2, 8000));
+				}, tumorRespawnTime);
 			}
 			
 			if (npc.getId() == 18711)
 			{
-				tumorRespawnTime += 10 * 1000;
+				tumorRespawnTime += 5 * 1000;
 			}
 		}
-		return "";
+		return super.onKill(npc, player, isSummon);
 	}
 	
-	private static final void finishInstance(InstanceWorld world)
+	// TODO: NEED FIX?
+	public String onKillByMob(L2Npc npc, L2Npc killer)
 	{
-		if (world instanceof HEWorld)
+		InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
+		if (tmpworld instanceof HEDWorld)
 		{
-			Calendar reenter = Calendar.getInstance();
-			reenter.set(Calendar.MINUTE, 30);
+			HEDWorld world = (HEDWorld) tmpworld;
 			
-			if (reenter.get(Calendar.HOUR_OF_DAY) >= 6)
+			seedKills++;
+			if (seedKills >= 1)
 			{
-				reenter.add(Calendar.DATE, 1);
+				conquestConclusion(world);
 			}
-			reenter.set(Calendar.HOUR_OF_DAY, 6);
-			
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.INSTANT_ZONE_S1_RESTRICTED);
-			sm.addInstanceName(world.getTemplateId());
-			
-			for (int objectId : world.getAllowed())
-			{
-				L2PcInstance obj = L2World.getInstance().getPlayer(objectId);
-				if ((obj != null) && obj.isOnline())
-				{
-					InstanceManager.getInstance().setInstanceTime(objectId, world.getTemplateId(), reenter.getTimeInMillis());
-					obj.sendPacket(sm);
-				}
-			}
-			Instance inst = InstanceManager.getInstance().getInstance(world.getInstanceId());
-			inst.setDuration(5 * 60000);
-			inst.setEmptyDestroyTime(0);
 		}
+		return null;
 	}
 	
-	private class TumorRevival implements Runnable
+	private void notifyTumorDeath(L2Npc npc, HEDWorld world)
 	{
-		private final L2Npc _deadTumor;
-		private final HEWorld _world;
-		
-		public TumorRevival(L2Npc deadTumor, HEWorld world)
+		tumorKillCount++;
+		if ((tumorKillCount == 4) && !soulwagonSpawned)
 		{
-			_deadTumor = world.deadTumor;
-			_world = world;
-		}
-		
-		@Override
-		public void run()
-		{
-			if (conquestEnded)
-			{
-				return;
-			}
-			
-			L2Npc tumor = spawnNpc(TUMOR, _deadTumor.getLocation(), 0, _world.getInstanceId());
-			_world.npcList.add(tumor);
-			_deadTumor.deleteMe();
-			_world.addTag(-1);
+			soulwagonSpawned = true;
+			L2Npc soul = spawnNpc(25636, npc.getLocation(), 0, world.getInstanceId());
+			NpcSay cs = new NpcSay(soul.getObjectId(), Say2.SHOUT, soul.getId(), NpcStringId.HA_HA_HA);
+			soul.broadcastPacket(cs);
 		}
 	}
 	
 	private class RegenerationCoffinSpawn implements Runnable
 	{
-		private final L2Npc _deadTumor;
-		private final HEWorld _world;
+		private final L2Npc _npc;
+		private final HEDWorld _world;
 		
-		public RegenerationCoffinSpawn(L2Npc deadTumor, HEWorld world)
+		public RegenerationCoffinSpawn(L2Npc npc, HEDWorld world)
 		{
-			_deadTumor = world.deadTumor;
+			_npc = npc;
 			_world = world;
 		}
 		
@@ -1342,13 +1266,83 @@ public class HallOfErosionAttack extends Quest
 			}
 			for (int i = 0; i < 4; i++)
 			{
-				L2Npc worm = spawnNpc(18710, _deadTumor.getLocation(), 0, _world.getInstanceId());
-				_world.npcList.add(worm);
+				L2Npc worm = spawnNpc(18709, _npc.getLocation(), 0, _world.getInstanceId());
+				_world.deadTumors.add(worm);
 			}
 		}
 	}
 	
-	protected void broadCastPacket(HEWorld world, L2GameServerPacket packet)
+	class FinishTask implements Runnable
+	{
+		private final HEDWorld _world;
+		
+		FinishTask(HEDWorld world)
+		{
+			_world = world;
+		}
+		
+		@Override
+		public void run()
+		{
+			if (_world != null)
+			{
+				conquestEnded = true;
+				final Instance inst = InstanceManager.getInstance().getInstance(_world.getInstanceId());
+				if (inst != null)
+				{
+					for (int objId : _world.getAllowed())
+					{
+						L2PcInstance player = L2World.getInstance().getPlayer(objId);
+						QuestState st = player.getQuestState(Q00697_DefendtheHallofErosion.class.getSimpleName());
+						if ((st != null) && (st.getInt("cond") == 1))
+						{
+							st.set("defenceDone", 1);
+						}
+					}
+					broadCastPacket(_world, new ExShowScreenMessage(NpcStringId.CONGRATULATIONS_YOU_HAVE_SUCCEEDED_AT_S1_S2_THE_INSTANCE_WILL_SHORTLY_EXPIRE, 2, 8000));
+					inst.removeNpcs();
+					if (inst.getPlayers().isEmpty())
+					{
+						inst.setDuration(5 * 60000);
+					}
+					else
+					{
+						inst.setDuration(5 * 60000);
+						inst.setEmptyDestroyTime(5 * 60000);
+					}
+				}
+			}
+		}
+	}
+	
+	private void conquestConclusion(HEDWorld world)
+	{
+		if (world.finishTask != null)
+		{
+			world.finishTask.cancel(false);
+			world.finishTask = null;
+		}
+		broadCastPacket(world, new ExShowScreenMessage(NpcStringId.YOU_HAVE_FAILED_AT_S1_S2_THE_INSTANCE_WILL_SHORTLY_EXPIRE, 2, 8000));
+		{
+			conquestEnded = true;
+			final Instance inst = InstanceManager.getInstance().getInstance(world.getInstanceId());
+			if (inst != null)
+			{
+				inst.removeNpcs();
+				if (inst.getPlayers().isEmpty())
+				{
+					inst.setDuration(5 * 60000);
+				}
+				else
+				{
+					inst.setDuration(5 * 60000);
+					inst.setEmptyDestroyTime(5 * 60000);
+				}
+			}
+		}
+	}
+	
+	protected void broadCastPacket(HEDWorld world, L2GameServerPacket packet)
 	{
 		for (int objId : world.getAllowed())
 		{
@@ -1358,10 +1352,5 @@ public class HallOfErosionAttack extends Quest
 				player.sendPacket(packet);
 			}
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new HallOfErosionAttack(-1, HallOfErosionAttack.class.getSimpleName(), "instances");
 	}
 }

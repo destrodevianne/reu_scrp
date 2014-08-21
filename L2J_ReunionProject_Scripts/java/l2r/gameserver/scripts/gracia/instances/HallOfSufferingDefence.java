@@ -13,7 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package l2r.gameserver.scripts.instances;
+package l2r.gameserver.scripts.gracia.instances;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -410,6 +410,26 @@ public class HallOfSufferingDefence extends Quest
 		int z;
 	}
 	
+	public HallOfSufferingDefence()
+	{
+		super(-1, HallOfSufferingDefence.class.getSimpleName(), "gracia/instances");
+		
+		addStartNpc(MOUTHOFEKIMUS);
+		addTalkId(MOUTHOFEKIMUS);
+		addStartNpc(TEPIOS);
+		addTalkId(TEPIOS);
+		addKillId(TUMOR_ALIVE);
+		addKillId(KLODEKUS);
+		addKillId(KLANIKUS);
+		addAttackId(KLODEKUS);
+		addAttackId(KLANIKUS);
+		for (int mobId : TUMOR_MOBIDS)
+		{
+			addSkillSeeId(mobId);
+			addKillId(mobId);
+		}
+	}
+	
 	private boolean checkConditions(L2PcInstance player)
 	{
 		if (debug)
@@ -496,9 +516,8 @@ public class HallOfSufferingDefence extends Quest
 		return;
 	}
 	
-	protected int enterInstance(L2PcInstance player, String template, teleCoord teleto)
+	protected void enterInstance(L2PcInstance player, String template, teleCoord teleto)
 	{
-		int instanceId = 0;
 		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		// existing instance
@@ -507,46 +526,43 @@ public class HallOfSufferingDefence extends Quest
 			if (!(world instanceof DHSWorld))
 			{
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER));
-				return 0;
+				return;
 			}
 			teleto.instanceId = world.getInstanceId();
 			teleportplayer(player, teleto);
-			return instanceId;
+			return;
 		}
-		// New instance
-		if (!checkConditions(player))
-		{
-			return 0;
-		}
-		L2Party party = player.getParty();
-		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-		world = new DHSWorld();
-		world.setInstanceId(instanceId);
-		world.setTemplateId(INSTANCEID);
-		world.setStatus(0);
-		((DHSWorld) world).storeTime[0] = System.currentTimeMillis();
-		InstanceManager.getInstance().addWorld(world);
-		_log.info("Hall Of Suffering started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
-		runTumors((DHSWorld) world);
-		// teleport players
-		teleto.instanceId = instanceId;
 		
-		if (player.getParty() == null)
+		if (checkConditions(player))
 		{
-			teleportplayer(player, teleto);
-			removeBuffs(player);
-			world.addAllowed(player.getObjectId());
-		}
-		else
-		{
-			for (L2PcInstance partyMember : party.getMembers())
+			L2Party party = player.getParty();
+			world = new DHSWorld();
+			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			world.setTemplateId(INSTANCEID);
+			world.setStatus(0);
+			((DHSWorld) world).storeTime[0] = System.currentTimeMillis();
+			InstanceManager.getInstance().addWorld(world);
+			_log.info("Hall Of Suffering Defence started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			runTumors((DHSWorld) world);
+			// teleport players
+			teleto.instanceId = world.getInstanceId();
+			
+			if (player.getParty() == null)
 			{
-				teleportplayer(partyMember, teleto);
-				removeBuffs(partyMember);
-				world.addAllowed(partyMember.getObjectId());
+				teleportplayer(player, teleto);
+				removeBuffs(player);
+				world.addAllowed(player.getObjectId());
+			}
+			else
+			{
+				for (L2PcInstance partyMember : party.getMembers())
+				{
+					teleportplayer(partyMember, teleto);
+					removeBuffs(partyMember);
+					world.addAllowed(partyMember.getObjectId());
+				}
 			}
 		}
-		return instanceId;
 	}
 	
 	protected void exitInstance(L2PcInstance player, teleCoord tele)
@@ -913,30 +929,5 @@ public class HallOfSufferingDefence extends Quest
 			exitInstance(player, tele);
 		}
 		return "";
-	}
-	
-	public HallOfSufferingDefence(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		addStartNpc(MOUTHOFEKIMUS);
-		addTalkId(MOUTHOFEKIMUS);
-		addStartNpc(TEPIOS);
-		addTalkId(TEPIOS);
-		addKillId(TUMOR_ALIVE);
-		addKillId(KLODEKUS);
-		addKillId(KLANIKUS);
-		addAttackId(KLODEKUS);
-		addAttackId(KLANIKUS);
-		for (int mobId : TUMOR_MOBIDS)
-		{
-			addSkillSeeId(mobId);
-			addKillId(mobId);
-		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new HallOfSufferingDefence(-1, HallOfSufferingDefence.class.getSimpleName(), "instances");
 	}
 }

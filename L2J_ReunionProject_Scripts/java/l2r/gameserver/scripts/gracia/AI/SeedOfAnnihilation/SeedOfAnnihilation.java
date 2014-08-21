@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.group_template;
+package l2r.gameserver.scripts.gracia.AI.SeedOfAnnihilation;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -78,9 +78,9 @@ public class SeedOfAnnihilation extends AbstractNpcAI
 		_teleportZones.put(60005, new Location(-179275, 186802, -10720));
 	}
 	
-	private SeedOfAnnihilation()
+	public SeedOfAnnihilation()
 	{
-		super(SeedOfAnnihilation.class.getSimpleName(), "ai/group_template");
+		super(SeedOfAnnihilation.class.getSimpleName(), "gracia/AI");
 		loadSeedRegionData();
 		for (int i : _teleportZones.keySet())
 		{
@@ -343,7 +343,7 @@ public class SeedOfAnnihilation extends AbstractNpcAI
 		}
 		else if (event.equalsIgnoreCase("transform"))
 		{
-			if (player.getFirstEffect(6408) != null)
+			if (player.isAffectedBySkill(6408))
 			{
 				npc.showChatWindow(player, 2);
 			}
@@ -385,10 +385,5 @@ public class SeedOfAnnihilation extends AbstractNpcAI
 			buff_zone = bz;
 			af_spawns = as;
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new SeedOfAnnihilation();
 	}
 }

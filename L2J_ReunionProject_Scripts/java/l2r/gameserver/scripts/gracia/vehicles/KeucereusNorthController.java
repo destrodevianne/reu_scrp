@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.vehicles;
+package l2r.gameserver.scripts.gracia.vehicles;
 
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.VehiclePathPoint;
 
-public class KeucereusNorthController extends AirShipController
+public final class KeucereusNorthController extends AirShipController
 {
 	private static final int DOCK_ZONE = 50602;
 	private static final int LOCATION = 100;
@@ -65,9 +65,9 @@ public class KeucereusNorthController extends AirShipController
 		100
 	};
 	
-	public KeucereusNorthController(int questId, String name, String descr)
+	public KeucereusNorthController()
 	{
-		super(questId, name, descr);
+		super(-1, KeucereusNorthController.class.getSimpleName(), "gracia/vehicles");
 		addStartNpc(CONTROLLER_ID);
 		addFirstTalkId(CONTROLLER_ID);
 		addTalkId(CONTROLLER_ID);
@@ -91,10 +91,5 @@ public class KeucereusNorthController extends AirShipController
 		_movieId = 1001;
 		
 		validityCheck();
-	}
-	
-	public static void main(String[] args)
-	{
-		new KeucereusNorthController(-1, KeucereusNorthController.class.getSimpleName(), "vehicles");
 	}
 }

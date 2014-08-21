@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc;
+package l2r.gameserver.scripts.gracia.AI.NPC;
 
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
@@ -25,12 +25,13 @@ import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Zealot of Shilen AI.
  * @author nonom
  */
-public class ZealotOfShilen extends AbstractNpcAI
+public final class ZealotOfShilen extends AbstractNpcAI
 {
 	// NPCs
 	private static final int ZEALOT = 18782;
@@ -40,9 +41,9 @@ public class ZealotOfShilen extends AbstractNpcAI
 		32629
 	};
 	
-	private ZealotOfShilen(String name, String descr)
+	public ZealotOfShilen()
 	{
-		super(name, descr);
+		super(ZealotOfShilen.class.getSimpleName(), "gracia/AI/NPC");
 		addSpawnId(ZEALOT);
 		addFirstTalkId(GUARDS);
 		
@@ -91,10 +92,5 @@ public class ZealotOfShilen extends AbstractNpcAI
 	{
 		npc.setIsNoRndWalk(true);
 		return super.onSpawn(npc);
-	}
-	
-	public static void main(String[] args)
-	{
-		new ZealotOfShilen(ZealotOfShilen.class.getSimpleName(), "ai/npc");
 	}
 }

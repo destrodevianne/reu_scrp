@@ -31,6 +31,7 @@ import l2r.gameserver.model.actor.instance.L2QuestGuardInstance;
 import l2r.gameserver.model.entity.Instance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.instancezone.InstanceWorld;
+import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.SystemMessageId;
@@ -115,6 +116,12 @@ public final class UrbanArea extends AbstractNpcAI
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = null;
+		QuestState st = player.getQuestState(getName());
+		if (st == null)
+		{
+			st = newQuestState(player);
+		}
+		
 		if (npc.getId() == KANAF)
 		{
 			htmltext = checkConditions(player);

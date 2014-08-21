@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.instances;
+package l2r.gameserver.scripts.gracia.instances;
 
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.model.Location;
@@ -30,7 +30,7 @@ import l2r.gameserver.network.SystemMessageId;
  * Secret Area in the Keucereus Fortress instance zone.
  * @author Gladicek
  */
-public class SecretArea extends Quest
+public final class SecretArea extends Quest
 {
 	protected class SAWorld extends InstanceWorld
 	{
@@ -50,7 +50,7 @@ public class SecretArea extends Quest
 	
 	public SecretArea()
 	{
-		super(-1, SecretArea.class.getSimpleName(), "instances");
+		super(-1, SecretArea.class.getSimpleName(), "gracia/instances");
 		addStartNpc(GINBY);
 		addTalkId(GINBY);
 		addTalkId(LELRIKIA);
@@ -59,6 +59,7 @@ public class SecretArea extends Quest
 	protected void enterInstance(L2PcInstance player)
 	{
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
+		
 		if (world != null)
 		{
 			if (world instanceof SAWorld)
@@ -94,10 +95,5 @@ public class SecretArea extends Quest
 			return "32567-01.html";
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new SecretArea();
 	}
 }

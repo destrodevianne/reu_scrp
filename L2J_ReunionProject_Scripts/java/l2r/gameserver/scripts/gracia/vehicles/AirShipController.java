@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.vehicles;
+package l2r.gameserver.scripts.gracia.vehicles;
 
 import java.util.concurrent.Future;
 
@@ -353,7 +353,7 @@ public abstract class AirShipController extends Quest
 		L2ScriptZone zone = ZoneManager.getInstance().getZoneById(_dockZone, L2ScriptZone.class);
 		if (zone == null)
 		{
-			_log.warn(getName() + ": Invalid zone " + _dockZone + ", controller disabled");
+			_log.warn(AirShipController.class.getSimpleName() + ": Invalid zone " + _dockZone + ", controller disabled");
 			_isBusy = true;
 			return;
 		}
@@ -363,15 +363,15 @@ public abstract class AirShipController extends Quest
 		{
 			if (_arrivalPath.length == 0)
 			{
-				_log.warn(getName() + ": Zero arrival path length.");
+				_log.warn(AirShipController.class.getSimpleName() + ": Zero arrival path length.");
 				_arrivalPath = null;
 			}
 			else
 			{
 				p = _arrivalPath[_arrivalPath.length - 1];
-				if (!zone.isInsideZone(p.getX(), p.getY(), p.getZ()))
+				if (!zone.isInsideZone(p.getLocation()))
 				{
-					_log.warn(getName() + ": Arrival path finish point (" + p.getX() + "," + p.getY() + "," + p.getZ() + ") not in zone " + _dockZone);
+					_log.warn(AirShipController.class.getSimpleName() + ": Arrival path finish point (" + p.getX() + "," + p.getY() + "," + p.getZ() + ") not in zone " + _dockZone);
 					_arrivalPath = null;
 				}
 			}
@@ -380,7 +380,7 @@ public abstract class AirShipController extends Quest
 		{
 			if (!ZoneManager.getInstance().getZoneById(_dockZone, L2ScriptZone.class).isInsideZone(_shipSpawnX, _shipSpawnY, _shipSpawnZ))
 			{
-				_log.warn(getName() + ": Arrival path is null and spawn point not in zone " + _dockZone + ", controller disabled");
+				_log.warn(AirShipController.class.getSimpleName() + ": Arrival path is null and spawn point not in zone " + _dockZone + ", controller disabled");
 				_isBusy = true;
 				return;
 			}
@@ -390,15 +390,15 @@ public abstract class AirShipController extends Quest
 		{
 			if (_departPath.length == 0)
 			{
-				_log.warn(getName() + ": Zero depart path length.");
+				_log.warn(AirShipController.class.getSimpleName() + ": Zero depart path length.");
 				_departPath = null;
 			}
 			else
 			{
 				p = _departPath[_departPath.length - 1];
-				if (zone.isInsideZone(p.getX(), p.getY(), p.getZ()))
+				if (zone.isInsideZone(p.getLocation()))
 				{
-					_log.warn(getName() + ": Departure path finish point (" + p.getX() + "," + p.getY() + "," + p.getZ() + ") in zone " + _dockZone);
+					_log.warn(AirShipController.class.getSimpleName() + ": Departure path finish point (" + p.getX() + "," + p.getY() + "," + p.getZ() + ") in zone " + _dockZone);
 					_departPath = null;
 				}
 			}
@@ -408,13 +408,13 @@ public abstract class AirShipController extends Quest
 		{
 			if (_fuelTable == null)
 			{
-				_log.warn(getName() + ": Fuel consumption not defined.");
+				_log.warn(AirShipController.class.getSimpleName() + ": Fuel consumption not defined.");
 			}
 			else
 			{
 				if (_teleportsTable.length != _fuelTable.length)
 				{
-					_log.warn(getName() + ": Fuel consumption not match teleport list.");
+					_log.warn(AirShipController.class.getSimpleName() + ": Fuel consumption not match teleport list.");
 				}
 				else
 				{

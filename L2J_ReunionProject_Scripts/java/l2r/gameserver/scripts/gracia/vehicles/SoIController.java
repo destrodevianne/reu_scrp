@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,58 +16,52 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.vehicles;
+package l2r.gameserver.scripts.gracia.vehicles;
 
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.VehiclePathPoint;
 
-public class KeucereusSouthController extends AirShipController
+public final class SoIController extends AirShipController
 {
-	private static final int DOCK_ZONE = 50603;
-	private static final int LOCATION = 100;
-	private static final int CONTROLLER_ID = 32517;
+	private static final int DOCK_ZONE = 50600;
+	private static final int LOCATION = 101;
+	private static final int CONTROLLER_ID = 32604;
 	
 	private static final VehiclePathPoint[] ARRIVAL =
 	{
-		new VehiclePathPoint(-185312, 246544, 2500),
-		new VehiclePathPoint(-185312, 246544, 1336)
+		new VehiclePathPoint(-214422, 211396, 5000, 280, 2000),
+		new VehiclePathPoint(-214422, 211396, 4422, 280, 2000)
 	};
 	
 	private static final VehiclePathPoint[] DEPART =
 	{
-		new VehiclePathPoint(-185312, 246544, 1700, 280, 2000),
-		new VehiclePathPoint(-186900, 251699, 1700, 280, 2000)
+		new VehiclePathPoint(-214422, 211396, 5000, 280, 2000),
+		new VehiclePathPoint(-215877, 209709, 5000, 280, 2000)
 	};
 	
 	private static final VehiclePathPoint[][] TELEPORTS =
 	{
 		{
-			new VehiclePathPoint(-185312, 246544, 1700, 280, 2000),
-			new VehiclePathPoint(-186900, 251699, 1700, 280, 2000),
-			new VehiclePathPoint(-186373, 234000, 2500, 0, 0)
-		},
-		{
-			new VehiclePathPoint(-185312, 246544, 1700, 280, 2000),
-			new VehiclePathPoint(-186900, 251699, 1700, 280, 2000),
+			new VehiclePathPoint(-214422, 211396, 5000, 280, 2000),
+			new VehiclePathPoint(-215877, 209709, 5000, 280, 2000),
 			new VehiclePathPoint(-206692, 220997, 3000, 0, 0)
 		},
 		{
-			new VehiclePathPoint(-185312, 246544, 1700, 280, 2000),
-			new VehiclePathPoint(-186900, 251699, 1700, 280, 2000),
-			new VehiclePathPoint(-235693, 248843, 5100, 0, 0)
+			new VehiclePathPoint(-214422, 211396, 5000, 280, 2000),
+			new VehiclePathPoint(-215877, 209709, 5000, 280, 2000),
+			new VehiclePathPoint(-195357, 233430, 2500, 0, 0)
 		}
 	};
 	
 	private static final int[] FUEL =
 	{
 		0,
-		50,
-		100
+		50
 	};
 	
-	public KeucereusSouthController(int questId, String name, String descr)
+	public SoIController()
 	{
-		super(questId, name, descr);
+		super(-1, SoIController.class.getSimpleName(), "gracia/vehicles");
 		addStartNpc(CONTROLLER_ID);
 		addFirstTalkId(CONTROLLER_ID);
 		addTalkId(CONTROLLER_ID);
@@ -76,9 +70,11 @@ public class KeucereusSouthController extends AirShipController
 		addEnterZoneId(DOCK_ZONE);
 		addExitZoneId(DOCK_ZONE);
 		
-		_shipSpawnX = -184527;
-		_shipSpawnY = 243611;
-		_shipSpawnZ = 3000;
+		_shipSpawnX = -212719;
+		_shipSpawnY = 213348;
+		_shipSpawnZ = 5000;
+		
+		_oustLoc = new Location(-213401, 210401, 4408);
 		
 		_locationId = LOCATION;
 		_arrivalPath = ARRIVAL;
@@ -86,15 +82,8 @@ public class KeucereusSouthController extends AirShipController
 		_teleportsTable = TELEPORTS;
 		_fuelTable = FUEL;
 		
-		_oustLoc = new Location(-186148, 246296, 1360);
-		
-		_movieId = 1000;
+		_movieId = 1002;
 		
 		validityCheck();
-	}
-	
-	public static void main(String[] args)
-	{
-		new KeucereusSouthController(-1, KeucereusSouthController.class.getSimpleName(), "vehicles");
 	}
 }

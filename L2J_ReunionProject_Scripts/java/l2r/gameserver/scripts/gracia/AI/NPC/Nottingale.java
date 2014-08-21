@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc;
+package l2r.gameserver.scripts.gracia.AI.NPC;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +27,7 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.network.serverpackets.RadarControl;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.quests.Q10273_GoodDayToFly;
 
 /**
@@ -50,9 +51,9 @@ public final class Nottingale extends AbstractNpcAI
 		RADARS.put(10, new RadarControl(0, -246899, 251918, 4352, 1));
 	}
 	
-	private Nottingale(String name, String descr)
+	public Nottingale()
 	{
-		super(name, descr);
+		super(Nottingale.class.getSimpleName(), "gracia/AI/NPC");
 		addStartNpc(NOTTINGALE);
 		addTalkId(NOTTINGALE);
 		addFirstTalkId(NOTTINGALE);
@@ -116,10 +117,5 @@ public final class Nottingale extends AbstractNpcAI
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Nottingale(Nottingale.class.getSimpleName(), "ai/npc");
 	}
 }
