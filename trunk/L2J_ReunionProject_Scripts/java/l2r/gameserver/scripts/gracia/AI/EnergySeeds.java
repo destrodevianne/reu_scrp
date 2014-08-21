@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.group_template;
+package l2r.gameserver.scripts.gracia.AI;
 
 import java.util.Map;
 
@@ -65,85 +65,34 @@ public class EnergySeeds extends AbstractNpcAI
 	private static FastList<L2Npc> soiabyssgaze2List = new FastList<>();
 	
 	private static final int TEMPORARY_TELEPORTER = 32602;
-	private static final int[] SEEDIDS =
+	// @formatter:off
+	private static final int[] SEED_IDS =
 	{
-		18678,
-		18679,
-		18680,
-		18681,
-		18682,
-		18683
+		18678, 18679, 18680, 18681, 18682, 18683
 	};
 	
 	private static final int[][] ANNIHILATION_SUPRISE_MOB_IDS =
 	{
-		{
-			22746,
-			22747,
-			22748,
-			22749
-		},
-		{
-			22754,
-			22755,
-			22756
-		},
-		{
-			22760,
-			22761,
-			22762
-		}
+		{ 22746, 22747, 22748, 22749 },
+		{ 22754, 22755, 22756 },
+		{ 22760, 22761, 22762 }
 	};
 	
 	private static int[] SEED_OF_DESTRUCTION_DOORS =
 	{
-		12240003,
-		12240004,
-		12240005,
-		12240006,
-		12240007,
-		12240008,
-		12240009,
-		12240010,
-		12240011,
-		12240012,
-		12240013,
-		12240014,
-		12240015,
-		12240016,
-		12240017,
-		12240018,
-		12240019,
-		12240020,
-		12240021,
-		12240022,
-		12240023,
-		12240024,
-		12240025,
-		12240026,
-		12240027,
-		12240028,
-		12240029,
-		12240030,
+		12240003, 12240004, 12240005, 12240006, 12240007, 12240008, 12240009,
+		12240010, 12240011, 12240012, 12240013, 12240014, 12240015, 12240016,
+		12240017, 12240018, 12240019, 12240020, 12240021, 12240022, 12240023,
+		12240024, 12240025, 12240026, 12240027, 12240028, 12240029, 12240030,
 		12240031
 	};
 	
 	private static final int SOD_ZONE = 60009;
 	private static final int SOI_ZONE = 60010;
 	
-	private static final int[] SOD_EXIT_POINT =
-	{
-		-248717,
-		250260,
-		4337
-	};
-	
-	private static final int[] SOI_EXIT_POINT =
-	{
-		-183285,
-		205996,
-		-12896
-	};
+	private static final Location SOI_EXIT_POINT = new Location(-183285, 205996, -12896);
+	private static final Location SOD_EXIT_POINT = new Location(-248717, 250260, 4337);
+	// @formatter:off
 	
 	private static final int[][] SOI_MIDDLE_SEEDS =
 	{
@@ -1515,12 +1464,12 @@ public class EnergySeeds extends AbstractNpcAI
 		ANNIHILATION_COKRAKON
 	}
 	
-	private EnergySeeds(String name, String descr)
+	public EnergySeeds()
 	{
-		super(name, descr);
+		super(EnergySeeds.class.getSimpleName(), "gracia/AI");
 		
-		registerMobs(SEEDIDS);
-		addFirstTalkId(SEEDIDS);
+		registerMobs(SEED_IDS);
+		addFirstTalkId(SEED_IDS);
 		addFirstTalkId(TEMPORARY_TELEPORTER);
 		addEnterZoneId(SOD_ZONE);
 		addEnterZoneId(SOI_ZONE);
@@ -1632,7 +1581,7 @@ public class EnergySeeds extends AbstractNpcAI
 			{
 				if (ch != null)
 				{
-					ch.teleToLocation(SOD_EXIT_POINT[0], SOD_EXIT_POINT[1], SOD_EXIT_POINT[2]);
+					ch.teleToLocation(SOD_EXIT_POINT);
 				}
 			}
 			stopAI(GraciaSeeds.DESTRUCTION);
@@ -1656,7 +1605,7 @@ public class EnergySeeds extends AbstractNpcAI
 	{
 		if (npc.getId() == TEMPORARY_TELEPORTER)
 		{
-			player.teleToLocation(SOD_EXIT_POINT[0], SOD_EXIT_POINT[1], SOD_EXIT_POINT[2]);
+			player.teleToLocation(SOD_EXIT_POINT);
 		}
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		return null;
@@ -1688,13 +1637,13 @@ public class EnergySeeds extends AbstractNpcAI
 				case SOD_ZONE:
 					if (!isSeedActive(GraciaSeeds.DESTRUCTION) && !character.isGM())
 					{
-						character.teleToLocation(SOD_EXIT_POINT[0], SOD_EXIT_POINT[1], SOD_EXIT_POINT[2]);
+						character.teleToLocation(SOD_EXIT_POINT);
 					}
 					break;
 				case SOI_ZONE:
 					if ((SoIManager.getCurrentStage() != 3) && !SoIManager.isSeedOpen())
 					{
-						character.teleToLocation(SOI_EXIT_POINT[0], SOI_EXIT_POINT[1], SOI_EXIT_POINT[2]);
+						character.teleToLocation(SOI_EXIT_POINT);
 					}
 					break;
 			}
@@ -4224,16 +4173,12 @@ public class EnergySeeds extends AbstractNpcAI
 		
 		public void scheduleRespawn(long waitTime)
 		{
-			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+			ThreadPoolManager.getInstance().scheduleGeneral(() ->
 			{
-				@Override
-				public void run()
+				if (isSeedActive(_seedId))
 				{
-					if (isSeedActive(_seedId))
-					{
-						Integer spawnId = _spawnId;
-						_spawnedNpcs.put(addSpawn(_npcIds[getRandom(_npcIds.length)], _loc, false, 0), spawnId);
-					}
+					Integer spawnId = _spawnId;
+					_spawnedNpcs.put(addSpawn(_npcIds[getRandom(_npcIds.length)], _loc, false, 0), spawnId);
 				}
 			}, waitTime);
 		}
@@ -4404,10 +4349,5 @@ public class EnergySeeds extends AbstractNpcAI
 		{
 		}
 		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		new EnergySeeds(EnergySeeds.class.getSimpleName(), "Energy Seeds");
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.individual;
+package l2r.gameserver.scripts.gracia.AI.NPC;
 
 import java.util.Set;
 
@@ -33,7 +33,7 @@ import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
  * Dilios AI
  * @author JIV, Sephiroth, Apocalipce
  */
-public class GeneralDilios extends AbstractNpcAI
+public final class GeneralDilios extends AbstractNpcAI
 {
 	private static final int GENERAL_ID = 32549;
 	private static final int GUARD_ID = 32619;
@@ -53,9 +53,9 @@ public class GeneralDilios extends AbstractNpcAI
 	// NpcStringId.MESSENGER_INFORM_THE_BROTHERS_IN_KUCEREUS_CLAN_OUTPOST_EKIMUS_IS_ABOUT_TO_BE_REVIVED_BY_THE_RESURRECTED_UNDEAD_IN_SEED_OF_INFINITY_SEND_ALL_REINFORCEMENTS_TO_THE_HEART_AND_THE_HALL_OF_SUFFERING
 	};
 	
-	private GeneralDilios(String name, String descr)
+	public GeneralDilios()
 	{
-		super(name, descr);
+		super(GeneralDilios.class.getSimpleName(), "gracia/AI/NPC");
 		_general = SpawnTable.getInstance().getFirstSpawn(GENERAL_ID).getLastSpawn();
 		_guards = SpawnTable.getInstance().getSpawns(GUARD_ID);
 		if ((_general == null) || _guards.isEmpty())
@@ -97,10 +97,5 @@ public class GeneralDilios extends AbstractNpcAI
 			}
 		}
 		return super.onAdvEvent(event, npc, player);
-	}
-	
-	public static void main(String[] args)
-	{
-		new GeneralDilios(GeneralDilios.class.getSimpleName(), "ai");
 	}
 }

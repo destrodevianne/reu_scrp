@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.individual;
+package l2r.gameserver.scripts.gracia.AI;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -52,9 +52,9 @@ public class Lindvior extends AbstractNpcAI
 	private L2Npc _tomaris = null;
 	private L2Npc _artius = null;
 	
-	private Lindvior()
+	public Lindvior()
 	{
-		super(Lindvior.class.getSimpleName(), "ai/individual");
+		super(Lindvior.class.getSimpleName(), "gracia/AI");
 		scheduleNextLindviorVisit();
 	}
 	
@@ -129,10 +129,5 @@ public class Lindvior extends AbstractNpcAI
 			date.add(Calendar.DAY_OF_WEEK, 1 + RESET_DAY_1);
 		}
 		return date.getTimeInMillis() - System.currentTimeMillis();
-	}
-	
-	public static void main(String[] args)
-	{
-		new Lindvior();
 	}
 }

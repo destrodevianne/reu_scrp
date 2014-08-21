@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.vehicles;
+package l2r.gameserver.scripts.gracia.vehicles;
 
 import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.instancemanager.AirShipManager;
@@ -36,7 +36,7 @@ import l2r.gameserver.network.serverpackets.NpcSay;
 /**
  * @author DS
  */
-public class AirShipGludioGracia extends Quest implements Runnable
+public final class AirShipGludioGracia extends Quest implements Runnable
 {
 	private static final int[] CONTROLLERS =
 	{
@@ -109,14 +109,12 @@ public class AirShipGludioGracia extends Quest implements Runnable
 	private boolean _foundAtcGracia = false;
 	private L2Npc _atcGracia = null;
 	
-	public AirShipGludioGracia(int questId, String name, String descr)
+	public AirShipGludioGracia()
 	{
-		super(questId, name, descr);
-		
+		super(-1, AirShipGludioGracia.class.getSimpleName(), "gracia/vehicles");
 		addStartNpc(CONTROLLERS);
 		addFirstTalkId(CONTROLLERS);
 		addTalkId(CONTROLLERS);
-		
 		_ship = AirShipManager.getInstance().getNewAirShip(-149378, 252552, 198, 33837);
 		_ship.setOustLoc(OUST_GLUDIO);
 		_ship.setInDock(GLUDIO_DOCK_ID);
@@ -159,7 +157,7 @@ public class AirShipGludioGracia extends Quest implements Runnable
 			{
 				for (int id : CONTROLLERS)
 				{
-					if (((L2Npc) obj).getId() == id)
+					if (obj.getId() == id)
 					{
 						return (L2Npc) obj;
 					}
@@ -308,10 +306,5 @@ public class AirShipGludioGracia extends Quest implements Runnable
 			_ship.deleteMe();
 		}
 		return super.unload(removeFromList);
-	}
-	
-	public static void main(String[] args)
-	{
-		new AirShipGludioGracia(-1, AirShipGludioGracia.class.getSimpleName(), "vehicles");
 	}
 }

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.instances;
+package l2r.gameserver.scripts.ai.individual;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -309,7 +309,6 @@ public class SeerUgoros extends AbstractNpcAI
 	
 	private class ThinkTask implements Runnable
 	{
-		
 		protected ThinkTask()
 		{
 		}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,9 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.instances;
+package l2r.gameserver.scripts.gracia.instances;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +29,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.enums.CtrlIntention;
@@ -79,7 +78,7 @@ public final class Stage1 extends Quest
 {
 	protected class SOD1World extends InstanceWorld
 	{
-		public Map<L2Npc, Boolean> npcList = new FastMap<>();
+		public Map<L2Npc, Boolean> npcList = new HashMap<>();
 		public int deviceSpawnedMobCount = 0;
 		public Lock lock = new ReentrantLock();
 	}
@@ -104,7 +103,7 @@ public final class Stage1 extends Quest
 	
 	private final Map<Integer, L2Territory> _spawnZoneList = new HashMap<>();
 	private final Map<Integer, List<SODSpawn>> _spawnList = new HashMap<>();
-	private final List<Integer> _mustKillMobsId = new FastList<>();
+	private final List<Integer> _mustKillMobsId = new ArrayList<>();
 	
 	// teleports
 	private static final Location ENTER_TELEPORT_1 = new Location(-242759, 219981, -9986);
@@ -215,9 +214,10 @@ public final class Stage1 extends Quest
 	private static final int RESET_DAY_1 = 4;
 	private static final int RESET_DAY_2 = 7;
 	
-	private Stage1()
+	public Stage1()
 	{
-		super(-1, Stage1.class.getSimpleName(), "instances");
+		// TODO change name to use actual class name
+		super(-1, "SoDStage1", "gracia/instances");
 		load();
 		addStartNpc(ALENOS);
 		addTalkId(ALENOS);
@@ -290,7 +290,7 @@ public final class Stage1 extends Quest
 								int flag = Integer.parseInt(attrs.getNamedItem("flag").getNodeValue());
 								if (!_spawnList.containsKey(flag))
 								{
-									_spawnList.put(flag, new FastList<SODSpawn>());
+									_spawnList.put(flag, new ArrayList<SODSpawn>());
 								}
 								
 								for (Node cd = d.getFirstChild(); cd != null; cd = cd.getNextSibling())
@@ -1068,10 +1068,5 @@ public final class Stage1 extends Quest
 			}
 		}
 		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Stage1();
 	}
 }

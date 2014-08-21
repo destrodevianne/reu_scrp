@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.group_template;
+package l2r.gameserver.scripts.gracia.AI;
 
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Npc;
@@ -40,9 +40,9 @@ public class StarStones extends AbstractNpcAI
 	
 	private static final int COLLECTION_RATE = 1;
 	
-	private StarStones()
+	public StarStones()
 	{
-		super(StarStones.class.getSimpleName(), "ai/group_template");
+		super(StarStones.class.getSimpleName(), "gracia/AI");
 		addSkillSeeId(MOBS);
 	}
 	
@@ -94,10 +94,5 @@ public class StarStones extends AbstractNpcAI
 			npc.deleteMe();
 		}
 		return super.onSkillSee(npc, caster, skill, targets, isSummon);
-	}
-	
-	public static void main(String[] args)
-	{
-		new StarStones();
 	}
 }

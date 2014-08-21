@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc;
+package l2r.gameserver.scripts.gracia.AI.NPC;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.itemcontainer.Inventory;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Fortune Telling AI.<br>
@@ -36,7 +37,7 @@ public class FortuneTelling extends AbstractNpcAI
 	
 	public FortuneTelling()
 	{
-		super(FortuneTelling.class.getSimpleName(), "ai/npc");
+		super(FortuneTelling.class.getSimpleName(), "gracia/AI/NPC");
 		addStartNpc(MINE);
 		addTalkId(MINE);
 	}
@@ -55,10 +56,5 @@ public class FortuneTelling extends AbstractNpcAI
 			htmltext = getHtm(player.getHtmlPrefix(), "fortune.htm").replace("%fortune%", String.valueOf(getRandom(1800309, 1800695)));
 		}
 		return htmltext;
-	}
-	
-	public static void main(String args[])
-	{
-		new FortuneTelling();
 	}
 }

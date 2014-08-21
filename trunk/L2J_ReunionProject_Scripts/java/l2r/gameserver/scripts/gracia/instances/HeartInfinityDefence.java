@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.instances;
+package l2r.gameserver.scripts.gracia.instances;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -1005,9 +1005,9 @@ public class HeartInfinityDefence extends Quest
 		}
 	};
 	
-	public HeartInfinityDefence(int questId, String name, String descr)
+	public HeartInfinityDefence()
 	{
-		super(questId, name, descr);
+		super(-1, HeartInfinityDefence.class.getSimpleName(), "gracia/instances");
 		
 		addStartNpc(ABYSSGAZE);
 		addTalkId(ABYSSGAZE);
@@ -1098,9 +1098,8 @@ public class HeartInfinityDefence extends Quest
 		return true;
 	}
 	
-	protected int enterInstance(L2PcInstance player, String template, int[] coords)
+	protected void enterInstance(L2PcInstance player, String template, int[] coords)
 	{
-		int instanceId = 0;
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		
 		if (world != null)
@@ -1108,156 +1107,133 @@ public class HeartInfinityDefence extends Quest
 			if (!(world instanceof HIDWorld))
 			{
 				player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-				return 0;
+				return;
 			}
 			teleportPlayer(player, coords, world.getInstanceId());
-			return instanceId;
+			return;
 		}
 		
-		if (!checkConditions(player))
+		if (checkConditions(player))
 		{
-			return 0;
-		}
-		
-		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-		world = new HIDWorld();
-		world.setTemplateId(INSTANCEID);
-		world.setInstanceId(instanceId);
-		world.setStatus(0);
-		InstanceManager.getInstance().addWorld(world);
-		
-		if (player.isGM())
-		{
-			teleportPlayer(player, coords, instanceId);
-			world.addAllowed(player.getObjectId());
-		}
-		
-		if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
-		{
-			teleportPlayer(player, coords, instanceId);
-			world.addAllowed(player.getObjectId());
-		}
-		else
-		{
-			for (L2PcInstance partyMember : player.getParty().getCommandChannel().getMembers())
+			world = new HIDWorld();
+			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			world.setTemplateId(INSTANCEID);
+			world.setStatus(0);
+			InstanceManager.getInstance().addWorld(world);
+			_log.info("Heart Infinity Defence started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			
+			if (player.isGM())
 			{
-				teleportPlayer(partyMember, coords, instanceId);
-				world.addAllowed(partyMember.getObjectId());
-				if (partyMember.getQuestState(qn) == null)
+				teleportPlayer(player, coords, world.getInstanceId());
+				world.addAllowed(player.getObjectId());
+			}
+			
+			if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
+			{
+				teleportPlayer(player, coords, world.getInstanceId());
+				world.addAllowed(player.getObjectId());
+			}
+			else
+			{
+				for (L2PcInstance partyMember : player.getParty().getCommandChannel().getMembers())
 				{
-					newQuestState(partyMember);
+					teleportPlayer(partyMember, coords, world.getInstanceId());
+					world.addAllowed(partyMember.getObjectId());
+					if (partyMember.getQuestState(qn) == null)
+					{
+						newQuestState(partyMember);
+					}
 				}
 			}
+			((HIDWorld) world).startTime = System.currentTimeMillis();
+			((HIDWorld) world).finishTask = ThreadPoolManager.getInstance().scheduleGeneral(new FinishTask((HIDWorld) world), 30 * 60000);
+			((HIDWorld) world).timerTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new TimerTask((HIDWorld) world), 298 * 1000, 5 * 60 * 1000);
+			conquestBegins((HIDWorld) world);
 		}
-		((HIDWorld) world).startTime = System.currentTimeMillis();
-		((HIDWorld) world).finishTask = ThreadPoolManager.getInstance().scheduleGeneral(new FinishTask((HIDWorld) world), 30 * 60000);
-		((HIDWorld) world).timerTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new TimerTask((HIDWorld) world), 298 * 1000, 5 * 60 * 1000);
-		conquestBegins((HIDWorld) world);
-		
-		return instanceId;
 	}
 	
 	private void conquestBegins(final HIDWorld world)
 	{
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+		ThreadPoolManager.getInstance().scheduleGeneral(() ->
 		{
-			@Override
-			public void run()
+			broadCastPacket(world, new ExShowScreenMessage(NpcStringId.YOU_CAN_HEAR_THE_UNDEAD_OF_EKIMUS_RUSHING_TOWARD_YOU_S1_S2_IT_HAS_NOW_BEGUN, 2, 8000));
+			for (int[] spawn1 : ROOMS_MOBS)
 			{
-				broadCastPacket(world, new ExShowScreenMessage(NpcStringId.YOU_CAN_HEAR_THE_UNDEAD_OF_EKIMUS_RUSHING_TOWARD_YOU_S1_S2_IT_HAS_NOW_BEGUN, 2, 8000));
-				for (int[] spawn : ROOMS_MOBS)
+				for (int i1 = 0; i1 < spawn1[6]; i1++)
 				{
-					for (int i = 0; i < spawn[6]; i++)
+					L2Npc npc1 = addSpawn(spawn1[0], spawn1[1], spawn1[2], spawn1[3], spawn1[4], false, 0, false, world.getInstanceId());
+					npc1.getSpawn().setRespawnDelay(spawn1[5]);
+					npc1.getSpawn().setAmount(1);
+					if (spawn1[5] > 0)
 					{
-						L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
-						npc.getSpawn().setRespawnDelay(spawn[5]);
-						npc.getSpawn().setAmount(1);
-						if (spawn[5] > 0)
-						{
-							npc.getSpawn().startRespawn();
-						}
-						else
-						{
-							npc.getSpawn().stopRespawn();
-						}
+						npc1.getSpawn().startRespawn();
+					}
+					else
+					{
+						npc1.getSpawn().stopRespawn();
 					}
 				}
-				
-				for (int[] spawn : ROOMS_TUMORS)
-				{
-					for (int i = 0; i < spawn[6]; i++)
-					{
-						L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
-						world.deadTumors.add(npc);
-					}
-				}
-				
-				InstanceManager.getInstance().getInstance(world.getInstanceId()).getDoor(14240102).openMe();
-				preawakenedEchmus = addSpawn(29161, -179534, 208510, -15496, 16342, false, 0, false, world.getInstanceId());
-				
-				ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						if (!conquestEnded)
-						{
-							if (!world.deadTumors.isEmpty())
-							{
-								for (L2Npc npc : world.deadTumors)
-								{
-									if (npc != null)
-									{
-										spawnCoffin(npc, world);
-									}
-								}
-							}
-						}
-					}
-				}, 60000);
-				
-				ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						if (!conquestEnded)
-						{
-							if (!world.deadTumors.isEmpty())
-							{
-								for (L2Npc npc : world.deadTumors)
-								{
-									if (npc != null)
-									{
-										npc.deleteMe();
-									}
-								}
-								world.deadTumors.clear();
-							}
-							
-							for (int[] spawn : ROOMS_ALIVE_TUMORS)
-							{
-								for (int i = 0; i < spawn[6]; i++)
-								{
-									L2Npc npc = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
-									npc.setCurrentHp(npc.getMaxHp() * .5);
-									world.deadTumors.add(npc);
-								}
-							}
-							broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NEKIMUS_STARTED_TO_REGAIN_HIS_ENERGY_AND_IS_DESPERATELY_LOOKING_FOR_HIS_PREY, 2, 8000));
-						}
-					}
-				}, tumorRespawnTime);
-				
-				world.wagonSpawnTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						addSpawn(SOULWAGON, -179544, 207400, -15496, 0, false, 0, false, world.getInstanceId());
-					}
-				}, 1000, wagonRespawnTime);
 			}
+			
+			for (int[] spawn2 : ROOMS_TUMORS)
+			{
+				for (int i2 = 0; i2 < spawn2[6]; i2++)
+				{
+					L2Npc npc2 = addSpawn(spawn2[0], spawn2[1], spawn2[2], spawn2[3], spawn2[4], false, 0, false, world.getInstanceId());
+					world.deadTumors.add(npc2);
+				}
+			}
+			
+			InstanceManager.getInstance().getInstance(world.getInstanceId()).getDoor(14240102).openMe();
+			preawakenedEchmus = addSpawn(29161, -179534, 208510, -15496, 16342, false, 0, false, world.getInstanceId());
+			
+			ThreadPoolManager.getInstance().scheduleGeneral(() ->
+			{
+				if (!conquestEnded)
+				{
+					if (!world.deadTumors.isEmpty())
+					{
+						for (L2Npc npc : world.deadTumors)
+						{
+							if (npc != null)
+							{
+								spawnCoffin(npc, world);
+							}
+						}
+					}
+				}
+			}, 60000);
+			
+			ThreadPoolManager.getInstance().scheduleGeneral(() ->
+			{
+				if (!conquestEnded)
+				{
+					if (!world.deadTumors.isEmpty())
+					{
+						for (L2Npc npc3 : world.deadTumors)
+						{
+							if (npc3 != null)
+							{
+								npc3.deleteMe();
+							}
+						}
+						world.deadTumors.clear();
+					}
+					
+					for (int[] spawn : ROOMS_ALIVE_TUMORS)
+					{
+						for (int i = 0; i < spawn[6]; i++)
+						{
+							L2Npc npc4 = addSpawn(spawn[0], spawn[1], spawn[2], spawn[3], spawn[4], false, 0, false, world.getInstanceId());
+							npc4.setCurrentHp(npc4.getMaxHp() * .5);
+							world.deadTumors.add(npc4);
+						}
+					}
+					broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NEKIMUS_STARTED_TO_REGAIN_HIS_ENERGY_AND_IS_DESPERATELY_LOOKING_FOR_HIS_PREY, 2, 8000));
+				}
+			}, tumorRespawnTime);
+			
+			world.wagonSpawnTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(() -> addSpawn(SOULWAGON, -179544, 207400, -15496, 0, false, 0, false, world.getInstanceId()), 1000, wagonRespawnTime);
 		}, 20000);
 	}
 	
@@ -1397,18 +1373,14 @@ public class HeartInfinityDefence extends Quest
 				wagonRespawnTime += 10000;
 				broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_BEEN_DESTROYED_NTHE_SPEED_THAT_EKIMUS_CALLS_OUT_HIS_PREY_HAS_SLOWED_DOWN, 2, 8000));
 				
-				ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+				ThreadPoolManager.getInstance().scheduleGeneral(() ->
 				{
-					@Override
-					public void run()
-					{
-						world.deadTumor.deleteMe();
-						L2Npc alivetumor = spawnNpc(ALIVETUMOR, loc, 0, world.getInstanceId());
-						alivetumor.setCurrentHp(alivetumor.getMaxHp() * .25);
-						world.npcList.add(alivetumor);
-						wagonRespawnTime -= 10000;
-						broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NEKIMUS_STARTED_TO_REGAIN_HIS_ENERGY_AND_IS_DESPERATELY_LOOKING_FOR_HIS_PREY, 2, 8000));
-					}
+					world.deadTumor.deleteMe();
+					L2Npc alivetumor = spawnNpc(ALIVETUMOR, loc, 0, world.getInstanceId());
+					alivetumor.setCurrentHp(alivetumor.getMaxHp() * .25);
+					world.npcList.add(alivetumor);
+					wagonRespawnTime -= 10000;
+					broadCastPacket(world, new ExShowScreenMessage(NpcStringId.THE_TUMOR_INSIDE_S1_HAS_COMPLETELY_REVIVED_NEKIMUS_STARTED_TO_REGAIN_HIS_ENERGY_AND_IS_DESPERATELY_LOOKING_FOR_HIS_PREY, 2, 8000));
 				}, tumorRespawnTime);
 			}
 			
@@ -1580,10 +1552,5 @@ public class HeartInfinityDefence extends Quest
 				player.sendPacket(packet);
 			}
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new HeartInfinityDefence(-1, HeartInfinityDefence.class.getSimpleName(), "instances");
 	}
 }

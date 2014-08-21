@@ -196,41 +196,26 @@ public class FinalEmperialTomb extends Quest
 	// Skills
 	private static final int DEWDROP_OF_DESTRUCTION_SKILL_ID = 2276;
 	private static final int SOUL_BREAKING_ARROW_SKILL_ID = 2234;
+	//@formatter:off
 	// Doors/Walls/Zones
 	protected static final int[] FIRST_ROOM_DOORS =
 	{
-		17130051,
-		17130052,
-		17130053,
-		17130054,
-		17130055,
-		17130056,
-		17130057,
-		17130058
+		17130051, 17130052, 17130053, 17130054,
+		17130055, 17130056, 17130057, 17130058
 	};
 	protected static final int[] SECOND_ROOM_DOORS =
 	{
-		17130061,
-		17130062,
-		17130063,
-		17130064,
-		17130065,
-		17130066,
-		17130067,
-		17130068,
-		17130069,
-		17130070
+		17130061, 17130062, 17130063, 17130064, 17130065,
+		17130066, 17130067, 17130068, 17130069, 17130070
 	};
 	
 	protected static final int[] FIRST_ROUTE_DOORS =
 	{
-		17130042,
-		17130043
+		17130042, 17130043
 	};
 	protected static final int[] SECOND_ROUTE_DOORS =
 	{
-		17130045,
-		17130046
+		17130045, 17130046
 	};
 	protected static final Location MOVE_TO_CENTER = new Location(-87904, -141296, -9168, 0);
 	
@@ -239,51 +224,12 @@ public class FinalEmperialTomb extends Quest
 	private static final int MAX_DEMONS = 24;
 	protected static final int[][] PORTRAIT_SPAWNS =
 	{
-		{
-			29048,
-			-89381,
-			-153981,
-			-9168,
-			3368,
-			-89378,
-			-153968,
-			-9168,
-			3368
-		},
-		{
-			29048,
-			-86234,
-			-152467,
-			-9168,
-			37656,
-			-86261,
-			-152492,
-			-9168,
-			37656
-		},
-		{
-			29049,
-			-89342,
-			-152479,
-			-9168,
-			-5152,
-			-89311,
-			-152491,
-			-9168,
-			-5152
-		},
-		{
-			29049,
-			-86189,
-			-153968,
-			-9168,
-			29456,
-			-86217,
-			-153956,
-			-9168,
-			29456
-		}
+		{29048,-89381,-153981,-9168,3368,-89378,-153968,-9168,3368},
+		{29048,-86234,-152467,-9168,37656,-86261,-152492,-9168,37656},
+		{29049,-89342,-152479,-9168,-5152,-89311,-152491,-9168,-5152},
+		{29049,-86189,-153968,-9168,29456,-86217,-153956,-9168,29456}
 	};
+	//@formatter:on
 	
 	// Initialization at 6:30 am on Wednesday and Saturday
 	private static final int RESET_HOUR = 6;
@@ -304,7 +250,7 @@ public class FinalEmperialTomb extends Quest
 			File file = new File(Config.DATAPACK_ROOT + "/data/xml/spawnZones/final_emperial_tomb.xml");
 			if (!file.exists())
 			{
-				_log.error("[Final Emperial Tomb] Missing final_emperial_tomb.xml. The quest wont work without it!");
+				_log.error(FinalEmperialTomb.class.getSimpleName() + ": Missing final_emperial_tomb.xml. The quest wont work without it!");
 				return;
 			}
 			
@@ -324,7 +270,7 @@ public class FinalEmperialTomb extends Quest
 								Node att = attrs.getNamedItem("npcId");
 								if (att == null)
 								{
-									_log.error("[Final Emperial Tomb] Missing npcId in npc List, skipping");
+									_log.error(FinalEmperialTomb.class.getSimpleName() + ": Missing npcId in npc List, skipping");
 									continue;
 								}
 								int npcId = Integer.parseInt(attrs.getNamedItem("npcId").getNodeValue());
@@ -332,7 +278,7 @@ public class FinalEmperialTomb extends Quest
 								att = attrs.getNamedItem("flag");
 								if (att == null)
 								{
-									_log.error("[Final Emperial Tomb] Missing flag in npc List npcId: " + npcId + ", skipping");
+									_log.error(FinalEmperialTomb.class.getSimpleName() + ": Missing flag in npc List npcId: " + npcId + ", skipping");
 									continue;
 								}
 								int flag = Integer.parseInt(attrs.getNamedItem("flag").getNodeValue());
@@ -448,21 +394,21 @@ public class FinalEmperialTomb extends Quest
 								Node att = attrs.getNamedItem("id");
 								if (att == null)
 								{
-									_log.error("[Final Emperial Tomb] Missing id in spawnZones List, skipping");
+									_log.error(FinalEmperialTomb.class.getSimpleName() + ": Missing id in spawnZones List, skipping");
 									continue;
 								}
 								int id = Integer.parseInt(att.getNodeValue());
 								att = attrs.getNamedItem("minZ");
 								if (att == null)
 								{
-									_log.error("[Final Emperial Tomb] Missing minZ in spawnZones List id: " + id + ", skipping");
+									_log.error(FinalEmperialTomb.class.getSimpleName() + ": Missing minZ in spawnZones List id: " + id + ", skipping");
 									continue;
 								}
 								int minz = Integer.parseInt(att.getNodeValue());
 								att = attrs.getNamedItem("maxZ");
 								if (att == null)
 								{
-									_log.error("[Final Emperial Tomb] Missing maxZ in spawnZones List id: " + id + ", skipping");
+									_log.error(FinalEmperialTomb.class.getSimpleName() + ": Missing maxZ in spawnZones List id: " + id + ", skipping");
 									continue;
 								}
 								int maxz = Integer.parseInt(att.getNodeValue());
@@ -506,18 +452,18 @@ public class FinalEmperialTomb extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.warn("[Final Emperial Tomb] Could not parse final_emperial_tomb.xml file: " + e.getMessage(), e);
+			_log.warn(FinalEmperialTomb.class.getSimpleName() + ": Could not parse final_emperial_tomb.xml file: " + e.getMessage(), e);
 		}
 		if (debug)
 		{
-			_log.info("[Final Emperial Tomb] Loaded " + _spawnZoneList.size() + " spawn zones data.");
-			_log.info("[Final Emperial Tomb] Loaded " + spawnCount + " spawns data.");
+			_log.info(FinalEmperialTomb.class.getSimpleName() + ": Loaded " + _spawnZoneList.size() + " spawn zones data.");
+			_log.info(FinalEmperialTomb.class.getSimpleName() + ": Loaded " + spawnCount + " spawns data.");
 		}
 	}
 	
 	private boolean checkConditions(L2PcInstance player)
 	{
-		if (debug || player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS))
+		if (debug || player.isGM() || player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS))
 		{
 			return true;
 		}
@@ -578,7 +524,7 @@ public class FinalEmperialTomb extends Quest
 		return true;
 	}
 	
-	protected int enterInstance(L2PcInstance player, String template, Location loc)
+	protected void enterInstance(L2PcInstance player, String template, Location loc)
 	{
 		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
@@ -588,48 +534,47 @@ public class FinalEmperialTomb extends Quest
 			if (!(world instanceof FETWorld))
 			{
 				player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-				return 0;
+				return;
 			}
 			teleportPlayer(player, loc, world.getInstanceId(), false);
-			return world.getInstanceId();
+			return;
 		}
 		
 		// New instance
-		if (!checkConditions(player))
+		if (checkConditions(player))
 		{
-			return 0;
-		}
-		if (!player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS) && !player.destroyItemByItemId("QUEST", 8073, 1, player, true))
-		{
-			return 0;
-		}
-		final int instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-		// Instance ins = InstanceManager.getInstance().getInstance(instanceId);
-		// ins.setSpawnLoc(new int[]{player.getX(),player.getY(),player.getZ()});
-		world = new FETWorld();
-		world.setTemplateId(TEMPLATE_ID);
-		world.setInstanceId(instanceId);
-		world.setStatus(0);
-		InstanceManager.getInstance().addWorld(world);
-		controlStatus((FETWorld) world);
-		_log.info("Final Emperial Tomb started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
-		// teleport players
-		if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
-		{
-			player.destroyItemByItemId(getName(), DEWDROP_OF_DESTRUCTION_ITEM_ID, player.getInventory().getInventoryItemCount(DEWDROP_OF_DESTRUCTION_ITEM_ID, -1), null, true);
-			world.addAllowed(player.getObjectId());
-			teleportPlayer(player, loc, instanceId, false);
-		}
-		else
-		{
-			for (L2PcInstance channelMember : player.getParty().getCommandChannel().getMembers())
+			if (!player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS) && !player.destroyItemByItemId("QUEST", 8073, 1, player, true))
 			{
-				channelMember.destroyItemByItemId(getName(), DEWDROP_OF_DESTRUCTION_ITEM_ID, channelMember.getInventory().getInventoryItemCount(DEWDROP_OF_DESTRUCTION_ITEM_ID, -1), null, true);
-				world.addAllowed(channelMember.getObjectId());
-				teleportPlayer(channelMember, loc, instanceId, false);
+				return;
+			}
+			
+			final int instanceId = InstanceManager.getInstance().createDynamicInstance(template);
+			// Instance ins = InstanceManager.getInstance().getInstance(instanceId);
+			// ins.setSpawnLoc(new int[]{player.getX(),player.getY(),player.getZ()});
+			world = new FETWorld();
+			world.setTemplateId(TEMPLATE_ID);
+			world.setInstanceId(instanceId);
+			world.setStatus(0);
+			InstanceManager.getInstance().addWorld(world);
+			controlStatus((FETWorld) world);
+			_log.info("Final Emperial Tomb started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
+			// teleport players
+			if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
+			{
+				player.destroyItemByItemId(getName(), DEWDROP_OF_DESTRUCTION_ITEM_ID, player.getInventory().getInventoryItemCount(DEWDROP_OF_DESTRUCTION_ITEM_ID, -1), null, true);
+				world.addAllowed(player.getObjectId());
+				teleportPlayer(player, loc, instanceId, false);
+			}
+			else
+			{
+				for (L2PcInstance channelMember : player.getParty().getCommandChannel().getMembers())
+				{
+					channelMember.destroyItemByItemId(getName(), DEWDROP_OF_DESTRUCTION_ITEM_ID, channelMember.getInventory().getInventoryItemCount(DEWDROP_OF_DESTRUCTION_ITEM_ID, -1), null, true);
+					world.addAllowed(channelMember.getObjectId());
+					teleportPlayer(channelMember, loc, instanceId, false);
+				}
 			}
 		}
-		return instanceId;
 	}
 	
 	protected boolean checkKillProgress(L2Npc mob, FETWorld world)
@@ -660,7 +605,7 @@ public class FinalEmperialTomb extends Quest
 							}
 							else
 							{
-								_log.info("[Final Emperial Tomb] Missing zone: " + spw.zone);
+								_log.info(FinalEmperialTomb.class.getSimpleName() + ": Missing zone: " + spw.zone);
 							}
 						}
 					}
@@ -685,7 +630,7 @@ public class FinalEmperialTomb extends Quest
 			{
 				if (debug)
 				{
-					_log.info("[Final Emperial Tomb] Starting " + world.getStatus() + ". status.");
+					_log.info(FinalEmperialTomb.class.getSimpleName() + ": Starting " + world.getStatus() + ". status.");
 				}
 				world.npcList.clear();
 				switch (world.getStatus())
@@ -817,7 +762,7 @@ public class FinalEmperialTomb extends Quest
 			{
 				if (debug)
 				{
-					_log.info("[Final Emperial Tomb] Instance is deleted or all Portraits is killed.");
+					_log.info(FinalEmperialTomb.class.getSimpleName() + ": Instance is deleted or all Portraits is killed.");
 				}
 				return;
 			}
@@ -1506,7 +1451,7 @@ public class FinalEmperialTomb extends Quest
 				ThreadPoolManager.getInstance().scheduleGeneral(new StatusTask(world, 0), 2000);
 				if (debug)
 				{
-					_log.info("[Final Emperial Tomb] Hall alarm is disabled, doors will open!");
+					_log.info(FinalEmperialTomb.class.getSimpleName() + ": Hall alarm is disabled, doors will open!");
 				}
 			}
 			else if (npc.getId() == DARK_CHOIR_PLAYER)
@@ -1517,7 +1462,7 @@ public class FinalEmperialTomb extends Quest
 					ThreadPoolManager.getInstance().scheduleGeneral(new StatusTask(world, 2), 2000);
 					if (debug)
 					{
-						_log.info("[Final Emperial Tomb] All Dark Choir Players are killed, doors will open!");
+						_log.info(FinalEmperialTomb.class.getSimpleName() + ": All Dark Choir Players are killed, doors will open!");
 					}
 				}
 			}

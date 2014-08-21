@@ -16,13 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc;
+package l2r.gameserver.scripts.gracia.AI.NPC;
 
 import l2r.gameserver.instancemanager.AirShipManager;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Lekon AI.
@@ -39,9 +40,9 @@ public final class Lekon extends AbstractNpcAI
 	private static final int MIN_CLAN_LV = 5;
 	private static final int STONE_COUNT = 10;
 	
-	private Lekon()
+	public Lekon()
 	{
-		super(Lekon.class.getSimpleName(), "ai/npc");
+		super(Lekon.class.getSimpleName(), "gracia/AI/NPC");
 		addFirstTalkId(LEKON);
 		addTalkId(LEKON);
 		addStartNpc(LEKON);
@@ -86,10 +87,5 @@ public final class Lekon extends AbstractNpcAI
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String args[])
-	{
-		new Lekon();
 	}
 }

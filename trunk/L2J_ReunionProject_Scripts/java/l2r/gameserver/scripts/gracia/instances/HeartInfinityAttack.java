@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.instances;
+package l2r.gameserver.scripts.gracia.instances;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -889,9 +889,9 @@ public class HeartInfinityAttack extends Quest
 		}
 	};
 	
-	public HeartInfinityAttack(int questId, String name, String descr)
+	public HeartInfinityAttack()
 	{
-		super(questId, name, descr);
+		super(-1, HeartInfinityAttack.class.getSimpleName(), "gracia/instances");
 		
 		addStartNpc(ABYSSGAZE);
 		addTalkId(ABYSSGAZE);
@@ -976,9 +976,8 @@ public class HeartInfinityAttack extends Quest
 		return true;
 	}
 	
-	protected int enterInstance(L2PcInstance player, String template, int[] coords)
+	protected void enterInstance(L2PcInstance player, String template, int[] coords)
 	{
-		int instanceId = 0;
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		
 		if (world != null)
@@ -986,46 +985,42 @@ public class HeartInfinityAttack extends Quest
 			if (!(world instanceof HIAWorld))
 			{
 				player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-				return 0;
+				return;
 			}
 			teleportPlayer(player, coords, world.getInstanceId());
-			return instanceId;
+			return;
 		}
 		
-		if (!checkConditions(player))
+		if (checkConditions(player))
 		{
-			return 0;
-		}
-		
-		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-		world = new HIAWorld();
-		world.setTemplateId(INSTANCEID);
-		world.setInstanceId(instanceId);
-		world.setStatus(0);
-		InstanceManager.getInstance().addWorld(world);
-		
-		if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
-		{
-			teleportPlayer(player, coords, instanceId);
-			world.addAllowed(player.getObjectId());
-		}
-		else
-		{
-			for (L2PcInstance partyMember : player.getParty().getCommandChannel().getMembers())
+			world = new HIAWorld();
+			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			world.setTemplateId(INSTANCEID);
+			world.setStatus(0);
+			InstanceManager.getInstance().addWorld(world);
+			_log.info("Heart Infinity Attack started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			
+			if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
 			{
-				teleportPlayer(partyMember, coords, instanceId);
-				world.addAllowed(partyMember.getObjectId());
-				if (partyMember.getQuestState(qn) == null)
+				teleportPlayer(player, coords, world.getInstanceId());
+				world.addAllowed(player.getObjectId());
+			}
+			else
+			{
+				for (L2PcInstance partyMember : player.getParty().getCommandChannel().getMembers())
 				{
-					newQuestState(partyMember);
+					teleportPlayer(partyMember, coords, world.getInstanceId());
+					world.addAllowed(partyMember.getObjectId());
+					if (partyMember.getQuestState(qn) == null)
+					{
+						newQuestState(partyMember);
+					}
 				}
 			}
+			broadCastPacket(((HIAWorld) world), new ExShowScreenMessage(NpcStringId.YOU_WILL_PARTICIPATE_IN_S1_S2_SHORTLY_BE_PREPARED_FOR_ANYTHING, 2, 8000));
+			L2Npc npc = addSpawn(32536, -179376, 206111, -15538, 16384, false, 0, false, ((HIAWorld) world).getInstanceId());
+			((HIAWorld) world).startroom.add(npc);
 		}
-		broadCastPacket(((HIAWorld) world), new ExShowScreenMessage(NpcStringId.YOU_WILL_PARTICIPATE_IN_S1_S2_SHORTLY_BE_PREPARED_FOR_ANYTHING, 2, 8000));
-		L2Npc npc = addSpawn(32536, -179376, 206111, -15538, 16384, false, 0, false, ((HIAWorld) world).getInstanceId());
-		((HIAWorld) world).startroom.add(npc);
-		
-		return instanceId;
 	}
 	
 	protected void notifyEchmusEntrance(final HIAWorld world)
@@ -1036,26 +1031,15 @@ public class HeartInfinityAttack extends Quest
 		}
 		
 		conquestBegun = true;
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+		ThreadPoolManager.getInstance().scheduleGeneral(() ->
 		{
-			@Override
-			public void run()
+			for (int objId : world.getAllowed())
 			{
-				for (int objId : world.getAllowed())
-				{
-					L2PcInstance player = L2World.getInstance().getPlayer(objId);
-					player.showQuestMovie(2);
-				}
-				
-				ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						conquestBegins(world);
-					}
-				}, 62500);
+				L2PcInstance player = L2World.getInstance().getPlayer(objId);
+				player.showQuestMovie(2);
 			}
+			
+			ThreadPoolManager.getInstance().scheduleGeneral(() -> conquestBegins(world), 62500);
 		}, 20000);
 	}
 	
@@ -1514,14 +1498,7 @@ public class HeartInfinityAttack extends Quest
 			}
 		}
 		
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				broadCastPacket(world, new ExShowScreenMessage(NpcStringId.EKIMUS_HAS_SENSED_ABNORMAL_ACTIVITY_NTHE_ADVANCING_PARTY_IS_FORCEFULLY_EXPELLED, 2, 8000));
-			}
-		}, 10000);
+		ThreadPoolManager.getInstance().scheduleGeneral(() -> broadCastPacket(world, new ExShowScreenMessage(NpcStringId.EKIMUS_HAS_SENSED_ABNORMAL_ACTIVITY_NTHE_ADVANCING_PARTY_IS_FORCEFULLY_EXPELLED, 2, 8000)), 10000);
 	}
 	
 	protected void conquestConclusion(HIAWorld world)
@@ -1559,10 +1536,5 @@ public class HeartInfinityAttack extends Quest
 				player.sendPacket(packet);
 			}
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new HeartInfinityAttack(-1, HeartInfinityAttack.class.getSimpleName(), "instances");
 	}
 }

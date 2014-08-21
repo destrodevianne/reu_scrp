@@ -26,8 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import l2r.Config;
 import l2r.L2DatabaseFactory;
@@ -50,12 +48,15 @@ import l2r.gameserver.model.stats.MoveType;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.util.StringUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author terry con.close() change by Zoey76 24/02/2011
  */
 public class AdminEditNpc implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminEditNpc.class.getName());
+	private static Logger _log = LoggerFactory.getLogger(AdminEditNpc.class);
 	private final static int PAGE_LIMIT = 20;
 	
 	private static final String[] ADMIN_COMMANDS =
@@ -147,7 +148,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, "", e);
+						_log.warn("", e);
 					}
 				}
 				else if (st.countTokens() == 6)
@@ -165,7 +166,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 					}
 					catch (Exception e)
 					{
-						_log.fine("admin_edit_drop parameters error: " + command);
+						_log.error("admin_edit_drop parameters error: " + command);
 					}
 				}
 				else
@@ -220,7 +221,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 					}
 					catch (Exception e)
 					{
-						_log.fine("admin_add_drop parameters error: " + command);
+						_log.error("admin_add_drop parameters error: " + command);
 					}
 				}
 				else
@@ -578,7 +579,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		catch (Exception e)
 		{
 			activeChar.sendMessage("Could not save npc property!");
-			_log.warning("Error saving new npc value (" + command + "): " + e);
+			_log.warn("Error saving new npc value (" + command + "): " + e);
 		}
 		
 		NpcTable.getInstance().saveNpc(newNpcData);
@@ -841,7 +842,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		catch (Exception e)
 		{
 			activeChar.sendMessage("Could not update drop data!");
-			_log.warning("Error while updating drop data (" + npcId + ", " + itemId + ", " + min + ", " + max + ", " + category + ", " + chance + "): " + e);
+			_log.warn("Error while updating drop data (" + npcId + ", " + itemId + ", " + min + ", " + max + ", " + category + ", " + chance + "): " + e);
 		}
 	}
 	
@@ -873,7 +874,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		catch (Exception e)
 		{
 			activeChar.sendMessage("Could not add drop data!");
-			_log.warning("Error while adding drop data (" + npcId + ", " + itemId + ", " + min + ", " + max + ", " + category + ", " + chance + "): " + e);
+			_log.warn("Error while adding drop data (" + npcId + ", " + itemId + ", " + min + ", " + max + ", " + category + ", " + chance + "): " + e);
 		}
 	}
 	
@@ -919,7 +920,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		catch (Exception e)
 		{
 			activeChar.sendMessage("Could not delete drop data!");
-			_log.warning("Error while deleting drop data (" + npcId + ", " + itemId + ", " + category + "): " + e);
+			_log.warn("Error while deleting drop data (" + npcId + ", " + itemId + ", " + category + "): " + e);
 		}
 	}
 	
@@ -982,7 +983,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.warning("Error while reloading npc droplist (" + npcId + "): " + e);
+			_log.warn("Error while reloading npc droplist (" + npcId + "): " + e);
 		}
 	}
 	
@@ -1148,7 +1149,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		catch (Exception e)
 		{
 			activeChar.sendMessage("Could not edit npc skills!");
-			_log.warning("Error while editing npc skills (" + npcId + ", " + skillId + "): " + e);
+			_log.warn("Error while editing npc skills (" + npcId + ", " + skillId + "): " + e);
 		}
 	}
 	
@@ -1200,7 +1201,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		catch (Exception e)
 		{
 			activeChar.sendMessage("Could not update npc skill!");
-			_log.warning("Error while updating npc skill (" + npcId + ", " + skillId + ", " + level + "): " + e);
+			_log.warn("Error while updating npc skill (" + npcId + ", " + skillId + ", " + level + "): " + e);
 		}
 	}
 	
@@ -1263,7 +1264,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		catch (Exception e)
 		{
 			activeChar.sendMessage("Could not add npc skill!");
-			_log.warning("Error while adding a npc skill (" + npcId + ", " + skillId + ", " + level + "): " + e);
+			_log.warn("Error while adding a npc skill (" + npcId + ", " + skillId + ", " + level + "): " + e);
 		}
 	}
 	
@@ -1300,7 +1301,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		catch (Exception e)
 		{
 			activeChar.sendMessage("Could not delete npc skill!");
-			_log.warning("Error while deleting npc skill (" + npcId + ", " + skillId + "): " + e);
+			_log.warn("Error while deleting npc skill (" + npcId + ", " + skillId + "): " + e);
 		}
 	}
 	
@@ -1356,7 +1357,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.warning("Error while reloading npc skill list (" + npcId + "): " + e);
+			_log.warn("Error while reloading npc skill list (" + npcId + "): " + e);
 		}
 	}
 }

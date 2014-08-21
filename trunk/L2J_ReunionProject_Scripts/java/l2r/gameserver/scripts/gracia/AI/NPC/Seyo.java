@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -16,12 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc;
+package l2r.gameserver.scripts.gracia.AI.NPC;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Seyo AI.
@@ -43,9 +44,9 @@ public final class Seyo extends AbstractNpcAI
 		NpcStringId.THERE_WAS_SOMEONE_WHO_WON_10000_FROM_ME_A_WARRIOR_SHOULDNT_JUST_BE_GOOD_AT_FIGHTING_RIGHT_YOUVE_GOTTA_BE_GOOD_IN_EVERYTHING
 	};
 	
-	private Seyo()
+	public Seyo()
 	{
-		super(Seyo.class.getSimpleName(), "ai/npc");
+		super(Seyo.class.getSimpleName(), "gracia/AI/NPC");
 		addStartNpc(SEYO);
 		addTalkId(SEYO);
 		addFirstTalkId(SEYO);
@@ -167,10 +168,5 @@ public final class Seyo extends AbstractNpcAI
 			}
 		}
 		return htmltext;
-	}
-	
-	public static void main(String[] args)
-	{
-		new Seyo();
 	}
 }
