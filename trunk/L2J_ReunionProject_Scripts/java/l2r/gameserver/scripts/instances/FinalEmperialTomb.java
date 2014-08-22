@@ -524,7 +524,7 @@ public class FinalEmperialTomb extends Quest
 		return true;
 	}
 	
-	protected void enterInstance(L2PcInstance player, String template, Location loc)
+	protected int enterInstance(L2PcInstance player, String template, Location loc)
 	{
 		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
@@ -534,47 +534,48 @@ public class FinalEmperialTomb extends Quest
 			if (!(world instanceof FETWorld))
 			{
 				player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-				return;
+				return 0;
 			}
 			teleportPlayer(player, loc, world.getInstanceId(), false);
-			return;
+			return world.getInstanceId();
 		}
 		
 		// New instance
-		if (checkConditions(player))
+		if (!checkConditions(player))
 		{
-			if (!player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS) && !player.destroyItemByItemId("QUEST", 8073, 1, player, true))
+			return 0;
+		}
+		if (!player.canOverrideCond(PcCondOverride.INSTANCE_CONDITIONS) && !player.destroyItemByItemId("QUEST", 8073, 1, player, true))
+		{
+			return 0;
+		}
+		final int instanceId = InstanceManager.getInstance().createDynamicInstance(template);
+		// Instance ins = InstanceManager.getInstance().getInstance(instanceId);
+		// ins.setSpawnLoc(new int[]{player.getX(),player.getY(),player.getZ()});
+		world = new FETWorld();
+		world.setTemplateId(TEMPLATE_ID);
+		world.setInstanceId(instanceId);
+		world.setStatus(0);
+		InstanceManager.getInstance().addWorld(world);
+		controlStatus((FETWorld) world);
+		_log.info("Final Emperial Tomb started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
+		// teleport players
+		if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
+		{
+			player.destroyItemByItemId(getName(), DEWDROP_OF_DESTRUCTION_ITEM_ID, player.getInventory().getInventoryItemCount(DEWDROP_OF_DESTRUCTION_ITEM_ID, -1), null, true);
+			world.addAllowed(player.getObjectId());
+			teleportPlayer(player, loc, instanceId, false);
+		}
+		else
+		{
+			for (L2PcInstance channelMember : player.getParty().getCommandChannel().getMembers())
 			{
-				return;
-			}
-			
-			final int instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-			// Instance ins = InstanceManager.getInstance().getInstance(instanceId);
-			// ins.setSpawnLoc(new int[]{player.getX(),player.getY(),player.getZ()});
-			world = new FETWorld();
-			world.setTemplateId(TEMPLATE_ID);
-			world.setInstanceId(instanceId);
-			world.setStatus(0);
-			InstanceManager.getInstance().addWorld(world);
-			controlStatus((FETWorld) world);
-			_log.info("Final Emperial Tomb started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
-			// teleport players
-			if ((player.getParty() == null) || (player.getParty().getCommandChannel() == null))
-			{
-				player.destroyItemByItemId(getName(), DEWDROP_OF_DESTRUCTION_ITEM_ID, player.getInventory().getInventoryItemCount(DEWDROP_OF_DESTRUCTION_ITEM_ID, -1), null, true);
-				world.addAllowed(player.getObjectId());
-				teleportPlayer(player, loc, instanceId, false);
-			}
-			else
-			{
-				for (L2PcInstance channelMember : player.getParty().getCommandChannel().getMembers())
-				{
-					channelMember.destroyItemByItemId(getName(), DEWDROP_OF_DESTRUCTION_ITEM_ID, channelMember.getInventory().getInventoryItemCount(DEWDROP_OF_DESTRUCTION_ITEM_ID, -1), null, true);
-					world.addAllowed(channelMember.getObjectId());
-					teleportPlayer(channelMember, loc, instanceId, false);
-				}
+				channelMember.destroyItemByItemId(getName(), DEWDROP_OF_DESTRUCTION_ITEM_ID, channelMember.getInventory().getInventoryItemCount(DEWDROP_OF_DESTRUCTION_ITEM_ID, -1), null, true);
+				world.addAllowed(channelMember.getObjectId());
+				teleportPlayer(channelMember, loc, instanceId, false);
 			}
 		}
+		return instanceId;
 	}
 	
 	protected boolean checkKillProgress(L2Npc mob, FETWorld world)
