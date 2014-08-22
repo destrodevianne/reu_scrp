@@ -865,8 +865,9 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 		return super.onSpawn(npc);
 	}
 	
-	private void enterInstance(L2PcInstance player, String template)
+	private int enterInstance(L2PcInstance player, String template)
 	{
+		int instanceId = 0;
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		if (world != null)
 		{
@@ -879,45 +880,63 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 				}
 				
 				teleportPlayer(player, (IQCNWorld) world);
-				return;
+				return world.getInstanceId();
 			}
 			player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-			return;
+			return 0;
 		}
 		
 		if (checkConditions(player))
 		{
+			instanceId = InstanceManager.getInstance().createDynamicInstance(template);
 			world = new IQCNWorld();
-			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			world.setInstanceId(instanceId);
 			world.setTemplateId(TEMPLATE_ID);
 			world.setStatus(0);
 			InstanceManager.getInstance().addWorld(world);
-			_log.info("Freya normal started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			_log.info("Freya normal started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
 			
 			if (player.isGM())
 			{
-				world.addAllowed(player.getObjectId());
-				teleportPlayer(player, (IQCNWorld) world);
-				ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(1, world.getInstanceId()), 100);
-				return;
-			}
-			
-			L2Party party = player.getParty();
-			if ((party != null) && party.isInCommandChannel())
-			{
-				int count = 1;
-				for (L2PcInstance plr : party.getCommandChannel().getMembers())
+				L2Party party = player.getParty();
+				if (party != null)
 				{
-					world.addAllowed(plr.getObjectId());
-					_log.info("Freya Party Member " + count + ", Member name is: " + plr.getName());
-					count++;
-					teleportPlayer(plr, (IQCNWorld) world);
+					int count = 1;
+					for (L2PcInstance plr : party.getMembers())
+					{
+						world.addAllowed(plr.getObjectId());
+						_log.info("Freya Party Member " + count + ", Member name is: " + plr.getName());
+						count++;
+						teleportPlayer(plr, (IQCNWorld) world);
+					}
 				}
-				
+				else
+				{
+					world.addAllowed(player.getObjectId());
+					teleportPlayer(player, (IQCNWorld) world);
+				}
 				ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(1, world.getInstanceId()), 100);
-				return;
+			}
+			else
+			{
+				L2Party party = player.getParty();
+				if ((party != null) && party.isInCommandChannel())
+				{
+					int count = 1;
+					for (L2PcInstance plr : party.getCommandChannel().getMembers())
+					{
+						world.addAllowed(plr.getObjectId());
+						_log.info("Freya Party Member " + count + ", Member name is: " + plr.getName());
+						count++;
+						teleportPlayer(plr, (IQCNWorld) world);
+					}
+					
+					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(1, world.getInstanceId()), 100);
+				}
 			}
 		}
+		
+		return instanceId;
 	}
 	
 	private boolean checkConditions(L2PcInstance player)

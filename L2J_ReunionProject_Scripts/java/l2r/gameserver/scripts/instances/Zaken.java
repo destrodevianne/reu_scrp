@@ -431,24 +431,26 @@ public class Zaken extends Quest
 		return true;
 	}
 	
-	protected void enterInstance(L2PcInstance player, String template, String choice, Location loc)
+	protected int enterInstance(L2PcInstance player, String template, String choice, Location loc)
 	{
+		int instanceId = 0;
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		if (world != null)
 		{
 			if (world instanceof ZWorld)
 			{
 				teleportPlayer(player, loc, world.getInstanceId(), false);
-				return;
+				return world.getInstanceId();
 			}
 			player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-			return;
+			return 0;
 		}
 		
 		if (checkConditions(player, choice))
 		{
+			instanceId = InstanceManager.getInstance().createDynamicInstance(template);
 			world = new ZWorld();
-			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
+			world.setInstanceId(instanceId);
 			if (choice.equalsIgnoreCase("daytime"))
 			{
 				world.setTemplateId(INSTANCEID_DAY);
@@ -463,7 +465,7 @@ public class Zaken extends Quest
 			}
 			world.setStatus(0);
 			InstanceManager.getInstance().addWorld(world);
-			_log.info("Zaken (" + choice + ") started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+			_log.info("Zaken (" + choice + ") started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
 			
 			if (choice.equalsIgnoreCase("nighttime"))
 			{
@@ -513,6 +515,8 @@ public class Zaken extends Quest
 				}
 			}
 		}
+		
+		return instanceId;
 	}
 	
 	private void spawnRoom(int instanceId, int zoneId)
