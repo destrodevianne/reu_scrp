@@ -40,9 +40,9 @@ public class Knoriks extends AbstractNpcAI
 		}
 	}
 	
-	public Knoriks(String name, String descr)
+	public Knoriks()
 	{
-		super(name, descr);
+		super(Knoriks.class.getSimpleName(), "ai");
 		
 		addAggroRangeEnterId(KNORIKS);
 		addAttackId(KNORIKS);
@@ -63,7 +63,7 @@ public class Knoriks extends AbstractNpcAI
 				group._knoriks.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 			}
 		}
-		return null;
+		return super.onAggroRangeEnter(npc, player, isPet);
 	}
 	
 	@Override
@@ -74,7 +74,7 @@ public class Knoriks extends AbstractNpcAI
 			KnoriksGroup group = getGroup(npc);
 			group._attackDirection = true;
 		}
-		return null;
+		return super.onAttack(npc, attacker, damage, isSummon);
 	}
 	
 	protected class RunTask implements Runnable
@@ -211,6 +211,6 @@ public class Knoriks extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Knoriks(Knoriks.class.getSimpleName(), "ai");
+		new Knoriks();
 	}
 }

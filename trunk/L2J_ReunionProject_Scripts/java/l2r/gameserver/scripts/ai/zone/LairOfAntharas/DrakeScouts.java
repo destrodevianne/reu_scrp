@@ -40,9 +40,9 @@ public class DrakeScouts extends AbstractNpcAI
 		}
 	}
 	
-	public DrakeScouts(String name, String descr)
+	public DrakeScouts()
 	{
-		super(name, descr);
+		super(DrakeScouts.class.getSimpleName(), "ai");
 		
 		addAggroRangeEnterId(DRAKE_SCOUT);
 		addAttackId(DRAKE_SCOUT);
@@ -63,7 +63,7 @@ public class DrakeScouts extends AbstractNpcAI
 				group._scout.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 			}
 		}
-		return null;
+		return super.onAggroRangeEnter(npc, player, isPet);
 	}
 	
 	@Override
@@ -74,7 +74,7 @@ public class DrakeScouts extends AbstractNpcAI
 			DrakeScoutGroup group = getGroup(npc);
 			group._attackDirection = true;
 		}
-		return null;
+		return super.onAttack(npc, attacker, damage, isSummon);
 	}
 	
 	protected class RunTask implements Runnable
@@ -211,6 +211,6 @@ public class DrakeScouts extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new DrakeScouts(DrakeScouts.class.getSimpleName(), "ai");
+		new DrakeScouts();
 	}
 }

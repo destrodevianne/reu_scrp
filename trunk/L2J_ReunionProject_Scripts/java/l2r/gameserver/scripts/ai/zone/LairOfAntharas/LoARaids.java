@@ -16,18 +16,8 @@ public class LoARaids extends AbstractNpcAI
 	public LoARaids()
 	{
 		super(LoARaids.class.getSimpleName(), "ai");
-		addKillId(new int[]
-		{
-			DRAKE_LORD,
-			BEHEMOTH_LEADER,
-			DRAGON_BEAST
-		});
-		addSpawnId(new int[]
-		{
-			DRAKE_LORD,
-			BEHEMOTH_LEADER,
-			DRAGON_BEAST
-		});
+		addKillId(DRAKE_LORD, BEHEMOTH_LEADER, DRAGON_BEAST);
+		addSpawnId(DRAKE_LORD, BEHEMOTH_LEADER, DRAGON_BEAST);
 	}
 	
 	@Override
@@ -56,7 +46,7 @@ public class LoARaids extends AbstractNpcAI
 				DragonBeast.deleteMe();
 			}
 		}
-		return null;
+		return super.onSpawn(npc);
 	}
 	
 	@Override
