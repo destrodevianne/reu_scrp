@@ -63,7 +63,7 @@ public class DrakeMages extends AbstractNpcAI
 				group._mage.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, player);
 			}
 		}
-		return null;
+		return super.onAggroRangeEnter(npc, player, isPet);
 	}
 	
 	@Override
@@ -74,7 +74,7 @@ public class DrakeMages extends AbstractNpcAI
 			DrakeMageGroup group = getGroup(npc);
 			group._attackDirection = true;
 		}
-		return null;
+		return super.onAttack(npc, attacker, damage, isSummon);
 	}
 	
 	protected class RunTask implements Runnable

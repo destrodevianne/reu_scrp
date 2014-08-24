@@ -29,7 +29,6 @@ import l2r.gameserver.enums.PcCondOverride;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.instancemanager.InstanceManager;
 import l2r.gameserver.instancemanager.ZoneManager;
-import l2r.gameserver.model.L2CommandChannel;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.Location;
@@ -434,85 +433,95 @@ public class Zaken extends Quest
 	protected int enterInstance(L2PcInstance player, String template, String choice, Location loc)
 	{
 		int instanceId = 0;
+		// check for existing instances for this player
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
+		// existing instance
 		if (world != null)
 		{
-			if (world instanceof ZWorld)
+			if (!(world instanceof ZWorld))
 			{
-				teleportPlayer(player, loc, world.getInstanceId(), false);
-				return world.getInstanceId();
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER));
+				return 0;
 			}
-			player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-			return 0;
+			teleportPlayer(player, loc, world.getInstanceId(), false);
+			return world.getInstanceId();
 		}
 		
-		if (checkConditions(player, choice))
+		instanceId = InstanceManager.getInstance().createDynamicInstance(template);
+		world = new ZWorld();
+		if (choice.equalsIgnoreCase("daytime"))
 		{
-			instanceId = InstanceManager.getInstance().createDynamicInstance(template);
-			world = new ZWorld();
-			world.setInstanceId(instanceId);
-			if (choice.equalsIgnoreCase("daytime"))
+			world.setTemplateId(INSTANCEID_DAY);
+		}
+		else if (choice.equalsIgnoreCase("daytime83"))
+		{
+			world.setTemplateId(INSTANCEID_DAY83);
+		}
+		else if (choice.equalsIgnoreCase("nighttime"))
+		{
+			world.setTemplateId(INSTANCEID_NIGHT);
+		}
+		
+		world.setInstanceId(instanceId);
+		world.setStatus(0);
+		InstanceManager.getInstance().addWorld(world);
+		_log.info("Zaken (" + choice + ") started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
+		
+		if (choice.equalsIgnoreCase("nighttime"))
+		{
+			startQuestTimer("ZakenSpawn", 1000, null, player);
+			for (int i = _room1_zone; i <= _room15_zone; i++)
 			{
-				world.setTemplateId(INSTANCEID_DAY);
+				spawnRoom(world.getInstanceId(), i);
 			}
-			else if (choice.equalsIgnoreCase("daytime83"))
+		}
+		else
+		{
+			startQuestTimer("ChooseZakenRoom", 1000, null, player);
+		}
+		
+		// teleport players
+		List<L2PcInstance> players;
+		L2Party party = player.getParty();
+		if (party == null) // this can happen only if debug is true
+		{
+			players = new FastList<>();
+			players.add(player);
+		}
+		else if (party.isInCommandChannel())
+		{
+			players = party.getCommandChannel().getMembers();
+		}
+		else
+		{
+			players = party.getMembers();
+		}
+		
+		for (L2PcInstance member : players)
+		{
+			// new instance
+			if (!checkConditions(member, choice))
 			{
-				world.setTemplateId(INSTANCEID_DAY83);
+				return 0;
 			}
-			else if (choice.equalsIgnoreCase("nighttime"))
+		}
+		
+		int count = 1;
+		for (L2PcInstance member : players)
+		{
+			_log.info("Zaken Party Member " + count + ", Name is: " + member.getName());
+			count++;
+			((ZWorld) world)._playersInInstance.add(member);
+			teleportPlayer(member, loc, world.getInstanceId(), false);
+			world.addAllowed(member.getObjectId());
+			member.sendPacket(new PlaySound("BS01_A"));
+		}
+		
+		for (L2PcInstance pc : ((ZWorld) world)._playersInInstance)
+		{
+			if (pc != null)
 			{
-				world.setTemplateId(INSTANCEID_NIGHT);
-			}
-			world.setStatus(0);
-			InstanceManager.getInstance().addWorld(world);
-			_log.info("Zaken (" + choice + ") started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
-			
-			if (choice.equalsIgnoreCase("nighttime"))
-			{
-				startQuestTimer("ZakenSpawn", 1000, null, player);
-				for (int i = _room1_zone; i <= _room15_zone; i++)
-				{
-					spawnRoom(world.getInstanceId(), i);
-				}
-			}
-			else
-			{
-				startQuestTimer("ChooseZakenRoom", 1000, null, player);
-			}
-			
-			int count = 1;
-			List<L2PcInstance> players = new FastList<>();
-			final L2Party party = player.getParty();
-			final L2CommandChannel channel = party != null ? party.getCommandChannel() : null;
-			if (channel != null)
-			{
-				players = channel.getMembers();
-			}
-			else if (party != null)
-			{
-				players = party.getMembers();
-			}
-			
-			for (L2PcInstance member : players)
-			{
-				if (member != null)
-				{
-					_log.info("Zaken Member " + count + ", Name is: " + member.getName());
-					count++;
-					((ZWorld) world)._playersInInstance.add(member);
-					teleportPlayer(member, loc, world.getInstanceId(), false);
-					world.addAllowed(member.getObjectId());
-					member.sendPacket(new PlaySound("BS01_A"));
-				}
-			}
-			players.clear();
-			
-			for (L2PcInstance pc : ((ZWorld) world)._playersInInstance)
-			{
-				if (pc != null)
-				{
-					savePlayerReenter(pc);
-				}
+				savePlayerReenter(pc);
 			}
 		}
 		

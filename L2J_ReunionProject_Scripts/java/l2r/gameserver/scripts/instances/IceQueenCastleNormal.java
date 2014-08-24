@@ -865,9 +865,8 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 		return super.onSpawn(npc);
 	}
 	
-	private int enterInstance(L2PcInstance player, String template)
+	private void enterInstance(L2PcInstance player, String template)
 	{
-		int instanceId = 0;
 		InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(player);
 		if (world != null)
 		{
@@ -880,32 +879,31 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 				}
 				
 				teleportPlayer(player, (IQCNWorld) world);
-				return world.getInstanceId();
+				return;
 			}
 			player.sendPacket(SystemMessageId.ALREADY_ENTERED_ANOTHER_INSTANCE_CANT_ENTER);
-			return 0;
+			return;
 		}
 		
 		if (checkConditions(player))
 		{
-			instanceId = InstanceManager.getInstance().createDynamicInstance(template);
 			world = new IQCNWorld();
-			world.setInstanceId(instanceId);
+			world.setInstanceId(InstanceManager.getInstance().createDynamicInstance(template));
 			world.setTemplateId(TEMPLATE_ID);
 			world.setStatus(0);
 			InstanceManager.getInstance().addWorld(world);
-			_log.info("Freya normal started " + template + " Instance: " + instanceId + " created by player: " + player.getName());
+			_log.info("Freya normal started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
 			
+			L2Party party = player.getParty();
 			if (player.isGM())
 			{
-				L2Party party = player.getParty();
 				if (party != null)
 				{
 					int count = 1;
 					for (L2PcInstance plr : party.getMembers())
 					{
 						world.addAllowed(plr.getObjectId());
-						_log.info("Freya Party Member " + count + ", Member name is: " + plr.getName());
+						_log.info("Freya Party Member " + count + ", Name is: " + plr.getName());
 						count++;
 						teleportPlayer(plr, (IQCNWorld) world);
 					}
@@ -916,27 +914,24 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 					teleportPlayer(player, (IQCNWorld) world);
 				}
 				ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(1, world.getInstanceId()), 100);
+				return;
 			}
-			else
+			
+			if ((party != null) && party.isInCommandChannel())
 			{
-				L2Party party = player.getParty();
-				if ((party != null) && party.isInCommandChannel())
+				int count = 1;
+				for (L2PcInstance plr : party.getCommandChannel().getMembers())
 				{
-					int count = 1;
-					for (L2PcInstance plr : party.getCommandChannel().getMembers())
-					{
-						world.addAllowed(plr.getObjectId());
-						_log.info("Freya Party Member " + count + ", Member name is: " + plr.getName());
-						count++;
-						teleportPlayer(plr, (IQCNWorld) world);
-					}
-					
-					ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(1, world.getInstanceId()), 100);
+					world.addAllowed(plr.getObjectId());
+					_log.info("Freya Party Member " + count + ", Name is: " + plr.getName());
+					count++;
+					teleportPlayer(plr, (IQCNWorld) world);
 				}
+				
+				ThreadPoolManager.getInstance().scheduleGeneral(new spawnWave(1, world.getInstanceId()), 100);
+				return;
 			}
 		}
-		
-		return instanceId;
 	}
 	
 	private boolean checkConditions(L2PcInstance player)
@@ -1009,8 +1004,6 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 	
 	private void teleportPlayer(L2PcInstance player, IQCNWorld world)
 	{
-		_log.info("Teleporting player to Freya: " + player.getName());
-		
 		final QuestState qs = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
 		if ((qs != null) && (qs.getState() == State.STARTED) && qs.isCond(5))
 		{

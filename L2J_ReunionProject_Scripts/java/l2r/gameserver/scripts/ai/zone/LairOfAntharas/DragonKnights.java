@@ -15,9 +15,9 @@ public class DragonKnights extends AbstractNpcAI
 	private static final int ELITE_DRAGON_KNIGHT = 22846;
 	private static final int DRAGON_KNIGHT_WARRIOR = 22847;
 	
-	public DragonKnights(String name, String descr)
+	public DragonKnights()
 	{
-		super(name, descr);
+		super(DragonKnights.class.getSimpleName(), "ai");
 		
 		addKillId(DRAGON_KNIGHT_1);
 		addKillId(DRAGON_KNIGHT_2);
@@ -70,6 +70,6 @@ public class DragonKnights extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new DragonKnights(DragonKnights.class.getSimpleName(), "ai");
+		new DragonKnights();
 	}
 }

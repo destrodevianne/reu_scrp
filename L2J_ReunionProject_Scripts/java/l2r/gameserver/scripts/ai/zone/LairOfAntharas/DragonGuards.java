@@ -18,22 +18,19 @@ public class DragonGuards extends AbstractNpcAI
 		DRAGON_MAGE
 	};
 	
-	public DragonGuards(String name, String descr)
+	public DragonGuards()
 	{
-		super(name, descr);
+		super(DragonGuards.class.getSimpleName(), "ai");
 		
-		for (int mobId : WALL_MONSTERS)
-		{
-			addSpawnId(mobId);
-			addAggroRangeEnterId(mobId);
-			addAttackId(mobId);
-		}
+		addSpawnId(WALL_MONSTERS);
+		addAggroRangeEnterId(WALL_MONSTERS);
+		addAttackId(WALL_MONSTERS);
 	}
 	
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		if (npc instanceof L2MonsterInstance)
+		if (npc.isMonster())
 		{
 			for (int mobId : WALL_MONSTERS)
 			{
@@ -64,7 +61,7 @@ public class DragonGuards extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isSummon)
 	{
-		if (npc instanceof L2MonsterInstance)
+		if (npc.isMonster())
 		{
 			for (int mobId : WALL_MONSTERS)
 			{
@@ -82,6 +79,6 @@ public class DragonGuards extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new DragonGuards(DragonGuards.class.getSimpleName(), "ai");
+		new DragonGuards();
 	}
 }
