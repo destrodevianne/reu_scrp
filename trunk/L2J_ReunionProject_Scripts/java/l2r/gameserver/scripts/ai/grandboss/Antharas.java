@@ -141,12 +141,12 @@ public final class Antharas extends AbstractNpcAI
 		addKillId(ANTHARAS, TERASQUE, BEHEMOTH);
 		
 		final StatsSet info = GrandBossManager.getInstance().getStatsSet(ANTHARAS);
-		final int curr_hp = info.getInteger("currentHP");
-		final int curr_mp = info.getInteger("currentMP");
-		final int loc_x = info.getInteger("loc_x");
-		final int loc_y = info.getInteger("loc_y");
-		final int loc_z = info.getInteger("loc_z");
-		final int heading = info.getInteger("heading");
+		final int curr_hp = info.getInt("currentHP");
+		final int curr_mp = info.getInt("currentMP");
+		final int loc_x = info.getInt("loc_x");
+		final int loc_y = info.getInt("loc_y");
+		final int loc_z = info.getInt("loc_z");
+		final int heading = info.getInt("heading");
 		final long respawnTime = info.getLong("respawn_time");
 		
 		switch (getStatus())
@@ -737,7 +737,7 @@ public final class Antharas extends AbstractNpcAI
 		{
 			// TODO: FIXME when npcs will be in xmls
 			/*
-			 * for (int i = 1; i <= 6; i++) { final int x = npc.getTemplate().getParameters().getInteger("suicide" + i + "_x"); final int y = npc.getTemplate().getParameters().getInteger("suicide" + i + "_y"); final L2Attackable bomber = (L2Attackable) addSpawn(BOMBER, npc.getX(), npc.getY(),
+			 * for (int i = 1; i <= 6; i++) { final int x = npc.getTemplate().getParameters().getInt("suicide" + i + "_x"); final int y = npc.getTemplate().getParameters().getInt("suicide" + i + "_y"); final L2Attackable bomber = (L2Attackable) addSpawn(BOMBER, npc.getX(), npc.getY(),
 			 * npc.getZ(), 0, true, 15000, true); bomber.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(x, y, npc.getZ())); } npc.deleteMe();
 			 */
 		}

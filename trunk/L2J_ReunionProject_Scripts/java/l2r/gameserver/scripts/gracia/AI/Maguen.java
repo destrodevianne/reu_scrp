@@ -110,7 +110,7 @@ public final class Maguen extends AbstractNpcAI
 			}
 			case "DIST_CHECK_TIMER":
 			{
-				if ((npc.calculateDistance(player, true, false) < 100) && (npc.getVariables().getInteger("IS_NEAR_PLAYER") == 0))
+				if ((npc.calculateDistance(player, true, false) < 100) && (npc.getVariables().getInt("IS_NEAR_PLAYER") == 0))
 				{
 					npc.getVariables().set("IS_NEAR_PLAYER", 1);
 					startQuestTimer("FIRST_TIMER", 4000, npc, player);
@@ -161,7 +161,7 @@ public final class Maguen extends AbstractNpcAI
 			}
 			case "END_TIMER":
 			{
-				if (npc.getVariables().getInteger("TEST_MAGUEN") == 1)
+				if (npc.getVariables().getInt("TEST_MAGUEN") == 1)
 				{
 					player.getEffectList().stopSkillEffects(B_PLASMA1.getSkillId());
 					player.getEffectList().stopSkillEffects(C_PLASMA1.getSkillId());
@@ -196,7 +196,7 @@ public final class Maguen extends AbstractNpcAI
 	{
 		if ((skill == MACHINE.getSkill()) && (caster == npc.getVariables().getObject("SUMMON_PLAYER", L2PcInstance.class)))
 		{
-			if ((npc.getVariables().getInteger("NPC_EFFECT") != 0) && (npc.getVariables().getInteger("BLOCKED_SKILLSEE") == 0))
+			if ((npc.getVariables().getInt("NPC_EFFECT") != 0) && (npc.getVariables().getInt("BLOCKED_SKILLSEE") == 0))
 			{
 				// TODO: FIXME
 				/**
@@ -219,7 +219,7 @@ public final class Maguen extends AbstractNpcAI
 				npc.getVariables().set("BLOCKED_SKILLSEE", 1);
 				
 				SkillHolder skillToCast = null;
-				switch (npc.getVariables().getInteger("NPC_EFFECT"))
+				switch (npc.getVariables().getInt("NPC_EFFECT"))
 				{
 					case 1:
 					{

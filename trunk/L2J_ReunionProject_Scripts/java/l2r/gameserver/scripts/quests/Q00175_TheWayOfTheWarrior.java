@@ -299,7 +299,7 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 	public static final void giveNewbieReward(L2PcInstance player)
 	{
 		final PlayerVariables vars = player.getVariables();
-		if ((player.getLevel() < 25) && !vars.getBool("NEWBIE_SHOTS", false))
+		if ((player.getLevel() < 25) && !vars.getBoolean("NEWBIE_SHOTS", false))
 		{
 			playSound(player, "tutorial_voice_26");
 			giveItems(player, SOULSHOTS_NO_GRADE_FOR_ROOKIES);
@@ -310,9 +310,9 @@ public final class Q00175_TheWayOfTheWarrior extends Quest
 			vars.set("GUIDE_MISSION", 100000);
 			player.sendPacket(MESSAGE);
 		}
-		else if (((vars.getInteger("GUIDE_MISSION") % 1000000) / 100000) != 1)
+		else if (((vars.getInt("GUIDE_MISSION") % 1000000) / 100000) != 1)
 		{
-			vars.set("GUIDE_MISSION", vars.getInteger("GUIDE_MISSION") + 100000);
+			vars.set("GUIDE_MISSION", vars.getInt("GUIDE_MISSION") + 100000);
 			player.sendPacket(MESSAGE);
 		}
 	}

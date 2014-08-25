@@ -37,9 +37,9 @@ public class NpcBufferSkillData
 	
 	public NpcBufferSkillData(StatsSet set)
 	{
-		_skill = new SkillHolder(set.getInteger("id"), set.getInteger("level"));
-		_initialDelay = set.getInteger("skillInitDelay", 0) * 1000;
-		_delay = set.getInteger("delay") * 1000;
+		_skill = new SkillHolder(set.getInt("id"), set.getInt("level"));
+		_initialDelay = set.getInt("skillInitDelay", 0) * 1000;
+		_delay = set.getInt("delay") * 1000;
 		_affectScope = set.getEnum("affectScope", AffectScope.class);
 		_affectObject = set.getEnum("affectObject", AffectObject.class);
 	}

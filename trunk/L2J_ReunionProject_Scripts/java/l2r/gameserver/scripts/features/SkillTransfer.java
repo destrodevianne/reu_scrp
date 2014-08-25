@@ -65,7 +65,7 @@ public final class SkillTransfer extends AbstractNpcAI
 		}
 		
 		final String name = HOLY_POMANDER + player.getClassId().getId();
-		if (!player.getVariables().getBool(name, false))
+		if (!player.getVariables().getBoolean(name, false))
 		{
 			player.getVariables().set(name, true);
 			giveItems(player, PORMANDERS[index]);

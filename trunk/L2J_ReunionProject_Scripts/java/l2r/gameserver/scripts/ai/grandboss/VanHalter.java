@@ -304,7 +304,7 @@ public class VanHalter extends Quest
 		else if (_state == ALIVE)
 		{
 			setupAltar();
-			_vanHalter.setCurrentHpMp(info.getInteger("currentHP"), info.getInteger("currentMP"));
+			_vanHalter.setCurrentHpMp(info.getInt("currentHP"), info.getInt("currentMP"));
 		}
 	}
 	

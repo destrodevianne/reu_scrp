@@ -137,7 +137,7 @@ public class TarBeetleSpawn extends DocumentParser
 	
 	public final void removeBeetle(L2Npc npc)
 	{
-		zones.get(npc.getVariables().getInteger("zoneIndex", 0)).removeSpawn(npc);
+		zones.get(npc.getVariables().getInt("zoneIndex", 0)).removeSpawn(npc);
 		npc.deleteMe();
 	}
 	
