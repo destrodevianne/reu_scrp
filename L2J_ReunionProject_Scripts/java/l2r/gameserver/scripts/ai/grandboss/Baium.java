@@ -113,12 +113,12 @@ public final class Baium extends AbstractNpcAI
 		addSpellFinishedId(BAIUM);
 		
 		final StatsSet info = GrandBossManager.getInstance().getStatsSet(BAIUM);
-		final int curr_hp = info.getInteger("currentHP");
-		final int curr_mp = info.getInteger("currentMP");
-		final int loc_x = info.getInteger("loc_x");
-		final int loc_y = info.getInteger("loc_y");
-		final int loc_z = info.getInteger("loc_z");
-		final int heading = info.getInteger("heading");
+		final int curr_hp = info.getInt("currentHP");
+		final int curr_mp = info.getInt("currentMP");
+		final int loc_x = info.getInt("loc_x");
+		final int loc_y = info.getInt("loc_y");
+		final int loc_z = info.getInt("loc_z");
+		final int heading = info.getInt("heading");
 		final long respawnTime = info.getLong("respawn_time");
 		
 		switch (getStatus())
@@ -641,14 +641,14 @@ public final class Baium extends AbstractNpcAI
 		{
 			if (attacker == vars.getObject("c_quest" + i, L2Character.class))
 			{
-				if (vars.getInteger("i_quest" + i) < aggroVal)
+				if (vars.getInt("i_quest" + i) < aggroVal)
 				{
 					vars.set("i_quest" + i, newAggroVal);
 				}
 				return;
 			}
 		}
-		final int index = Util.getIndexOfMinValue(vars.getInteger("i_quest0"), vars.getInteger("i_quest1"), vars.getInteger("i_quest2"));
+		final int index = Util.getIndexOfMinValue(vars.getInt("i_quest0"), vars.getInt("i_quest1"), vars.getInt("i_quest2"));
 		vars.set("i_quest" + index, newAggroVal);
 		vars.set("c_quest" + index, attacker);
 	}
@@ -689,9 +689,9 @@ public final class Baium extends AbstractNpcAI
 				vars.set("i_quest" + i, 0);
 			}
 		}
-		final int index = Util.getIndexOfMaxValue(vars.getInteger("i_quest0"), vars.getInteger("i_quest1"), vars.getInteger("i_quest2"));
+		final int index = Util.getIndexOfMaxValue(vars.getInt("i_quest0"), vars.getInt("i_quest1"), vars.getInt("i_quest2"));
 		final L2Character player = vars.getObject("c_quest" + index, L2Character.class);
-		final int i2 = vars.getInteger("i_quest" + index);
+		final int i2 = vars.getInt("i_quest" + index);
 		if ((i2 > 0) && (getRandom(100) < 70))
 		{
 			vars.set("i_quest" + index, 500);

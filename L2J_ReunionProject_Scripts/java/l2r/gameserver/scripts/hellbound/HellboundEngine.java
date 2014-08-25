@@ -165,7 +165,7 @@ public final class HellboundEngine extends AbstractNpcAI
 		{
 			return 11;
 		}
-		return GlobalVariablesManager.getInstance().getInteger("HBLevel", 0);
+		return GlobalVariablesManager.getInstance().getInt("HBLevel", 0);
 	}
 	
 	/**
@@ -214,7 +214,7 @@ public final class HellboundEngine extends AbstractNpcAI
 		{
 			return 4000000;
 		}
-		return GlobalVariablesManager.getInstance().getInteger("HBTrust", 0);
+		return GlobalVariablesManager.getInstance().getInt("HBTrust", 0);
 	}
 	
 	/**

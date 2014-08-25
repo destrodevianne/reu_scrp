@@ -200,7 +200,7 @@ public final class Q00409_PathOfTheElvenOracle extends Quest
 				}
 				case 1:
 				{
-					if (npc.getVariables().getInteger("firstAttacker") != attacker.getObjectId())
+					if (npc.getVariables().getInt("firstAttacker") != attacker.getObjectId())
 					{
 						npc.setScriptValue(2);
 					}

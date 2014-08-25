@@ -202,7 +202,7 @@ public final class Q00403_PathOfTheRogue extends Quest
 					{
 						npc.setScriptValue(2);
 					}
-					else if (npc.getVariables().getInteger("lastAttacker") != attacker.getObjectId())
+					else if (npc.getVariables().getInt("lastAttacker") != attacker.getObjectId())
 					{
 						npc.setScriptValue(2);
 					}

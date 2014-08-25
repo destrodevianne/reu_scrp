@@ -79,7 +79,7 @@ public final class Nemo extends AbstractNpcAI
 			}
 			case "summonMaguen":
 			{
-				if ((player.getVariables().getInteger("TEST_MAGUEN", 0) == 0) && (npc.getScriptValue() < MAXIMUM_MAGUEN))
+				if ((player.getVariables().getInt("TEST_MAGUEN", 0) == 0) && (npc.getScriptValue() < MAXIMUM_MAGUEN))
 				{
 					final L2Npc maguen = addSpawn(MAGUEN, npc.getLocation(), true, 60000, true);
 					maguen.getVariables().set("SUMMON_PLAYER", player);

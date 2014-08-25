@@ -59,7 +59,7 @@ public final class TurekOrcs extends AbstractNpcAI
 	{
 		if (event.equalsIgnoreCase("checkState") && !npc.isDead() && (npc.getAI().getIntention() != CtrlIntention.AI_INTENTION_ATTACK))
 		{
-			if ((npc.getCurrentHp() > (npc.getMaxHp() * 0.7)) && (npc.getVariables().getInteger("state") == 2))
+			if ((npc.getCurrentHp() > (npc.getMaxHp() * 0.7)) && (npc.getVariables().getInt("state") == 2))
 			{
 				npc.getVariables().set("state", 3);
 				((L2Attackable) npc).returnHome();
@@ -79,7 +79,7 @@ public final class TurekOrcs extends AbstractNpcAI
 		{
 			npc.getVariables().set("isHit", 1);
 		}
-		else if ((npc.getCurrentHp() < (npc.getMaxHp() * 0.5)) && (npc.getCurrentHp() > (npc.getMaxHp() * 0.3)) && (attacker.getCurrentHp() > (attacker.getMaxHp() * 0.25)) && npc.hasAIValue("fleeX") && npc.hasAIValue("fleeY") && npc.hasAIValue("fleeZ") && (npc.getVariables().getInteger("state") == 0) && (getRandom(100) < 10))
+		else if ((npc.getCurrentHp() < (npc.getMaxHp() * 0.5)) && (npc.getCurrentHp() > (npc.getMaxHp() * 0.3)) && (attacker.getCurrentHp() > (attacker.getMaxHp() * 0.25)) && npc.hasAIValue("fleeX") && npc.hasAIValue("fleeY") && npc.hasAIValue("fleeZ") && (npc.getVariables().getInt("state") == 0) && (getRandom(100) < 10))
 		{
 			// Say and flee
 			broadcastNpcSay(npc, 0, NpcStringId.getNpcStringId(getRandom(1000007, 1000027)));
@@ -109,21 +109,21 @@ public final class TurekOrcs extends AbstractNpcAI
 	public void onMoveFinished(L2Npc npc)
 	{
 		// NPC reaches flee point
-		if (npc.getVariables().getInteger("state") == 1)
+		if (npc.getVariables().getInt("state") == 1)
 		{
 			if ((npc.getX() == npc.getAIValue("fleeX")) && (npc.getY() == npc.getAIValue("fleeY")))
 			{
 				npc.disableCoreAI(false);
 				startQuestTimer("checkState", 15000, npc, null);
 				npc.getVariables().set("state", 2);
-				npc.broadcastEvent("WARNING", 400, L2World.getInstance().getPlayer(npc.getVariables().getInteger("attacker")));
+				npc.broadcastEvent("WARNING", 400, L2World.getInstance().getPlayer(npc.getVariables().getInt("attacker")));
 			}
 			else
 			{
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(npc.getAIValue("fleeX"), npc.getAIValue("fleeY"), npc.getAIValue("fleeZ")));
 			}
 		}
-		else if ((npc.getVariables().getInteger("state") == 3) && npc.staysInSpawnLoc())
+		else if ((npc.getVariables().getInt("state") == 3) && npc.staysInSpawnLoc())
 		{
 			npc.disableCoreAI(false);
 			npc.getVariables().remove("state");

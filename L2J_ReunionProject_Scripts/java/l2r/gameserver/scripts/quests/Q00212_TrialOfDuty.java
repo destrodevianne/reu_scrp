@@ -570,7 +570,7 @@ public final class Q00212_TrialOfDuty extends Quest
 	{
 		final PlayerVariables vars = player.getVariables();
 		
-		if (!vars.getBool("2ND_CLASS_DIAMOND_REWARD", false))
+		if (!vars.getBoolean("2ND_CLASS_DIAMOND_REWARD", false))
 		{
 			if (player.getClassId() == ClassId.knight)
 			{

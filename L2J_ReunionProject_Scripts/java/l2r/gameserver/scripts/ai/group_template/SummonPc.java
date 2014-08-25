@@ -49,7 +49,7 @@ public final class SummonPc extends AbstractNpcAI
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
 		final int chance = getRandom(100);
-		final boolean attacked = npc.getVariables().getBool("attacked", false);
+		final boolean attacked = npc.getVariables().getBoolean("attacked", false);
 		if ((npc.calculateDistance(attacker, true, false) > 300) && !attacked)
 		{
 			if (chance < 50)
@@ -89,7 +89,7 @@ public final class SummonPc extends AbstractNpcAI
 	@Override
 	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
 	{
-		if ((skill.getId() == SUMMON_PC.getSkillId()) && !npc.isDead() && npc.getVariables().getBool("attacked", false))
+		if ((skill.getId() == SUMMON_PC.getSkillId()) && !npc.isDead() && npc.getVariables().getBoolean("attacked", false))
 		{
 			player.teleToLocation(npc);
 			npc.getVariables().set("attacked", false);
