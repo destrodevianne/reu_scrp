@@ -200,8 +200,21 @@ public class QuestLink implements IBypassHandler
 		if ((q != null) && (qs != null))
 		{
 			// If the quest is already started, no need to show a window
-			if (!q.notifyTalk(npc, player))
+			try
 			{
+				if (!q.notifyTalk(npc, player))
+				{
+					return;
+				}
+			}
+			catch (Exception e)
+			{
+				if (Config.DEBUG_SCRIPT_NOTIFIES)
+				{
+					_log.error("QuestLInk[notifyTalk] quest name is: " + qs.getQuest().getName());
+					_log.error("QuestLInk[notifyTalk] killer is: " + player.getName());
+					_log.error("QuestLInk[notifyTalk] ID is: " + npc.getId());
+				}
 				return;
 			}
 			
