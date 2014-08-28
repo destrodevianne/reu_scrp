@@ -212,7 +212,7 @@ public class QuestLink implements IBypassHandler
 				if (Config.DEBUG_SCRIPT_NOTIFIES)
 				{
 					_log.error("QuestLInk[notifyTalk] quest name is: " + qs.getQuest().getName());
-					_log.error("QuestLInk[notifyTalk] killer is: " + player.getName());
+					_log.error("QuestLInk[notifyTalk] player is: " + player.getName());
 					_log.error("QuestLInk[notifyTalk] ID is: " + npc.getId());
 				}
 				return;
