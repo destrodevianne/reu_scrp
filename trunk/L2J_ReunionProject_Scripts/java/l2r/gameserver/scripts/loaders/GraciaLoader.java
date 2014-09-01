@@ -56,7 +56,7 @@ public final class GraciaLoader
 	
 	public GraciaLoader()
 	{
-		_log.info(GraciaLoader.class.getSimpleName() + ": Loading Gracia related scripts.");
+		_log.info(GraciaLoader.class.getSimpleName() + ": Loading Gracia related scripts");
 		for (Class<?> script : SCRIPTS)
 		{
 			try
