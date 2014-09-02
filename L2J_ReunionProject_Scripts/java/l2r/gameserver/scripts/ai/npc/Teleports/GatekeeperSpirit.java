@@ -49,6 +49,8 @@ public class GatekeeperSpirit extends AbstractNpcAI
 		addStartNpc(GATEKEEPER_SPIRIT_ENTER);
 		addFirstTalkId(GATEKEEPER_SPIRIT_ENTER);
 		addTalkId(GATEKEEPER_SPIRIT_ENTER);
+		addFirstTalkId(GATEKEEPER_SPIRIT_EXIT);
+		addTalkId(GATEKEEPER_SPIRIT_EXIT);
 		addKillId(LILITH, ANAKIM);
 	}
 	
