@@ -66,7 +66,7 @@ public class QueenAnt extends AbstractNpcAI
 	private static final Location OUST_LOC_1 = new Location(-19480, 187344, -5600);
 	private static final Location OUST_LOC_2 = new Location(-17928, 180912, -5520);
 	private static final Location OUST_LOC_3 = new Location(-23808, 182368, -5600);
-	private static final Location LARVA_LOC = new Location(150037, -57720, -2976);
+	private static final Location LARVA_LOC = new Location(-21600, 179482, -5846);
 	
 	private static final int QUEEN_X = -21610;
 	private static final int QUEEN_Y = 181594;
