@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -23,17 +23,15 @@ import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.Quest;
-import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.SystemMessageId;
 
 /**
  * Hideout of the Dawn instance zone.
  * @author Adry_85
  */
-public class HideoutOfTheDawn extends Quest
+public final class HideoutOfTheDawn extends Quest
 {
 	protected class HotDWorld extends InstanceWorld
 	{
@@ -48,10 +46,9 @@ public class HideoutOfTheDawn extends Quest
 	private static final Location WOOD_LOC = new Location(-23758, -8959, -5384, 0, 0);
 	private static final Location JAINA_LOC = new Location(147072, 23743, -1984, 0);
 	
-	public HideoutOfTheDawn(int questId, String name, String descr)
+	private HideoutOfTheDawn()
 	{
-		super(questId, name, descr);
-		
+		super(-1, HideoutOfTheDawn.class.getSimpleName(), "instances");
 		addStartNpc(WOOD);
 		addTalkId(WOOD, JAINA);
 	}
@@ -71,7 +68,7 @@ public class HideoutOfTheDawn extends Quest
 				final InstanceWorld world = InstanceManager.getInstance().getPlayerWorld(talker);
 				world.removeAllowed(talker.getObjectId());
 				talker.setInstanceId(0);
-				talker.teleToLocation(JAINA_LOC, 0);
+				talker.teleToLocation(JAINA_LOC);
 				return "32617-01.htm";
 			}
 		}
@@ -101,7 +98,7 @@ public class HideoutOfTheDawn extends Quest
 		world.setStatus(0);
 		((HotDWorld) world).storeTime = System.currentTimeMillis();
 		InstanceManager.getInstance().addWorld(world);
-		_log.info("SevenSign started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
+		_log.info("Hideout of the Dawn started " + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
 		// teleport players
 		teleportPlayer(player, loc, world.getInstanceId(), false);
 		removeBuffs(player);
@@ -112,39 +109,15 @@ public class HideoutOfTheDawn extends Quest
 	
 	private static final void removeBuffs(L2Character ch)
 	{
-		for (L2Effect e : ch.getAllEffects())
+		ch.stopAllEffectsExceptThoseThatLastThroughDeath();
+		if (ch.hasSummon())
 		{
-			if (e == null)
-			{
-				continue;
-			}
-			L2Skill skill = e.getSkill();
-			if (skill.isDebuff() || skill.isStayAfterDeath())
-			{
-				continue;
-			}
-			e.exit();
-		}
-		if (ch.getSummon() != null)
-		{
-			for (L2Effect e : ch.getSummon().getAllEffects())
-			{
-				if (e == null)
-				{
-					continue;
-				}
-				L2Skill skill = e.getSkill();
-				if (skill.isDebuff() || skill.isStayAfterDeath())
-				{
-					continue;
-				}
-				e.exit();
-			}
+			ch.getSummon().stopAllEffectsExceptThoseThatLastThroughDeath();
 		}
 	}
 	
 	public static void main(String[] args)
 	{
-		new HideoutOfTheDawn(-1, HideoutOfTheDawn.class.getSimpleName(), "instances");
+		new HideoutOfTheDawn();
 	}
 }

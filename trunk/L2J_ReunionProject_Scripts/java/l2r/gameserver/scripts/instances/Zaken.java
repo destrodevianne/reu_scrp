@@ -38,7 +38,7 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.L2Summon;
 import l2r.gameserver.model.actor.instance.L2DecoyInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.effects.L2Effect;
+import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
@@ -118,6 +118,7 @@ public class Zaken extends Quest
 	private static final int INSTANCEID_DAY83 = 135; // this is the client number
 	
 	// NPCs
+	private static final int BARREL = 32705;
 	// Bosses
 	private static final int ZAKEN_NIGHT = 29022;
 	private static final int ZAKEN_DAY = 29176;
@@ -131,12 +132,10 @@ public class Zaken extends Quest
 	private static final int VALE_MASTER_DAY83 = 29183;
 	private static final int ZOMBIE_CAPTAIN_DAY83 = 29184;
 	private static final int ZOMBIE_DAY83 = 29185;
-	// Telepoters
+	// Skills
+	private static final SkillHolder ANTI_STRIDER = new SkillHolder(4258, 1); // Hinder Strider
+	// Locations
 	private static final int PATHFINDER = 32713;
-	// Barrel
-	private static final int BARREL = 32705;
-	
-	// Teleports
 	private static final Location ENTER_TELEPORT = new Location(52680, 219088, -3232);
 	
 	// Zones for rooms
@@ -1070,26 +1069,15 @@ public class Zaken extends Quest
 		int npcId = npc.getId();
 		if ((npcId == ZAKEN_DAY) || (npcId == ZAKEN_DAY83) || (npcId == ZAKEN_NIGHT))
 		{
-			if (attacker.getMountType() == MountType.STRIDER)
+			if ((attacker.getMountType() == MountType.STRIDER) && !attacker.isAffectedBySkill(ANTI_STRIDER.getSkillId()))
 			{
-				int sk_4258 = 0;
-				L2Effect[] effects = attacker.getAllEffects();
-				if ((effects != null) && (effects.length != 0))
-				{
-					for (L2Effect e : effects)
-					{
-						if (e.getSkill().getId() == 4258)
-						{
-							sk_4258 = 1;
-						}
-					}
-				}
-				if (sk_4258 == 0)
+				if (!npc.isSkillDisabled(ANTI_STRIDER.getSkill()))
 				{
 					npc.setTarget(attacker);
-					npc.doCast(SkillData.getInstance().getInfo(4258, 1));
+					npc.doCast(ANTI_STRIDER.getSkill());
 				}
 			}
+			
 			L2Character originalAttacker = isPet ? attacker.getSummon() : attacker;
 			int hate = (int) (((damage / npc.getMaxHp()) / 0.05) * 20000);
 			((L2Attackable) npc).addDamageHate(originalAttacker, 0, hate);

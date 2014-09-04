@@ -38,7 +38,6 @@ import l2r.gameserver.model.actor.instance.L2GrandBossInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2QuestGuardInstance;
 import l2r.gameserver.model.actor.instance.L2RaidBossInstance;
-import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.effects.L2EffectType;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.instancezone.InstanceWorld;
@@ -1067,7 +1066,7 @@ public class IceQueenCastleExtreme extends AbstractNpcAI
 				L2Skill skill = SkillData.getInstance().getInfo(6437, getRandom(1, 3));
 				for (L2PcInstance plr : npc.getKnownList().getKnownPlayersInRadius(skill.getAffectRange()))
 				{
-					if (!hasBuff(6437, plr) && !plr.isDead() && !plr.isAlikeDead())
+					if (!plr.isAffectedBySkill(6437) && !plr.isDead() && !plr.isAlikeDead())
 					{
 						skill.getEffects(npc, plr);
 					}
@@ -1239,18 +1238,6 @@ public class IceQueenCastleExtreme extends AbstractNpcAI
 		}
 	}
 	//@formatter:on
-	
-	private boolean hasBuff(int id, L2PcInstance player)
-	{
-		for (L2Effect e : player.getAllEffects())
-		{
-			if (e.getSkill().getId() == id)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	private void manageTimer(IQCEWorld world, int time)
 	{
