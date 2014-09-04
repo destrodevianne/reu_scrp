@@ -33,7 +33,6 @@ import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.L2Summon;
 import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.effects.L2EffectType;
 import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.Quest;
@@ -477,34 +476,10 @@ public class HallOfSufferingDefence extends Quest
 	
 	private static final void removeBuffs(L2Character ch)
 	{
-		for (L2Effect e : ch.getAllEffects())
+		ch.stopAllEffectsExceptThoseThatLastThroughDeath();
+		if (ch.hasSummon())
 		{
-			if (e == null)
-			{
-				continue;
-			}
-			L2Skill skill = e.getSkill();
-			if (skill.isDebuff() || skill.isStayAfterDeath())
-			{
-				continue;
-			}
-			e.exit();
-		}
-		if (ch.getSummon() != null)
-		{
-			for (L2Effect e : ch.getSummon().getAllEffects())
-			{
-				if (e == null)
-				{
-					continue;
-				}
-				L2Skill skill = e.getSkill();
-				if (skill.isDebuff() || skill.isStayAfterDeath())
-				{
-					continue;
-				}
-				e.exit();
-			}
+			ch.getSummon().stopAllEffectsExceptThoseThatLastThroughDeath();
 		}
 	}
 	

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -24,7 +24,6 @@ import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.L2Summon;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.effects.L2Effect;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;
@@ -163,7 +162,7 @@ public class SilentValley extends AbstractNpcAI
 				npc.doCast(BLAZE.getSkill());
 				attackPlayer((L2Attackable) npc, player);
 			}
-			else if (hasBuff(BETRAYAL.getSkillId(), creature))
+			else if (creature.isAffectedBySkill(BETRAYAL.getSkillId()))
 			{
 				attackPlayer((L2Attackable) npc, player);
 			}
@@ -202,18 +201,6 @@ public class SilentValley extends AbstractNpcAI
 			}
 		}
 		return super.onEventReceived(eventName, sender, receiver, reference);
-	}
-	
-	private boolean hasBuff(int id, L2Character player)
-	{
-		for (L2Effect e : player.getAllEffects())
-		{
-			if (e.getSkill().getId() == id)
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	public static void main(String[] args)
