@@ -34,9 +34,11 @@ public class FollowerOfMontagnar extends AbstractNpcAI
 		int npcId = npc.getId();
 		
 		if (npcId == FOFMONTAGNAR)
+		{
 			npc.setIsInvul(true);
+		}
 		
-		return "";
+		return super.onAggroRangeEnter(npc, player, isPet);
 	}
 	
 	public static void main(String[] args)

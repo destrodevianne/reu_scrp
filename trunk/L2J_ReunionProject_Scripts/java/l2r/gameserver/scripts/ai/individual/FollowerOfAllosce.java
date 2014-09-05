@@ -53,7 +53,7 @@ public class FollowerOfAllosce extends AbstractNpcAI
 			npc.setTarget(player);
 			npc.doCast(SkillData.getInstance().getInfo(5624, 1));
 		}
-		return "";
+		return super.onAggroRangeEnter(npc, player, isPet);
 	}
 	
 	public static void main(String[] args)
