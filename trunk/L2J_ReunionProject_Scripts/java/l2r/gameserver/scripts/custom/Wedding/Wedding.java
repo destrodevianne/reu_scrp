@@ -20,13 +20,13 @@ package l2r.gameserver.scripts.custom.Wedding;
 
 import l2r.Config;
 import l2r.gameserver.Announcements;
-import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.instancemanager.CoupleManager;
 import l2r.gameserver.model.L2World;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.entity.Couple;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
+import l2r.gameserver.model.skills.CommonSkill;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.serverpackets.MagicSkillUse;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -145,7 +145,7 @@ public final class Wedding extends AbstractNpcAI
 					partner.broadcastPacket(new MagicSkillUse(partner, partner, 2230, 1, 1, 0));
 					
 					// Fireworks
-					L2Skill skill = SkillData.FrequentSkill.LARGE_FIREWORK.getSkill();
+					L2Skill skill = CommonSkill.LARGE_FIREWORK.getSkill();
 					if (skill != null)
 					{
 						player.doCast(skill);
