@@ -21,6 +21,7 @@ import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2ServitorInstance;
+import l2r.gameserver.model.skills.CommonSkill;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.ExPCCafePointInfo;
 import l2r.gameserver.network.serverpackets.SystemMessage;
@@ -321,7 +322,7 @@ public class PcBangPoint extends AbstractNpcAI
 				player.sendPacket(smsgpc);
 				player.sendPacket(new ExPCCafePointInfo(player.getPcBangPoints(), 2500, false, false, 1));
 				player.mount(12621, 0, true);
-				player.addSkill(SkillData.FrequentSkill.WYVERN_BREATH.getSkill());
+				player.addSkill(CommonSkill.WYVERN_BREATH.getSkill());
 				return null;
 			}
 			htmltext = "nopoint.htm";

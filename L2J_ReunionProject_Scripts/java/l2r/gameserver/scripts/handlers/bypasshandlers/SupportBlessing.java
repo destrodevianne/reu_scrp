@@ -18,11 +18,11 @@
  */
 package l2r.gameserver.scripts.handlers.bypasshandlers;
 
-import l2r.gameserver.datatables.xml.SkillData.FrequentSkill;
 import l2r.gameserver.handler.IBypassHandler;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.skills.CommonSkill;
 
 public class SupportBlessing implements IBypassHandler
 {
@@ -48,7 +48,7 @@ public class SupportBlessing implements IBypassHandler
 			return true;
 		}
 		npc.setTarget(activeChar);
-		npc.doCast(FrequentSkill.BLESSING_OF_PROTECTION.getSkill());
+		npc.doCast(CommonSkill.BLESSING_OF_PROTECTION.getSkill());
 		return false;
 	}
 	
