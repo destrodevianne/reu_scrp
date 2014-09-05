@@ -216,8 +216,7 @@ public final class Stage1 extends Quest
 	
 	public Stage1()
 	{
-		// TODO change name to use actual class name
-		super(-1, "SoDStage1", "gracia/instances");
+		super(-1, Stage1.class.getSimpleName(), "gracia/instances");
 		load();
 		addStartNpc(ALENOS);
 		addTalkId(ALENOS);
