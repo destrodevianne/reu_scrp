@@ -34,7 +34,7 @@ public class ZombieGatekeepers extends AbstractNpcAI
 		super.addAggroRangeEnterId(22136);
 	}
 	
-	private FastMap<Integer, FastList<L2Character>> _attackersList = new FastMap<>();
+	private final FastMap<Integer, FastList<L2Character>> _attackersList = new FastMap<>();
 	
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
@@ -48,7 +48,9 @@ public class ZombieGatekeepers extends AbstractNpcAI
 			_attackersList.put(npcObjId, player);
 		}
 		else if (!_attackersList.get(npcObjId).contains(target))
+		{
 			_attackersList.get(npcObjId).add(target);
+		}
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
 	
@@ -70,8 +72,10 @@ public class ZombieGatekeepers extends AbstractNpcAI
 		}
 		else
 		{
-			if (_attackersList.get(npcObjId) == null || !_attackersList.get(npcObjId).contains(target))
+			if ((_attackersList.get(npcObjId) == null) || !_attackersList.get(npcObjId).contains(target))
+			{
 				((L2Attackable) npc).getAggroList().remove(target);
+			}
 			else
 			{
 				((L2Attackable) npc).addDamageHate(target, 0, 999);
@@ -86,7 +90,9 @@ public class ZombieGatekeepers extends AbstractNpcAI
 	{
 		int npcObjId = npc.getObjectId();
 		if (_attackersList.get(npcObjId) != null)
+		{
 			_attackersList.get(npcObjId).clear();
+		}
 		return super.onKill(npc, killer, isPet);
 	}
 	

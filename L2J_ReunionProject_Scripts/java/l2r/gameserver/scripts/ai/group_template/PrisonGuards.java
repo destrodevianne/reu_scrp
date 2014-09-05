@@ -65,6 +65,7 @@ public class PrisonGuards extends AbstractNpcAI
 		addNpcHateId(GUARD);
 		addSkillSeeId(GUARD);
 		addSpellFinishedId(GUARD_HEAD, GUARD);
+		addAggroRangeEnterId(GUARD);
 		
 		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GUARD_HEAD))
 		{
