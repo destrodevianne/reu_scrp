@@ -21,7 +21,7 @@ package l2r.gameserver.scripts.handlers.usercommandhandlers;
 import l2r.gameserver.handler.IUserCommandHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.olympiad.Olympiad;
+import l2r.gameserver.model.entity.olympiad.Olympiad;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 

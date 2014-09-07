@@ -25,7 +25,7 @@ import l2r.Config;
 import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.olympiad.Olympiad;
+import l2r.gameserver.model.entity.olympiad.Olympiad;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 
