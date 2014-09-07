@@ -4,7 +4,7 @@ import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.IVoicedCommandHandler;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.olympiad.OlympiadManager;
+import l2r.gameserver.model.entity.olympiad.OlympiadManager;
 
 /**
  * @author -=DoctorNo=-
