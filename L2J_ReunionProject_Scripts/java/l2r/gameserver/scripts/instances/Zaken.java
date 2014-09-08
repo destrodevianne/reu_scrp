@@ -848,6 +848,7 @@ public class Zaken extends Quest
 				{
 					int[] position = ZoneManager.getInstance().getZoneById(world._zakenZone).getZone().getRandomPoint();
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_DAY, position[0], position[1], position[2], 32768, false, 0, false, world.getInstanceId());
+					_log.info("Zaken Day ZoneId is: " + String.valueOf(world._zakenZone));
 					_log.info("Zaken Day: spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4216, 1));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4217, 1));
@@ -864,6 +865,7 @@ public class Zaken extends Quest
 				{
 					int[] position = ZoneManager.getInstance().getZoneById(world._zakenZone).getZone().getRandomPoint();
 					world._zaken = (L2Attackable) addSpawn(ZAKEN_DAY83, position[0], position[1], position[2], 32768, false, 0, false, world.getInstanceId());
+					_log.info("Zaken Day 83 ZoneId is: " + String.valueOf(world._zakenZone));
 					_log.warn("Zaken Day 83: spawned at: X: " + String.valueOf(position[0]) + " Y: " + String.valueOf(position[1]) + " Z: " + String.valueOf(position[2]));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4216, 1));
 					world._zaken.addSkill(SkillData.getInstance().getInfo(4217, 1));
