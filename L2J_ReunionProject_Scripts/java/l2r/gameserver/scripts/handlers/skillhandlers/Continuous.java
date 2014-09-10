@@ -18,6 +18,8 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
+import java.util.List;
+
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
@@ -141,7 +143,7 @@ public class Continuous implements ISkillHandler
 			{
 				if (skill.isToggle())
 				{
-					L2Effect[] effects = target.getAllEffects();
+					List<L2Effect> effects = target.getEffectList().getEffects();
 					if (effects != null)
 					{
 						for (L2Effect e : effects)

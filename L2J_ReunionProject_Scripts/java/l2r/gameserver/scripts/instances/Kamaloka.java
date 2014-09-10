@@ -1259,7 +1259,7 @@ public class Kamaloka extends Quest
 	 */
 	private static final void removeBuffs(L2Character ch)
 	{
-		for (L2Effect e : ch.getAllEffects())
+		for (L2Effect e : ch.getEffectList().getEffects())
 		{
 			if (e == null)
 			{
@@ -1278,7 +1278,7 @@ public class Kamaloka extends Quest
 		}
 		if (ch.getSummon() != null)
 		{
-			for (L2Effect e : ch.getSummon().getAllEffects())
+			for (L2Effect e : ch.getSummon().getEffectList().getEffects())
 			{
 				if (e == null)
 				{
