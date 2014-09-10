@@ -18,6 +18,8 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
+import java.util.List;
+
 import l2r.gameserver.ai.L2AttackableAI;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
@@ -148,7 +150,7 @@ public class Disablers implements ISkillHandler
 					if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, ss, sps, bss))
 					{
 						// stop same type effect if available
-						L2Effect[] effects = target.getAllEffects();
+						List<L2Effect> effects = target.getEffectList().getEffects();
 						for (L2Effect e : effects)
 						{
 							if ((e != null) && (e.getSkill() != null) && (e.getSkill().getSkillType() == type))
@@ -177,7 +179,7 @@ public class Disablers implements ISkillHandler
 					{
 						if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, ss, sps, bss))
 						{
-							L2Effect[] effects = target.getAllEffects();
+							List<L2Effect> effects = target.getEffectList().getEffects();
 							for (L2Effect e : effects)
 							{
 								if (e.getSkill().getSkillType() == type)
