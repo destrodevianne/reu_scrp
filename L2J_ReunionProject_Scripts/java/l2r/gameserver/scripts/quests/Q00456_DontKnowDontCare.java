@@ -1,275 +1,230 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2004-2014 L2J DataPack
+ * 
+ * This file is part of L2J DataPack.
+ * 
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package l2r.gameserver.scripts.quests;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import l2r.gameserver.datatables.xml.ItemData;
+import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.enums.QuestType;
+import l2r.gameserver.model.AggroInfo;
+import l2r.gameserver.model.L2CommandChannel;
+import l2r.gameserver.model.actor.L2Attackable;
+import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
+import l2r.gameserver.model.items.L2Item;
 import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
+import l2r.gameserver.network.NpcStringId;
+import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.util.Util;
-import l2r.util.Rnd;
 
 /**
- * TODO : Need to make AI for RBs
+ * Don't Know, Don't Care (456)
+ * @author lion, ivantotov, jurchiks
  */
-public class Q00456_DontKnowDontCare extends Quest
+public final class Q00456_DontKnowDontCare extends Quest
 {
+	// NPCs
+	// @formatter:off
 	private static final int[] SEPARATED_SOUL =
 	{
-		32864,
-		32865,
-		32866,
-		32867,
-		32868,
-		32869,
-		32870,
-		32891
+		32864, 32865, 32866, 32867, 32868, 32869, 32870, 32891
 	};
-	
-	// Item's
+	// @formatter:on
+	private static final int DRAKE_LORD_CORPSE = 32884;
+	private static final int BEHEMOTH_LEADER_CORPSE = 32885;
+	private static final int DRAGON_BEAST_CORPSE = 32886;
+	// Items
 	private static final int DRAKE_LORD_ESSENCE = 17251;
 	private static final int BEHEMOTH_LEADER_ESSENCE = 17252;
 	private static final int DRAGON_BEAST_ESSENCE = 17253;
-	
-	// Raidboss
-	private static final int DRAKE_LEADER = 25725;
-	private static final int BEHEMOTH_LEADER = 25726;
-	private static final int DRAGON_BEAST = 25727;
-	
-	// Raid Npcs
-	private static final int DRAKE_LEADER_NPC = 32884;
-	private static final int BEHEMOTH_LEADER_NPC = 32885;
-	private static final int DRAGON_BEAST_NPC = 32886;
-	
-	// Reward
-	private static final int[][] REWARD =
+	// Misc
+	private static final int MIN_PLAYERS = 18;
+	private static final int MIN_LEVEL = 80;
+	private static final Map<Integer, Integer> MONSTER_NPCS = new HashMap<>();
+	private static final Map<Integer, Integer> MONSTER_ESSENCES = new HashMap<>();
+	static
 	{
-		{
-			15558,
-			15559,
-			15560,
-			15561,
-			15562,
-			15563,
-			15564,
-			15565,
-			15566,
-			15567,
-			15567,
-			15569,
-			15570,
-			15571
-		},
-		{
-			15750,
-			15753,
-			15756,
-			15745,
-			15748,
-			15751,
-			15754,
-			15757,
-			15759,
-			15743,
-			15746,
-			15749,
-			15752,
-			15755,
-			15758,
-			15744,
-			15747
-		},
-		{
-			15765,
-			15764,
-			15763
-		},
-		{
-			9552,
-			9553,
-			9554,
-			9555,
-			9557,
-			9556,
-			6577,
-			6578,
-			959,
-			2134
-		}
+		MONSTER_NPCS.put(25725, DRAKE_LORD_CORPSE);
+		MONSTER_NPCS.put(25726, BEHEMOTH_LEADER_CORPSE);
+		MONSTER_NPCS.put(25727, DRAGON_BEAST_CORPSE);
+		MONSTER_ESSENCES.put(DRAKE_LORD_CORPSE, DRAKE_LORD_ESSENCE);
+		MONSTER_ESSENCES.put(BEHEMOTH_LEADER_CORPSE, BEHEMOTH_LEADER_ESSENCE);
+		MONSTER_ESSENCES.put(DRAGON_BEAST_CORPSE, DRAGON_BEAST_ESSENCE);
+	}
+	// Rewards
+	private static final int[] WEAPONS =
+	{
+		15558, // Periel Sword
+		15559, // Skull Edge
+		15560, // Vigwik Axe
+		15561, // Devilish Maul
+		15562, // Feather Eye Blade
+		15563, // Octo Claw
+		15564, // Doubletop Spear
+		15565, // Rising Star
+		15566, // Black Visage
+		15567, // Veniplant Sword
+		15568, // Skull Carnium Bow
+		15569, // Gemtail Rapier
+		15570, // Finale Blade
+		15571, // Dominion Crossbow
 	};
+	private static final int[] ARMOR =
+	{
+		15743, // Sealed Vorpal Helmet
+		15746, // Sealed Vorpal Breastplate
+		15749, // Sealed Vorpal Gaiters
+		15752, // Sealed Vorpal Gauntlets
+		15755, // Sealed Vorpal Boots
+		15758, // Sealed Vorpal Shield
+		15744, // Sealed Vorpal Leather Helmet
+		15747, // Sealed Vorpal Leather Breastplate
+		15750, // Sealed Vorpal Leather Leggings
+		15753, // Sealed Vorpal Leather Gloves
+		15756, // Sealed Vorpal Leather Boots
+		15745, // Sealed Vorpal Circlet
+		15748, // Sealed Vorpal Tunic
+		15751, // Sealed Vorpal Stockings
+		15754, // Sealed Vorpal Gloves
+		15757, // Sealed Vorpal Shoes
+		15759, // Sealed Vorpal Sigil
+	};
+	private static final int[] ACCESSORIES =
+	{
+		15763, // Sealed Vorpal Ring
+		15764, // Sealed Vorpal Earring
+		15765, // Sealed Vorpal Necklace
+	};
+	private static final int[] ATTRIBUTE_CRYSTALS =
+	{
+		9552, // Fire Crystal
+		9553, // Water Crystal
+		9554, // Earth Crystal
+		9555, // Wind Crystal
+		9556, // Dark Crystal
+		9557, // Holy Crystal
+	};
+	private static final int BLESSED_SCROLL_ENCHANT_WEAPON_S = 6577;
+	private static final int BLESSED_SCROLL_ENCHANT_ARMOR_S = 6578;
+	private static final int SCROLL_ENCHANT_WEAPON_S = 959;
+	private static final int GEMSTONE_S = 2134;
+	private final Map<Integer, Set<Integer>> allowedPlayerMap = new HashMap<>();
 	
 	public Q00456_DontKnowDontCare()
 	{
 		super(456, Q00456_DontKnowDontCare.class.getSimpleName(), "Don't Know, Don't Care");
-		for (int npc : SEPARATED_SOUL)
-		{
-			addStartNpc(npc);
-			addTalkId(npc);
-		}
-		addTalkId(DRAKE_LEADER_NPC, BEHEMOTH_LEADER_NPC, DRAGON_BEAST_NPC);
-		addKillId(DRAKE_LEADER, BEHEMOTH_LEADER, DRAGON_BEAST);
+		addStartNpc(SEPARATED_SOUL);
+		addTalkId(SEPARATED_SOUL);
+		addFirstTalkId(DRAKE_LORD_CORPSE, BEHEMOTH_LEADER_CORPSE, DRAGON_BEAST_CORPSE);
+		addTalkId(DRAKE_LORD_CORPSE, BEHEMOTH_LEADER_CORPSE, DRAGON_BEAST_CORPSE);
+		addKillId(MONSTER_NPCS.keySet());
+		registerQuestItems(DRAKE_LORD_ESSENCE, BEHEMOTH_LEADER_ESSENCE, DRAGON_BEAST_ESSENCE);
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		String htmltext = event;
-		QuestState st = player.getQuestState(getName());
+		final QuestState qs = player.getQuestState(getName());
+		final Set<Integer> allowedPlayers = allowedPlayerMap.get(npc.getObjectId());
 		
-		if (st == null)
+		if ((qs == null) || !qs.isCond(1) || (allowedPlayers == null) || !allowedPlayers.contains(player.getObjectId()))
 		{
-			return htmltext;
+			return npc.getId() + "-02.html";
 		}
 		
-		if (event.equalsIgnoreCase("accept"))
+		final int essence = MONSTER_ESSENCES.get(npc.getId());
+		final String htmltext;
+		
+		if (hasQuestItems(player, essence))
 		{
-			st.setState(State.STARTED);
-			st.set("cond", "1");
-			st.playSound("ItemSound.quest_accept");
-			htmltext = "DontKnowDontCare-07.htm";
+			htmltext = npc.getId() + "-03.html";
 		}
-		else if (event.equalsIgnoreCase("reward"))
+		else
 		{
-			switch (npc.getId())
-			{
-				case DRAKE_LEADER_NPC:
-					if (st.hasQuestItems(DRAKE_LORD_ESSENCE))
-					{
-						player.sendMessage("You already have this Essence");
-					}
-					else
-					{
-						st.playSound("ItemSound.quest_itemget");
-						st.giveItems(DRAKE_LORD_ESSENCE, 1);
-					}
-					break;
-				case BEHEMOTH_LEADER_NPC:
-					if (st.hasQuestItems(BEHEMOTH_LEADER_ESSENCE))
-					{
-						player.sendMessage("You already have this Essence");
-					}
-					else
-					{
-						st.playSound("ItemSound.quest_itemget");
-						st.giveItems(BEHEMOTH_LEADER_ESSENCE, 1);
-					}
-					break;
-				case DRAGON_BEAST_NPC:
-					if (st.hasQuestItems(DRAGON_BEAST_ESSENCE))
-					{
-						player.sendMessage("You already have this Essence");
-					}
-					else
-					{
-						st.playSound("ItemSound.quest_itemget");
-						st.giveItems(DRAGON_BEAST_ESSENCE, 1);
-					}
-					break;
-			}
+			giveItems(player, essence, 1);
+			htmltext = npc.getId() + "-01.html";
 			
-			if (st.hasQuestItems(BEHEMOTH_LEADER_ESSENCE) && st.hasQuestItems(DRAGON_BEAST_ESSENCE) && st.hasQuestItems(DRAKE_LORD_ESSENCE))
+			if (hasQuestItems(player, getRegisteredItemIds()))
 			{
-				st.playSound("ItemSound.quest_middle");
-				st.set("cond", "2");
+				qs.setCond(2, true);
 			}
-			htmltext = null;
+			else
+			{
+				playSound(player, QuestSound.ITEMSOUND_QUEST_ITEMGET);
+			}
 		}
+		
 		return htmltext;
 	}
 	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
+		final QuestState qs = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
 		
-		if (st == null)
+		if (qs == null)
 		{
 			return htmltext;
 		}
 		
-		if (Util.contains(new int[]
+		if (Util.contains(SEPARATED_SOUL, npc.getId()))
 		{
-			BEHEMOTH_LEADER_NPC,
-			DRAGON_BEAST_NPC,
-			DRAKE_LEADER_NPC
-		}, npc.getId()))
-		{
-			if (st.getInt("cond") == 1)
+			switch (qs.getState())
 			{
-				htmltext = "takereward.htm";
-			}
-			else
-			{
-				htmltext = "notakereward.htm";
-			}
-		}
-		else if (Util.contains(SEPARATED_SOUL, npc.getId()))
-		{
-			switch (st.getState())
-			{
+				case State.COMPLETED:
+					if (!qs.isNowAvailable())
+					{
+						htmltext = "32864-02.html";
+						break;
+					}
+					qs.setState(State.CREATED);
+					// intentional fall-through
 				case State.CREATED:
-					if (player.getLevel() >= 80)
-					{
-						htmltext = "DontKnowDontCare-01.htm";
-					}
-					else
-					{
-						htmltext = "DontKnowDontCare-03.htm";
-					}
+					htmltext = ((player.getLevel() >= MIN_LEVEL) ? "32864-01.htm" : "32864-03.html");
 					break;
 				case State.STARTED:
-					if (st.getInt("cond") == 1)
+					switch (qs.getCond())
 					{
-						htmltext = "DontKnowDontCare-08.htm";
-					}
-					else if (st.getInt("cond") == 2)
-					{
-						st.playSound("ItemSound.quest_finish");
-						st.takeItems(DRAKE_LORD_ESSENCE, 1);
-						st.takeItems(BEHEMOTH_LEADER_ESSENCE, 1);
-						st.takeItems(DRAGON_BEAST_ESSENCE, 1);
-						rewardPlayer(player);
-						htmltext = "DontKnowDontCare-10.htm";
-						st.unset("cond");
-						st.exitQuest(QuestType.DAILY);
-					}
-					else
-					{
-						htmltext = "DontKnowDontCare-09.htm";
-					}
-					break;
-				case State.COMPLETED:
-					if (st.isNowAvailable())
-					{
-						if (player.getLevel() >= 80)
+						case 1:
 						{
-							htmltext = "DontKnowDontCare-01.htm";
+							htmltext = (hasAtLeastOneQuestItem(player, getRegisteredItemIds()) ? "32864-09.html" : "32864-08.html");
+							break;
 						}
-						else
+						case 2:
 						{
-							htmltext = "DontKnowDontCare-03.htm";
-							st.exitQuest(true);
+							if (hasQuestItems(player, getRegisteredItemIds()))
+							{
+								rewardPlayer(player, npc);
+								qs.exitQuest(QuestType.DAILY, true);
+								htmltext = "32864-10.html";
+							}
+							break;
 						}
-					}
-					else
-					{
-						htmltext = "DontKnowDontCare-02.htm";
 					}
 					break;
 			}
@@ -277,62 +232,133 @@ public class Q00456_DontKnowDontCare extends Quest
 		return htmltext;
 	}
 	
-	private void rewardPlayer(L2PcInstance player)
+	@Override
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
+		final QuestState qs;
+		String htmltext = null;
 		
-		int itemId = 0, count = 1, random = Rnd.get(100);
+		switch (event)
+		{
+			case "32864-04.htm":
+			case "32864-05.htm":
+			case "32864-06.htm":
+				qs = player.getQuestState(getName());
+				if ((qs != null) && qs.isCreated())
+				{
+					htmltext = event;
+				}
+				break;
+			case "32864-07.htm":
+				qs = player.getQuestState(getName());
+				if ((qs != null) && qs.isCreated())
+				{
+					qs.startQuest();
+					htmltext = event;
+				}
+				break;
+			case "unspawnRaidCorpse":
+				allowedPlayerMap.remove(npc.getObjectId());
+				npc.deleteMe();
+				break;
+		}
 		
-		if (random < 10)
-		{
-			itemId = REWARD[0][Rnd.get(REWARD[0].length)];
-		}
-		else if (random < 30)
-		{
-			itemId = REWARD[1][Rnd.get(REWARD[1].length)];
-		}
-		else if (random < 50)
-		{
-			itemId = REWARD[2][Rnd.get(REWARD[2].length)];
-		}
-		else
-		{
-			itemId = REWARD[3][Rnd.get(REWARD[3].length)];
-			count = Rnd.get(1, 2);
-		}
-		st.giveItems(itemId, count);
+		return htmltext;
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		QuestState st = player.getQuestState(getName());
-		
-		if (st == null)
+		if (!killer.isInParty() || !killer.getParty().isInCommandChannel())
 		{
-			return null;
+			// only the killing cc gets the quest
+			return super.onKill(npc, killer, isSummon);
 		}
 		
-		if ((st.getInt("cond") == 1) && player.isInParty() && player.getParty().isInCommandChannel() && (player.getParty().getCommandChannel().getMemberCount() > 18))
+		final L2CommandChannel cc = killer.getParty().getCommandChannel();
+		
+		if (cc.getMemberCount() < MIN_PLAYERS)
 		{
-			/** Location loc = npc.getLocation(); handled by script */
-			
-			switch (npc.getId())
+			return super.onKill(npc, killer, isSummon);
+		}
+		
+		Map<L2Character, AggroInfo> playerList = ((L2Attackable) npc).getAggroList();
+		Set<Integer> allowedPlayers = new HashSet<>();
+		
+		for (AggroInfo aggro : playerList.values())
+		{
+			if ((aggro.getAttacker() == null) || !aggro.getAttacker().isPlayer())
 			{
-				case DRAKE_LEADER:
-					/** npc.addSpawn(DRAKE_LEADER_NPC, loc, false, 60000, true); */
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Take you reward stranger!"));
-					break;
-				case BEHEMOTH_LEADER:
-					/** addSpawn(BEHEMOTH_LEADER_NPC, loc, false, 60000, true); */
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Take you reward stranger!"));
-					break;
-				case DRAGON_BEAST:
-					/** addSpawn(DRAGON_BEAST_NPC, loc, false, 60000, true); */
-					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), "Take you reward stranger!"));
-					break;
+				continue;
+			}
+			
+			L2PcInstance attacker = aggro.getAttacker().getActingPlayer();
+			
+			if (attacker.isInParty() //
+				&& attacker.getParty().isInCommandChannel() //
+				&& attacker.getParty().getCommandChannel().equals(cc) // only players from the same cc are allowed
+				&& Util.checkIfInRange(1500, npc, attacker, true))
+			{
+				allowedPlayers.add(attacker.getObjectId());
 			}
 		}
-		return super.onKill(npc, player, isPet);
+		
+		if (!allowedPlayers.isEmpty())
+		{
+			// This depends on the boss respawn delay being at least 5 minutes.
+			final L2Npc spawned = addSpawn(MONSTER_NPCS.get(npc.getId()), npc, true, 0);
+			allowedPlayerMap.put(spawned.getObjectId(), allowedPlayers);
+			startQuestTimer("unspawnRaidCorpse", 300000, npc, null);
+		}
+		
+		return super.onKill(npc, killer, isSummon);
+	}
+	
+	private static void rewardPlayer(L2PcInstance player, L2Npc npc)
+	{
+		int chance = getRandom(10000);
+		final int reward;
+		int count = 1;
+		
+		if (chance < 170)
+		{
+			reward = ARMOR[getRandom(ARMOR.length)];
+		}
+		else if (chance < 200)
+		{
+			reward = ACCESSORIES[getRandom(ACCESSORIES.length)];
+		}
+		else if (chance < 270)
+		{
+			reward = WEAPONS[getRandom(WEAPONS.length)];
+		}
+		else if (chance < 325)
+		{
+			reward = BLESSED_SCROLL_ENCHANT_WEAPON_S;
+		}
+		else if (chance < 425)
+		{
+			reward = BLESSED_SCROLL_ENCHANT_ARMOR_S;
+		}
+		else if (chance < 925)
+		{
+			reward = ATTRIBUTE_CRYSTALS[getRandom(ATTRIBUTE_CRYSTALS.length)];
+		}
+		else if (chance < 1100)
+		{
+			reward = SCROLL_ENCHANT_WEAPON_S;
+		}
+		else
+		{
+			reward = GEMSTONE_S;
+			count = 3;
+		}
+		
+		giveItems(player, reward, count);
+		L2Item item = ItemData.getInstance().getTemplate(reward);
+		NpcSay packet = new NpcSay(npc.getObjectId(), Say2.NPC_ALL, npc.getId(), NpcStringId.S1_RECEIVED_A_S2_ITEM_AS_A_REWARD_FROM_THE_SEPARATED_SOUL);
+		packet.addStringParameter(player.getName());
+		packet.addStringParameter(item.getName());
+		npc.broadcastPacket(packet);
 	}
 }
