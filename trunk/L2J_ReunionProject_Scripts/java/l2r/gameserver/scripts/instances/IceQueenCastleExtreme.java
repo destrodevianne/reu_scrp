@@ -101,7 +101,7 @@ public class IceQueenCastleExtreme extends AbstractNpcAI
 	private static final int RESET_MIN = 30;
 	private static final int RESET_DAY_1 = 4; // Wednesday
 	private static final int RESET_DAY_2 = 7; // Saturday
-	private static final int TEMPLATE_ID = 139; // Ice Queen's Castle
+	private static final int TEMPLATE_ID = 144; // Ice Queen's Castle
 	private static final int DOOR_ID = 23140101;
 	
 	//@formatter:off
