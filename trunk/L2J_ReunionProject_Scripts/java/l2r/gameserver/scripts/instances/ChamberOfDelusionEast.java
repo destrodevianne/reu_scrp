@@ -699,7 +699,7 @@ public class ChamberOfDelusionEast extends Quest
 		
 		if (npcId == ENTRANCE_GATEKEEPER)
 		{
-			enterInstance(player, "ChamberofDelusionEast.xml");
+			enterInstance(player, "ChamberOfDelusionEast.xml");
 		}
 		
 		return "";
