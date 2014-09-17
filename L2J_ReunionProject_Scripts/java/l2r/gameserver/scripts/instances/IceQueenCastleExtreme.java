@@ -42,7 +42,6 @@ import l2r.gameserver.model.effects.L2EffectType;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.instancezone.InstanceWorld;
 import l2r.gameserver.model.quest.QuestState;
-import l2r.gameserver.model.quest.State;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.SystemMessageId;
@@ -997,12 +996,6 @@ public class IceQueenCastleExtreme extends AbstractNpcAI
 	
 	private void teleportPlayer(L2PcInstance player, IQCEWorld world)
 	{
-		final QuestState qs = player.getQuestState(Q10286_ReunionWithSirra.class.getSimpleName());
-		if ((qs != null) && (qs.getState() == State.STARTED) && qs.isCond(5))
-		{
-			qs.setCond(6, true);
-		}
-		
 		player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		teleportPlayer(player, ENTER_LOC[getRandom(ENTER_LOC.length)], world.getInstanceId(), false);
 		if (player.hasSummon())
