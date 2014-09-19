@@ -76,21 +76,6 @@ public final class Wedding extends AbstractNpcAI
 		}
 		
 		String htmltext = null;
-		if (player.isMarryRequest())
-		{
-			if (!isWearingFormalWear(player) || !isWearingFormalWear(partner))
-			{
-				htmltext = sendHtml(partner, "NoFormal.html", null, null);
-			}
-			else
-			{
-				player.setMarryRequest(false);
-				partner.setMarryRequest(false);
-				htmltext = getHtm(player.getHtmlPrefix(), "Ask.html");
-				htmltext = htmltext.replaceAll("%player%", partner.getName());
-			}
-			return htmltext;
-		}
 		
 		switch (event)
 		{
@@ -100,13 +85,16 @@ public final class Wedding extends AbstractNpcAI
 				{
 					htmltext = sendHtml(partner, "NoFormal.html", null, null);
 				}
+				else if (player.isMarryRequest())
+				{
+					htmltext = getHtm(player.getHtmlPrefix(), "Ask.html");
+					htmltext = htmltext.replaceAll("%player%", partner.getName());
+				}
 				else
 				{
 					player.setMarryAccepted(true);
 					partner.setMarryRequest(true);
-					
-					sendHtml(partner, "Ask.html", "%player%", player.getName());
-					
+					partner.sendMessage("Your partner sent you marriage request.");
 					htmltext = getHtm(player.getHtmlPrefix(), "Requested.html");
 					htmltext = htmltext.replaceAll("%player%", partner.getName());
 				}
@@ -153,7 +141,6 @@ public final class Wedding extends AbstractNpcAI
 					}
 					
 					Announcements.getInstance().announceToAll("Congratulations to " + player.getName() + " and " + partner.getName() + "! They have been married.");
-					
 					htmltext = sendHtml(partner, "Accepted.html", null, null);
 				}
 				break;
@@ -164,10 +151,8 @@ public final class Wedding extends AbstractNpcAI
 				partner.setMarryRequest(false);
 				player.setMarryAccepted(false);
 				partner.setMarryAccepted(false);
-				
 				player.sendMessage("You declined your partner's marriage request.");
 				partner.sendMessage("Your partner declined your marriage request.");
-				
 				htmltext = sendHtml(partner, "Declined.html", null, null);
 				break;
 			}
