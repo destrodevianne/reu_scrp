@@ -25,10 +25,9 @@ import l2r.gameserver.model.quest.QuestState;
 
 public class EkimusMouth extends AbstractNpcAI
 {
-	public EkimusMouth(String name, String desc)
+	private EkimusMouth()
 	{
-		super(name, desc);
-		
+		super(EkimusMouth.class.getSimpleName(), "ai/npc");
 		addStartNpc(32537);
 		addFirstTalkId(32537);
 		addTalkId(32537);
@@ -88,6 +87,6 @@ public class EkimusMouth extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new EkimusMouth(EkimusMouth.class.getSimpleName(), "ai/npc");
+		new EkimusMouth();
 	}
 }

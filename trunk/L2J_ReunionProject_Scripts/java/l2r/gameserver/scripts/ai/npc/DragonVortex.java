@@ -7,11 +7,10 @@ import l2r.gameserver.ThreadPoolManager;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
-import l2r.gameserver.model.quest.QuestState;
 
-public class DragonVortex extends Quest
+public class DragonVortex extends AbstractNpcAI
 {
+	private final boolean debug = false;
 	private static final int VORTEX_1 = 32871;
 	private static final int VORTEX_2 = 32892;
 	private static final int VORTEX_3 = 32893;
@@ -57,18 +56,13 @@ public class DragonVortex extends Quest
 	
 	private static final int DESPAWN_DELAY = 3600000;
 	
-	public DragonVortex(int questId, String name, String descr)
+	private DragonVortex()
 	{
-		super(questId, name, descr);
-		
+		super(DragonVortex.class.getSimpleName(), "ai/npc");
 		addFirstTalkId(VORTEX_1, VORTEX_2, VORTEX_3, VORTEX_4);
 		addStartNpc(VORTEX_1, VORTEX_2, VORTEX_3, VORTEX_4);
 		addTalkId(VORTEX_1, VORTEX_2, VORTEX_3, VORTEX_4);
-		
-		for (int i : RAIDS)
-		{
-			addKillId(i);
-		}
+		addKillId(RAIDS);
 	}
 	
 	@Override
@@ -116,6 +110,10 @@ public class DragonVortex extends Quest
 			{
 				if (progress1)
 				{
+					if (debug)
+					{
+						_log.info("Dragon Vortex 32871 has a Raid at Loc: X: " + String.valueOf(boss1.getX()) + " Y: " + String.valueOf(boss1.getY()) + " Z: " + String.valueOf(boss1.getZ()));
+					}
 					return "32871-03.htm";
 				}
 				
@@ -126,7 +124,7 @@ public class DragonVortex extends Quest
 				{
 					bosses1.add(boss1);
 					boss1ObjId = boss1.getObjectId();
-					_despawnTask1 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFirstVortrexBoss(), DESPAWN_DELAY);
+					_despawnTask1 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFirstVortexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
 			}
@@ -135,6 +133,10 @@ public class DragonVortex extends Quest
 			{
 				if (progress2)
 				{
+					if (debug)
+					{
+						_log.info("Dragon Vortex 32892 has a Raid at Loc: X: " + String.valueOf(boss2.getX()) + " Y: " + String.valueOf(boss2.getY()) + " Z: " + String.valueOf(boss2.getZ()));
+					}
 					return "32871-03.htm";
 				}
 				
@@ -145,7 +147,7 @@ public class DragonVortex extends Quest
 				{
 					bosses2.add(boss2);
 					boss2ObjId = boss2.getObjectId();
-					_despawnTask2 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnSecondVortrexBoss(), DESPAWN_DELAY);
+					_despawnTask2 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnSecondVortexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
 			}
@@ -154,6 +156,10 @@ public class DragonVortex extends Quest
 			{
 				if (progress3)
 				{
+					if (debug)
+					{
+						_log.info("Dragon Vortex 32893 has a Raid at Loc: X: " + String.valueOf(boss3.getX()) + " Y: " + String.valueOf(boss3.getY()) + " Z: " + String.valueOf(boss3.getZ()));
+					}
 					return "32871-03.htm";
 				}
 				
@@ -164,7 +170,7 @@ public class DragonVortex extends Quest
 				{
 					bosses3.add(boss3);
 					boss3ObjId = boss3.getObjectId();
-					_despawnTask3 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnThirdVortrexBoss(), DESPAWN_DELAY);
+					_despawnTask3 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnThirdVortexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
 			}
@@ -173,6 +179,10 @@ public class DragonVortex extends Quest
 			{
 				if (progress4)
 				{
+					if (debug)
+					{
+						_log.info("Dragon Vortex 32894 has a Raid at Loc: X: " + String.valueOf(boss4.getX()) + " Y: " + String.valueOf(boss4.getY()) + " Z: " + String.valueOf(boss4.getZ()));
+					}
 					return "32871-03.htm";
 				}
 				
@@ -183,7 +193,7 @@ public class DragonVortex extends Quest
 				{
 					bosses4.add(boss4);
 					boss4ObjId = boss4.getObjectId();
-					_despawnTask4 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFourthVortrexBoss(), DESPAWN_DELAY);
+					_despawnTask4 = ThreadPoolManager.getInstance().scheduleGeneral(new SpawnFourthVortexBoss(), DESPAWN_DELAY);
 				}
 				return "32871-01.htm";
 			}
@@ -194,12 +204,6 @@ public class DragonVortex extends Quest
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(getName());
-		if (st == null)
-		{
-			st = newQuestState(player);
-		}
-		
 		return "32871.htm";
 	}
 	
@@ -255,7 +259,7 @@ public class DragonVortex extends Quest
 		return super.onKill(npc, player, isSummon);
 	}
 	
-	protected class SpawnFirstVortrexBoss implements Runnable
+	protected class SpawnFirstVortexBoss implements Runnable
 	{
 		@Override
 		public void run()
@@ -274,7 +278,7 @@ public class DragonVortex extends Quest
 		}
 	}
 	
-	protected class SpawnSecondVortrexBoss implements Runnable
+	protected class SpawnSecondVortexBoss implements Runnable
 	{
 		@Override
 		public void run()
@@ -293,7 +297,7 @@ public class DragonVortex extends Quest
 		}
 	}
 	
-	protected class SpawnThirdVortrexBoss implements Runnable
+	protected class SpawnThirdVortexBoss implements Runnable
 	{
 		@Override
 		public void run()
@@ -312,7 +316,7 @@ public class DragonVortex extends Quest
 		}
 	}
 	
-	protected class SpawnFourthVortrexBoss implements Runnable
+	protected class SpawnFourthVortexBoss implements Runnable
 	{
 		@Override
 		public void run()
@@ -333,6 +337,6 @@ public class DragonVortex extends Quest
 	
 	public static void main(String[] args)
 	{
-		new DragonVortex(-1, "DragonVortex", "ai/npc");
+		new DragonVortex();
 	}
 }
