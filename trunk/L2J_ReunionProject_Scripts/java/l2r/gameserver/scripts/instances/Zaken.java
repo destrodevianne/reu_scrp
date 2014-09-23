@@ -40,8 +40,6 @@ import l2r.gameserver.model.actor.instance.L2DecoyInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.instancezone.InstanceWorld;
-import l2r.gameserver.model.quest.Quest;
-import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.zone.L2ZoneForm;
 import l2r.gameserver.model.zone.L2ZoneType;
@@ -50,13 +48,11 @@ import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.AbstractNpcInfo;
 import l2r.gameserver.network.serverpackets.PlaySound;
 import l2r.gameserver.network.serverpackets.SystemMessage;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
 import l2r.util.Rnd;
 
-/**
- * @author Nyaran (based on org.inc? work)
- */
-public class Zaken extends Quest
+public class Zaken extends AbstractNpcAI
 {
 	private class ZWorld extends InstanceWorld
 	{
@@ -303,15 +299,26 @@ public class Zaken extends Quest
 		
 	}
 	
-	public Zaken()
+	private Zaken()
 	{
-		super(-1, Zaken.class.getSimpleName(), "instances");
+		super(Zaken.class.getSimpleName(), "instances");
 		addStartNpc(PATHFINDER);
 		addTalkId(PATHFINDER);
-		addFirstTalkId(PATHFINDER, BARREL);
-		addKillId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
-		addAttackId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
-		addAggroRangeEnterId(ZAKEN_DAY, ZAKEN_DAY83, ZAKEN_NIGHT);
+		
+		addFirstTalkId(PATHFINDER);
+		addFirstTalkId(BARREL);
+		
+		addKillId(ZAKEN_DAY);
+		addKillId(ZAKEN_DAY83);
+		addKillId(ZAKEN_NIGHT);
+		
+		addAttackId(ZAKEN_DAY);
+		addAttackId(ZAKEN_DAY83);
+		addAttackId(ZAKEN_NIGHT);
+		
+		addAggroRangeEnterId(ZAKEN_DAY);
+		addAggroRangeEnterId(ZAKEN_DAY83);
+		addAggroRangeEnterId(ZAKEN_NIGHT);
 		
 		for (int i = 120111; i <= 120125; i++)
 		{
@@ -740,11 +747,6 @@ public class Zaken extends Quest
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		int npcId = npc.getId();
-		QuestState st = player.getQuestState(getName());
-		if (st == null)
-		{
-			st = newQuestState(player);
-		}
 		if (npcId == PATHFINDER)
 		{
 			return "32713.html";
