@@ -68,7 +68,6 @@ public class Pdam implements ISkillHandler
 		
 		for (L2Character target : (L2Character[]) targets)
 		{
-			
 			if (activeChar.isPlayer() && target.isPlayer() && target.getActingPlayer().isFakeDeath())
 			{
 				target.stopFakeDeath(true);
