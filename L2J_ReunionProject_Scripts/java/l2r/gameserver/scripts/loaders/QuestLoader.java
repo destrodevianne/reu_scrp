@@ -122,6 +122,8 @@ public class QuestLoader
 		Q00124_MeetingTheElroki.class,
 		Q00125_TheNameOfEvil1.class,
 		Q00126_TheNameOfEvil2.class,
+		Q00128_PailakaSongOfIceAndFire.class,
+		Q00129_PailakaDevilsLegacy.class,
 		Q00130_PathToHellbound.class,
 		Q00131_BirdInACage.class,
 		Q00132_MatrasCuriosity.class,
