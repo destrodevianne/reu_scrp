@@ -109,17 +109,7 @@ public class AreaFriendly implements ITargetTypeHandler
 			return false;
 		}
 		
-		if ((targetPlayer != actingPlayer) && (targetPlayer.inObserverMode() || targetPlayer.isInOlympiadMode()))
-		{
-			return false;
-		}
-		
-		if (targetPlayer.isCursedWeaponEquipped())
-		{
-			return false;
-		}
-		
-		if (!actingPlayer.isInSameParty(targetPlayer) && !actingPlayer.isInSameChannel(targetPlayer) && !actingPlayer.isInSameClan(targetPlayer) && !actingPlayer.isInSameAlly(targetPlayer))
+		if (!actingPlayer.isFriend(targetPlayer))
 		{
 			return false;
 		}
