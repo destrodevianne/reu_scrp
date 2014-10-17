@@ -391,6 +391,7 @@ public final class Antharas extends AbstractNpcAI
 								if (charInside.getId() == ANTHARAS)
 								{
 									charInside.teleToLocation(185708, 114298, -8221);
+									charInside.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
 								}
 								else
 								{
@@ -737,8 +738,8 @@ public final class Antharas extends AbstractNpcAI
 		{
 			// TODO: FIXME when npcs will be in xmls
 			/*
-			 * for (int i = 1; i <= 6; i++) { final int x = npc.getTemplate().getParameters().getInt("suicide" + i + "_x"); final int y = npc.getTemplate().getParameters().getInt("suicide" + i + "_y"); final L2Attackable bomber = (L2Attackable) addSpawn(BOMBER, npc.getX(), npc.getY(),
-			 * npc.getZ(), 0, true, 15000, true); bomber.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(x, y, npc.getZ())); } npc.deleteMe();
+			 * for (int i = 1; i <= 6; i++) { final int x = npc.getTemplate().getParameters().getInt("suicide" + i + "_x"); final int y = npc.getTemplate().getParameters().getInt("suicide" + i + "_y"); final L2Attackable bomber = (L2Attackable) addSpawn(BOMBER, npc.getX(), npc.getY(), npc.getZ(), 0,
+			 * true, 15000, true); bomber.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(x, y, npc.getZ())); } npc.deleteMe();
 			 */
 		}
 		return super.onSpawn(npc);
