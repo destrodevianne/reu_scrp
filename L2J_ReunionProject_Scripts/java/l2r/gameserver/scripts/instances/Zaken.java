@@ -979,12 +979,18 @@ public class Zaken extends AbstractNpcAI
 		{
 			int skillId = 0;
 			
-			L2BossZone zone = GrandBossManager.getInstance().getZone(55312, 219168, -3223);
-			
-			if (zone.isInsideZone(npc))
+			try
 			{
-				L2Character target = isPet ? player.getSummon() : player;
-				((L2Attackable) npc).addDamageHate(target, 1, 200);
+				L2BossZone zone = GrandBossManager.getInstance().getZone(55312, 219168, -3223);
+				if (zone.isInsideZone(npc))
+				{
+					L2Character target = isPet ? player.getSummon() : player;
+					((L2Attackable) npc).addDamageHate(target, 1, 200);
+				}
+			}
+			catch (Exception e)
+			{
+				
 			}
 			if ((player.getZ() > (npc.getZ() - 100)) && (player.getZ() < (npc.getZ() + 100)))
 			{
