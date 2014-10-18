@@ -1123,17 +1123,7 @@ public class VanHalter extends Quest
 			{
 				if (!_vanHalter.isAfraid())
 				{
-					try
-					{
-						_vanHalter.getAI().notifyEvent(CtrlEvent.EVT_AFRAID);
-					}
-					catch (Exception e)
-					{
-						if (Config.DEBUG_SCRIPT_NOTIFIES)
-						{
-							_log.warn("VanHalter[notifyEvent] failed");
-						}
-					}
+					_vanHalter.getAI().notifyEvent(CtrlEvent.EVT_AFRAID);
 					
 					if (_vanHalter.getZ() >= -10476)
 					{
