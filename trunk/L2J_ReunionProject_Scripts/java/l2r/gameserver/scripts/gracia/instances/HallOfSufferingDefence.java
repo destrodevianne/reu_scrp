@@ -19,7 +19,6 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.Config;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlEvent;
 import l2r.gameserver.enums.CtrlIntention;
@@ -640,17 +639,7 @@ public class HallOfSufferingDefence extends Quest
 		boss.broadcastStatusUpdate();
 		
 		// Notify L2Character AI
-		try
-		{
-			boss.getAI().notifyEvent(CtrlEvent.EVT_DEAD);
-		}
-		catch (Exception e)
-		{
-			if (Config.DEBUG_SCRIPT_NOTIFIES)
-			{
-				_log.warn("HallOfSufferingDefence[notifyEvent]1 failed");
-			}
-		}
+		boss.getAI().notifyEvent(CtrlEvent.EVT_DEAD);
 		
 		if (boss.getWorldRegion() != null)
 		{
@@ -717,17 +706,7 @@ public class HallOfSufferingDefence extends Quest
 				L2Character hated = ((L2MonsterInstance) aliveTwin).getMostHated();
 				if (hated != null)
 				{
-					try
-					{
-						npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, hated, 1000);
-					}
-					catch (Exception e)
-					{
-						if (Config.DEBUG_SCRIPT_NOTIFIES)
-						{
-							_log.warn("HallOfSufferingDefence[notifyEvent]2 failed");
-						}
-					}
+					npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, hated, 1000);
 				}
 				
 				aliveTwin.setIsInvul(true); // make other boss invul
