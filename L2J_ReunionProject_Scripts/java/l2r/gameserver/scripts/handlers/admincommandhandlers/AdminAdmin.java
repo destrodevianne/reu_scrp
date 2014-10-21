@@ -24,6 +24,7 @@ import javolution.text.TextBuilder;
 import l2r.Config;
 import l2r.gameserver.datatables.xml.AdminData;
 import l2r.gameserver.handler.IAdminCommandHandler;
+import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.entity.olympiad.Olympiad;
 import l2r.gameserver.network.SystemMessageId;
@@ -70,6 +71,9 @@ public class AdminAdmin implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
+		L2MonsterInstance mon = (L2MonsterInstance) activeChar.getTarget();
+		
+		mon.teleToLocation(activeChar.getLocation());
 		if (command.startsWith("admin_admin"))
 		{
 			showMainPage(activeChar, command);

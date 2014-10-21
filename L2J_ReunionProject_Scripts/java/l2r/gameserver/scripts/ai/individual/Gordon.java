@@ -18,7 +18,6 @@
  */
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -38,12 +37,6 @@ public class Gordon extends AbstractNpcAI
 		super(name, descr);
 		addSpawnId(GORDON);
 		addSeeCreatureId(GORDON);
-		
-		final L2Npc gordon = SpawnTable.getInstance().getFirstSpawn(GORDON).getLastSpawn();
-		if (gordon != null)
-		{
-			onSpawn(gordon);
-		}
 	}
 	
 	@Override

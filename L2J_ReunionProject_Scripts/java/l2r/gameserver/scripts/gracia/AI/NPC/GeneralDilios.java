@@ -18,9 +18,9 @@
  */
 package l2r.gameserver.scripts.gracia.AI.NPC;
 
+import java.util.Collections;
 import java.util.Set;
 
-import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -38,8 +38,8 @@ public final class GeneralDilios extends AbstractNpcAI
 	private static final int GENERAL_ID = 32549;
 	private static final int GUARD_ID = 32619;
 	
-	private L2Npc _general;
-	private final Set<L2Spawn> _guards;
+	private L2Npc _general = null;
+	private final Set<L2Spawn> _guards = Collections.emptySet();
 	
 	private static final NpcStringId[] diliosText =
 	{
@@ -56,14 +56,6 @@ public final class GeneralDilios extends AbstractNpcAI
 	public GeneralDilios()
 	{
 		super(GeneralDilios.class.getSimpleName(), "gracia/AI/NPC");
-		_general = SpawnTable.getInstance().getFirstSpawn(GENERAL_ID).getLastSpawn();
-		_guards = SpawnTable.getInstance().getSpawns(GUARD_ID);
-		if ((_general == null) || _guards.isEmpty())
-		{
-			_log.warn(GeneralDilios.class.getSimpleName() + ": Cannot find NPCs!");
-			return;
-		}
-		startQuestTimer("command_0", 60000, null, null);
 	}
 	
 	@Override
@@ -97,5 +89,20 @@ public final class GeneralDilios extends AbstractNpcAI
 			}
 		}
 		return super.onAdvEvent(event, npc, player);
+	}
+	
+	@Override
+	public String onSpawn(L2Npc npc)
+	{
+		if (npc.getId() == GENERAL_ID)
+		{
+			startQuestTimer("command_0", 60000, null, null);
+			_general = npc;
+		}
+		else if (npc.getId() == GUARD_ID)
+		{
+			_guards.add(npc.getSpawn());
+		}
+		return super.onSpawn(npc);
 	}
 }

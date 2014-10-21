@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.ai.modifier;
 
-import l2r.gameserver.datatables.SpawnTable;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
@@ -34,14 +32,6 @@ public class NonLethalableNpcs extends AbstractNpcAI
 	{
 		super(NonLethalableNpcs.class.getSimpleName(), "ai/modifiers");
 		addSpawnId(HEADQUARTERS);
-		
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(HEADQUARTERS))
-		{
-			if ((spawn != null) && (spawn.getLastSpawn() != null))
-			{
-				onSpawn(spawn.getLastSpawn());
-			}
-		}
 	}
 	
 	@Override

@@ -21,11 +21,9 @@ package l2r.gameserver.scripts.ai.group_template;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.L2Object;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -66,16 +64,6 @@ public class PrisonGuards extends AbstractNpcAI
 		addSkillSeeId(GUARD);
 		addSpellFinishedId(GUARD_HEAD, GUARD);
 		addAggroRangeEnterId(GUARD);
-		
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GUARD_HEAD))
-		{
-			onSpawn(spawn.getLastSpawn());
-		}
-		
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GUARD))
-		{
-			onSpawn(spawn.getLastSpawn());
-		}
 	}
 	
 	@Override

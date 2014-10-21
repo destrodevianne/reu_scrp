@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.ai.modifier;
 
-import l2r.gameserver.datatables.SpawnTable;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -54,17 +52,6 @@ public class SeeThroughSilentMove extends AbstractNpcAI
 	{
 		super(SeeThroughSilentMove.class.getSimpleName(), "ai/modifiers");
 		addSpawnId(MONSTERS);
-		
-		for (int npcId : MONSTERS)
-		{
-			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
-			{
-				if ((spawn != null) && (spawn.getLastSpawn() != null))
-				{
-					onSpawn(spawn.getLastSpawn());
-				}
-			}
-		}
 	}
 	
 	@Override

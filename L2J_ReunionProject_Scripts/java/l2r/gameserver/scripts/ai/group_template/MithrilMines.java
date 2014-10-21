@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.gameserver.datatables.SpawnTable;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -48,16 +46,6 @@ public final class MithrilMines extends AbstractNpcAI
 	{
 		super(MithrilMines.class.getSimpleName(), "ai/group_template");
 		addSpawnId(GRAVE_ROBBER_SUMMONER, GRAVE_ROBBER_MAGICIAN);
-		
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GRAVE_ROBBER_SUMMONER))
-		{
-			onSpawn(spawn.getLastSpawn());
-		}
-		
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(GRAVE_ROBBER_MAGICIAN))
-		{
-			onSpawn(spawn.getLastSpawn());
-		}
 	}
 	
 	@Override

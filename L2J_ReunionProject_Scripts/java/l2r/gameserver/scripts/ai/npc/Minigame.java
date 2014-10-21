@@ -18,6 +18,8 @@
  */
 package l2r.gameserver.scripts.ai.npc;
 
+import java.util.ArrayList;
+
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Spawn;
@@ -54,7 +56,7 @@ public final class Minigame extends AbstractNpcAI
 	private static final int TIMER_INTERVAL = 3;
 	private static final int MAX_ATTEMPTS = 3;
 	
-	private final MinigameRoom _rooms[] = new MinigameRoom[2];
+	private final ArrayList<MinigameRoom> _rooms = new ArrayList<>(2);
 	
 	private Minigame()
 	{
@@ -62,13 +64,7 @@ public final class Minigame extends AbstractNpcAI
 		addStartNpc(SUMIEL);
 		addFirstTalkId(SUMIEL);
 		addTalkId(SUMIEL);
-		addSpawnId(TREASURE_BOX);
-		
-		int i = 0;
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(SUMIEL))
-		{
-			_rooms[i++] = initRoom(spawn.getLastSpawn());
-		}
+		addSpawnId(SUMIEL, TREASURE_BOX);
 	}
 	
 	@Override
@@ -244,8 +240,20 @@ public final class Minigame extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		npc.disableCoreAI(true);
-		startQuestTimer("afterthat", 180000, npc, null);
+		switch (npc.getId())
+		{
+			case SUMIEL:
+			{
+				_rooms.add(initRoom(npc));
+				break;
+			}
+			case TREASURE_BOX:
+			{
+				npc.disableCoreAI(true);
+				startQuestTimer("afterthat", 180000, npc, null);
+				break;
+			}
+		}
 		return super.onSpawn(npc);
 	}
 	
@@ -340,7 +348,14 @@ public final class Minigame extends AbstractNpcAI
 	 */
 	private MinigameRoom getRoomByManager(L2Npc manager)
 	{
-		return (_rooms[0].getManager() == manager) ? _rooms[0] : _rooms[1];
+		for (MinigameRoom room : _rooms)
+		{
+			if (room.getManager() == manager)
+			{
+				return room;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -350,7 +365,14 @@ public final class Minigame extends AbstractNpcAI
 	 */
 	private MinigameRoom getRoomByParticipant(L2PcInstance participant)
 	{
-		return (_rooms[0].getParticipant() == participant) ? _rooms[0] : _rooms[1];
+		for (MinigameRoom room : _rooms)
+		{
+			if (room.getParticipant() == participant)
+			{
+				return room;
+			}
+		}
+		return null;
 	}
 	
 	/**
