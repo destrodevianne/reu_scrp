@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.ai.individual;
 
-import l2r.gameserver.datatables.SpawnTable;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
@@ -45,11 +43,6 @@ public final class EvasGiftBox extends AbstractNpcAI
 		super(EvasGiftBox.class.getSimpleName(), "ai/individual");
 		addKillId(BOX);
 		addSpawnId(BOX);
-		
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(BOX))
-		{
-			onSpawn(spawn.getLastSpawn());
-		}
 	}
 	
 	@Override

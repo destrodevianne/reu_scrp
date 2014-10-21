@@ -70,10 +70,7 @@ public final class Typhoon extends AbstractNpcAI
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (!npc.isTeleporting())
-		{
-			startQuestTimer("CAST", 5000, npc, null);
-		}
+		startQuestTimer("CAST", 5000, npc, null);
 		return super.onSpawn(npc);
 	}
 }

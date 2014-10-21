@@ -18,9 +18,7 @@
  */
 package l2r.gameserver.scripts.gracia.AI.NPC;
 
-import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -45,27 +43,19 @@ public final class ZealotOfShilen extends AbstractNpcAI
 	{
 		super(ZealotOfShilen.class.getSimpleName(), "gracia/AI/NPC");
 		addSpawnId(ZEALOT);
+		addSpawnId(GUARDS);
 		addFirstTalkId(GUARDS);
-		
-		for (int npcId : GUARDS)
-		{
-			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
-			{
-				L2Npc guard = spawn.getLastSpawn();
-				guard.setIsInvul(true);
-				((L2Attackable) guard).setCanReturnToSpawnPoint(false);
-				startQuestTimer("WATCHING", 10000, guard, null, true);
-			}
-		}
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(ZEALOT))
-		{
-			spawn.getLastSpawn().setIsNoRndWalk(true);
-		}
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
+		if (npc == null)
+		{
+			return null;
+		}
+		
+		startQuestTimer("WATCHING", 10000, npc, null, true);
 		if (event.equalsIgnoreCase("WATCHING") && !npc.isAttackingNow())
 		{
 			for (L2Character character : npc.getKnownList().getKnownCharacters())
@@ -90,7 +80,16 @@ public final class ZealotOfShilen extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		npc.setIsNoRndWalk(true);
+		if (npc.getId() == ZEALOT)
+		{
+			npc.setIsNoRndWalk(true);
+		}
+		else
+		{
+			npc.setIsInvul(true);
+			((L2Attackable) npc).setCanReturnToSpawnPoint(false);
+			startQuestTimer("WATCHING", 10000, npc, null, true);
+		}
 		return super.onSpawn(npc);
 	}
 }

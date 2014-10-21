@@ -21,7 +21,6 @@ package l2r.gameserver.scripts.ai.individual.Venom;
 import java.util.ArrayList;
 import java.util.List;
 
-import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.TeleportWhereType;
 import l2r.gameserver.enums.ZoneIdType;
@@ -83,9 +82,9 @@ public final class Venom extends AbstractNpcAI
 	private static final SkillHolder RANGE_TELEPORT = new SkillHolder(4996, 1);
 	
 	private L2Npc _venom;
-	private final L2Npc _massymore;
+	private L2Npc _massymore;
 	
-	private final Location _loc;
+	private Location _loc;
 	
 	private boolean _aggroMode = false;
 	private boolean _prisonIsOpen = false;
@@ -105,25 +104,13 @@ public final class Venom extends AbstractNpcAI
 		addStartNpc(DUNGEON_KEEPER, TELEPORT_CUBE);
 		addFirstTalkId(DUNGEON_KEEPER, TELEPORT_CUBE);
 		addTalkId(DUNGEON_KEEPER, TELEPORT_CUBE);
-		addSpawnId(VENOM);
+		addSpawnId(VENOM, DUNGEON_KEEPER);
 		addSpellFinishedId(VENOM);
 		addAttackId(VENOM);
 		addKillId(VENOM);
 		addAggroRangeEnterId(VENOM);
 		setCastleSiegeStartId(this::onSiegeStart, CASTLE);
 		setCastleSiegeFinishId(this::onSiegeFinish, CASTLE);
-		
-		_massymore = SpawnTable.getInstance().getFirstSpawn(DUNGEON_KEEPER).getLastSpawn();
-		_venom = SpawnTable.getInstance().getFirstSpawn(VENOM).getLastSpawn();
-		_loc = _venom.getLocation();
-		_venom.disableSkill(VENOM_TELEPORT.getSkill(), -1);
-		_venom.disableSkill(RANGE_TELEPORT.getSkill(), -1);
-		_venom.doRevive();
-		((L2Attackable) _venom).setCanReturnToSpawnPoint(false);
-		if (checkStatus() == DEAD)
-		{
-			_venom.deleteMe();
-		}
 		
 		final long currentTime = System.currentTimeMillis();
 		final long startSiegeDate = CastleManager.getInstance().getCastleById(CASTLE).getSiegeDate().getTimeInMillis();
@@ -272,17 +259,38 @@ public final class Venom extends AbstractNpcAI
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
-		if (!npc.isTeleporting())
+		switch (npc.getId())
 		{
-			if (checkStatus() == DEAD)
+			case DUNGEON_KEEPER:
 			{
-				npc.deleteMe();
+				_massymore = npc;
+				break;
 			}
-			else
+			case VENOM:
 			{
-				npc.doRevive();
+				_venom = npc;
+				
+				_loc = _venom.getLocation();
+				_venom.disableSkill(VENOM_TELEPORT.getSkill(), -1);
+				_venom.disableSkill(RANGE_TELEPORT.getSkill(), -1);
+				_venom.doRevive();
 				broadcastNpcSay(npc, Say2.NPC_SHOUT, NpcStringId.WHO_DARES_TO_COVET_THE_THRONE_OF_OUR_CASTLE_LEAVE_IMMEDIATELY_OR_YOU_WILL_PAY_THE_PRICE_OF_YOUR_AUDACITY_WITH_YOUR_VERY_OWN_BLOOD);
+				((L2Attackable) _venom).setCanReturnToSpawnPoint(false);
+				if (checkStatus() == DEAD)
+				{
+					_venom.deleteMe();
+				}
+				break;
 			}
+		}
+		if (checkStatus() == DEAD)
+		{
+			npc.deleteMe();
+		}
+		else
+		{
+			npc.doRevive();
+			
 		}
 		return super.onSpawn(npc);
 	}

@@ -18,8 +18,6 @@
  */
 package l2r.gameserver.scripts.ai.modifier;
 
-import l2r.gameserver.datatables.SpawnTable;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
@@ -45,17 +43,6 @@ public class NoRandomAnimation extends AbstractNpcAI
 	{
 		super(NoRandomAnimation.class.getSimpleName(), "ai/modifiers");
 		addSpawnId(NO_ANIMATION_MOBS_LIST);
-		
-		for (int npcId : NO_ANIMATION_MOBS_LIST)
-		{
-			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
-			{
-				if ((spawn != null) && (spawn.getLastSpawn() != null))
-				{
-					onSpawn(spawn.getLastSpawn());
-				}
-			}
-		}
 	}
 	
 	@Override

@@ -22,10 +22,8 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.instancemanager.ZoneManager;
-import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
@@ -95,7 +93,6 @@ public class SeedOfAnnihilation extends AbstractNpcAI
 		}
 		addStartNpc(32739);
 		addTalkId(32739);
-		initialMinionsSpawn();
 		startEffectZonesControl();
 	}
 	
@@ -275,25 +272,6 @@ public class SeedOfAnnihilation extends AbstractNpcAI
 			ZoneManager.getInstance().getZoneById(_regionsData[i].buff_zone, L2EffectZone.class).addSkill(ZONE_BUFFS[_regionsData[i].activeBuff], 1);
 		}
 		startQuestTimer("ChangeSeedsStatus", _seedsNextStatusChange - System.currentTimeMillis(), null, null);
-	}
-	
-	private void initialMinionsSpawn()
-	{
-		L2MonsterInstance mob;
-		for (SeedRegion sr : _regionsData)
-		{
-			for (int npcId : sr.elite_mob_ids)
-			{
-				for (L2Spawn spawn : SpawnTable.getInstance().getSpawns(npcId))
-				{
-					mob = (L2MonsterInstance) spawn.getLastSpawn();
-					if (mob != null)
-					{
-						spawnGroupOfMinion(mob, sr.minion_lists[getRandom(sr.minion_lists.length)]);
-					}
-				}
-			}
-		}
 	}
 	
 	private void spawnGroupOfMinion(L2MonsterInstance npc, int[] mobIds)
