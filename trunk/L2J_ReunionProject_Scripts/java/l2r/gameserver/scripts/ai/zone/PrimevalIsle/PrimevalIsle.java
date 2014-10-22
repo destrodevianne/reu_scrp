@@ -400,55 +400,16 @@ public final class PrimevalIsle extends AbstractNpcAI
 		}
 		else
 		{
-			L2Character target = null;
-			final int probPhysicalSpecial1 = npc.getTemplate().getParameters().getInt("ProbPhysicalSpecial1", 0);
-			final int probPhysicalSpecial2 = npc.getTemplate().getParameters().getInt("ProbPhysicalSpecial2", 0);
-			final SkillHolder selfRangeBuff1 = npc.getTemplate().getParameters().getObject("SelfRangeBuff1", SkillHolder.class);
-			final SkillHolder physicalSpecial1 = npc.getTemplate().getParameters().getObject("PhysicalSpecial1", SkillHolder.class);
-			final SkillHolder physicalSpecial2 = npc.getTemplate().getParameters().getObject("PhysicalSpecial2", SkillHolder.class);
-			
-			if (((npc.getCurrentHp() / npc.getMaxHp()) * 100) <= 50)
-			{
-				npc.getVariables().set("SKILL_MULTIPLER", 2);
-			}
-			else
-			{
-				npc.getVariables().set("SKILL_MULTIPLER", 1);
-			}
-			
-			if ((((npc.getCurrentHp() / npc.getMaxHp()) * 100) <= 30) && (npc.getVariables().getInt("SELFBUFF_USED") == 0))
-			{
-				final L2Attackable mob = (L2Attackable) npc;
-				target = mob.getMostHated();
-				mob.clearAggroList();
-				if (!npc.isSkillDisabled(selfRangeBuff1.getSkillId()))
-				{
-					npc.getVariables().set("SELFBUFF_USED", 1);
-					npc.doCast(selfRangeBuff1.getSkill());
-					npc.setIsRunning(true);
-					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
-				}
-			}
-			
-			if (target != null)
-			{
-				if (getRandom(100) <= (probPhysicalSpecial1 * npc.getVariables().getInt("SKILL_MULTIPLER")))
-				{
-					if (!npc.isSkillDisabled(physicalSpecial1.getSkill()))
-					{
-						npc.setTarget(target);
-						npc.doCast(physicalSpecial1.getSkill());
-					}
-				}
-				if (getRandom(100) <= (probPhysicalSpecial2 * npc.getVariables().getInt("SKILL_MULTIPLER")))
-				{
-					if (!npc.isSkillDisabled(physicalSpecial2.getSkill()))
-					{
-						npc.setTarget(target);
-						npc.doCast(physicalSpecial2.getSkill());
-					}
-				}
-			}
+			// FIXME
+			/**
+			 * L2Character target = null; final int probPhysicalSpecial1 = npc.getTemplate().getParameters().getInt("ProbPhysicalSpecial1", 0); final int probPhysicalSpecial2 = npc.getTemplate().getParameters().getInt("ProbPhysicalSpecial2", 0); final SkillHolder selfRangeBuff1 =
+			 * npc.getTemplate().getParameters().getObject("SelfRangeBuff1", SkillHolder.class); final SkillHolder physicalSpecial1 = npc.getTemplate().getParameters().getObject("PhysicalSpecial1", SkillHolder.class); final SkillHolder physicalSpecial2 =
+			 * npc.getTemplate().getParameters().getObject("PhysicalSpecial2", SkillHolder.class); if (((npc.getCurrentHp() / npc.getMaxHp()) * 100) <= 50) { npc.getVariables().set("SKILL_MULTIPLER", 2); } else { npc.getVariables().set("SKILL_MULTIPLER", 1); } if ((((npc.getCurrentHp() /
+			 * npc.getMaxHp()) * 100) <= 30) && (npc.getVariables().getInt("SELFBUFF_USED") == 0)) { final L2Attackable mob = (L2Attackable) npc; target = mob.getMostHated(); mob.clearAggroList(); if (!npc.isSkillDisabled(selfRangeBuff1.getSkillId())) { npc.getVariables().set("SELFBUFF_USED", 1);
+			 * npc.doCast(selfRangeBuff1.getSkill()); npc.setIsRunning(true); npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target); } } if (target != null) { if (getRandom(100) <= (probPhysicalSpecial1 * npc.getVariables().getInt("SKILL_MULTIPLER"))) { if
+			 * (!npc.isSkillDisabled(physicalSpecial1.getSkill())) { npc.setTarget(target); npc.doCast(physicalSpecial1.getSkill()); } } if (getRandom(100) <= (probPhysicalSpecial2 * npc.getVariables().getInt("SKILL_MULTIPLER"))) { if (!npc.isSkillDisabled(physicalSpecial2.getSkill())) {
+			 * npc.setTarget(target); npc.doCast(physicalSpecial2.getSkill()); } } }
+			 */
 		}
 		return super.onAttack(npc, attacker, damage, isSummon);
 	}
