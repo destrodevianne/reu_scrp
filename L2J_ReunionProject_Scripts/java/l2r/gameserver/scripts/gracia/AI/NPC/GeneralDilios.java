@@ -20,6 +20,7 @@ package l2r.gameserver.scripts.gracia.AI.NPC;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.L2Npc;
@@ -39,7 +40,7 @@ public final class GeneralDilios extends AbstractNpcAI
 	private static final int GUARD_ID = 32619;
 	
 	private L2Npc _general = null;
-	private final Set<L2Spawn> _guards = Collections.emptySet();
+	private final Set<L2Spawn> _guards = Collections.newSetFromMap(new ConcurrentHashMap<L2Spawn, Boolean>());
 	
 	private static final NpcStringId[] diliosText =
 	{
