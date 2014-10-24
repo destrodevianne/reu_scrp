@@ -19,6 +19,7 @@
 package l2r.gameserver.scripts.ai.npc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import l2r.gameserver.datatables.SpawnTable;
 import l2r.gameserver.model.L2Object;
@@ -56,7 +57,7 @@ public final class Minigame extends AbstractNpcAI
 	private static final int TIMER_INTERVAL = 3;
 	private static final int MAX_ATTEMPTS = 3;
 	
-	private final ArrayList<MinigameRoom> _rooms = new ArrayList<>(2);
+	private final List<MinigameRoom> _rooms = new ArrayList<>(2);
 	
 	private Minigame()
 	{
