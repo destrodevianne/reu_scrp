@@ -26,6 +26,7 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.base.ClassId;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
+import l2r.gameserver.scripts.quests.Q00064_CertifiedBerserker;
 import l2r.gameserver.util.Util;
 
 /**
@@ -151,7 +152,7 @@ public final class KamaelChange2 extends AbstractNpcAI
 				{
 					if (classId == 127)
 					{
-						QuestState qs = player.getQuestState("64_CertifiedBerserker");
+						QuestState qs = player.getQuestState(Q00064_CertifiedBerserker.class.getSimpleName());
 						if (player.getLevel() < 40)
 						{
 							if ((qs != null) && qs.isCompleted())
