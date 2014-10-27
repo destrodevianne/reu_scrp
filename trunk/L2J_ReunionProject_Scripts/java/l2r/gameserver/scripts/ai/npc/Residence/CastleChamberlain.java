@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -30,10 +30,12 @@ import l2r.gameserver.SevenSigns;
 import l2r.gameserver.datatables.sql.ClanTable;
 import l2r.gameserver.datatables.sql.TeleportLocationTable;
 import l2r.gameserver.enums.PcCondOverride;
+import l2r.gameserver.instancemanager.CastleManorManager;
 import l2r.gameserver.instancemanager.FortManager;
 import l2r.gameserver.model.ClanPrivilege;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.L2TeleportLocation;
+import l2r.gameserver.model.SeedProduction;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2DoorInstance;
 import l2r.gameserver.model.actor.instance.L2MerchantInstance;
@@ -41,11 +43,19 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.entity.Castle;
 import l2r.gameserver.model.entity.Castle.CastleFunction;
 import l2r.gameserver.model.entity.Fort;
+import l2r.gameserver.model.events.EventType;
+import l2r.gameserver.model.events.ListenerRegisterType;
+import l2r.gameserver.model.events.annotations.Id;
+import l2r.gameserver.model.events.annotations.RegisterEvent;
+import l2r.gameserver.model.events.annotations.RegisterType;
+import l2r.gameserver.model.events.impl.character.npc.OnNpcManorBypass;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.network.SystemMessageId;
+import l2r.gameserver.network.serverpackets.ExShowCropInfo;
 import l2r.gameserver.network.serverpackets.ExShowCropSetting;
 import l2r.gameserver.network.serverpackets.ExShowDominionRegistry;
+import l2r.gameserver.network.serverpackets.ExShowManorDefaultInfo;
 import l2r.gameserver.network.serverpackets.ExShowSeedInfo;
 import l2r.gameserver.network.serverpackets.ExShowSeedSetting;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -56,7 +66,7 @@ import l2r.gameserver.util.Util;
  * Castle Chamberlain AI.
  * @author malyelfik
  */
-public class CastleChamberlain extends AbstractNpcAI
+public final class CastleChamberlain extends AbstractNpcAI
 {
 	// NPCs
 	private static final int[] NPC =
@@ -120,9 +130,9 @@ public class CastleChamberlain extends AbstractNpcAI
 		new SkillHolder(4360, 1), // Death Whisper Lv.1
 	};
 	
-	private CastleChamberlain(String name, String descr)
+	private CastleChamberlain()
 	{
-		super(name, descr);
+		super(CastleChamberlain.class.getSimpleName(), "ai/npc");
 		addStartNpc(NPC);
 		addTalkId(NPC);
 		addFirstTalkId(NPC);
@@ -668,13 +678,13 @@ public class CastleChamberlain extends AbstractNpcAI
 						
 						switch (SevenSigns.getInstance().getCurrentPeriod())
 						{
-							case SevenSigns.PERIOD_SEAL_VALIDATION:
 							case SevenSigns.PERIOD_COMP_RECRUITING:
 								html.replace("%ss_event%", "1000509");
 								break;
 							case SevenSigns.PERIOD_COMPETITION:
 								html.replace("%ss_event%", "1000507");
 								break;
+							case SevenSigns.PERIOD_SEAL_VALIDATION:
 							case SevenSigns.PERIOD_COMP_RESULTS:
 								html.replace("%ss_event%", "1000508");
 								break;
@@ -758,10 +768,23 @@ public class CastleChamberlain extends AbstractNpcAI
 			{
 				if (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_TAXES))
 				{
+					long seedIncome = 0;
+					if (Config.ALLOW_MANOR)
+					{
+						for (SeedProduction sp : CastleManorManager.getInstance().getSeedProduction(castle.getResidenceId(), false))
+						{
+							final long diff = sp.getStartAmount() - sp.getAmount();
+							if (diff != 0)
+							{
+								seedIncome += diff * sp.getPrice();
+							}
+						}
+					}
+					
 					final NpcHtmlMessage html = getHtmlPacket(player, npc, "castlemanagevault.html");
 					html.replace("%tax_income%", Util.formatAdena(castle.getTreasury()));
 					html.replace("%tax_income_reserved%", "0"); // TODO: Implement me!
-					html.replace("%seed_income%", "0"); // TODO: Implement me!
+					html.replace("%seed_income%", Util.formatAdena(seedIncome));
 					player.sendPacket(html);
 				}
 				else
@@ -1135,35 +1158,13 @@ public class CastleChamberlain extends AbstractNpcAI
 			}
 			case "manor":
 			{
-				htmltext = (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_MANOR_ADMIN)) ? "manor.html" : "chamberlain-21.html";
-				break;
-			}
-			case "seed_status":
-			{
-				player.sendPacket(new ExShowSeedInfo(castle.getResidenceId(), castle.getSeedProduction(0)));
-				break;
-			}
-			case "seed_setup":
-			{
-				if (castle.isNextPeriodApproved())
+				if (Config.ALLOW_MANOR)
 				{
-					player.sendPacket(SystemMessageId.A_MANOR_CANNOT_BE_SET_UP_BETWEEN_6_AM_AND_8_PM);
+					htmltext = (isOwner(player, npc) && player.hasClanPrivilege(ClanPrivilege.CS_MANOR_ADMIN)) ? "manor.html" : "chamberlain-21.html";
 				}
 				else
 				{
-					player.sendPacket(new ExShowSeedSetting(castle.getResidenceId()));
-				}
-				break;
-			}
-			case "crop_setup":
-			{
-				if (castle.isNextPeriodApproved())
-				{
-					player.sendPacket(SystemMessageId.A_MANOR_CANNOT_BE_SET_UP_BETWEEN_6_AM_AND_8_PM);
-				}
-				else
-				{
-					player.sendPacket(new ExShowCropSetting(castle.getResidenceId()));
+					player.sendMessage("Manor system is deactivated.");
 				}
 				break;
 			}
@@ -1312,8 +1313,60 @@ public class CastleChamberlain extends AbstractNpcAI
 		return (isOwner(player, npc)) ? "chamberlain-01.html" : "chamberlain-04.html";
 	}
 	
+	// @formatter:off
+	@RegisterEvent(EventType.ON_NPC_MANOR_BYPASS)
+	@RegisterType(ListenerRegisterType.NPC)
+	@Id({35100, 35142, 35184, 35226, 35274,	35316, 35363, 35509, 35555})
+	// @formatter:on
+	public final void onNpcManorBypass(OnNpcManorBypass evt)
+	{
+		final L2PcInstance player = evt.getActiveChar();
+		final L2Npc npc = evt.getTarget();
+		if (isOwner(player, npc))
+		{
+			final CastleManorManager manor = CastleManorManager.getInstance();
+			if (manor.isUnderMaintenance())
+			{
+				player.sendPacket(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE);
+				return;
+			}
+			
+			final int castleId = (evt.getManorId() == -1) ? npc.getCastle().getResidenceId() : evt.getManorId();
+			switch (evt.getRequest())
+			{
+				case 3: // Seed info
+					player.sendPacket(new ExShowSeedInfo(castleId, evt.isNextPeriod(), true));
+					break;
+				case 4: // Crop info
+					player.sendPacket(new ExShowCropInfo(castleId, evt.isNextPeriod(), true));
+					break;
+				case 5: // Basic info
+					player.sendPacket(new ExShowManorDefaultInfo(true));
+					break;
+				case 7: // Seed settings
+					if (manor.isManorApproved())
+					{
+						player.sendPacket(SystemMessageId.A_MANOR_CANNOT_BE_SET_UP_BETWEEN_4_30_AM_AND_8_PM);
+						return;
+					}
+					player.sendPacket(new ExShowSeedSetting(castleId));
+					break;
+				case 8: // Crop settings
+					if (manor.isManorApproved())
+					{
+						player.sendPacket(SystemMessageId.A_MANOR_CANNOT_BE_SET_UP_BETWEEN_4_30_AM_AND_8_PM);
+						return;
+					}
+					player.sendPacket(new ExShowCropSetting(castleId));
+					break;
+				default:
+					_log.warn(getClass().getSimpleName() + ": Player " + player.getName() + " (" + player.getObjectId() + ") send unknown request id " + evt.getRequest() + "!");
+			}
+		}
+	}
+	
 	public static void main(String[] args)
 	{
-		new CastleChamberlain(CastleChamberlain.class.getSimpleName(), "ai/npc");
+		new CastleChamberlain();
 	}
 }
