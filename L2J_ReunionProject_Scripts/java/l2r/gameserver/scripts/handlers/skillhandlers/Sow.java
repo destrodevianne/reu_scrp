@@ -19,11 +19,11 @@
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
 import l2r.Config;
-import l2r.gameserver.datatables.xml.ManorData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.QuestSound;
 import l2r.gameserver.handler.ISkillHandler;
 import l2r.gameserver.model.L2Object;
+import l2r.gameserver.model.L2Seed;
 import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.skills.L2Skill;
@@ -83,22 +83,15 @@ public class Sow implements ISkillHandler
 				continue;
 			}
 			
-			final int seedId = target.getSeedType();
-			if (seedId == 0)
-			{
-				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-				continue;
-			}
-			
 			// Consuming used seed
-			if (!activeChar.destroyItemByItemId("Consume", seedId, 1, target, false))
+			final L2Seed seed = target.getSeed();
+			if (!activeChar.destroyItemByItemId("Consume", seed.getSeedId(), 1, target, false))
 			{
-				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 			
 			SystemMessage sm;
-			if (calcSuccess(activeChar, target, seedId))
+			if (calcSuccess(activeChar, target, seed))
 			{
 				activeChar.sendPacket(QuestSound.ITEMSOUND_QUEST_ITEMGET.getPacket());
 				target.setSeeded(activeChar.getActingPlayer());
@@ -109,13 +102,13 @@ public class Sow implements ISkillHandler
 				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_SEED_WAS_NOT_SOWN);
 			}
 			
-			if (activeChar.getParty() == null)
+			if (activeChar.isInParty())
 			{
-				activeChar.sendPacket(sm);
+				activeChar.getParty().broadcastPacket(sm);
 			}
 			else
 			{
-				activeChar.getParty().broadcastPacket(sm);
+				activeChar.sendPacket(sm);
 			}
 			
 			// TODO: Mob should not aggro on player, this way doesn't work really nice
@@ -123,14 +116,14 @@ public class Sow implements ISkillHandler
 		}
 	}
 	
-	private boolean calcSuccess(L2Character activeChar, L2Character target, int seedId)
+	private boolean calcSuccess(L2Character activeChar, L2Character target, L2Seed seed)
 	{
 		// TODO: check all the chances
-		int basicSuccess = (ManorData.getInstance().isAlternative(seedId) ? 20 : 90);
-		final int minlevelSeed = ManorData.getInstance().getSeedMinLevel(seedId);
-		final int maxlevelSeed = ManorData.getInstance().getSeedMaxLevel(seedId);
+		final int minlevelSeed = seed.getLevel() - 5;
+		final int maxlevelSeed = seed.getLevel() + 5;
 		final int levelPlayer = activeChar.getLevel(); // Attacker Level
 		final int levelTarget = target.getLevel(); // target Level
+		int basicSuccess = seed.isAlternative() ? 20 : 90;
 		
 		// seed level
 		if (levelTarget < minlevelSeed)

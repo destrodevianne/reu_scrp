@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -18,10 +18,11 @@
  */
 package l2r.gameserver.scripts.handlers.itemhandlers;
 
+import l2r.Config;
 import l2r.gameserver.handler.IItemHandler;
-import l2r.gameserver.instancemanager.CastleManorManager;
+import l2r.gameserver.model.L2Object;
+import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Playable;
-import l2r.gameserver.model.actor.instance.L2MonsterInstance;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
@@ -31,37 +32,31 @@ import l2r.gameserver.network.serverpackets.ActionFailed;
 /**
  * @author l3x
  */
-public class Harvester implements IItemHandler
+public final class Harvester implements IItemHandler
 {
 	@Override
 	public boolean useItem(L2Playable playable, L2ItemInstance item, boolean forceUse)
 	{
-		if (!playable.isPlayer())
+		if (!Config.ALLOW_MANOR)
+		{
+			return false;
+		}
+		else if (!playable.isPlayer())
 		{
 			playable.sendPacket(SystemMessageId.ITEM_NOT_FOR_PETS);
 			return false;
 		}
 		
-		if (CastleManorManager.getInstance().isDisabled())
-		{
-			return false;
-		}
-		
-		final L2PcInstance activeChar = playable.getActingPlayer();
 		final SkillHolder[] skills = item.getItem().getSkills();
-		L2MonsterInstance target = null;
-		if ((activeChar.getTarget() != null) && activeChar.getTarget().isMonster())
-		{
-			target = (L2MonsterInstance) activeChar.getTarget();
-		}
-		
 		if (skills == null)
 		{
 			_log.warn(getClass().getSimpleName() + ": is missing skills!");
 			return false;
 		}
 		
-		if ((target == null) || !target.isDead())
+		final L2PcInstance activeChar = playable.getActingPlayer();
+		final L2Object target = activeChar.getTarget();
+		if ((target == null) || !target.isMonster() || !((L2Character) target).isDead())
 		{
 			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
