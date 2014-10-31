@@ -40,6 +40,7 @@ import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
 import l2r.gameserver.util.Util;
+import l2r.util.Rnd;
 
 /**
  * Don't Know, Don't Care (456)
@@ -118,6 +119,12 @@ public final class Q00456_DontKnowDontCare extends Quest
 		15763, // Sealed Vorpal Ring
 		15764, // Sealed Vorpal Earring
 		15765, // Sealed Vorpal Necklace
+	};
+	private static final int[] SCROLLS =
+	{
+		6577, // Blessed Scroll Enchant Weapon S
+		6578, // Blessed Scroll Enchant Armor S
+		959, // Scroll Enchant Weapon S
 	};
 	private static final int[] ATTRIBUTE_CRYSTALS =
 	{
@@ -219,7 +226,31 @@ public final class Q00456_DontKnowDontCare extends Quest
 						{
 							if (hasQuestItems(player, getRegisteredItemIds()))
 							{
-								rewardPlayer(player, npc);
+								if (Rnd.chance(5))
+								{
+									qs.giveItems(WEAPONS[Rnd.get(WEAPONS.length)], 1);
+								}
+								else if (Rnd.chance(10))
+								{
+									qs.giveItems(ARMOR[Rnd.get(ARMOR.length)], 1);
+								}
+								else
+								{
+									qs.giveItems(ACCESSORIES[Rnd.get(ACCESSORIES.length)], 1);
+								}
+								
+								if (Rnd.chance(15))
+								{
+									qs.giveItems(SCROLLS[Rnd.get(SCROLLS.length)], 1);
+								}
+								
+								if (Rnd.chance(70))
+								{
+									qs.giveItems(ATTRIBUTE_CRYSTALS[Rnd.get(ATTRIBUTE_CRYSTALS.length)], 1);
+								}
+								qs.giveItems(GEMSTONE_S, 3);
+								
+								// rewardPlayer(player, npc);
 								qs.exitQuest(QuestType.DAILY, true);
 								htmltext = "32864-10.html";
 							}
@@ -314,6 +345,7 @@ public final class Q00456_DontKnowDontCare extends Quest
 		return super.onKill(npc, killer, isSummon);
 	}
 	
+	@SuppressWarnings("unused")
 	private static void rewardPlayer(L2PcInstance player, L2Npc npc)
 	{
 		int chance = getRandom(10000);
