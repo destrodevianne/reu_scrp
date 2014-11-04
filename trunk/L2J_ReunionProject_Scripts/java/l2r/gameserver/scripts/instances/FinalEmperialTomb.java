@@ -1524,9 +1524,9 @@ public class FinalEmperialTomb extends Quest
 		return "";
 	}
 	
-	public FinalEmperialTomb(int questId, String name, String descr)
+	public FinalEmperialTomb()
 	{
-		super(questId, name, descr);
+		super(-1, FinalEmperialTomb.class.getSimpleName(), "instances");
 		
 		load();
 		addAttackId(SCARLET1, FRINTEZZA);
@@ -1538,10 +1538,5 @@ public class FinalEmperialTomb extends Quest
 		addKillId(DEMONS);
 		addKillId(_mustKillMobsId);
 		addSpellFinishedId(HALL_KEEPER_SUICIDAL_SOLDIER);
-	}
-	
-	public static void main(String[] args)
-	{
-		new FinalEmperialTomb(-1, FinalEmperialTomb.class.getSimpleName(), "instances");
 	}
 }

@@ -87,7 +87,7 @@ public final class PailakaDevilsLegacy extends AbstractNpcAI
 	private static final int TEMPLATE_ID = 44;
 	private static final int ZONE = 20109;
 	
-	private PailakaDevilsLegacy()
+	public PailakaDevilsLegacy()
 	{
 		super(PailakaDevilsLegacy.class.getSimpleName(), "instances");
 		addTalkId(SURVIVOR);
@@ -325,10 +325,5 @@ public final class PailakaDevilsLegacy extends AbstractNpcAI
 		teleportPlayer(player, TELEPORT, world.getInstanceId());
 		((DIWorld) world)._lematanNpc = (L2Attackable) addSpawn(LEMATAN, LEMATAN_SPAWN, false, 0, false, world.getInstanceId());
 		_log.info("Pailaka Devils Legacy" + template + " Instance: " + world.getInstanceId() + " created by player: " + player.getName());
-	}
-	
-	public static void main(String[] args)
-	{
-		new PailakaDevilsLegacy();
 	}
 }

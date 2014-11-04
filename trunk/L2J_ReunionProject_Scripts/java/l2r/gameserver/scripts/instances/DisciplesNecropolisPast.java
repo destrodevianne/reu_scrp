@@ -126,7 +126,7 @@ public final class DisciplesNecropolisPast extends Quest
 		SKILLS.put(32721, new SkillHolder(6195, 1)); // Presentation - Anakim's Executor Battle
 	}
 	
-	private DisciplesNecropolisPast()
+	public DisciplesNecropolisPast()
 	{
 		super(-1, DisciplesNecropolisPast.class.getSimpleName(), "instances");
 		addAttackId(SEAL_DEVICE);
@@ -515,10 +515,5 @@ public final class DisciplesNecropolisPast extends Quest
 		{
 			ch.getSummon().stopAllEffectsExceptThoseThatLastThroughDeath();
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new DisciplesNecropolisPast();
 	}
 }

@@ -58,7 +58,7 @@ public final class PailakaSongOfIceAndFire extends AbstractNpcAI
 	private static final int TEMPLATE_ID = 43;
 	private static final int ZONE = 20108;
 	
-	private PailakaSongOfIceAndFire()
+	public PailakaSongOfIceAndFire()
 	{
 		super(PailakaSongOfIceAndFire.class.getSimpleName(), "instances");
 		addStartNpc(ADLER1);
@@ -216,10 +216,5 @@ public final class PailakaSongOfIceAndFire extends AbstractNpcAI
 		npc.setInvisible(true);
 		startQuestTimer("BLOOM_TIMER", 1000, npc, null);
 		return super.onSpawn(npc);
-	}
-	
-	public static void main(String[] args)
-	{
-		new PailakaSongOfIceAndFire();
 	}
 }

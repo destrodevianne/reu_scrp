@@ -141,9 +141,4 @@ public class SecretAreaKeucereus extends Quest
 		}
 		return false;
 	}
-	
-	public static void main(String[] args)
-	{
-		new SecretAreaKeucereus();
-	}
 }

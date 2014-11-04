@@ -70,7 +70,7 @@ public final class MithrilMine extends Quest
 	private int _count = 0;
 	private L2PcInstance _player = null;
 	
-	private MithrilMine()
+	public MithrilMine()
 	{
 		super(-1, MithrilMine.class.getSimpleName(), "instances");
 		addFirstTalkId(KEGOR);
@@ -259,10 +259,5 @@ public final class MithrilMine extends Quest
 		teleportPlayer(player, loc, world.getInstanceId(), false);
 		world.addAllowed(player.getObjectId());
 		return world.getInstanceId();
-	}
-	
-	public static void main(String[] args)
-	{
-		new MithrilMine();
 	}
 }

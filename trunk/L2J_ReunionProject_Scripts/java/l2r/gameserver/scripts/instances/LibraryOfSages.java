@@ -210,9 +210,9 @@ public class LibraryOfSages extends Quest
 		return htmltext;
 	}
 	
-	public LibraryOfSages(int questId, String name, String descr)
+	public LibraryOfSages()
 	{
-		super(questId, name, descr);
+		super(-1, qn, "instances");
 		
 		addStartNpc(Sophia);
 		addStartNpc(Sophia2);
@@ -220,10 +220,5 @@ public class LibraryOfSages extends Quest
 		addTalkId(Sophia2);
 		addTalkId(Sophia3);
 		addTalkId(Elcadia_Support);
-	}
-	
-	public static void main(String[] args)
-	{
-		new LibraryOfSages(-1, qn, "instances");
 	}
 }

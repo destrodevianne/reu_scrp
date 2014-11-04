@@ -88,7 +88,7 @@ public final class SanctumOftheLordsOfDawn extends AbstractNpcAI
 		new Location(-79939, 205857, -7888),
 	};
 	
-	private SanctumOftheLordsOfDawn()
+	public SanctumOftheLordsOfDawn()
 	{
 		super(SanctumOftheLordsOfDawn.class.getSimpleName(), "instances");
 		addStartNpc(LIGHT_OF_DAWN);
@@ -134,8 +134,7 @@ public final class SanctumOftheLordsOfDawn extends AbstractNpcAI
 					}
 				}
 				
-				OUTTER:
-				for (Entry<Integer, List<L2Npc>> entry : HSWorld._save_point.entrySet())
+				OUTTER: for (Entry<Integer, List<L2Npc>> entry : HSWorld._save_point.entrySet())
 				{
 					for (L2Npc monster : entry.getValue())
 					{
@@ -275,10 +274,5 @@ public final class SanctumOftheLordsOfDawn extends AbstractNpcAI
 		npc.broadcastPacket(new MagicSkillUse(npc, player, GUARD_SKILL.getSkillId(), 1, 2000, 1));
 		startQuestTimer("teleportPlayer", 2000, npc, player);
 		return super.onAggroRangeEnter(npc, player, isSummon);
-	}
-	
-	public static void main(String[] args)
-	{
-		new SanctumOftheLordsOfDawn();
 	}
 }
