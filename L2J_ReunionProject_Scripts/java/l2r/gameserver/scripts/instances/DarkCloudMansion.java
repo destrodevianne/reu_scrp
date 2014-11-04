@@ -443,9 +443,9 @@ public class DarkCloudMansion extends Quest
 		}
 	};
 	
-	public DarkCloudMansion(int questId, String name, String descr)
+	public DarkCloudMansion()
 	{
-		super(questId, name, descr);
+		super(-1, "DarkCloudMansion", qn);
 		
 		addFirstTalkId(BSM);
 		addFirstTalkId(SOTruth);
@@ -1467,10 +1467,5 @@ public class DarkCloudMansion extends Quest
 			}
 		}
 		return "";
-	}
-	
-	public static void main(String[] args)
-	{
-		new DarkCloudMansion(-1, "DarkCloudMansion", qn);
 	}
 }

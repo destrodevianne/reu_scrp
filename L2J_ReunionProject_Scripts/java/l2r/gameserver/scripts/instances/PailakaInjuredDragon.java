@@ -1040,9 +1040,4 @@ public class PailakaInjuredDragon extends Quest
 			return _chance;
 		}
 	}
-	
-	public static void main(String[] args)
-	{
-		new PailakaInjuredDragon();
-	}
 }

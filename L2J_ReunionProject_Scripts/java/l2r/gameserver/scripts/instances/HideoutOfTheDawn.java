@@ -46,7 +46,7 @@ public final class HideoutOfTheDawn extends Quest
 	private static final Location WOOD_LOC = new Location(-23758, -8959, -5384, 0, 0);
 	private static final Location JAINA_LOC = new Location(147072, 23743, -1984, 0);
 	
-	private HideoutOfTheDawn()
+	public HideoutOfTheDawn()
 	{
 		super(-1, HideoutOfTheDawn.class.getSimpleName(), "instances");
 		addStartNpc(WOOD);
@@ -114,10 +114,5 @@ public final class HideoutOfTheDawn extends Quest
 		{
 			ch.getSummon().stopAllEffectsExceptThoseThatLastThroughDeath();
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new HideoutOfTheDawn();
 	}
 }

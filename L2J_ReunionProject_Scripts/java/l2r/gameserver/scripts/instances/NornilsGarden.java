@@ -215,7 +215,7 @@ public final class NornilsGarden extends Quest
 		}
 	}
 	
-	private NornilsGarden()
+	public NornilsGarden()
 	{
 		super(-1, NornilsGarden.class.getSimpleName(), "instances");
 		addStartNpc(_garden_guard);
@@ -664,10 +664,5 @@ public final class NornilsGarden extends Quest
 			}
 		}
 		return super.onKill(npc, player, isSummon);
-	}
-	
-	public static void main(String[] args)
-	{
-		new NornilsGarden();
 	}
 }

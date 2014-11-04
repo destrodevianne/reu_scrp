@@ -262,9 +262,9 @@ public class Bloodshed extends Quest
 		return "";
 	}
 	
-	public Bloodshed(int questId, String name, String descr)
+	public Bloodshed()
 	{
-		super(questId, name, descr);
+		super(-1, qn, "events");
 		addKillId(SENTRY1);
 		addKillId(SENTRY2);
 		addKillId(HOUND);
@@ -272,11 +272,5 @@ public class Bloodshed extends Quest
 		addStartNpc(ROSE);
 		addTalkId(ROSE);
 		addTalkId(CHEST);
-	}
-	
-	public static void main(String[] args)
-	{
-		new Bloodshed(-1, qn, "events");
-		_log.info("blood shed loaded.");
 	}
 }

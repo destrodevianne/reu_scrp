@@ -45,7 +45,7 @@ public final class JiniaGuildHideout1 extends Quest
 	// Location
 	private static final Location START_LOC = new Location(-23530, -8963, -5413);
 	
-	private JiniaGuildHideout1()
+	public JiniaGuildHideout1()
 	{
 		super(-1, JiniaGuildHideout1.class.getSimpleName(), "instances");
 		addStartNpc(RAFFORTY);
@@ -90,10 +90,5 @@ public final class JiniaGuildHideout1 extends Quest
 		// teleport players
 		teleportPlayer(player, START_LOC, world.getInstanceId(), false);
 		world.addAllowed(player.getObjectId());
-	}
-	
-	public static void main(String[] args)
-	{
-		new JiniaGuildHideout1();
 	}
 }

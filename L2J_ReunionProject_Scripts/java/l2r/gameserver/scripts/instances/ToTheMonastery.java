@@ -248,31 +248,17 @@ public class ToTheMonastery extends Quest
 		new Location(76736, -241021, -10832)
 	};
 	
-	public ToTheMonastery(int questId, String name, String descr)
+	public ToTheMonastery()
 	{
-		super(questId, name, descr);
-		
+		super(-1, "ToTheMonastery", "instances");
 		addStartNpc(GLOBE);
-		
-		for (int npcs : NPCs)
-		{
-			addTalkId(npcs);
-		}
-		
-		for (int id : Minions)
-		{
-			addKillId(id);
-		}
-		
-		for (int ids : TombGuardians)
-		{
-			addKillId(ids);
-			addSpawnId(ids);
-		}
-		
+		addTalkId(NPCs);
+		addKillId(Minions);
+		addKillId(TombGuardians);
+		addSpawnId(TombGuardians);
 		addKillId(ETISETINA);
 		
-		this.questItemIds = new int[]
+		questItemIds = new int[]
 		{
 			SCROLL_OF_ABSTINENCE,
 			SHIELD_OF_SACRIFICE,
@@ -302,14 +288,7 @@ public class ToTheMonastery extends Quest
 				if (event.equalsIgnoreCase("Enter3"))
 				{
 					teleportPlayer(npc, player, TELEPORTS[2], player.getInstanceId());
-					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							player.showQuestMovie(24);
-						}
-					}, 1000);
+					ThreadPoolManager.getInstance().scheduleGeneral(() -> player.showQuestMovie(24), 1000);
 					return null;
 				}
 				if (event.equalsIgnoreCase("teleport_in"))
@@ -952,11 +931,6 @@ public class ToTheMonastery extends Quest
 			L2Npc spawnedMob = addSpawn(27404, spawn[0], spawn[1], spawn[2], spawn[3], false, 0L, false, world.getInstanceId());
 			world.fourthgroup.add(spawnedMob);
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new ToTheMonastery(-1, "ToTheMonastery", "instances");
 	}
 	
 	private class Teleport implements Runnable

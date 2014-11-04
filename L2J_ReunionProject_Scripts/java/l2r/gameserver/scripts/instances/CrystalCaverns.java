@@ -3046,9 +3046,9 @@ public class CrystalCaverns extends Quest
 		return super.onExitZone(character, zone);
 	}
 	
-	public CrystalCaverns(int questId, String name, String descr)
+	public CrystalCaverns()
 	{
-		super(questId, name, descr);
+		super(-1, qn, "instances");
 		
 		addStartNpc(ORACLE_GUIDE_1);
 		addTalkId(ORACLE_GUIDE_1);
@@ -3121,11 +3121,5 @@ public class CrystalCaverns extends Quest
 			addEnterZoneId(zones);
 			addExitZoneId(zones);
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		// now call the constructor (starts up the)
-		new CrystalCaverns(-1, qn, "instances");
 	}
 }

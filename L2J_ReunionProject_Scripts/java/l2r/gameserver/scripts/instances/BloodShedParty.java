@@ -361,14 +361,9 @@ public class BloodShedParty extends Quest
 		return t;
 	}
 	
-	/**
-	 * @param questId
-	 * @param name
-	 * @param descr
-	 */
-	public BloodShedParty(int questId, String name, String descr)
+	public BloodShedParty()
 	{
-		super(questId, name, descr);
+		super(-1, qn, "Bloodshedparty");
 		addStartNpc(ROSE);
 		addTalkId(ROSE);
 		addTalkId(CHEST);
@@ -380,12 +375,5 @@ public class BloodShedParty extends Quest
 		addKillId(TIAT);
 		
 		_mobs = new FastMap<>();
-		
 	}
-	
-	public static void main(String[] args)
-	{
-		new BloodShedParty(-1, qn, "Bloodshedparty");
-	}
-	
 }

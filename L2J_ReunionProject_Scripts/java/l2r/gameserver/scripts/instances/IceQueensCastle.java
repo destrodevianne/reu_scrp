@@ -65,7 +65,7 @@ public final class IceQueensCastle extends Quest
 	// Door
 	private static final int ICE_QUEEN_DOOR = 23140101;
 	
-	private IceQueensCastle()
+	public IceQueensCastle()
 	{
 		super(-1, IceQueensCastle.class.getSimpleName(), "instances");
 		addStartNpc(JINIA);
@@ -215,10 +215,5 @@ public final class IceQueensCastle extends Quest
 		openDoor(ICE_QUEEN_DOOR, world.getInstanceId());
 		addSpawn(INVISIBLE_NPC, 114394, -112383, -11200, 0, false, 0, false, TEMPLATE_ID);
 		return world.getInstanceId();
-	}
-	
-	public static void main(String[] args)
-	{
-		new IceQueensCastle();
 	}
 }

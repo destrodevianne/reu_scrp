@@ -1696,9 +1696,9 @@ public class Kamaloka extends Quest
 		return super.onKill(npc, player, isSummon);
 	}
 	
-	public Kamaloka(int questId, String name, String descr)
+	public Kamaloka()
 	{
-		super(questId, name, descr);
+		super(-1, Kamaloka.class.getSimpleName(), "instances");
 		addFirstTalkId(TELEPORTER);
 		addTalkId(TELEPORTER);
 		for (int cap : CAPTAINS)
@@ -1738,10 +1738,5 @@ public class Kamaloka extends Quest
 		{
 			addKillId(mob[0]);
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		new Kamaloka(-1, Kamaloka.class.getSimpleName(), "instances");
 	}
 }

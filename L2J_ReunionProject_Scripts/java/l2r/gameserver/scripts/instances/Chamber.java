@@ -170,7 +170,7 @@ public abstract class Chamber extends Quest
 	
 	protected Location[] ROOM_ENTER_POINTS;
 	
-	protected Chamber(int questId, String name, String descr, int instanceId, String instanceTemplateName, int entranceGKId, int roomGKFirstId, int roomGKLastId, int aenkinelId, int boxId)
+	public Chamber(int questId, String name, String descr, int instanceId, String instanceTemplateName, int entranceGKId, int roomGKFirstId, int roomGKLastId, int aenkinelId, int boxId)
 	{
 		super(questId, name, descr);
 		

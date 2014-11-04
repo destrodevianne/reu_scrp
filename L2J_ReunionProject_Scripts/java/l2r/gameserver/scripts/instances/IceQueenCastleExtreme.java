@@ -1309,9 +1309,4 @@ public class IceQueenCastleExtreme extends AbstractNpcAI
 			}
 		}
 	}
-	
-	public static void main(String[] args)
-	{
-		new IceQueenCastleExtreme();
-	}
 }

@@ -1322,9 +1322,4 @@ public class IceQueenCastleNormal extends AbstractNpcAI
 			}
 		}
 	}
-	
-	public static void main(String[] args)
-	{
-		new IceQueenCastleNormal();
-	}
 }

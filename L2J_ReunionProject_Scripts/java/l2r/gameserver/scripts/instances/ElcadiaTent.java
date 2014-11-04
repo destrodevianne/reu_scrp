@@ -147,17 +147,12 @@ public class ElcadiaTent extends Quest
 		return htmltext;
 	}
 	
-	public ElcadiaTent(int questId, String name, String descr)
+	public ElcadiaTent()
 	{
-		super(questId, name, descr);
+		super(-1, qn, "instances");
 		
 		addStartNpc(Gruff_looking_Man);
 		addTalkId(Gruff_looking_Man);
 		addTalkId(Elcadia);
-	}
-	
-	public static void main(String[] args)
-	{
-		new ElcadiaTent(-1, qn, "instances");
 	}
 }

@@ -299,7 +299,7 @@ public class Zaken extends AbstractNpcAI
 		
 	}
 	
-	private Zaken()
+	public Zaken()
 	{
 		super(Zaken.class.getSimpleName(), "instances");
 		addStartNpc(PATHFINDER);
@@ -1336,10 +1336,5 @@ public class Zaken extends AbstractNpcAI
 		sm.addInstanceName(tmpworld.getTemplateId());
 		InstanceManager.getInstance().setInstanceTime(player.getObjectId(), tmpworld.getTemplateId(), reuseTime.getTimeInMillis());
 		player.sendPacket(sm);
-	}
-	
-	public static void main(String[] args)
-	{
-		new Zaken();
 	}
 }

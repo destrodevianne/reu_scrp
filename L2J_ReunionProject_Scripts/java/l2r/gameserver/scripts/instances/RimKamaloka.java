@@ -30,9 +30,9 @@ import l2r.util.Rnd;
 
 public class RimKamaloka extends Quest
 {
-	public RimKamaloka(int questId, String name, String descr)
+	public RimKamaloka()
 	{
-		super(questId, name, descr);
+		super(-1, qn, "instances");
 		
 		addStartNpc(START_NPC);
 		// addFirstTalkId(START_NPC);
@@ -1595,10 +1595,5 @@ public class RimKamaloka extends Quest
 		}
 		
 		return super.onKill(npc, player, isPet);
-	}
-	
-	public static void main(String[] args)
-	{
-		new RimKamaloka(-1, qn, "instances");
 	}
 }
