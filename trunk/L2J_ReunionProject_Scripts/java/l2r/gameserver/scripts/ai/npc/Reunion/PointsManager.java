@@ -25,7 +25,7 @@ public final class PointsManager extends AbstractNpcAI
 	
 	private PointsManager()
 	{
-		super(PointsManager.class.getSimpleName(), "custom");
+		super(PointsManager.class.getSimpleName(), "ai/reunionNpc");
 		addFirstTalkId(NpcId);
 		addTalkId(NpcId);
 		addStartNpc(NpcId);
