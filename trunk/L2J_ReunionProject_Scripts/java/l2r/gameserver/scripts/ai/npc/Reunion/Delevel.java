@@ -1,4 +1,4 @@
-package l2r.gameserver.scripts.custom;
+package l2r.gameserver.scripts.ai.npc.Reunion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

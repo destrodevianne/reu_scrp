@@ -1,19 +1,19 @@
-package l2r.gameserver.scripts.custom;
+package l2r.gameserver.scripts.ai.npc.Reunion;
 
 import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.xml.ItemData;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.ExBrExtraUserInfo;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.network.serverpackets.UserInfo;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * @author -=DoctorNo=-
  */
-public final class PointsManager extends Quest
+public final class PointsManager extends AbstractNpcAI
 {
 	private static final int NpcId = 554;
 	private static final int REP_ITEM_ID = 40002; // item id used as payment for clan points
@@ -23,10 +23,9 @@ public final class PointsManager extends Quest
 	private static final int FAME_PRICE = 500; // payment price for fame points
 	private static final int FAME_SCORE = 500; // amount of fame points
 	
-	public PointsManager()
+	private PointsManager()
 	{
-		super(-1, "PointsManager", "custom");
-		
+		super(PointsManager.class.getSimpleName(), "custom");
 		addFirstTalkId(NpcId);
 		addTalkId(NpcId);
 		addStartNpc(NpcId);
@@ -79,12 +78,6 @@ public final class PointsManager extends Quest
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		final int npcId = npc.getId();
-		
-		if (player.getQuestState(getName()) == null)
-		{
-			newQuestState(player);
-		}
-		
 		if (npcId == NpcId)
 		{
 			String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/PointsManager/1.htm");
