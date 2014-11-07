@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.custom;
+package l2r.gameserver.scripts.ai.npc.Reunion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,13 +32,13 @@ import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.L2ClanMember;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.CreatureSay;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
 import l2r.gameserver.network.serverpackets.ShowBoard;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
-public class ClanSearcher extends Quest
+public class ClanSearcher extends AbstractNpcAI
 {
 	private static final int NpcId = 559;
 	private static final int paymentId = 57; // Item Id to get
@@ -46,10 +46,9 @@ public class ClanSearcher extends Quest
 	private static final int UPDATE_TIME = 60;
 	private static final int CLAN_PRESENTATION_DURATION = 604800000; // 604800000 = 1 week
 	
-	public ClanSearcher()
+	private ClanSearcher()
 	{
-		super(-1, "ClanSearcher", "custom");
-		
+		super(ClanSearcher.class.getSimpleName(), "custom");
 		addFirstTalkId(NpcId);
 		addTalkId(NpcId);
 		addStartNpc(NpcId);
@@ -68,7 +67,6 @@ public class ClanSearcher extends Quest
 		{
 			saveClanPresentation(event, npc, player);
 			showMoreClanInfo("moreinfo_" + player.getClan().getId(), npc, player);
-			
 		}
 		else if (event.startsWith("moreinfo_"))
 		{
@@ -102,11 +100,6 @@ public class ClanSearcher extends Quest
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		final int npcId = npc.getId();
-		if (player.getQuestState(getName()) == null)
-		{
-			newQuestState(player);
-		}
-		
 		if (npcId == NpcId)
 		{
 			String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/ClanSearcher/1.htm");

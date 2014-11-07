@@ -1,20 +1,19 @@
-package l2r.gameserver.scripts.custom;
+package l2r.gameserver.scripts.ai.npc.Reunion;
 
 import javolution.text.TextBuilder;
 import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.instancemanager.GrandBossManager;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.network.serverpackets.NpcHtmlMessage;
+import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * @author -=DoctorNo=-
  */
-public class GrandBossInfo extends Quest
+public class GrandBossInfo extends AbstractNpcAI
 {
 	private static final int NpcId = 543; // npc id here
-	private static String qn = "GrandBossInfo";
 	private static final int[] BOSSES =
 	{
 		29001,
@@ -26,10 +25,9 @@ public class GrandBossInfo extends Quest
 		29028
 	};
 	
-	public GrandBossInfo()
+	private GrandBossInfo()
 	{
-		super(-1, "GrandBossInfo", "custom");
-		
+		super(GrandBossInfo.class.getSimpleName(), "custom");
 		addFirstTalkId(NpcId);
 		addTalkId(NpcId);
 		addStartNpc(NpcId);
@@ -39,11 +37,6 @@ public class GrandBossInfo extends Quest
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		final int npcId = npc.getId();
-		if (player.getQuestState(qn) == null)
-		{
-			newQuestState(player);
-		}
-		
 		if (npcId == NpcId)
 		{
 			showRbInfo(player);
