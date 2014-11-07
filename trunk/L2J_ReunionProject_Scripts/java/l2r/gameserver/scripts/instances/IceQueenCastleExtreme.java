@@ -677,7 +677,14 @@ public class IceQueenCastleExtreme extends AbstractNpcAI
 	
 	private int getWorldStatus(L2PcInstance player)
 	{
-		return getWorld(player).getStatus();
+		try
+		{
+			return getWorld(player).getStatus();
+		}
+		catch (Exception e)
+		{
+			return 0;
+		}
 	}
 	
 	@Override
