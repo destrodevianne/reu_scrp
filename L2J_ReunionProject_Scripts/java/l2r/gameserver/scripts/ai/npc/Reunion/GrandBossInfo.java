@@ -27,7 +27,7 @@ public class GrandBossInfo extends AbstractNpcAI
 	
 	private GrandBossInfo()
 	{
-		super(GrandBossInfo.class.getSimpleName(), "custom");
+		super(GrandBossInfo.class.getSimpleName(), "ai/reunionNpc");
 		addFirstTalkId(NpcId);
 		addTalkId(NpcId);
 		addStartNpc(NpcId);

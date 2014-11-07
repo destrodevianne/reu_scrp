@@ -24,7 +24,7 @@ public class PremiumNpc extends Quest
 	
 	public PremiumNpc()
 	{
-		super(-1, "PremiumNpc", "custom");
+		super(-1, "PremiumNpc", "ai/reunionNpc");
 		
 		ConsumableItemId = PremiumServiceConfigs.PREMIUM_COIN;
 		addStartNpc(NpcId);

@@ -48,7 +48,7 @@ public class Delevel extends Quest
 	
 	public Delevel()
 	{
-		super(-1, "Delevel", "custom");
+		super(-1, "Delevel", "ai/reunionNpc");
 		
 		addStartNpc(NPC);
 		addFirstTalkId(NPC);

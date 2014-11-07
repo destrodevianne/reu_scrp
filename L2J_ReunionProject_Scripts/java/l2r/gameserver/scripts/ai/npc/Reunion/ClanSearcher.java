@@ -48,7 +48,7 @@ public class ClanSearcher extends AbstractNpcAI
 	
 	private ClanSearcher()
 	{
-		super(ClanSearcher.class.getSimpleName(), "custom");
+		super(ClanSearcher.class.getSimpleName(), "ai/reunionNpc");
 		addFirstTalkId(NpcId);
 		addTalkId(NpcId);
 		addStartNpc(NpcId);
