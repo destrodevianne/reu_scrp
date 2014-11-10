@@ -11,8 +11,6 @@ import l2r.gameserver.util.Util;
 
 public class DwarvenOccupationChange extends Quest
 {
-	private static final String qn = "DwarvenOccupationChange";
-	
 	private static final Map<String, int[]> CLASSES1 = new HashMap<>();
 	private static final Map<String, int[]> CLASSES2 = new HashMap<>();
 	
@@ -165,40 +163,24 @@ public class DwarvenOccupationChange extends Quest
 		});
 	}
 	
-	public DwarvenOccupationChange(int questId, String name, String descr)
+	private DwarvenOccupationChange()
 	{
-		super(questId, name, descr);
-		
-		for (int npcId : BH_NPCS)
-		{
-			addStartNpc(npcId);
-			addTalkId(npcId);
-		}
-		
-		for (int npcId : WS_NPCS)
-		{
-			addStartNpc(npcId);
-			addTalkId(npcId);
-		}
-		
-		for (int npcId : SCAV_NPCS)
-		{
-			addStartNpc(npcId);
-			addTalkId(npcId);
-		}
-		
-		for (int npcId : ARTI_NPCS)
-		{
-			addStartNpc(npcId);
-			addTalkId(npcId);
-		}
+		super(-1, DwarvenOccupationChange.class.getSimpleName(), "ai/npc/VillageMasters");
+		addStartNpc(BH_NPCS);
+		addTalkId(BH_NPCS);
+		addStartNpc(WS_NPCS);
+		addTalkId(WS_NPCS);
+		addStartNpc(SCAV_NPCS);
+		addTalkId(SCAV_NPCS);
+		addStartNpc(ARTI_NPCS);
+		addTalkId(ARTI_NPCS);
 	}
 	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
-		final QuestState st = player.getQuestState(qn);
+		final QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return null;
@@ -303,7 +285,7 @@ public class DwarvenOccupationChange extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			st = newQuestState(player);
@@ -399,6 +381,6 @@ public class DwarvenOccupationChange extends Quest
 	
 	public static void main(String[] args)
 	{
-		new DwarvenOccupationChange(-1, qn, "ai/npc/VillageMasters");
+		new DwarvenOccupationChange();
 	}
 }
