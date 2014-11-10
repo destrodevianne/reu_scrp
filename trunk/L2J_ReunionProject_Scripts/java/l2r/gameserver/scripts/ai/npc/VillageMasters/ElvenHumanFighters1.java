@@ -10,8 +10,6 @@ import l2r.gameserver.util.Util;
 
 public class ElvenHumanFighters1 extends Quest
 {
-	private static final String qn = "ElvenHumanFighters1";
-	
 	// NPCs
 	private static int[] NPCS =
 	{
@@ -80,10 +78,9 @@ public class ElvenHumanFighters1 extends Quest
 		}
 	};
 	
-	public ElvenHumanFighters1(int questId, String name, String descr)
+	private ElvenHumanFighters1()
 	{
-		super(questId, name, descr);
-		
+		super(-1, ElvenHumanFighters1.class.getSimpleName(), "ai/npc/VillageMasters");
 		addStartNpc(NPCS);
 		addTalkId(NPCS);
 	}
@@ -91,7 +88,7 @@ public class ElvenHumanFighters1 extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return getNoQuestMsg(player);
@@ -137,7 +134,7 @@ public class ElvenHumanFighters1 extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			st = newQuestState(player);
@@ -185,6 +182,6 @@ public class ElvenHumanFighters1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new ElvenHumanFighters1(-1, qn, "ai/npc/VillageMasters");
+		new ElvenHumanFighters1();
 	}
 }

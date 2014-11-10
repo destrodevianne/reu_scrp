@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -32,10 +32,8 @@ import l2r.gameserver.util.Util;
  * Original Jython script by DraX and DrLecter
  * @author nonom
  */
-public class DarkElvenChange1 extends Quest
+public final class DarkElvenChange1 extends Quest
 {
-	private static final String qn = "DarkElvenChange1";
-	
 	// NPCs
 	private static int[] NPCS =
 	{
@@ -44,16 +42,13 @@ public class DarkElvenChange1 extends Quest
 		30462, // Tronix
 		32160, // Devon
 	};
-	
 	// Items
 	private static int GAZE_OF_ABYSS = 1244;
 	private static int IRON_HEART = 1252;
 	private static int JEWEL_OF_DARKNESS = 1261;
 	private static int ORB_OF_ABYSS = 1270;
-	
 	// Rewards
 	private static int SHADOW_WEAPON_COUPON_DGRADE = 8869;
-	
 	// @formatter:off
 	private static int[][] CLASSES = 
 	{
@@ -63,10 +58,9 @@ public class DarkElvenChange1 extends Quest
 		{ 42, 38, 27, 28, 29, 30, ORB_OF_ABYSS }, // SO
 	};
 	// @formatter:on
-	
-	public DarkElvenChange1(int questId, String name, String descr)
+	private DarkElvenChange1()
 	{
-		super(questId, name, descr);
+		super(-1, DarkElvenChange1.class.getSimpleName(), "ai/npc/VillageMasters");
 		addStartNpc(NPCS);
 		addTalkId(NPCS);
 	}
@@ -74,7 +68,7 @@ public class DarkElvenChange1 extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return getNoQuestMsg(player);
@@ -120,7 +114,7 @@ public class DarkElvenChange1 extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			st = newQuestState(player);
@@ -169,6 +163,6 @@ public class DarkElvenChange1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new DarkElvenChange1(-1, qn, "ai/npc/VillageMasters");
+		new DarkElvenChange1();
 	}
 }
