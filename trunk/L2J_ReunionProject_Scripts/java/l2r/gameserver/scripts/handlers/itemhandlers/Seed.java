@@ -52,6 +52,12 @@ public class Seed implements IItemHandler
 		}
 		
 		final L2Object tgt = playable.getTarget();
+		if (tgt == null)
+		{
+			playable.sendPacket(SystemMessageId.INCORRECT_TARGET);
+			return false;
+		}
+		
 		if (!tgt.isNpc())
 		{
 			playable.sendPacket(SystemMessageId.INCORRECT_TARGET);
