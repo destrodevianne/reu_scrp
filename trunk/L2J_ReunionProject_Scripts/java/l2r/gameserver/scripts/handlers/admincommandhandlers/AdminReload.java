@@ -47,7 +47,7 @@ import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.scripting.L2ScriptEngineManager;
 import l2r.gameserver.util.Util;
-import gr.reunion.configsEngine.CustomConfigController;
+import gr.reunion.configsEngine.ReunionConfigController;
 
 /**
  * @author Nos
@@ -79,7 +79,7 @@ public class AdminReload implements IAdminCommandHandler
 				case "config":
 				{
 					Config.load();
-					CustomConfigController.getInstance().reloadCustomConfigs();
+					ReunionConfigController.getInstance().reloadReunionConfigs();
 					AdminData.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded Configs.");
 					break;
 				}
