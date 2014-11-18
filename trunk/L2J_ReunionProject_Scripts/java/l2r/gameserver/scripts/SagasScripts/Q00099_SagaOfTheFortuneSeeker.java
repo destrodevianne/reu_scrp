@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Fortune Seeker (99)
  * @author Emperorc
  */
-public class Q00099_SagaOfTheFortuneSeeker extends SagasSuperClass
+public class Q00099_SagaOfTheFortuneSeeker extends AbstractSagaQuest
 {
 	public Q00099_SagaOfTheFortuneSeeker()
 	{
 		super(99, Q00099_SagaOfTheFortuneSeeker.class.getSimpleName(), "Saga of the Fortune Seeker");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31594,
 			31623,

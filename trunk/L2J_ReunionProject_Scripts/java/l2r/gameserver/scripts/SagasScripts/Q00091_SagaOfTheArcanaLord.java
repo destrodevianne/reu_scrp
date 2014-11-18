@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Arcana Lord (91)
  * @author Emperorc
  */
-public class Q00091_SagaOfTheArcanaLord extends SagasSuperClass
+public class Q00091_SagaOfTheArcanaLord extends AbstractSagaQuest
 {
 	public Q00091_SagaOfTheArcanaLord()
 	{
 		super(91, Q00091_SagaOfTheArcanaLord.class.getSimpleName(), "Saga of the Arcana Lord");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31605,
 			31622,

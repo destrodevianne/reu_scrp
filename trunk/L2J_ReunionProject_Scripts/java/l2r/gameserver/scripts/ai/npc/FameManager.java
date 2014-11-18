@@ -16,13 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package l2r.gameserver.scripts.ai.npc.Reunion;
+package l2r.gameserver.scripts.ai.npc;
 
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.UserInfo;
-import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 
 /**
  * Fame Manager AI.
@@ -45,7 +44,7 @@ public class FameManager extends AbstractNpcAI
 	
 	private FameManager()
 	{
-		super(FameManager.class.getSimpleName(), "ai/reunionNpc");
+		super(FameManager.class.getSimpleName(), "ai/npc");
 		addStartNpc(FAME_MANAGER);
 		addTalkId(FAME_MANAGER);
 		addFirstTalkId(FAME_MANAGER);

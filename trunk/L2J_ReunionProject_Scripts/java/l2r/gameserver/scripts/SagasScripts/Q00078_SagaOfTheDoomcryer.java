@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Doomcryer (78)
  * @author Emperorc
  */
-public class Q00078_SagaOfTheDoomcryer extends SagasSuperClass
+public class Q00078_SagaOfTheDoomcryer extends AbstractSagaQuest
 {
 	public Q00078_SagaOfTheDoomcryer()
 	{
 		super(78, Q00078_SagaOfTheDoomcryer.class.getSimpleName(), "Saga of the Doomcryer");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31336,
 			31624,

@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Maestro (100)
  * @author Emperorc
  */
-public class Q00100_SagaOfTheMaestro extends SagasSuperClass
+public class Q00100_SagaOfTheMaestro extends AbstractSagaQuest
 {
 	public Q00100_SagaOfTheMaestro()
 	{
 		super(100, Q00100_SagaOfTheMaestro.class.getSimpleName(), "Saga of the Maestro");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31592,
 			31273,

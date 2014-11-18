@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Adventurer (79)
  * @author Emperorc
  */
-public class Q00079_SagaOfTheAdventurer extends SagasSuperClass
+public class Q00079_SagaOfTheAdventurer extends AbstractSagaQuest
 {
 	public Q00079_SagaOfTheAdventurer()
 	{
 		super(79, Q00079_SagaOfTheAdventurer.class.getSimpleName(), "Saga of the Adventurer");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31603,
 			31584,

@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of Eva's Templar (71)
  * @author Emperorc
  */
-public class Q00071_SagaOfEvasTemplar extends SagasSuperClass
+public class Q00071_SagaOfEvasTemplar extends AbstractSagaQuest
 {
 	public Q00071_SagaOfEvasTemplar()
 	{
 		super(71, Q00071_SagaOfEvasTemplar.class.getSimpleName(), "Saga of Eva's Templar");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30852,
 			31624,

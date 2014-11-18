@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Sagittarius (82)
  * @author Emperorc
  */
-public class Q00082_SagaOfTheSagittarius extends SagasSuperClass
+public class Q00082_SagaOfTheSagittarius extends AbstractSagaQuest
 {
 	public Q00082_SagaOfTheSagittarius()
 	{
 		super(82, Q00082_SagaOfTheSagittarius.class.getSimpleName(), "Saga of the Sagittarius");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30702,
 			31627,

@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Soul Hound (68)
  * @author Emperorc
  */
-public class Q00068_SagaOfTheSoulHound extends SagasSuperClass
+public class Q00068_SagaOfTheSoulHound extends AbstractSagaQuest
 {
 	public Q00068_SagaOfTheSoulHound()
 	{
 		super(68, Q00068_SagaOfTheSoulHound.class.getSimpleName(), "Saga of the Soul Hound");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			32138,
 			31272,

@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Titan (75)
  * @author Emperorc
  */
-public class Q00075_SagaOfTheTitan extends SagasSuperClass
+public class Q00075_SagaOfTheTitan extends AbstractSagaQuest
 {
 	public Q00075_SagaOfTheTitan()
 	{
 		super(75, Q00075_SagaOfTheTitan.class.getSimpleName(), "Saga of the Titan");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31327,
 			31624,

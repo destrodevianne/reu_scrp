@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Grand Khavatari (76)
  * @author Emperorc
  */
-public class Q00076_SagaOfTheGrandKhavatari extends SagasSuperClass
+public class Q00076_SagaOfTheGrandKhavatari extends AbstractSagaQuest
 {
 	public Q00076_SagaOfTheGrandKhavatari()
 	{
 		super(76, Q00076_SagaOfTheGrandKhavatari.class.getSimpleName(), "Saga of the Grand Khavatari");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31339,
 			31624,

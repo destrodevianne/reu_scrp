@@ -27,7 +27,7 @@ import l2r.gameserver.model.quest.QuestState;
  * Saga of the Duelist (73)
  * @author Emperorc
  */
-public class Q00073_SagaOfTheDuelist extends SagasSuperClass
+public class Q00073_SagaOfTheDuelist extends AbstractSagaQuest
 {
 	/**
 	 * Third Class Transfer Quest - Duelist: The quest asks for "Top-grade Meat" which can now be acquired directly through NPC Tunatun, instead of through an additional quest from NPC Tunatun.
@@ -38,7 +38,7 @@ public class Q00073_SagaOfTheDuelist extends SagasSuperClass
 	public Q00073_SagaOfTheDuelist()
 	{
 		super(73, Q00073_SagaOfTheDuelist.class.getSimpleName(), "Saga of the Duelist");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30849,
 			31624,

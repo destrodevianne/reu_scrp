@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Moonlight Sentinel (83)
  * @author Emperorc
  */
-public class Q00083_SagaOfTheMoonlightSentinel extends SagasSuperClass
+public class Q00083_SagaOfTheMoonlightSentinel extends AbstractSagaQuest
 {
 	public Q00083_SagaOfTheMoonlightSentinel()
 	{
 		super(83, Q00083_SagaOfTheMoonlightSentinel.class.getSimpleName(), "Saga of the Moonlight Sentinel");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30702,
 			31627,
