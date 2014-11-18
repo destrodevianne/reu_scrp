@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Cardinal (85)
  * @author Emperorc
  */
-public class Q00085_SagaOfTheCardinal extends SagasSuperClass
+public class Q00085_SagaOfTheCardinal extends AbstractSagaQuest
 {
 	public Q00085_SagaOfTheCardinal()
 	{
 		super(85, Q00085_SagaOfTheCardinal.class.getSimpleName(), "Saga of the Cardinal");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30191,
 			31626,

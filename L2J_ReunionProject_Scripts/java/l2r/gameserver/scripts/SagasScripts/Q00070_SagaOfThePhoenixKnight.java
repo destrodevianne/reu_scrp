@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Phoenix Knight (70)
  * @author Emperorc
  */
-public class Q00070_SagaOfThePhoenixKnight extends SagasSuperClass
+public class Q00070_SagaOfThePhoenixKnight extends AbstractSagaQuest
 {
 	public Q00070_SagaOfThePhoenixKnight()
 	{
 		super(70, Q00070_SagaOfThePhoenixKnight.class.getSimpleName(), "Saga of the Phoenix Knight");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30849,
 			31624,

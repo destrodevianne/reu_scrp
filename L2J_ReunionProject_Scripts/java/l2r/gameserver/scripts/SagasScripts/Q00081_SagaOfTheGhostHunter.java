@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Ghost Hunter (81)
  * @author Emperorc
  */
-public class Q00081_SagaOfTheGhostHunter extends SagasSuperClass
+public class Q00081_SagaOfTheGhostHunter extends AbstractSagaQuest
 {
 	public Q00081_SagaOfTheGhostHunter()
 	{
 		super(81, Q00081_SagaOfTheGhostHunter.class.getSimpleName(), "Saga of the Ghost Hunter");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31603,
 			31624,

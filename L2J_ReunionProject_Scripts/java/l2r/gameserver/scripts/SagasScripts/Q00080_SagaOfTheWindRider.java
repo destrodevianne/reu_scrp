@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Wind Rider (80)
  * @author Emperorc
  */
-public class Q00080_SagaOfTheWindRider extends SagasSuperClass
+public class Q00080_SagaOfTheWindRider extends AbstractSagaQuest
 {
 	public Q00080_SagaOfTheWindRider()
 	{
 		super(80, Q00080_SagaOfTheWindRider.class.getSimpleName(), "Saga of the Wind Rider");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31603,
 			31624,

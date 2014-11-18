@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Trickster (69)
  * @author Emperorc
  */
-public class Q00069_SagaOfTheTrickster extends SagasSuperClass
+public class Q00069_SagaOfTheTrickster extends AbstractSagaQuest
 {
 	public Q00069_SagaOfTheTrickster()
 	{
 		super(69, Q00069_SagaOfTheTrickster.class.getSimpleName(), "Saga of the Trickster");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			32138,
 			31270,

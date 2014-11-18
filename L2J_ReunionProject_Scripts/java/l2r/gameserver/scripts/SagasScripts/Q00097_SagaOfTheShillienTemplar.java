@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Shillien Templar (97)
  * @author Emperorc
  */
-public class Q00097_SagaOfTheShillienTemplar extends SagasSuperClass
+public class Q00097_SagaOfTheShillienTemplar extends AbstractSagaQuest
 {
 	public Q00097_SagaOfTheShillienTemplar()
 	{
 		super(97, Q00097_SagaOfTheShillienTemplar.class.getSimpleName(), "Saga of the Shillien Templar");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31580,
 			31623,

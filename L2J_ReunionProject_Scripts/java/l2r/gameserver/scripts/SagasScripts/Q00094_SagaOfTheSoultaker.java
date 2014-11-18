@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Soultaker (94)
  * @author Emperorc
  */
-public class Q00094_SagaOfTheSoultaker extends SagasSuperClass
+public class Q00094_SagaOfTheSoultaker extends AbstractSagaQuest
 {
 	public Q00094_SagaOfTheSoultaker()
 	{
 		super(94, Q00094_SagaOfTheSoultaker.class.getSimpleName(), "Saga of the Soultaker");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30832,
 			31623,

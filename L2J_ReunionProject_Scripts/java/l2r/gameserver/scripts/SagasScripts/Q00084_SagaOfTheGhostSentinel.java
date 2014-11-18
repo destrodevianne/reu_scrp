@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Ghost Sentinel (84)
  * @author Emperorc
  */
-public class Q00084_SagaOfTheGhostSentinel extends SagasSuperClass
+public class Q00084_SagaOfTheGhostSentinel extends AbstractSagaQuest
 {
 	public Q00084_SagaOfTheGhostSentinel()
 	{
 		super(84, Q00084_SagaOfTheGhostSentinel.class.getSimpleName(), "Saga of the Ghost Sentinel");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30702,
 			31587,

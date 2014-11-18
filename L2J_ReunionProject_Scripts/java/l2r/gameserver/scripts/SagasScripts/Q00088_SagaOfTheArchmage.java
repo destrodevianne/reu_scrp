@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Archmage (88)
  * @author Emperorc
  */
-public class Q00088_SagaOfTheArchmage extends SagasSuperClass
+public class Q00088_SagaOfTheArchmage extends AbstractSagaQuest
 {
 	public Q00088_SagaOfTheArchmage()
 	{
 		super(88, Q00088_SagaOfTheArchmage.class.getSimpleName(), "Saga of the Archmage");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30176,
 			31627,

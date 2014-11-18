@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Spectral Master (93)
  * @author Emperorc
  */
-public class Q00093_SagaOfTheSpectralMaster extends SagasSuperClass
+public class Q00093_SagaOfTheSpectralMaster extends AbstractSagaQuest
 {
 	public Q00093_SagaOfTheSpectralMaster()
 	{
 		super(93, Q00093_SagaOfTheSpectralMaster.class.getSimpleName(), "Saga of the Spectral Master");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30175,
 			31287,

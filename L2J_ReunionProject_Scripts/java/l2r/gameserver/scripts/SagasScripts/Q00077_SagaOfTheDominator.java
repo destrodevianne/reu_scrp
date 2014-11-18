@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Dominator (77)
  * @author Emperorc
  */
-public class Q00077_SagaOfTheDominator extends SagasSuperClass
+public class Q00077_SagaOfTheDominator extends AbstractSagaQuest
 {
 	public Q00077_SagaOfTheDominator()
 	{
 		super(77, Q00077_SagaOfTheDominator.class.getSimpleName(), "Saga of the Dominator");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31336,
 			31624,

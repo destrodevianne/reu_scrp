@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Sword Muse (72)
  * @author Emperorc
  */
-public class Q00072_SagaOfTheSwordMuse extends SagasSuperClass
+public class Q00072_SagaOfTheSwordMuse extends AbstractSagaQuest
 {
 	public Q00072_SagaOfTheSwordMuse()
 	{
 		super(72, Q00072_SagaOfTheSwordMuse.class.getSimpleName(), "Saga of the Sword Muse");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30853,
 			31624,

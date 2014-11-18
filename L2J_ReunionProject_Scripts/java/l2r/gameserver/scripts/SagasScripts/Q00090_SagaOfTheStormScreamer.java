@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Storm Screamer (90)
  * @author Emperorc
  */
-public class Q00090_SagaOfTheStormScreamer extends SagasSuperClass
+public class Q00090_SagaOfTheStormScreamer extends AbstractSagaQuest
 {
 	public Q00090_SagaOfTheStormScreamer()
 	{
 		super(90, Q00090_SagaOfTheStormScreamer.class.getSimpleName(), "Saga of the Storm Screamer");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30175,
 			31627,

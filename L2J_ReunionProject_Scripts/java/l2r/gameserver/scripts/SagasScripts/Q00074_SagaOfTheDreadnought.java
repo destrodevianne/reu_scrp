@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Dreadnought (74)
  * @author Emperorc
  */
-public class Q00074_SagaOfTheDreadnought extends SagasSuperClass
+public class Q00074_SagaOfTheDreadnought extends AbstractSagaQuest
 {
 	public Q00074_SagaOfTheDreadnought()
 	{
 		super(74, Q00074_SagaOfTheDreadnought.class.getSimpleName(), "Saga of the Dreadnought");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			30850,
 			31624,

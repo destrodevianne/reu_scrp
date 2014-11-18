@@ -24,12 +24,12 @@ import l2r.gameserver.model.Location;
  * Saga of the Hell Knight (95)
  * @author Emperorc
  */
-public class Q00095_SagaOfTheHellKnight extends SagasSuperClass
+public class Q00095_SagaOfTheHellKnight extends AbstractSagaQuest
 {
 	public Q00095_SagaOfTheHellKnight()
 	{
 		super(95, Q00095_SagaOfTheHellKnight.class.getSimpleName(), "Saga of the Hell Knight");
-		NPC = new int[]
+		_npc = new int[]
 		{
 			31582,
 			31623,

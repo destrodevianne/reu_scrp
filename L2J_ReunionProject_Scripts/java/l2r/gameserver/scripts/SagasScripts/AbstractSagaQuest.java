@@ -25,7 +25,6 @@ import java.util.Map;
 
 import l2r.Config;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.L2Party;
 import l2r.gameserver.model.L2World;
@@ -41,20 +40,19 @@ import l2r.gameserver.network.serverpackets.MagicSkillUse;
 import l2r.gameserver.network.serverpackets.NpcSay;
 
 /**
- * Saga quests superclass.
+ * Abstract Saga quest.
  * @author Kerberos
  */
-public class SagasSuperClass extends Quest
+public abstract class AbstractSagaQuest extends Quest
 {
-	private static List<Quest> _scripts = new ArrayList<>();
-	public int[] NPC = {};
-	public int[] Items = {};
-	public int[] Mob = {};
-	public int[] classid = {};
-	public int[] prevclass = {};
-	public Location[] npcSpawnLocations = {};
-	public String[] Text = {};
-	private static final Map<L2Npc, Integer> _spawnList = new HashMap<>();
+	protected int[] _npc;
+	protected int[] Items;
+	protected int[] Mob;
+	protected int[] classid;
+	protected int[] prevclass;
+	protected Location[] npcSpawnLocations;
+	protected String[] Text;
+	private static final Map<L2Npc, Integer> SPAWN_LIST = new HashMap<>();
 	// @formatter:off
 	private static int[][] QuestClass =
 	{
@@ -66,9 +64,9 @@ public class SagasSuperClass extends Quest
 	};
 	// @formatter:on
 	
-	public SagasSuperClass(int id, String name, String descr)
+	public AbstractSagaQuest(int questId, String name, String descr)
 	{
-		super(id, name, descr);
+		super(questId, name, descr);
 	}
 	
 	private QuestState findQuest(L2PcInstance player)
@@ -98,9 +96,9 @@ public class SagasSuperClass extends Quest
 	{
 		L2PcInstance player = null;
 		QuestState st = null;
-		if (_spawnList.containsKey(npc))
+		if (SPAWN_LIST.containsKey(npc))
 		{
-			player = L2World.getInstance().getPlayer(_spawnList.get(npc));
+			player = L2World.getInstance().getPlayer(SPAWN_LIST.get(npc));
 			if (player != null)
 			{
 				st = player.getQuestState(getName());
@@ -327,7 +325,7 @@ public class SagasSuperClass extends Quest
 					if (st.getInt("Quest0") == 0)
 					{
 						L2Npc Mob_3 = addSpawn(Mob[2], npcSpawnLocations[1], false, 0);
-						L2Npc Mob_2 = addSpawn(NPC[4], npcSpawnLocations[2], false, 0);
+						L2Npc Mob_2 = addSpawn(_npc[4], npcSpawnLocations[2], false, 0);
 						addSpawn(st, Mob_3);
 						addSpawn(st, Mob_2);
 						st.set("Mob_2", String.valueOf(Mob_2.getObjectId()));
@@ -489,7 +487,7 @@ public class SagasSuperClass extends Quest
 		int npcId = npc.getId();
 		if (st != null)
 		{
-			if (npcId == NPC[4])
+			if (npcId == _npc[4])
 			{
 				int cond = st.getCond();
 				if (cond == 17)
@@ -716,9 +714,9 @@ public class SagasSuperClass extends Quest
 	@Override
 	public String onSkillSee(L2Npc npc, L2PcInstance player, L2Skill skill, L2Object[] targets, boolean isSummon)
 	{
-		if (_spawnList.containsKey(npc) && (_spawnList.get(npc) != player.getObjectId()))
+		if (SPAWN_LIST.containsKey(npc) && (SPAWN_LIST.get(npc) != player.getObjectId()))
 		{
-			L2PcInstance quest_player = (L2PcInstance) L2World.getInstance().findObject(_spawnList.get(npc));
+			L2PcInstance quest_player = (L2PcInstance) L2World.getInstance().findObject(SPAWN_LIST.get(npc));
 			if (quest_player == null)
 			{
 				return null;
@@ -751,7 +749,7 @@ public class SagasSuperClass extends Quest
 		if (st != null)
 		{
 			int npcId = npc.getId();
-			if ((npcId == NPC[0]) && st.isCompleted())
+			if ((npcId == _npc[0]) && st.isCompleted())
 			{
 				htmltext = getAlreadyCompletedMsg(player);
 			}
@@ -760,33 +758,33 @@ public class SagasSuperClass extends Quest
 				switch (st.getCond())
 				{
 					case 0:
-						if (npcId == NPC[0])
+						if (npcId == _npc[0])
 						{
 							htmltext = "0-01.htm";
 						}
 						break;
 					case 1:
-						if (npcId == NPC[0])
+						if (npcId == _npc[0])
 						{
 							htmltext = "0-04.htm";
 						}
-						else if (npcId == NPC[2])
+						else if (npcId == _npc[2])
 						{
 							htmltext = "2-01.htm";
 						}
 						break;
 					case 2:
-						if (npcId == NPC[2])
+						if (npcId == _npc[2])
 						{
 							htmltext = "2-02.htm";
 						}
-						else if (npcId == NPC[1])
+						else if (npcId == _npc[1])
 						{
 							htmltext = "1-01.htm";
 						}
 						break;
 					case 3:
-						if ((npcId == NPC[1]) && hasQuestItems(player, Items[0]))
+						if ((npcId == _npc[1]) && hasQuestItems(player, Items[0]))
 						{
 							if ((Items[11] == 0) || hasQuestItems(player, Items[11]))
 							{
@@ -799,70 +797,70 @@ public class SagasSuperClass extends Quest
 						}
 						break;
 					case 4:
-						if (npcId == NPC[1])
+						if (npcId == _npc[1])
 						{
 							htmltext = "1-04.htm";
 						}
-						else if (npcId == NPC[2])
+						else if (npcId == _npc[2])
 						{
 							htmltext = "2-03.htm";
 						}
 						break;
 					case 5:
-						if (npcId == NPC[2])
+						if (npcId == _npc[2])
 						{
 							htmltext = "2-04.htm";
 						}
-						else if (npcId == NPC[5])
+						else if (npcId == _npc[5])
 						{
 							htmltext = "5-01.htm";
 						}
 						break;
 					case 6:
-						if (npcId == NPC[5])
+						if (npcId == _npc[5])
 						{
 							htmltext = "5-03.htm";
 						}
-						else if (npcId == NPC[6])
+						else if (npcId == _npc[6])
 						{
 							htmltext = "6-01.htm";
 						}
 						break;
 					case 7:
-						if (npcId == NPC[6])
+						if (npcId == _npc[6])
 						{
 							htmltext = "6-02.htm";
 						}
 						break;
 					case 8:
-						if (npcId == NPC[6])
+						if (npcId == _npc[6])
 						{
 							htmltext = "6-04.htm";
 						}
-						else if (npcId == NPC[7])
+						else if (npcId == _npc[7])
 						{
 							htmltext = "7-01.htm";
 						}
 						break;
 					case 9:
-						if (npcId == NPC[7])
+						if (npcId == _npc[7])
 						{
 							htmltext = "7-05.htm";
 						}
 						break;
 					case 10:
-						if (npcId == NPC[7])
+						if (npcId == _npc[7])
 						{
 							htmltext = "7-07.htm";
 						}
-						else if (npcId == NPC[3])
+						else if (npcId == _npc[3])
 						{
 							htmltext = "3-01.htm";
 						}
 						break;
 					case 11:
 					case 12:
-						if (npcId == NPC[3])
+						if (npcId == _npc[3])
 						{
 							if (hasQuestItems(player, Items[2]))
 							{
@@ -875,69 +873,69 @@ public class SagasSuperClass extends Quest
 						}
 						break;
 					case 13:
-						if (npcId == NPC[3])
+						if (npcId == _npc[3])
 						{
 							htmltext = "3-06.htm";
 						}
-						else if (npcId == NPC[8])
+						else if (npcId == _npc[8])
 						{
 							htmltext = "8-01.htm";
 						}
 						break;
 					case 14:
-						if (npcId == NPC[8])
+						if (npcId == _npc[8])
 						{
 							htmltext = "8-03.htm";
 						}
-						else if (npcId == NPC[11])
+						else if (npcId == _npc[11])
 						{
 							htmltext = "11-01.htm";
 						}
 						break;
 					case 15:
-						if (npcId == NPC[11])
+						if (npcId == _npc[11])
 						{
 							htmltext = "11-02.htm";
 						}
-						else if (npcId == NPC[9])
+						else if (npcId == _npc[9])
 						{
 							htmltext = "9-01.htm";
 						}
 						break;
 					case 16:
-						if (npcId == NPC[9])
+						if (npcId == _npc[9])
 						{
 							htmltext = "9-02.htm";
 						}
 						break;
 					case 17:
-						if (npcId == NPC[9])
+						if (npcId == _npc[9])
 						{
 							htmltext = "9-04.htm";
 						}
-						else if (npcId == NPC[10])
+						else if (npcId == _npc[10])
 						{
 							htmltext = "10-01.htm";
 						}
 						break;
 					case 18:
-						if (npcId == NPC[10])
+						if (npcId == _npc[10])
 						{
 							htmltext = "10-05.htm";
 						}
 						break;
 					case 19:
-						if (npcId == NPC[10])
+						if (npcId == _npc[10])
 						{
 							htmltext = "10-07.htm";
 						}
-						else if (npcId == NPC[0])
+						else if (npcId == _npc[0])
 						{
 							htmltext = "0-06.htm";
 						}
 						break;
 					case 20:
-						if (npcId == NPC[0])
+						if (npcId == _npc[0])
 						{
 							if (player.getLevel() >= 76)
 							{
@@ -973,11 +971,11 @@ public class SagasSuperClass extends Quest
 	
 	public void registerNPCs()
 	{
-		addStartNpc(NPC[0]);
+		addStartNpc(_npc[0]);
 		addAttackId(Mob[2], Mob[1]);
 		addSkillSeeId(Mob[1]);
-		addFirstTalkId(NPC[4]);
-		addTalkId(NPC);
+		addFirstTalkId(_npc[4]);
+		addTalkId(_npc);
 		addKillId(Mob);
 		final int[] questItemIds = Items.clone();
 		questItemIds[0] = 0;
@@ -1002,24 +1000,9 @@ public class SagasSuperClass extends Quest
 		}
 	}
 	
-	@Override
-	public boolean unload()
-	{
-		for (Quest script : _scripts)
-		{
-			if (script == null)
-			{
-				continue;
-			}
-			QuestManager.getInstance().removeScript(script);
-		}
-		_scripts.clear();
-		return super.unload();
-	}
-	
 	private static void addSpawn(QuestState st, L2Npc mob)
 	{
-		_spawnList.put(mob, st.getPlayer().getObjectId());
+		SPAWN_LIST.put(mob, st.getPlayer().getObjectId());
 	}
 	
 	private static void autoChat(L2Npc npc, String text)
@@ -1035,61 +1018,19 @@ public class SagasSuperClass extends Quest
 	
 	private static void DeleteSpawn(QuestState st, L2Npc npc)
 	{
-		if (_spawnList.containsKey(npc))
+		if (SPAWN_LIST.containsKey(npc))
 		{
-			_spawnList.remove(npc);
+			SPAWN_LIST.remove(npc);
 			npc.deleteMe();
 		}
 	}
 	
 	private static L2Npc FindSpawn(L2PcInstance player, L2Npc npc)
 	{
-		if (_spawnList.containsKey(npc) && (_spawnList.get(npc) == player.getObjectId()))
+		if (SPAWN_LIST.containsKey(npc) && (SPAWN_LIST.get(npc) == player.getObjectId()))
 		{
 			return npc;
 		}
 		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		// initialize superclass
-		new SagasSuperClass(-1, SagasSuperClass.class.getSimpleName(), "Saga's SuperClass");
-		
-		// initialize subclasses
-		_scripts.add(new Q00067_SagaOfTheDoombringer());
-		_scripts.add(new Q00068_SagaOfTheSoulHound());
-		_scripts.add(new Q00069_SagaOfTheTrickster());
-		_scripts.add(new Q00070_SagaOfThePhoenixKnight());
-		_scripts.add(new Q00071_SagaOfEvasTemplar());
-		_scripts.add(new Q00072_SagaOfTheSwordMuse());
-		_scripts.add(new Q00073_SagaOfTheDuelist());
-		_scripts.add(new Q00074_SagaOfTheDreadnought());
-		_scripts.add(new Q00075_SagaOfTheTitan());
-		_scripts.add(new Q00076_SagaOfTheGrandKhavatari());
-		_scripts.add(new Q00077_SagaOfTheDominator());
-		_scripts.add(new Q00078_SagaOfTheDoomcryer());
-		_scripts.add(new Q00079_SagaOfTheAdventurer());
-		_scripts.add(new Q00080_SagaOfTheWindRider());
-		_scripts.add(new Q00081_SagaOfTheGhostHunter());
-		_scripts.add(new Q00082_SagaOfTheSagittarius());
-		_scripts.add(new Q00083_SagaOfTheMoonlightSentinel());
-		_scripts.add(new Q00084_SagaOfTheGhostSentinel());
-		_scripts.add(new Q00085_SagaOfTheCardinal());
-		_scripts.add(new Q00086_SagaOfTheHierophant());
-		_scripts.add(new Q00087_SagaOfEvasSaint());
-		_scripts.add(new Q00088_SagaOfTheArchmage());
-		_scripts.add(new Q00089_SagaOfTheMysticMuse());
-		_scripts.add(new Q00090_SagaOfTheStormScreamer());
-		_scripts.add(new Q00091_SagaOfTheArcanaLord());
-		_scripts.add(new Q00092_SagaOfTheElementalMaster());
-		_scripts.add(new Q00093_SagaOfTheSpectralMaster());
-		_scripts.add(new Q00094_SagaOfTheSoultaker());
-		_scripts.add(new Q00095_SagaOfTheHellKnight());
-		_scripts.add(new Q00096_SagaOfTheSpectralDancer());
-		_scripts.add(new Q00097_SagaOfTheShillienTemplar());
-		_scripts.add(new Q00098_SagaOfTheShillienSaint());
-		_scripts.add(new Q00099_SagaOfTheFortuneSeeker());
-		_scripts.add(new Q00100_SagaOfTheMaestro());
 	}
 }
