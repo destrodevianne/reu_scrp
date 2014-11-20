@@ -98,7 +98,7 @@ public class Q00423_TakeYourBestShot extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = "<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
-		QuestState st = player.getQuestState(getName());
+		QuestState st = getQuestState(player, true);
 		if (st == null)
 		{
 			return htmltext;

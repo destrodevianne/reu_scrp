@@ -102,39 +102,6 @@ public class Q00254_LegendaryTales extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
-	{
-		String htmltext = getNoQuestMsg(player);
-		final QuestState st = player.getQuestState(getName());
-		if (st == null)
-		{
-			return htmltext;
-		}
-		
-		switch (st.getState())
-		{
-			case State.CREATED:
-				htmltext = (player.getLevel() < MIN_LEVEL) ? "30754-00.htm" : "30754-01.htm";
-				break;
-			case State.STARTED:
-				long count = getQuestItemsCount(player, LARGE_DRAGON_SKULL);
-				if (st.isCond(1))
-				{
-					htmltext = ((count > 0) ? "30754-14.htm" : "30754-06.html");
-				}
-				else if (st.isCond(2))
-				{
-					htmltext = ((count < 7) ? "30754-12.htm" : "30754-07.html");
-				}
-				break;
-			case State.COMPLETED:
-				htmltext = "30754-29.html";
-				break;
-		}
-		return htmltext;
-	}
-	
-	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
@@ -196,6 +163,39 @@ public class Q00254_LegendaryTales extends Quest
 					rewardItems(player, Integer.parseInt(event), 1);
 					st.exitQuest(false, true);
 				}
+				break;
+		}
+		return htmltext;
+	}
+	
+	@Override
+	public String onTalk(L2Npc npc, L2PcInstance player)
+	{
+		String htmltext = getNoQuestMsg(player);
+		final QuestState st = getQuestState(player, true);
+		if (st == null)
+		{
+			return htmltext;
+		}
+		
+		switch (st.getState())
+		{
+			case State.CREATED:
+				htmltext = (player.getLevel() < MIN_LEVEL) ? "30754-00.htm" : "30754-01.htm";
+				break;
+			case State.STARTED:
+				long count = getQuestItemsCount(player, LARGE_DRAGON_SKULL);
+				if (st.isCond(1))
+				{
+					htmltext = ((count > 0) ? "30754-14.htm" : "30754-06.html");
+				}
+				else if (st.isCond(2))
+				{
+					htmltext = ((count < 7) ? "30754-12.htm" : "30754-07.html");
+				}
+				break;
+			case State.COMPLETED:
+				htmltext = "30754-29.html";
 				break;
 		}
 		return htmltext;

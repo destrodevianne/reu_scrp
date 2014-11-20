@@ -79,11 +79,12 @@ public class Q10291_FireDragonDestroyer extends Quest
 			return super.onKill(npc, player, isSummon);
 		}
 		
-		Function<L2PcInstance, Boolean> rewardCheck = p -> {
+		Function<L2PcInstance, Boolean> rewardCheck = p ->
+		{
 			if (Util.checkIfInRange(8000, npc, p, false))
 			{
 				QuestState st = p.getQuestState(getName());
-
+				
 				if ((st != null) && st.isCond(1) && st.hasQuestItems(POOR_NECKLACE))
 				{
 					st.takeItems(POOR_NECKLACE, -1);
@@ -110,7 +111,7 @@ public class Q10291_FireDragonDestroyer extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, true);
 		
 		if (st == null)
 		{

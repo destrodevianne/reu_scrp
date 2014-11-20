@@ -21,8 +21,6 @@ import l2r.gameserver.network.serverpackets.NpcSay;
 
 public class Q00503_PursuitClanAmbition extends Quest
 {
-	private static final String qn = "Q00503_PursuitClanAmbition";
-	
 	private static int ImpGraveKepperStat = 1;
 	
 	// First part
@@ -96,7 +94,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 	
 	public Q00503_PursuitClanAmbition()
 	{
-		super(503, qn, "");
+		super(503, Q00503_PursuitClanAmbition.class.getSimpleName(), "");
 		addStartNpc(30760);
 		for (int npcId : NPC)
 		{
@@ -152,7 +150,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return htmltext;
@@ -294,7 +292,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		final QuestState st = player.getQuestState(qn);
+		final QuestState st = getQuestState(player, true);
 		if (st == null)
 		{
 			return htmltext;
@@ -690,7 +688,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 		QuestState leader_st = null;
 		if (player.isClanLeader())
 		{
-			leader_st = player.getQuestState(qn);
+			leader_st = player.getQuestState(getName());
 		}
 		else
 		{
@@ -704,7 +702,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 					{
 						if (player.isInsideRadius(leader, 2000, false, false))
 						{
-							leader_st = leader.getQuestState(qn);
+							leader_st = leader.getQuestState(getName());
 						}
 					}
 				}
@@ -777,7 +775,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 				{
 					continue;
 				}
-				QuestState qs = i.getQuestState(qn);
+				QuestState qs = i.getQuestState(getName());
 				if (qs != null)
 				{
 					qs.exitQuest(true);
@@ -798,7 +796,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement offline = con.prepareStatement("DELETE FROM character_quests WHERE name = ? and charId IN (SELECT charId FROM characters WHERE clanId =? AND online=0)"))
 		{
-			offline.setString(1, qn);
+			offline.setString(1, getName());
 			offline.setInt(2, clan);
 			offline.execute();
 		}
@@ -824,7 +822,7 @@ public class Q00503_PursuitClanAmbition extends Quest
 				try
 				{
 					insertion.setInt(1, charId);
-					insertion.setString(2, qn);
+					insertion.setString(2, getName());
 					insertion.setString(3, "<state>");
 					insertion.setString(4, "Started");
 					insertion.executeUpdate();
@@ -855,13 +853,13 @@ public class Q00503_PursuitClanAmbition extends Quest
 			L2PcInstance leader = clan.getLeader().getPlayerInstance();
 			if (leader != null)
 			{
-				return leader.getQuestState(qn).getInt(var);
+				return leader.getQuestState(getName()).getInt(var);
 			}
 			
 			PreparedStatement offline = con.prepareStatement("SELECT value FROM character_quests WHERE charId=? AND var=? AND name=?");
 			offline.setInt(1, st.getPlayer().getClan().getLeaderId());
 			offline.setString(2, var);
-			offline.setString(3, qn);
+			offline.setString(3, getName());
 			ResultSet rs = offline.executeQuery();
 			while (rs.next())
 			{

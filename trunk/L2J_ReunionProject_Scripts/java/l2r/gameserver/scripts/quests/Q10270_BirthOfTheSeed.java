@@ -91,7 +91,7 @@ public class Q10270_BirthOfTheSeed extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		int npcId = npc.getId();
-		QuestState qs = player.getQuestState(getName());
+		QuestState qs = getQuestState(player, true);
 		int cond = qs.getInt("cond");
 		String htmltext = getNoQuestMsg(player);
 		

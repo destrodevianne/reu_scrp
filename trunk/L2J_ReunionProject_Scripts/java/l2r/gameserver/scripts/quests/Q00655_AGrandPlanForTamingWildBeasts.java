@@ -50,7 +50,7 @@ public class Q00655_AGrandPlanForTamingWildBeasts extends Quest
 	{
 		String htmltext = getNoQuestMsg(player);
 		
-		QuestState st = player.getQuestState(getName());
+		QuestState st = getQuestState(player, true);
 		if (st == null)
 		{
 			return htmltext;

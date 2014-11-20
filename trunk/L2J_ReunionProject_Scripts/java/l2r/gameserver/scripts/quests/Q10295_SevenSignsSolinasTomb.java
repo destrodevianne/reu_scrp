@@ -116,14 +116,7 @@ public class Q10295_SevenSignsSolinasTomb extends Quest
 				openDoor(21100013, player.getInstanceId());
 				openDoor(21100011, player.getInstanceId());
 				openDoor(21100009, player.getInstanceId());
-				ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						player.showQuestMovie(26);
-					}
-				}, 3000L);
+				ThreadPoolManager.getInstance().scheduleGeneral(() -> player.showQuestMovie(26), 3000L);
 				L2Npc moving = addSpawn(ElcardiaInzone1, player.getX() + Rnd.get(100), player.getY() + Rnd.get(100), player.getZ(), 0, false, 0L, false, player.getInstanceId());
 				moving.setTarget(player);
 				moving.setRunning();
@@ -317,7 +310,7 @@ public class Q10295_SevenSignsSolinasTomb extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		QuestState st = getQuestState(player, true);
 		
 		if (st == null)
 		{

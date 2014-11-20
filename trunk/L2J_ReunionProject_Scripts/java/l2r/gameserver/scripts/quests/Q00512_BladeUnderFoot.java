@@ -419,7 +419,7 @@ public final class Q00512_BladeUnderFoot extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = Quest.getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		QuestState st = getQuestState(player, true);
 		String ret = checkCastleCondition(player, npc, false);
 		if (ret != null)
 		{

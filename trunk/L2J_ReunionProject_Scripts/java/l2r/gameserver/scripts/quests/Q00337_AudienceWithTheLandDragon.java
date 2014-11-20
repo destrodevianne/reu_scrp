@@ -10,8 +10,6 @@ import l2r.gameserver.model.quest.State;
 
 public class Q00337_AudienceWithTheLandDragon extends Quest
 {
-	private static final String qn = "Q00337_AudienceWithTheLandDragon";
-	
 	private static boolean jewel1 = false;
 	private static boolean jewel2 = false;
 	private static boolean jewel3 = false;
@@ -150,7 +148,7 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 	
 	public Q00337_AudienceWithTheLandDragon()
 	{
-		super(337, qn, "");
+		super(337, Q00337_AudienceWithTheLandDragon.class.getSimpleName(), "");
 		addStartNpc(GABRIELLE);
 		addTalkId(GABRIELLE, ORVEN, KENDRA, CHAKIRIS, KAIENA, MOKE, HELTON, GILMORE, THEODRIC);
 		
@@ -181,7 +179,7 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 	{
 		String htmltext = event;
 		
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return htmltext;
@@ -236,8 +234,7 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		
-		QuestState st = player.getQuestState(qn);
+		QuestState st = getQuestState(player, true);
 		if (st == null)
 		{
 			return htmltext;
@@ -539,7 +536,7 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isSummon)
 	{
-		QuestState st = attacker.getQuestState(qn);
+		QuestState st = attacker.getQuestState(getName());
 		if (st == null)
 		{
 			return null;
@@ -651,7 +648,7 @@ public class Q00337_AudienceWithTheLandDragon extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return null;
