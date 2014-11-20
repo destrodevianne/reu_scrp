@@ -266,7 +266,7 @@ public class Q00453_NotStrongEnoughAlone extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		QuestState st = getQuestState(player, true);
 		QuestState prev = player.getQuestState(Q10282_ToTheSeedOfAnnihilation.class.getSimpleName());
 		if (st == null)
 		{

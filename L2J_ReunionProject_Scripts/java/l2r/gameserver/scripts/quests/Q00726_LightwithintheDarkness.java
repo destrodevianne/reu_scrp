@@ -54,8 +54,6 @@ public class Q00726_LightwithintheDarkness extends Quest
 		}
 	}
 	
-	private static final String qn = "_726_LightwithintheDarkness";
-	
 	private static int KNIGHTS_EPAULETTE = 9912;
 	
 	private static final int SEDUCED_KNIGHT = 36562;
@@ -108,7 +106,7 @@ public class Q00726_LightwithintheDarkness extends Quest
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return getNoQuestMsg(player);
@@ -147,13 +145,13 @@ public class Q00726_LightwithintheDarkness extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = "";
-		QuestState st = player.getQuestState(qn);
+		QuestState st = getQuestState(player, true);
 		if (st == null)
 		{
 			return getNoQuestMsg(player);
 		}
 		
-		QuestState qs = player.getQuestState("_727_HopeWithinTheDarkness");
+		QuestState qs = player.getQuestState(Q00727_HopeWithinTheDarkness.class.getSimpleName());
 		String ret = checkFortCondition(player, npc, false);
 		
 		if (ret != null)
@@ -212,7 +210,7 @@ public class Q00726_LightwithintheDarkness extends Quest
 			
 			for (L2PcInstance partymember : party.getMembers())
 			{
-				QuestState st = partymember.getQuestState(qn);
+				QuestState st = partymember.getQuestState(getName());
 				if (st != null)
 				{
 					int cond = st.getInt("cond");
@@ -282,7 +280,7 @@ public class Q00726_LightwithintheDarkness extends Quest
 		{
 			teleportPlayer(partyMember, coords, instanceId);
 			world.addAllowed(partyMember.getObjectId());
-			if (partyMember.getQuestState(qn) == null)
+			if (partyMember.getQuestState(getName()) == null)
 			{
 				newQuestState(partyMember);
 			}
@@ -387,30 +385,19 @@ public class Q00726_LightwithintheDarkness extends Quest
 	
 	protected void FirstWave(final PAWORLD world)
 	{
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+		ThreadPoolManager.getInstance().scheduleGeneral(() ->
 		{
-			@Override
-			public void run()
+			addSpawn(SEDUCED_KNIGHT, 49384, -12232, -9384, 0, false, 0, false, world.getInstanceId());
+			addSpawn(SEDUCED_RANGER, 49192, -12232, -9384, 0, false, 0, false, world.getInstanceId());
+			addSpawn(SEDUCED_MAGE, 49192, -12456, -9392, 0, false, 0, false, world.getInstanceId());
+			addSpawn(SEDUCED_WARRIOR, 49192, -11992, -9392, 0, false, 0, false, world.getInstanceId());
+			addSpawn(KANADIS_GUIDE1, 50536, -12232, -9384, 32768, false, 0, false, world.getInstanceId());
+			broadCastPacket(world, new ExShowScreenMessage(NpcStringId.BEGIN_STAGE_1, 2, 3000));
+			for (int i = 0; i < 10; i++)
 			{
-				addSpawn(SEDUCED_KNIGHT, 49384, -12232, -9384, 0, false, 0, false, world.getInstanceId());
-				addSpawn(SEDUCED_RANGER, 49192, -12232, -9384, 0, false, 0, false, world.getInstanceId());
-				addSpawn(SEDUCED_MAGE, 49192, -12456, -9392, 0, false, 0, false, world.getInstanceId());
-				addSpawn(SEDUCED_WARRIOR, 49192, -11992, -9392, 0, false, 0, false, world.getInstanceId());
-				addSpawn(KANADIS_GUIDE1, 50536, -12232, -9384, 32768, false, 0, false, world.getInstanceId());
-				broadCastPacket(world, new ExShowScreenMessage(NpcStringId.BEGIN_STAGE_1, 2, 3000));
-				for (int i = 0; i < 10; i++)
-				{
-					addSpawn(KANADIS_FOLLOWER1, 50536, -12232, -9384, 32768, false, 0, false, world.getInstanceId());
-				}
-				ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						SecondWave(world);
-					}
-				}, 8 * 60 * 1000);
+				addSpawn(KANADIS_FOLLOWER1, 50536, -12232, -9384, 32768, false, 0, false, world.getInstanceId());
 			}
+			ThreadPoolManager.getInstance().scheduleGeneral(() -> SecondWave(world), 8 * 60 * 1000);
 		}, 10000);
 	}
 	
@@ -422,14 +409,7 @@ public class Q00726_LightwithintheDarkness extends Quest
 		{
 			addSpawn(KANADIS_FOLLOWER2, 50536, -12232, -9384, 32768, false, 0, false, world.getInstanceId());
 		}
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				ThirdWave(world);
-			}
-		}, 8 * 60 * 1000);
+		ThreadPoolManager.getInstance().scheduleGeneral(() -> ThirdWave(world), 8 * 60 * 1000);
 	}
 	
 	protected void ThirdWave(final PAWORLD world)

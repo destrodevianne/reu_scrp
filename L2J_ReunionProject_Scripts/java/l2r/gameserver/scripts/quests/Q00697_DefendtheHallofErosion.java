@@ -62,7 +62,7 @@ public class Q00697_DefendtheHallofErosion extends Quest
 	public final String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		QuestState st = getQuestState(player, true);
 		if (st == null)
 		{
 			return htmltext;

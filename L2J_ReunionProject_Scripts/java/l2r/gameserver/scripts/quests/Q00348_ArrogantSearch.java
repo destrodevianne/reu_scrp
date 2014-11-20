@@ -12,8 +12,6 @@ import l2r.gameserver.model.skills.L2Skill;
 
 public class Q00348_ArrogantSearch extends Quest
 {
-	private static final String qn = "Q00348_ArrogantSearch";
-	
 	// MOBS
 	private static final int YINTZU = 20647;
 	private static final int PALIOTE = 20648;
@@ -79,7 +77,7 @@ public class Q00348_ArrogantSearch extends Quest
 	
 	public Q00348_ArrogantSearch()
 	{
-		super(348, qn, "");
+		super(348, Q00348_ArrogantSearch.class.getSimpleName(), "");
 		addStartNpc(HANELLIN);
 		addTalkId(HANELLIN);
 		addTalkId(ARK_GUARDIANS_CORPSE);
@@ -356,7 +354,7 @@ public class Q00348_ArrogantSearch extends Quest
 	{
 		String htmltext = event;
 		
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return htmltext;
@@ -445,7 +443,7 @@ public class Q00348_ArrogantSearch extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(qn);
+		QuestState st = getQuestState(player, true);
 		if (st == null)
 		{
 			return htmltext;
@@ -703,7 +701,7 @@ public class Q00348_ArrogantSearch extends Quest
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isSummon, L2Skill skill)
 	{
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return null;
@@ -754,7 +752,7 @@ public class Q00348_ArrogantSearch extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return null;

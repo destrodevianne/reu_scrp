@@ -84,7 +84,8 @@ public final class Q10290_LandDragonConqueror extends Quest
 			return super.onKill(npc, player, isSummon);
 		}
 		
-		Function<L2PcInstance, Boolean> rewardCheck = p -> {
+		Function<L2PcInstance, Boolean> rewardCheck = p ->
+		{
 			if (Util.checkIfInRange(8000, npc, p, false))
 			{
 				QuestState st = p.getQuestState(getName());
@@ -116,7 +117,7 @@ public final class Q10290_LandDragonConqueror extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, true);
 		
 		if (st == null)
 		{

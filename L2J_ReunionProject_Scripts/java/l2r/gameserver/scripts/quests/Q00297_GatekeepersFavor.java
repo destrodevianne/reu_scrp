@@ -41,7 +41,7 @@ public class Q00297_GatekeepersFavor extends Quest
 	// Misc
 	private static final int MIN_LEVEL = 15;
 	private static final int STARSTONE_COUT = 20;
-
+	
 	public Q00297_GatekeepersFavor()
 	{
 		super(297, Q00297_GatekeepersFavor.class.getSimpleName(), "Gatekeeper's Favor");
@@ -50,7 +50,7 @@ public class Q00297_GatekeepersFavor extends Quest
 		addKillId(WHINSTONE_GOLEM);
 		registerQuestItems(STARSTONE);
 	}
-
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -66,7 +66,7 @@ public class Q00297_GatekeepersFavor extends Quest
 		}
 		return null;
 	}
-
+	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
@@ -85,17 +85,17 @@ public class Q00297_GatekeepersFavor extends Quest
 		}
 		return super.onKill(npc, killer, isSummon);
 	}
-
+	
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, true);
 		if (st == null)
 		{
 			return htmltext;
 		}
-
+		
 		switch (st.getState())
 		{
 			case State.CREATED:

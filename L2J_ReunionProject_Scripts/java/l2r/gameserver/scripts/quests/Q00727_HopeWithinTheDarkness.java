@@ -926,7 +926,7 @@ public final class Q00727_HopeWithinTheDarkness extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = Quest.getNoQuestMsg(player);
-		QuestState st = player.getQuestState(getName());
+		QuestState st = getQuestState(player, true);
 		
 		if ((npc.getId() >= NPC_KNIGHT) && (npc.getId() <= NPC_WARRIOR))
 		{
