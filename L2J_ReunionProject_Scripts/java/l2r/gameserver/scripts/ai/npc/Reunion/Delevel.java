@@ -96,6 +96,12 @@ public class Delevel extends Quest
 	@Override
 	public String onFirstTalk(final L2Npc npc, final L2PcInstance player)
 	{
+		QuestState qs = player.getQuestState(getName());
+		if (qs == null)
+		{
+			qs = newQuestState(player);
+		}
+		
 		if (player.getKarma() > KARMA)
 		{
 			player.sendPacket(new CreatureSay(npc.getObjectId(), 0, "Delevel Manager", "I don't offer my services to Karma players!"));
@@ -107,7 +113,6 @@ public class Delevel extends Quest
 		
 		if (player.getLevel() < MINLVL)
 		{
-			final QuestState qs = player.getQuestState(getName());
 			final String filename = ((qs != null) && (qs.get("experience") == "off") ? "emergency.htm" : LVL_TOO_LOW);
 			htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/" + filename);
 			htmltext = htmltext.replace("%MINLVL%", String.valueOf(MINLVL));
