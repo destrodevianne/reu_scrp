@@ -28,7 +28,6 @@ import l2r.gameserver.model.actor.instance.L2VillageMasterInstance;
 import l2r.gameserver.model.base.ClassId;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
 import l2r.gameserver.model.quest.QuestState;
-import l2r.gameserver.model.quest.State;
 import l2r.gameserver.network.SystemMessageId;
 import l2r.gameserver.network.serverpackets.SystemMessage;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
@@ -172,12 +171,11 @@ public class SubclassCertification extends AbstractNpcAI
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		final QuestState st = player.getQuestState(getName());
+		QuestState st = player.getQuestState(getName());
 		String htmltext = getNoQuestMsg(player);
-		if (st != null)
+		if (st == null)
 		{
-			st.setState(State.STARTED);
-			htmltext = "Main.html";
+			st = newQuestState(player);
 		}
 		return htmltext;
 	}
