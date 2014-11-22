@@ -782,7 +782,7 @@ public class Zaken extends AbstractNpcAI
 				{
 					return "no-command-leader.html";
 				}
-				else if (event.equalsIgnoreCase("nighttime") && party.isInCommandChannel() && (party.getCommandChannel().getPartys().size() < 7))
+				else if (event.equalsIgnoreCase("nighttime") && party.isInCommandChannel() && (party.getMemberCount() < 7))
 				{
 					return "no-minimum-party.html";
 				}
