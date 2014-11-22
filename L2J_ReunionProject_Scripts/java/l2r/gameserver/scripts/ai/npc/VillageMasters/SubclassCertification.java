@@ -176,6 +176,7 @@ public class SubclassCertification extends AbstractNpcAI
 		if (st == null)
 		{
 			st = newQuestState(player);
+			htmltext = "Main.html";
 		}
 		return htmltext;
 	}
