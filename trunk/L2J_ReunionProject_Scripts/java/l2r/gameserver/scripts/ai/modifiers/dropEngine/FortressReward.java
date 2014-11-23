@@ -15,11 +15,13 @@
 package l2r.gameserver.scripts.ai.modifiers.dropEngine;
 
 import l2r.Config;
+import l2r.gameserver.instancemanager.QuestManager;
 import l2r.gameserver.model.L2Clan;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.entity.Fort;
 import l2r.gameserver.model.entity.FortSiege;
+import l2r.gameserver.model.quest.Quest;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
@@ -88,6 +90,13 @@ public class FortressReward extends AbstractNpcAI
 	@Override
 	public final String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
+		QuestState st = player.getQuestState(getName());
+		if (st == null)
+		{
+			Quest q = QuestManager.getInstance().getQuest(getName());
+			st = q.newQuestState(player);
+		}
+		
 		int npcid = npc.getId();
 		Fort fort = npc.getFort();
 		L2Clan clan = player.getClan();
