@@ -27,6 +27,7 @@ import l2r.gameserver.model.base.ClassId;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.quests.Q00064_CertifiedBerserker;
+import l2r.gameserver.scripts.quests.Q00066_CertifiedArbalester;
 import l2r.gameserver.util.Util;
 
 /**
@@ -253,7 +254,7 @@ public final class KamaelChange2 extends AbstractNpcAI
 					}
 					else if (classId == 130)
 					{
-						QuestState qs = player.getQuestState("66_CertifiedArbalester");
+						QuestState qs = player.getQuestState(Q00066_CertifiedArbalester.class.getSimpleName());
 						if (player.getLevel() < 40)
 						{
 							if ((qs != null) && qs.isCompleted())
