@@ -172,8 +172,8 @@ public final class DragonValley extends AbstractNpcAI
 				for (int i = 0; i < rnd; i++)
 				{
 					final L2Playable playable = isSummon ? attacker.getSummon() : attacker;
-					final L2Attackable minion = (L2Attackable) addSpawn(DRAKOS_ASSASSIN, npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), true, 0, true);
-					attackPlayer(minion, playable);
+					final L2Npc minion = addSpawn(DRAKOS_ASSASSIN, npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), true, 0, true);
+					addAttackPlayerDesire(minion, playable);
 				}
 			}
 		}
@@ -273,13 +273,14 @@ public final class DragonValley extends AbstractNpcAI
 		{
 			int val = npc.getScriptValue();
 			final L2Playable attacker = isSummon ? player.getSummon() : player;
-			final L2Attackable Ghost1 = (L2Attackable) addSpawn(getRandom(EXPLODING_ORC_GHOST, WRATHFUL_ORC_GHOST), npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), false, 0, true);
-			attackPlayer(Ghost1, attacker);
+			final L2Npc ghost1 = addSpawn(EXPLODING_ORC_GHOST, npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), false, 0, true);
+			ghost1.getVariables().set("playable", attacker);
+			addAttackPlayerDesire(ghost1, attacker);
 			val++;
 			if ((val < 2) && (getRandom(100) < 10))
 			{
-				final L2Attackable Ghost2 = (L2Attackable) addSpawn(getRandom(EXPLODING_ORC_GHOST, WRATHFUL_ORC_GHOST), npc.getX(), npc.getY(), npc.getZ() + 20, npc.getHeading(), false, 0, false);
-				attackPlayer(Ghost2, attacker);
+				final L2Npc ghost2 = addSpawn(WRATHFUL_ORC_GHOST, npc.getX(), npc.getY(), npc.getZ() + 20, npc.getHeading(), false, 0, false);
+				addAttackPlayerDesire(ghost2, attacker);
 				val++;
 			}
 			npc.setScriptValue(val);
