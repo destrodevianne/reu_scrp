@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
+ * Copyright (C) 2004-2014 L2J DataPack
  * 
  * This file is part of L2J DataPack.
  * 
@@ -18,15 +18,11 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.gameserver.datatables.xml.SkillData;
-import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.model.actor.L2Attackable;
-import l2r.gameserver.model.actor.L2Character;
 import l2r.gameserver.model.actor.L2Npc;
+import l2r.gameserver.model.actor.L2Playable;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
-import l2r.gameserver.model.skills.L2Skill;
+import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
-import l2r.gameserver.util.Util;
 
 /**
  * Fairy Trees AI.
@@ -34,44 +30,56 @@ import l2r.gameserver.util.Util;
  */
 public class FairyTrees extends AbstractNpcAI
 {
-	// @formatter:off
+	// NPC
+	private static final int SOUL_GUARDIAN = 27189; // Soul of Tree Guardian
+	
 	private static final int[] MOBS =
 	{
-		27185, 27186, 27187, 27188
+		27185, // Fairy Tree of Wind
+		27186, // Fairy Tree of Star
+		27187, // Fairy Tree of Twilight
+		27188, // Fairy Tree of Abyss
 	};
-	// @formatter:on
+	
+	// Skill
+	private static SkillHolder VENOMOUS_POISON = new SkillHolder(4243, 1); // Venomous Poison
+	
+	// Misc
+	private static final int MIN_DISTANCE = 1500;
 	
 	private FairyTrees()
 	{
 		super(FairyTrees.class.getSimpleName(), "ai/group_template");
 		addKillId(MOBS);
-		addSpawnId(27189); // TODO why is this here?
+		addSpawnId(MOBS);
 	}
 	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
-		int npcId = npc.getId();
-		if (Util.contains(MOBS, npcId))
+		if (npc.calculateDistance(killer, true, false) <= MIN_DISTANCE)
 		{
 			for (int i = 0; i < 20; i++)
 			{
-				L2Attackable newNpc = (L2Attackable) addSpawn(27189, npc.getX(), npc.getY(), npc.getZ(), 0, false, 30000);
-				L2Character originalKiller = isSummon ? killer.getSummon() : killer;
-				newNpc.setRunning();
-				newNpc.addDamageHate(originalKiller, 0, 999);
-				newNpc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, originalKiller);
+				final L2Npc guardian = addSpawn(SOUL_GUARDIAN, npc, false, 30000);
+				final L2Playable attacker = isSummon ? killer.getSummon() : killer;
+				addAttackPlayerDesire(guardian, attacker);
 				if (getRandomBoolean())
 				{
-					L2Skill skill = SkillData.getInstance().getInfo(4243, 1);
-					if ((skill != null) && (originalKiller != null))
-					{
-						skill.getEffects(newNpc, originalKiller);
-					}
+					guardian.setTarget(attacker);
+					guardian.doCast(VENOMOUS_POISON.getSkill());
 				}
 			}
 		}
 		return super.onKill(npc, killer, isSummon);
+	}
+	
+	@Override
+	public String onSpawn(L2Npc npc)
+	{
+		npc.setIsNoRndWalk(true);
+		npc.setIsImmobilized(true);
+		return super.onSpawn(npc);
 	}
 	
 	public static void main(String[] args)

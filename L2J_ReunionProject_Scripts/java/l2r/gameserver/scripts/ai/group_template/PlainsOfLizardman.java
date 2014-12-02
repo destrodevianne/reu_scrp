@@ -229,6 +229,7 @@ public final class PlainsOfLizardman extends AbstractNpcAI
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void castSkill(L2Npc npc, L2Character target, SkillHolder skill)
 	{
 		npc.doDie(target);
