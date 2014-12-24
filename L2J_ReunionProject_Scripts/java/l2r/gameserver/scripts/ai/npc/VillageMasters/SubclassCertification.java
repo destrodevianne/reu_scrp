@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2004-2013 L2J DataPack
- *
+ * Copyright (C) 2004-2014 L2J DataPack
+ * 
  * This file is part of L2J DataPack.
- *
+ * 
  * L2J DataPack is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * L2J DataPack is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import l2r.gameserver.datatables.xml.ClassListData;
+import l2r.gameserver.enums.CategoryType;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2VillageMasterInstance;
-import l2r.gameserver.model.base.ClassId;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.model.quest.State;
@@ -37,7 +37,7 @@ import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
  * Subclass certification
  * @author xban1x, jurchiks
  */
-public class SubclassCertification extends AbstractNpcAI
+public final class SubclassCertification extends AbstractNpcAI
 {
 	// @formatter:off
 	private static final int[] NPCS =
@@ -58,91 +58,10 @@ public class SubclassCertification extends AbstractNpcAI
 	// @formatter:on
 	private static final int CERTIFICATE_EMERGENT_ABILITY = 10280;
 	private static final int CERTIFICATE_MASTER_ABILITY = 10612;
-	private static final Map<ClassId, Integer> CLASSES = new HashMap<>();
 	private static final Map<Integer, Integer> ABILITY_CERTIFICATES = new HashMap<>();
 	private static final Map<Integer, Integer> TRANSFORMATION_SEALBOOKS = new HashMap<>();
 	static
 	{
-		// Warrior classes
-		CLASSES.put(ClassId.gladiator, 0);
-		CLASSES.put(ClassId.warlord, 0);
-		CLASSES.put(ClassId.destroyer, 0);
-		CLASSES.put(ClassId.tyrant, 0);
-		CLASSES.put(ClassId.bountyHunter, 0);
-		CLASSES.put(ClassId.artisan, 0);
-		CLASSES.put(ClassId.duelist, 0);
-		CLASSES.put(ClassId.dreadnought, 0);
-		CLASSES.put(ClassId.titan, 0);
-		CLASSES.put(ClassId.grandKhavatari, 0);
-		CLASSES.put(ClassId.fortuneSeeker, 0);
-		CLASSES.put(ClassId.maestro, 0);
-		CLASSES.put(ClassId.berserker, 0);
-		CLASSES.put(ClassId.maleSoulbreaker, 0);
-		CLASSES.put(ClassId.femaleSoulbreaker, 0);
-		CLASSES.put(ClassId.doombringer, 0);
-		CLASSES.put(ClassId.maleSoulhound, 0);
-		CLASSES.put(ClassId.femaleSoulhound, 0);
-		// Rogue classes
-		CLASSES.put(ClassId.treasureHunter, 1);
-		CLASSES.put(ClassId.hawkeye, 1);
-		CLASSES.put(ClassId.plainsWalker, 1);
-		CLASSES.put(ClassId.silverRanger, 1);
-		CLASSES.put(ClassId.abyssWalker, 1);
-		CLASSES.put(ClassId.phantomRanger, 1);
-		CLASSES.put(ClassId.sagittarius, 1);
-		CLASSES.put(ClassId.adventurer, 1);
-		CLASSES.put(ClassId.windRider, 1);
-		CLASSES.put(ClassId.moonlightSentinel, 1);
-		CLASSES.put(ClassId.ghostHunter, 1);
-		CLASSES.put(ClassId.ghostSentinel, 1);
-		CLASSES.put(ClassId.arbalester, 1);
-		CLASSES.put(ClassId.trickster, 1);
-		// Knight classes
-		CLASSES.put(ClassId.paladin, 2);
-		CLASSES.put(ClassId.darkAvenger, 2);
-		CLASSES.put(ClassId.templeKnight, 2);
-		CLASSES.put(ClassId.shillienKnight, 2);
-		CLASSES.put(ClassId.phoenixKnight, 2);
-		CLASSES.put(ClassId.hellKnight, 2);
-		CLASSES.put(ClassId.evaTemplar, 2);
-		CLASSES.put(ClassId.shillienTemplar, 2);
-		// Summoner classes
-		CLASSES.put(ClassId.warlock, 3);
-		CLASSES.put(ClassId.elementalSummoner, 3);
-		CLASSES.put(ClassId.phantomSummoner, 3);
-		CLASSES.put(ClassId.arcanaLord, 3);
-		CLASSES.put(ClassId.elementalMaster, 3);
-		CLASSES.put(ClassId.spectralMaster, 3);
-		// Wizard classes
-		CLASSES.put(ClassId.sorceror, 4);
-		CLASSES.put(ClassId.necromancer, 4);
-		CLASSES.put(ClassId.spellsinger, 4);
-		CLASSES.put(ClassId.spellhowler, 4);
-		CLASSES.put(ClassId.archmage, 4);
-		CLASSES.put(ClassId.soultaker, 4);
-		CLASSES.put(ClassId.mysticMuse, 4);
-		CLASSES.put(ClassId.stormScreamer, 4);
-		// Healer classes
-		CLASSES.put(ClassId.bishop, 5);
-		CLASSES.put(ClassId.elder, 5);
-		CLASSES.put(ClassId.shillenElder, 5);
-		CLASSES.put(ClassId.cardinal, 5);
-		CLASSES.put(ClassId.evaSaint, 5);
-		CLASSES.put(ClassId.shillienSaint, 5);
-		// Enchanter classes
-		CLASSES.put(ClassId.prophet, 6);
-		CLASSES.put(ClassId.swordSinger, 6);
-		CLASSES.put(ClassId.bladedancer, 6);
-		CLASSES.put(ClassId.overlord, 6);
-		CLASSES.put(ClassId.warcryer, 6);
-		CLASSES.put(ClassId.hierophant, 6);
-		CLASSES.put(ClassId.swordMuse, 6);
-		CLASSES.put(ClassId.spectralDancer, 6);
-		CLASSES.put(ClassId.dominator, 6);
-		CLASSES.put(ClassId.doomcryer, 6);
-		CLASSES.put(ClassId.inspector, 6);
-		CLASSES.put(ClassId.judicator, 6);
-		
 		ABILITY_CERTIFICATES.put(0, 10281); // Certificate - Warrior Ability
 		ABILITY_CERTIFICATES.put(1, 10283); // Certificate - Rogue Ability
 		ABILITY_CERTIFICATES.put(2, 10282); // Certificate - Knight Ability
@@ -164,7 +83,7 @@ public class SubclassCertification extends AbstractNpcAI
 	
 	private SubclassCertification()
 	{
-		super(SubclassCertification.class.getSimpleName(), "ai/npc/VillageMasters");
+		super(SubclassCertification.class.getSimpleName(), "ai/npc");
 		addStartNpc(NPCS);
 		addTalkId(NPCS);
 	}
@@ -172,7 +91,7 @@ public class SubclassCertification extends AbstractNpcAI
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, true);
 		String htmltext = getNoQuestMsg(player);
 		if (st != null)
 		{
@@ -186,7 +105,7 @@ public class SubclassCertification extends AbstractNpcAI
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = null;
-		final QuestState st = player.getQuestState(getName());
+		final QuestState st = getQuestState(player, false);
 		if (st == null)
 		{
 			return htmltext;
@@ -286,12 +205,36 @@ public class SubclassCertification extends AbstractNpcAI
 	
 	private static int getClassIndex(L2PcInstance player)
 	{
-		Integer tmp = CLASSES.get(player.getClassId());
-		if (tmp == null)
+		if (player.isInCategory(CategoryType.SUB_GROUP_WARRIOR))
 		{
-			return -1;
+			return 0;
 		}
-		return tmp.intValue();
+		else if (player.isInCategory(CategoryType.SUB_GROUP_ROGUE))
+		{
+			return 1;
+		}
+		else if (player.isInCategory(CategoryType.SUB_GROUP_KNIGHT))
+		{
+			return 2;
+		}
+		else if (player.isInCategory(CategoryType.SUB_GROUP_SUMMONER))
+		{
+			return 3;
+		}
+		else if (player.isInCategory(CategoryType.SUB_GROUP_WIZARD))
+		{
+			return 4;
+		}
+		else if (player.isInCategory(CategoryType.SUB_GROUP_HEALER))
+		{
+			return 5;
+		}
+		else if (player.isInCategory(CategoryType.SUB_GROUP_ENCHANTER))
+		{
+			return 6;
+		}
+		
+		return -1;
 	}
 	
 	private String doCertification(L2PcInstance player, QuestState qs, String variable, Integer itemId, int level)
