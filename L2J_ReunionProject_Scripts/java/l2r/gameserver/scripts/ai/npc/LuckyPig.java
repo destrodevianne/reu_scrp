@@ -33,12 +33,11 @@ import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.itemcontainer.Inventory;
 import l2r.gameserver.model.items.instance.L2ItemInstance;
 import l2r.gameserver.network.serverpackets.NpcSay;
-import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
 import l2r.util.Rnd;
 
 /**
- * @author Lotriem
+ * @author Lotriem modified by GodFather
  */
 public final class LuckyPig extends AbstractNpcAI
 {
@@ -173,49 +172,41 @@ public final class LuckyPig extends AbstractNpcAI
 								
 								if (adenaCount >= 1)
 								{
-									int x = npc.getX();
-									int y = npc.getY();
-									int z = npc.getZ();
-									
 									npc.deleteMe();
 									
 									if (isLuckyPigLevel52)
 									{
-										addSpawn(Wingless_Lucky_Pig, x, y, z, 0, true, 5 * 60 * 1000, true);
+										addSpawn(Wingless_Lucky_Pig, npc.getLocation(), true, 5 * 60 * 1000, true);
 										setLuckyPigLevel52(true);
 									}
 									else if (isLuckyPigLevel70)
 									{
-										addSpawn(Wingless_Lucky_Pig, x, y, z, 0, true, 5 * 60 * 1000, true);
+										addSpawn(Wingless_Lucky_Pig, npc.getLocation(), true, 5 * 60 * 1000, true);
 										setLuckyPigLevel70(true);
 									}
 									else if (isLuckyPigLevel80)
 									{
-										addSpawn(Wingless_Lucky_Pig, x, y, z, 0, true, 5 * 60 * 1000, true);
+										addSpawn(Wingless_Lucky_Pig, npc.getLocation(), true, 5 * 60 * 1000, true);
 										setLuckyPigLevel80(true);
 									}
 								}
 								else if (adenaCount >= 50000000)
 								{
-									int x = npc.getX();
-									int y = npc.getY();
-									int z = npc.getZ();
-									
 									npc.deleteMe();
 									
 									if (isLuckyPigLevel52)
 									{
-										addSpawn(Golden_Wingless_Lucky_Pig, x, y, z, 0, true, 5 * 60 * 1000, true);
+										addSpawn(Golden_Wingless_Lucky_Pig, npc.getLocation(), true, 5 * 60 * 1000, true);
 										setLuckyPigLevel52(true);
 									}
 									else if (isLuckyPigLevel70)
 									{
-										addSpawn(Golden_Wingless_Lucky_Pig, x, y, z, 0, true, 5 * 60 * 1000, true);
+										addSpawn(Golden_Wingless_Lucky_Pig, npc.getLocation(), true, 5 * 60 * 1000, true);
 										setLuckyPigLevel70(true);
 									}
 									else if (isLuckyPigLevel80)
 									{
-										addSpawn(Golden_Wingless_Lucky_Pig, x, y, z, 0, true, 5 * 60 * 1000, true);
+										addSpawn(Golden_Wingless_Lucky_Pig, npc.getLocation(), true, 5 * 60 * 1000, true);
 										setLuckyPigLevel80(true);
 									}
 								}
@@ -273,19 +264,19 @@ public final class LuckyPig extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (Util.contains(Lucky_Pig_Level_52, npc.getId()) && (Rnd.get(1000) > (Lucky_Pig_Level_52_Spawn_Chance * 10)))
+		if (Util.contains(Lucky_Pig_Level_52, npc.getId()) && (Rnd.get(1000) < (Lucky_Pig_Level_52_Spawn_Chance * 10)))
 		{
 			L2Npc luckyPig52 = addSpawn(Lucky_Pig, npc.getX() + 50, npc.getY() + 50, npc.getZ(), npc.getHeading(), true, 10 * 60 * 1000, true);
 			onSpawn(luckyPig52);
 			setLuckyPigLevel52(true);
 		}
-		else if (Util.contains(Lucky_Pig_Level_70, npc.getId()) && (Rnd.get(1000) > (Lucky_Pig_Level_70_Spawn_Chance * 10)))
+		else if (Util.contains(Lucky_Pig_Level_70, npc.getId()) && (Rnd.get(1000) < (Lucky_Pig_Level_70_Spawn_Chance * 10)))
 		{
 			L2Npc luckyPig70 = addSpawn(Lucky_Pig, npc.getX() + 50, npc.getY() + 50, npc.getZ(), npc.getHeading(), true, 10 * 60 * 1000, true);
 			onSpawn(luckyPig70);
 			setLuckyPigLevel70(true);
 		}
-		else if (Util.contains(Lucky_Pig_Level_80, npc.getId()) && (Rnd.get(1000) > (Lucky_Pig_Level_80_Spawn_Chance * 10)))
+		else if (Util.contains(Lucky_Pig_Level_80, npc.getId()) && (Rnd.get(1000) < (Lucky_Pig_Level_80_Spawn_Chance * 10)))
 		{
 			L2Npc luckyPig80 = addSpawn(Lucky_Pig, npc.getX() + 50, npc.getY() + 50, npc.getZ(), npc.getHeading(), true, 10 * 60 * 1000, true);
 			onSpawn(luckyPig80);
@@ -294,7 +285,7 @@ public final class LuckyPig extends AbstractNpcAI
 		
 		if ((npc.getId() == Wingless_Lucky_Pig) && isLuckyPigLevel52)
 		{
-			if (Rnd.get(1000) > 500)
+			if (Rnd.get(1000) < 500)
 			{
 				int randomQuantity = getRandom(2);
 				npc.dropItem(player, Wingless_Lucky_Pig_Level_52_Drop_Id, randomQuantity);
@@ -303,7 +294,7 @@ public final class LuckyPig extends AbstractNpcAI
 		}
 		else if ((npc.getId() == Wingless_Lucky_Pig) && isLuckyPigLevel70)
 		{
-			if (Rnd.get(1000) > 500)
+			if (Rnd.get(1000) < 500)
 			{
 				Random rnd = new Random();
 				int randomDrop = rnd.nextInt(Wingless_Lucky_Pig_Level_70_Drop_Id.length);
@@ -314,7 +305,7 @@ public final class LuckyPig extends AbstractNpcAI
 		}
 		else if ((npc.getId() == Wingless_Lucky_Pig) && isLuckyPigLevel80)
 		{
-			if (Rnd.get(1000) > 500)
+			if (Rnd.get(1000) < 500)
 			{
 				Random rnd = new Random();
 				int randomDrop = rnd.nextInt(Wingless_Lucky_Pig_Level_80_Drop_Id.length);
