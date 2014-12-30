@@ -87,14 +87,7 @@ public class ElvenBloodAltar extends Quest
 		
 		manageNpcs(true);
 		
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				changestatus();
-			}
-		}, delay);
+		ThreadPoolManager.getInstance().scheduleGeneral(() -> changestatus(), delay);
 	}
 	
 	protected void manageNpcs(boolean spawnAlive)
@@ -149,30 +142,19 @@ public class ElvenBloodAltar extends Quest
 	
 	protected void changestatus()
 	{
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+		ThreadPoolManager.getInstance().scheduleGeneral(() ->
 		{
-			@Override
-			public void run()
+			if (Rnd.chance(Config.CHANCE_SPAWN))
 			{
-				if (Rnd.chance(Config.CHANCE_SPAWN))
+				boolean aliveSpawned = false;
+				if (!aliveSpawned)
 				{
-					boolean aliveSpawned = false;
-					if (!aliveSpawned)
-					{
-						manageNpcs(false);
-					}
-					else
-					{
-						manageNpcs(true);
-						ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								changestatus();
-							}
-						}, Config.RESPAWN_TIME * 60 * 1000);
-					}
+					manageNpcs(false);
+				}
+				else
+				{
+					manageNpcs(true);
+					ThreadPoolManager.getInstance().scheduleGeneral(() -> changestatus(), Config.RESPAWN_TIME * 60 * 1000);
 				}
 			}
 		}, 10000);

@@ -42,18 +42,22 @@ public class RepairVCmd implements IVoicedCommandHandler
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		if (activeChar == null)
+		{
 			return false;
+		}
 		
 		String repairChar = null;
 		
 		try
 		{
 			if (target != null)
+			{
 				if (target.length() > 1)
 				{
 					String[] cmdParams = target.split(" ");
 					repairChar = cmdParams[0];
 				}
+			}
 		}
 		catch (Exception e)
 		{
@@ -132,7 +136,9 @@ public class RepairVCmd implements IVoicedCommandHandler
 			while (rset.next())
 			{
 				if (activeChar.getName().compareTo(rset.getString(1)) != 0)
+				{
 					result += rset.getString(1) + ";";
+				}
 			}
 			// _log.warn("Repair Attempt: Output Result for searching characters on account:"+result);
 			rset.close();
@@ -148,7 +154,9 @@ public class RepairVCmd implements IVoicedCommandHandler
 			try
 			{
 				if (con != null)
+				{
 					con.close();
+				}
 			}
 			catch (SQLException e)
 			{
@@ -187,7 +195,9 @@ public class RepairVCmd implements IVoicedCommandHandler
 			try
 			{
 				if (con != null)
+				{
 					con.close();
+				}
 			}
 			catch (SQLException e)
 			{
@@ -195,7 +205,9 @@ public class RepairVCmd implements IVoicedCommandHandler
 			}
 		}
 		if (activeChar.getAccountName().compareTo(repCharAcc) == 0)
+		{
 			result = true;
+		}
 		return result;
 	}
 	
@@ -228,15 +240,19 @@ public class RepairVCmd implements IVoicedCommandHandler
 			try
 			{
 				if (con != null)
+				{
 					con.close();
+				}
 			}
 			catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if (repCharJail > 1) // 0 norm, 1 chat ban, 2 jail, 3....
+		if (repCharJail > 1)
+		{
 			result = true;
+		}
 		return result;
 	}
 	
@@ -268,7 +284,9 @@ public class RepairVCmd implements IVoicedCommandHandler
 			try
 			{
 				if (con != null)
+				{
 					con.close();
+				}
 			}
 			catch (SQLException e)
 			{
@@ -276,7 +294,9 @@ public class RepairVCmd implements IVoicedCommandHandler
 			}
 		}
 		if (repCharKarma > 0)
+		{
 			result = true;
+		}
 		return result;
 	}
 	
@@ -284,7 +304,9 @@ public class RepairVCmd implements IVoicedCommandHandler
 	{
 		boolean result = false;
 		if (activeChar.getName().compareTo(repairChar) == 0)
+		{
 			result = true;
+		}
 		return result;
 	}
 	
@@ -334,7 +356,9 @@ public class RepairVCmd implements IVoicedCommandHandler
 			try
 			{
 				if (con != null)
+				{
 					con.close();
+				}
 			}
 			catch (SQLException e)
 			{

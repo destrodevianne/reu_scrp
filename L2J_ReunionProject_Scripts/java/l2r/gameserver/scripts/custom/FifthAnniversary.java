@@ -450,7 +450,7 @@ public class FifthAnniversary extends Quest
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
-			st = this.newQuestState(player);
+			st = newQuestState(player);
 		}
 		
 		return "31854.htm";

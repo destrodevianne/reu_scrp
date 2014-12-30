@@ -29,8 +29,8 @@ public class OlAriosh extends AbstractNpcAI
 	private static final int ARIOSH = 18555;
 	private static final int GUARD = 18556;
 	private static L2Npc _guard = null;
-	private FastSet<Integer> _lockedSpawns = new FastSet<>();
-	private Map<Integer, Integer> _spawnedGuards = new HashMap<>();
+	private final FastSet<Integer> _lockedSpawns = new FastSet<>();
+	private final Map<Integer, Integer> _spawnedGuards = new HashMap<>();
 	
 	public OlAriosh(int questId, String name, String descr)
 	{
@@ -47,12 +47,12 @@ public class OlAriosh extends AbstractNpcAI
 		if (event.equalsIgnoreCase("time_to_spawn"))
 		{
 			int objId = npc.getObjectId();
-			if (!this._spawnedGuards.containsValue(objId))
+			if (!_spawnedGuards.containsValue(objId))
 			{
 				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.WHAT_ARE_YOU_DOING_HURRY_UP_AND_HELP_ME));
 				_guard = addSpawn(GUARD, npc.getX() + 100, npc.getY() + 100, npc.getZ(), 0, false, 0L, false, npc.getInstanceId());
-				this._lockedSpawns.remove(Integer.valueOf(objId));
-				this._spawnedGuards.put(_guard.getObjectId(), Integer.valueOf(objId));
+				_lockedSpawns.remove(Integer.valueOf(objId));
+				_spawnedGuards.put(_guard.getObjectId(), Integer.valueOf(objId));
 			}
 		}
 		return super.onAdvEvent(event, npc, player);
@@ -64,12 +64,12 @@ public class OlAriosh extends AbstractNpcAI
 		if (npc.getId() == ARIOSH)
 		{
 			int objId = npc.getObjectId();
-			if (!this._spawnedGuards.containsValue(objId))
+			if (!_spawnedGuards.containsValue(objId))
 			{
-				if (!this._lockedSpawns.contains(Integer.valueOf(objId)))
+				if (!_lockedSpawns.contains(Integer.valueOf(objId)))
 				{
 					startQuestTimer("time_to_spawn", 60000L, npc, player);
-					this._lockedSpawns.add(Integer.valueOf(objId));
+					_lockedSpawns.add(Integer.valueOf(objId));
 				}
 			}
 		}
@@ -82,10 +82,10 @@ public class OlAriosh extends AbstractNpcAI
 		switch (npc.getId())
 		{
 			case GUARD:
-				this._spawnedGuards.remove(npc.getObjectId());
+				_spawnedGuards.remove(npc.getObjectId());
 				break;
 			case ARIOSH:
-				this._spawnedGuards.remove(_guard.getObjectId());
+				_spawnedGuards.remove(_guard.getObjectId());
 				_guard.decayMe();
 				cancelQuestTimer("time_to_spawn", npc, killer);
 		}

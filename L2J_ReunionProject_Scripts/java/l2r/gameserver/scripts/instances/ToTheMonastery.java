@@ -552,7 +552,7 @@ public class ToTheMonastery extends Quest
 			
 			if (npcId == EVIL)
 			{
-				InstanceHolder holder = this.instanceWorlds.get(Integer.valueOf(player.getInstanceId()));
+				InstanceHolder holder = instanceWorlds.get(Integer.valueOf(player.getInstanceId()));
 				if (holder != null)
 				{
 					for (L2Npc h : holder.mobs)
@@ -647,7 +647,7 @@ public class ToTheMonastery extends Quest
 			}
 			if (npcId == TOMB_OF_SAINTESS)
 			{
-				if (this.active)
+				if (active)
 				{
 					htmltext = "32843-03.htm";
 				}
@@ -661,7 +661,7 @@ public class ToTheMonastery extends Quest
 					SpawnSecondGroup(world);
 					SpawnThirdGroup(world);
 					SpawnFourthGroup(world);
-					this.active = true;
+					active = true;
 					htmltext = "32843-02.htm";
 				}
 			}
@@ -694,7 +694,7 @@ public class ToTheMonastery extends Quest
 					{
 						world.firstgroup = null;
 						
-						if (this.progress1)
+						if (progress1)
 						{
 							cancelQuestTimer("FirstGroupSpawn", npc, player);
 						}
@@ -711,7 +711,7 @@ public class ToTheMonastery extends Quest
 					{
 						world.secondgroup = null;
 						
-						if (this.progress2)
+						if (progress2)
 						{
 							cancelQuestTimer("SecondGroupSpawn", npc, player);
 						}
@@ -731,7 +731,7 @@ public class ToTheMonastery extends Quest
 					{
 						world.thirdgroup = null;
 						
-						if (this.progress3)
+						if (progress3)
 						{
 							cancelQuestTimer("ThirdGroupSpawn", npc, player);
 						}
@@ -748,7 +748,7 @@ public class ToTheMonastery extends Quest
 					{
 						world.fourthgroup = null;
 						
-						if (this.progress4)
+						if (progress4)
 						{
 							cancelQuestTimer("FourthGroupSpawn", npc, player);
 						}
@@ -767,21 +767,21 @@ public class ToTheMonastery extends Quest
 			
 			if (npcId == 18956)
 			{
-				this.progress1 = true;
+				progress1 = true;
 			}
 			if (npcId == 18957)
 			{
-				this.progress2 = true;
+				progress2 = true;
 			}
 			if (npcId == 18958)
 			{
-				this.progress3 = true;
+				progress3 = true;
 			}
 			if (npcId == 18959)
 			{
-				this.progress4 = true;
+				progress4 = true;
 			}
-			if ((this.progress1) && (this.progress2) && (this.progress3) && (this.progress4))
+			if ((progress1) && (progress2) && (progress3) && (progress4))
 			{
 				openDoor(21100018, world.getInstanceId());
 			}
@@ -860,11 +860,11 @@ public class ToTheMonastery extends Quest
 	
 	protected void teleportPlayer(L2Npc npc, L2PcInstance player, Location loc, int instanceId)
 	{
-		InstanceHolder holder = this.instanceWorlds.get(Integer.valueOf(instanceId));
+		InstanceHolder holder = instanceWorlds.get(Integer.valueOf(instanceId));
 		if ((holder == null) && (instanceId > 0))
 		{
 			holder = new InstanceHolder();
-			this.instanceWorlds.put(Integer.valueOf(instanceId), holder);
+			instanceWorlds.put(Integer.valueOf(instanceId), holder);
 		}
 		player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		player.setInstanceId(instanceId);
@@ -942,10 +942,10 @@ public class ToTheMonastery extends Quest
 		
 		public Teleport(L2Npc npc, L2PcInstance player, Location loc, int id)
 		{
-			this._npc = npc;
-			this._player = player;
-			this._cords = loc;
-			this._instanceId = id;
+			_npc = npc;
+			_player = player;
+			_cords = loc;
+			_instanceId = id;
 		}
 		
 		@Override
@@ -953,8 +953,8 @@ public class ToTheMonastery extends Quest
 		{
 			try
 			{
-				ToTheMonastery.this.teleportPlayer(this._npc, this._player, this._cords, this._instanceId);
-				ToTheMonastery.this.startQuestTimer("check_follow", 3000L, this._npc, this._player);
+				teleportPlayer(_npc, _player, _cords, _instanceId);
+				startQuestTimer("check_follow", 3000L, _npc, _player);
 			}
 			catch (Exception e)
 			{

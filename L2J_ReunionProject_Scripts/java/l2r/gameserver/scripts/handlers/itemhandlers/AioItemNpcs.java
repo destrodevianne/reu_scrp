@@ -19,7 +19,9 @@ public class AioItemNpcs implements IItemHandler
 	{
 		// No null pointers
 		if (playable == null)
+		{
 			return false;
+		}
 		L2PcInstance player = null;
 		// Just for players
 		if (!(playable instanceof L2PcInstance))

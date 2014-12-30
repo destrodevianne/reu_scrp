@@ -67,7 +67,9 @@ public class Gargos extends AbstractNpcAI
 		int npcId = npc.getId();
 		
 		if (npcId == GARGOS)
+		{
 			cancelQuestTimer("TimeToFire", npc, player);
+		}
 		
 		return "";
 	}

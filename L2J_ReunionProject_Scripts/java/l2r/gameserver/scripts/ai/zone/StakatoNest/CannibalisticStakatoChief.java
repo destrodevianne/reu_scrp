@@ -44,8 +44,7 @@ public class CannibalisticStakatoChief extends AbstractNpcAI
 		super(name, descr);
 		
 		addKillId(CANNIBALISTIC_CHIEF);
-		for (int i : BIZARRE_COCOONS)
-			addSkillSeeId(i);
+		addSkillSeeId(BIZARRE_COCOONS);
 	}
 	
 	@Override
@@ -73,7 +72,9 @@ public class CannibalisticStakatoChief extends AbstractNpcAI
 			for (L2PcInstance member : party)
 			{
 				if (Rnd.get(100) > 80)
+				{
 					member.addItem("BigCocoon", LARGE_COCOON, 1L, npc, true);
+				}
 				else
 				{
 					member.addItem("SMALL_COCOON", SMALL_COCOON, 1L, npc, true);

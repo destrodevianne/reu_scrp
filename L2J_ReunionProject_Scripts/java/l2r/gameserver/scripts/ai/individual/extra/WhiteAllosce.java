@@ -60,7 +60,9 @@ public class WhiteAllosce extends AbstractNpcAI
 				_isLock = true;
 			}
 			else
+			{
 				return "";
+			}
 		}
 		return "";
 	}
@@ -71,7 +73,9 @@ public class WhiteAllosce extends AbstractNpcAI
 		int npcId = npc.getId();
 		
 		if (npcId == ALLOSCE)
+		{
 			cancelQuestTimer("time_to_spawn", npc, player);
+		}
 		
 		return "";
 	}

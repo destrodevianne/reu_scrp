@@ -827,9 +827,9 @@ public class HallOfSufferingAttack extends Quest
 					world.calcRewardItemId();
 					world.klanikus = null;
 					world.klodekus = null;
-					this.cancelQuestTimers("ressurectTwin");
-					this.cancelQuestTimers("spawnBossGuards");
-					this.cancelQuestTimers("isTwinSeparated");
+					cancelQuestTimers("ressurectTwin");
+					cancelQuestTimers("spawnBossGuards");
+					cancelQuestTimers("isTwinSeparated");
 					addSpawn(TEPIOS, TEPIOS_SPAWN[0], TEPIOS_SPAWN[1], TEPIOS_SPAWN[2], 0, false, 0, false, world.getInstanceId());
 					
 					Instance inst = InstanceManager.getInstance().getInstance(world.getInstanceId());

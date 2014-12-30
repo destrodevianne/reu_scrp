@@ -111,14 +111,7 @@ public class OrenBloodAltar extends Quest
 		addKillId(25767);
 		addKillId(25770);
 		
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				changestatus();
-			}
-		}, delay);
+		ThreadPoolManager.getInstance().scheduleGeneral(() -> changestatus(), delay);
 		
 	}
 	
@@ -202,33 +195,22 @@ public class OrenBloodAltar extends Quest
 	
 	protected void changestatus()
 	{
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+		ThreadPoolManager.getInstance().scheduleGeneral(() ->
 		{
-			@Override
-			public void run()
+			if (Rnd.chance(Config.CHANCE_SPAWN))
 			{
-				if (Rnd.chance(Config.CHANCE_SPAWN))
+				if (!bossesSpawned)
 				{
-					if (!bossesSpawned)
-					{
-						manageNpcs(false);
-						manageBosses(true);
-						bossesSpawned = true;
-					}
-					else
-					{
-						manageBosses(false);
-						manageNpcs(true);
-						bossesSpawned = false;
-						ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								changestatus();
-							}
-						}, Config.RESPAWN_TIME * 60 * 1000);
-					}
+					manageNpcs(false);
+					manageBosses(true);
+					bossesSpawned = true;
+				}
+				else
+				{
+					manageBosses(false);
+					manageNpcs(true);
+					bossesSpawned = false;
+					ThreadPoolManager.getInstance().scheduleGeneral(() -> changestatus(), Config.RESPAWN_TIME * 60 * 1000);
 				}
 			}
 		}, 10000);
@@ -251,26 +233,15 @@ public class OrenBloodAltar extends Quest
 		
 		if (progress1 && progress2)
 		{
-			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+			ThreadPoolManager.getInstance().scheduleGeneral(() ->
 			{
-				@Override
-				public void run()
-				{
-					progress1 = false;
-					progress2 = false;
-					
-					manageBosses(false);
-					manageNpcs(true);
-					bossesSpawned = false;
-					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							changestatus();
-						}
-					}, Config.RESPAWN_TIME * 60 * 1000);
-				}
+				progress1 = false;
+				progress2 = false;
+				
+				manageBosses(false);
+				manageNpcs(true);
+				bossesSpawned = false;
+				ThreadPoolManager.getInstance().scheduleGeneral(() -> changestatus(), Config.RESPAWN_TIME * 60 * 1000);
 			}, 30000);
 		}
 		return super.onKill(npc, player, isSummon);

@@ -68,8 +68,6 @@ public class Q00697_DefendtheHallofErosion extends Quest
 			return htmltext;
 		}
 		
-		@SuppressWarnings("unused")
-		int npcId = npc.getId();
 		int cond = st.getInt("cond");
 		
 		switch (st.getState())

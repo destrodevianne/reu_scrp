@@ -72,7 +72,9 @@ public class Hellenark extends AbstractNpcAI
 		if (npc.getId() == Hellenark)
 		{
 			if (status == 0)
+			{
 				startQuestTimer("spawn", 20000L, npc, null, false);
+			}
 			status = 1;
 		}
 		return null;
@@ -91,7 +93,9 @@ public class Hellenark extends AbstractNpcAI
 		if (event.equalsIgnoreCase("spawn"))
 		{
 			if (status == 1)
+			{
 				status = 3;
+			}
 			startQuestTimer("check", 30000L, npc, null, false);
 			for (int i = 0; i < 6; i++)
 			{
@@ -107,9 +111,13 @@ public class Hellenark extends AbstractNpcAI
 		if (event.equalsIgnoreCase("check"))
 		{
 			if (status == 1)
+			{
 				startQuestTimer("check", 0x2bf20L, npc, null, false);
+			}
 			if (status == 3)
+			{
 				startQuestTimer("desp", 0x2bf20L, npc, null, false);
+			}
 			status = 3;
 		}
 		if (event.equalsIgnoreCase("desp"))
@@ -117,7 +125,9 @@ public class Hellenark extends AbstractNpcAI
 			cancelQuestTimers("cast");
 			L2Npc npc1;
 			for (Iterator<Object> i$ = spawnnaia.iterator(); i$.hasNext(); npc1.deleteMe())
+			{
 				npc1 = (L2Npc) i$.next();
+			}
 			
 			status = 0;
 		}

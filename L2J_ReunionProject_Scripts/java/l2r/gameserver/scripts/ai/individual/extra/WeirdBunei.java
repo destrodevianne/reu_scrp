@@ -45,7 +45,9 @@ public class WeirdBunei extends AbstractNpcAI
 				npc.doCast(SkillData.getInstance().getInfo(5625, 1));
 			}
 			else
+			{
 				return "";
+			}
 		}
 		return "";
 	}
@@ -62,7 +64,9 @@ public class WeirdBunei extends AbstractNpcAI
 				_isAlreadyStarted = true;
 			}
 			else if (_isAlreadyStarted == true)
+			{
 				return "";
+			}
 		}
 		return "";
 	}
@@ -72,7 +76,9 @@ public class WeirdBunei extends AbstractNpcAI
 	{
 		int npcId = npc.getId();
 		if (npcId == WEIRD)
+		{
 			cancelQuestTimer("time_to_skill", npc, player);
+		}
 		return "";
 	}
 	

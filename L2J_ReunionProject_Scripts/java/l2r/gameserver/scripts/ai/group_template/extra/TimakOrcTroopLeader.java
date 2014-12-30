@@ -38,7 +38,9 @@ public class TimakOrcTroopLeader extends AbstractNpcAI
 			if (npc.getAI().getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
 			{
 				if (Rnd.get(100) < 50)
+				{
 					npc.broadcastNpcSay("Destroy the enemy, my brothers!");
+				}
 			}
 		}
 		

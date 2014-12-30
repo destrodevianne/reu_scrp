@@ -24,7 +24,9 @@ public class ItemBufferVCmd implements IVoicedCommandHandler
 		}
 		
 		if (command.startsWith("buffer"))
+		{
 			sendHtml(activeChar);
+		}
 		
 		return true;
 	}

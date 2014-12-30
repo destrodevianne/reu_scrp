@@ -42,7 +42,7 @@ public class Epidos extends AbstractNpcAI
 		25611,
 		25612
 	};
-
+	
 	private static final int[] MINIONS =
 	{
 		25605,
@@ -50,23 +50,23 @@ public class Epidos extends AbstractNpcAI
 		25607,
 		25608
 	};
-
+	
 	private static final int[] MINIONS_COUNT =
 	{
 		3,
 		6,
 		11
 	};
-
+	
 	private final Map<Integer, Double> _lastHp = new ConcurrentHashMap<>();
-
+	
 	private Epidos(String name, String descr)
 	{
 		super(name, descr);
 		addKillId(EPIDOSES);
 		addSpawnId(EPIDOSES);
 	}
-
+	
 	@Override
 	public final String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -77,7 +77,7 @@ public class Epidos extends AbstractNpcAI
 				int hpDecreasePercent = (int) (((_lastHp.get(npc.getObjectId()) - npc.getCurrentHp()) * 100) / npc.getMaxHp());
 				int minionsCount = 0;
 				int spawnedMinions = ((L2MonsterInstance) npc).getMinionList().countSpawnedMinions();
-
+				
 				if ((hpDecreasePercent > 5) && (hpDecreasePercent <= 15) && (spawnedMinions <= 9))
 				{
 					minionsCount = MINIONS_COUNT[0];
@@ -90,15 +90,15 @@ public class Epidos extends AbstractNpcAI
 				{
 					minionsCount = MINIONS_COUNT[2];
 				}
-
+				
 				for (int i = 0; i < minionsCount; i++)
 				{
 					MinionList.spawnMinion((L2MonsterInstance) npc, MINIONS[Arrays.binarySearch(EPIDOSES, npc.getId())]);
 				}
-
+				
 				_lastHp.put(npc.getObjectId(), npc.getCurrentHp());
 			}
-
+			
 			startQuestTimer("check_minions", 10000, npc, null);
 		}
 		else if (event.equalsIgnoreCase("check_idle"))
@@ -114,7 +114,7 @@ public class Epidos extends AbstractNpcAI
 		}
 		return null;
 	}
-
+	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isSummon)
 	{
@@ -122,21 +122,21 @@ public class Epidos extends AbstractNpcAI
 		{
 			addSpawn(32376, -45482, 246277, -14184, 0, false, 0, false);
 		}
-
+		
 		_lastHp.remove(npc.getObjectId());
 		return super.onKill(npc, killer, isSummon);
 	}
-
+	
 	@Override
 	public final String onSpawn(L2Npc npc)
 	{
 		startQuestTimer("check_minions", 10000, npc, null);
 		startQuestTimer("check_idle", 600000, npc, null);
 		_lastHp.put(npc.getObjectId(), (double) npc.getMaxHp());
-
+		
 		return super.onSpawn(npc);
 	}
-
+	
 	public static void main(String[] args)
 	{
 		new Epidos(Epidos.class.getSimpleName(), "ai");

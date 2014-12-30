@@ -18,7 +18,9 @@ public class AioItemVCmd implements IVoicedCommandHandler
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		if (command.startsWith("aioitem"))
+		{
 			sendHtml(activeChar);
+		}
 		
 		return true;
 	}
