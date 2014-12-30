@@ -30,6 +30,7 @@ import l2r.gameserver.model.L2Spawn;
 import l2r.gameserver.model.Location;
 import l2r.gameserver.model.actor.templates.L2NpcTemplate;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -37,7 +38,7 @@ import org.w3c.dom.Node;
  * Hellbound Spawns parser.
  * @author Zoey76
  */
-public final class HellboundSpawns extends DocumentParser
+public final class HellboundSpawns implements DocumentParser
 {
 	private final List<L2Spawn> _spawns = new ArrayList<>();
 	private final Map<Integer, int[]> _spawnLevels = new HashMap<>();
@@ -53,13 +54,13 @@ public final class HellboundSpawns extends DocumentParser
 		_spawns.clear();
 		_spawnLevels.clear();
 		parseDatapackFile("data/scripts/hellbound/hellboundSpawns.xml");
-		_log.info(getClass().getSimpleName() + ": Loaded " + _spawns.size() + " Hellbound spawns.");
+		LOGGER.info(getClass().getSimpleName() + ": Loaded " + _spawns.size() + " Hellbound spawns.");
 	}
 	
 	@Override
-	protected void parseDocument()
+	public void parseDocument(Document doc)
 	{
-		for (Node node = getCurrentDocument().getFirstChild(); node != null; node = node.getNextSibling())
+		for (Node node = doc.getFirstChild(); node != null; node = node.getNextSibling())
 		{
 			if ("list".equals(node.getNodeName()))
 			{
@@ -82,7 +83,7 @@ public final class HellboundSpawns extends DocumentParser
 			final Node id = npc.getAttributes().getNamedItem("id");
 			if (id == null)
 			{
-				_log.error(getClass().getSimpleName() + ":  Missing NPC ID, skipping record!");
+				LOGGER.error(getClass().getSimpleName() + ":  Missing NPC ID, skipping record!");
 				return;
 			}
 			
@@ -90,7 +91,7 @@ public final class HellboundSpawns extends DocumentParser
 			final L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
 			if (template == null)
 			{
-				_log.warn(getClass().getSimpleName() + ": Missing NPC template for ID: " + npcId + "!");
+				LOGGER.warn(getClass().getSimpleName() + ": Missing NPC template for ID: " + npcId + "!");
 				return;
 			}
 			
@@ -132,7 +133,7 @@ public final class HellboundSpawns extends DocumentParser
 				spawn.setAmount(1);
 				if (loc == null)
 				{
-					_log.warn("location is null");
+					LOGGER.warn("location is null");
 				}
 				spawn.setLocation(loc);
 				spawn.setRespawnDelay(delay, randomInterval);
@@ -146,7 +147,7 @@ public final class HellboundSpawns extends DocumentParser
 			}
 			catch (SecurityException | ClassNotFoundException | NoSuchMethodException e)
 			{
-				_log.warn(getClass().getSimpleName() + ": Couldn't load spawns: " + e.getMessage());
+				LOGGER.warn(getClass().getSimpleName() + ": Couldn't load spawns: " + e.getMessage());
 			}
 		}
 	}
