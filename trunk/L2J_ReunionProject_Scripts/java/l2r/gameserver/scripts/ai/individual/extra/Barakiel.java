@@ -28,7 +28,7 @@ public class Barakiel extends AbstractNpcAI
 		{
 			int x = npc.getX();
 			int y = npc.getY();
-			if (x < x1 || x > x2 || y < y1)
+			if ((x < x1) || (x > x2) || (y < y1))
 			{
 				npc.teleToLocation(0x16380, 0xfffeb070, -2736);
 				npc.getStatus().setCurrentHp(npc.getMaxHp());

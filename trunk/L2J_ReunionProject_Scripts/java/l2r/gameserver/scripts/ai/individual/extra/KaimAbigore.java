@@ -69,7 +69,9 @@ public class KaimAbigore extends AbstractNpcAI
 				_isAlreadyStarted = true;
 			}
 			else if (_isAlreadyStarted == true)
+			{
 				return "";
+			}
 			if (_isAlreadySpawned == false)
 			{
 				if (_isLockSpawned == 0)
@@ -78,10 +80,14 @@ public class KaimAbigore extends AbstractNpcAI
 					_isAlreadySpawned = true;
 				}
 				if (_isLockSpawned == 3)
+				{
 					return "";
+				}
 			}
 			else if (_isAlreadySpawned == true)
+			{
 				return "";
+			}
 		}
 		return "";
 	}
@@ -91,7 +97,9 @@ public class KaimAbigore extends AbstractNpcAI
 	{
 		int npcId = npc.getId();
 		if (npcId == GUARD)
+		{
 			_isLockSpawned = 1;
+		}
 		else if (npcId == KAIM)
 		{
 			cancelQuestTimer("time_to_spawn", npc, player);

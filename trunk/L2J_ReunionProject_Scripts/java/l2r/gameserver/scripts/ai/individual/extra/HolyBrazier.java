@@ -42,7 +42,7 @@ public class HolyBrazier extends AbstractNpcAI
 		System.out.println("******* spawnGuard *******");
 		System.out.println("_guard   = " + _guard);
 		System.out.println("_brazier = " + _brazier);
-		if (_guard == null && _brazier != null)
+		if ((_guard == null) && (_brazier != null))
 		{
 			System.out.println("******* addSpawn *******");
 			_guard = addSpawn(GuardianOfTheGrail, _brazier.getX(), _brazier.getY(), _brazier.getZ(), 0, false, 0);
@@ -72,7 +72,7 @@ public class HolyBrazier extends AbstractNpcAI
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		if (npc.getId() == GuardianOfTheGrail && !npc.isInCombat() && npc.getTarget() == null)
+		if ((npc.getId() == GuardianOfTheGrail) && !npc.isInCombat() && (npc.getTarget() == null))
 		{
 			npc.setIsNoRndWalk(true);
 		}

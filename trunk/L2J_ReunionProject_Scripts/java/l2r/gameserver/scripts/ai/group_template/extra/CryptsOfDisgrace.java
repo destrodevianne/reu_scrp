@@ -95,9 +95,8 @@ public class CryptsOfDisgrace extends AbstractNpcAI
 			addKillId(i);
 		}
 		
-		for (int i = 0; i < MobSpawns.length; i++)
+		for (int[] loc : MobSpawns)
 		{
-			int[] loc = MobSpawns[i];
 			addSpawn(loc[0], loc[1], loc[2], loc[3], loc[4]);
 		}
 	}
@@ -128,7 +127,9 @@ public class CryptsOfDisgrace extends AbstractNpcAI
 			spawn.init();
 			spawn.startRespawn();
 			if (respTime == 0)
+			{
 				spawn.stopRespawn();
+			}
 		}
 		catch (Exception e)
 		{

@@ -65,7 +65,9 @@ public class VenomousStorace extends AbstractNpcAI
 				}
 			}
 			if (_isLockSpawned == 2)
+			{
 				return "";
+			}
 			return "";
 		}
 		return "";
@@ -76,9 +78,13 @@ public class VenomousStorace extends AbstractNpcAI
 	{
 		int npcId = npc.getId();
 		if (npcId == GUARD)
+		{
 			_isLockSpawned = 1;
+		}
 		else if (npcId == VENOMOUS)
+		{
 			cancelQuestTimer("time_to_spawn", npc, player);
+		}
 		return "";
 	}
 	

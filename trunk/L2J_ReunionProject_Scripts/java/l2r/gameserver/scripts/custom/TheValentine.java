@@ -168,8 +168,10 @@ public class TheValentine extends Quest
 		QuestState st = player.getQuestState(getName());
 		int npcId = npc.getId();
 		
-		if (npcId == QUEEN_OF_HEARTS && st.isCompleted())
+		if ((npcId == QUEEN_OF_HEARTS) && st.isCompleted())
+		{
 			htmltext = QUEEN_OF_HEARTS + "-done.htm";
+		}
 		else
 		{
 			st.giveItems(CAKE_RECIPE, 1);
@@ -185,12 +187,16 @@ public class TheValentine extends Quest
 		String htmltext = QUEEN_OF_HEARTS + ".htm";
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
-			st = this.newQuestState(player);
+		{
+			st = newQuestState(player);
+		}
 		
 		int npcId = npc.getId();
 		
-		if (npcId == QUEEN_OF_HEARTS && st.isCompleted())
+		if ((npcId == QUEEN_OF_HEARTS) && st.isCompleted())
+		{
 			htmltext = QUEEN_OF_HEARTS + "-done.htm";
+		}
 		
 		return htmltext;
 	}

@@ -194,7 +194,9 @@ public class AdminEnchant implements IAdminCommandHandler
 		}
 		
 		if (!player.isGM())
+		{
 			target = activeChar;
+		}
 		
 		// now we need to find the equipped weapon of the targeted character...
 		int curEnchant = 0; // display purposes only

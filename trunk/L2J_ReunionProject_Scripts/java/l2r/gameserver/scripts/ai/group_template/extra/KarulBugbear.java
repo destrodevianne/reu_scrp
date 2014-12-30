@@ -26,10 +26,14 @@ public class KarulBugbear extends AbstractNpcAI
 			if (npc.getAI().getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
 			{
 				if (Rnd.get(100) < 70)
+				{
 					npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.YOUR_REAR_IS_PRACTICALLY_UNGUARDED));
+				}
 			}
 			else if (Rnd.get(100) < 10)
+			{
 				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getId(), NpcStringId.S1_WATCH_YOUR_BACK));
+			}
 		}
 		return super.onAttack(npc, player, damage, isPet);
 	}

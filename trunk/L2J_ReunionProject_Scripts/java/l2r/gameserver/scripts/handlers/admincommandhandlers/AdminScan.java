@@ -106,7 +106,7 @@ public class AdminScan implements IAdminCommandHandler
 							}
 						}
 						activeChar.sendMessage(character.getName() + " have been deleted.");
-						this.useAdminCommand("admin_scan", activeChar);
+						useAdminCommand("admin_scan", activeChar);
 					}
 				}
 			}

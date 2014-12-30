@@ -52,7 +52,7 @@ public final class Q00638_SeekersOfTheHolyGrail extends Quest
 			this.chance = chance;
 			this.keyId = keyId;
 			this.keyChance = keyChance;
-			this.keyCount = count;
+			keyCount = count;
 		}
 	}
 	

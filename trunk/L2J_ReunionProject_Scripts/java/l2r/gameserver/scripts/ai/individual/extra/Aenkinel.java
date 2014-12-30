@@ -56,7 +56,7 @@ public class Aenkinel extends AbstractNpcAI
 	{
 		QuestState st = player.getQuestState("aenkinel");
 		int npcId = npc.getId();
-		if (npcId == AENKINEL1 || npcId == AENKINEL2 || npcId == AENKINEL3 || npcId == AENKINEL4 || npcId == AENKINEL5 || npcId == AENKINEL6)
+		if ((npcId == AENKINEL1) || (npcId == AENKINEL2) || (npcId == AENKINEL3) || (npcId == AENKINEL4) || (npcId == AENKINEL5) || (npcId == AENKINEL6))
 		{
 			int instanceId = npc.getInstanceId();
 			addSpawn(18820, -121524, -155073, -6752, 64792, false, 0, false, instanceId);
@@ -64,7 +64,9 @@ public class Aenkinel extends AbstractNpcAI
 			addSpawn(18819, -121457, -155071, -6752, 49471, false, 0, false, instanceId);
 			addSpawn(18819, -121428, -155070, -6752, 41113, false, 0, false, instanceId);
 			if (st == null)
+			{
 				return "";
+			}
 			st.exitQuest(true);
 		}
 		return "";

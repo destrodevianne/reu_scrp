@@ -30,23 +30,41 @@ public class TeleportsVCmd implements IVoicedCommandHandler
 		Location loc = null;
 		
 		if (command.equalsIgnoreCase("giran"))
+		{
 			loc = new Location(83473, 148554, -3400);
+		}
 		if (command.equalsIgnoreCase("dion"))
+		{
 			loc = new Location(15619, 143132, -2705);
+		}
 		if (command.equalsIgnoreCase("aden"))
+		{
 			loc = new Location(147974, 26883, -2200);
+		}
 		if (command.equalsIgnoreCase("gludio"))
+		{
 			loc = new Location(-14413, 123044, -3112);
+		}
 		if (command.equalsIgnoreCase("rune"))
+		{
 			loc = new Location(43759, -48122, -792);
+		}
 		if (command.equalsIgnoreCase("heine"))
+		{
 			loc = new Location(111381, 218981, -3538);
+		}
 		if (command.equalsIgnoreCase("goddard"))
+		{
 			loc = new Location(147732, -56554, -2776);
+		}
 		if (command.equalsIgnoreCase("schuttgart"))
+		{
 			loc = new Location(87355, -142095, -1336);
+		}
 		if (command.equalsIgnoreCase("oren"))
+		{
 			loc = new Location(82760, 53578, -1491);
+		}
 		
 		if (!activeChar.isInsideZone(ZoneIdType.PEACE))
 		{
@@ -83,7 +101,9 @@ public class TeleportsVCmd implements IVoicedCommandHandler
 		}
 		
 		if (loc != null)
+		{
 			activeChar.teleToLocation(loc, false);
+		}
 		
 		return true;
 	}

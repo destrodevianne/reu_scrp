@@ -36,7 +36,7 @@ public class CannibalisticStakatoFollower extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
-		if (npc.getMaxHp() * 0.3D > npc.getCurrentHp())
+		if ((npc.getMaxHp() * 0.3D) > npc.getCurrentHp())
 		{
 			if (Rnd.get(100) <= 25)
 			{
@@ -62,26 +62,26 @@ public class CannibalisticStakatoFollower extends AbstractNpcAI
 	
 	private class eatTask implements Runnable
 	{
-		private L2Npc _npc;
-		private L2Npc _minion;
+		private final L2Npc _npc;
+		private final L2Npc _minion;
 		
 		public eatTask(L2Npc npc, L2Npc minion)
 		{
-			this._npc = npc;
-			this._minion = minion;
+			_npc = npc;
+			_minion = minion;
 		}
 		
 		@Override
 		public void run()
 		{
-			if (this._minion == null)
+			if (_minion == null)
 			{
 				return;
 			}
-			double hpToSacrifice = this._minion.getCurrentHp();
-			this._npc.setCurrentHp(this._npc.getCurrentHp() + hpToSacrifice);
-			this._npc.broadcastPacket(new MagicSkillUse(this._npc, this._minion, 4484, 1, 1000, 0));
-			this._minion.doDie(this._minion);
+			double hpToSacrifice = _minion.getCurrentHp();
+			_npc.setCurrentHp(_npc.getCurrentHp() + hpToSacrifice);
+			_npc.broadcastPacket(new MagicSkillUse(_npc, _minion, 4484, 1, 1000, 0));
+			_minion.doDie(_minion);
 		}
 	}
 	

@@ -49,21 +49,29 @@ public class VoteVCmd implements IVoicedCommandHandler
 		if (command.equalsIgnoreCase("voteenable"))
 		{
 			if (!activeChar.isGM())
+			{
 				return false;
+			}
 			
 			voteclean();
 			Announcements.getInstance().announceToAll("Voting system has started, all players can vote now by pressing .yes or .no");
 			for (L2PcInstance all : L2World.getInstance().getPlayers())
+			{
 				all.setVoter(true);
+			}
 		}
 		else if (command.equalsIgnoreCase("votedisable"))
 		{
 			if (!activeChar.isGM())
+			{
 				return false;
+			}
 			
 			Announcements.getInstance().announceToAll("Voting system has ended.");
 			for (L2PcInstance all : L2World.getInstance().getPlayers())
+			{
 				all.setVoter(false);
+			}
 		}
 		else if (command.equalsIgnoreCase("yes"))
 		{
@@ -76,7 +84,9 @@ public class VoteVCmd implements IVoicedCommandHandler
 			activeChar.setVoter(false);
 			setVote(1, 0);
 			for (L2PcInstance allgms : L2World.getInstance().getAllGMs())
+			{
 				allgms.sendPacket(new CreatureSay(0, Say2.SHOUT, "Voting Info", activeChar.getName() + " has voted Yes."));
+			}
 		}
 		else if (command.equalsIgnoreCase("no"))
 		{
@@ -90,14 +100,18 @@ public class VoteVCmd implements IVoicedCommandHandler
 				activeChar.setVoter(false);
 				setVote(0, 1);
 				for (L2PcInstance allgms : L2World.getInstance().getAllGMs())
+				{
 					allgms.sendPacket(new CreatureSay(0, Say2.SHOUT, "Voting Info", activeChar.getName() + " has voted No."));
+				}
 			}
 			
 		}
 		else if (command.equalsIgnoreCase("votes"))
 		{
 			if (!activeChar.isGM())
+			{
 				return false;
+			}
 			
 			activeChar.sendMessage("Yes: " + getYes());
 			activeChar.sendMessage("No: " + getNo());
