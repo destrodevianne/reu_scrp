@@ -26,13 +26,14 @@ import java.util.Set;
 import l2r.gameserver.engines.DocumentParser;
 import l2r.gameserver.model.StatsSet;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
  * @author UnAfraid
  */
-public class NpcBuffersData extends DocumentParser
+public class NpcBuffersData implements DocumentParser
 {
 	private final Map<Integer, NpcBufferData> _npcBuffers = new HashMap<>();
 	
@@ -45,16 +46,16 @@ public class NpcBuffersData extends DocumentParser
 	public void load()
 	{
 		parseDatapackFile("data/scripts/ai/npc/NpcBuffers/NpcBuffersData.xml");
-		_log.info(getClass().getSimpleName() + ": Loaded: " + _npcBuffers.size() + " buffers data.");
+		LOGGER.info(getClass().getSimpleName() + ": Loaded: " + _npcBuffers.size() + " buffers data.");
 	}
 	
 	@Override
-	protected void parseDocument()
+	public void parseDocument(Document doc)
 	{
 		StatsSet set;
 		Node attr;
 		NamedNodeMap attrs;
-		for (Node n = getCurrentDocument().getFirstChild(); n != null; n = n.getNextSibling())
+		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 		{
 			if ("list".equalsIgnoreCase(n.getNodeName()))
 			{
