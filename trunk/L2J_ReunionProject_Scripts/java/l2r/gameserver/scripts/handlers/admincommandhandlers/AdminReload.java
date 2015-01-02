@@ -21,8 +21,6 @@ package l2r.gameserver.scripts.handlers.admincommandhandlers;
 import java.io.File;
 import java.util.StringTokenizer;
 
-import javax.script.ScriptException;
-
 import l2r.Config;
 import l2r.gameserver.cache.HtmCache;
 import l2r.gameserver.datatables.SpawnTable;
@@ -38,6 +36,7 @@ import l2r.gameserver.datatables.xml.ItemData;
 import l2r.gameserver.datatables.xml.MultisellData;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.datatables.xml.TransformData;
+import l2r.gameserver.handler.EffectHandler;
 import l2r.gameserver.handler.IAdminCommandHandler;
 import l2r.gameserver.instancemanager.CursedWeaponsManager;
 import l2r.gameserver.instancemanager.QuestManager;
@@ -227,32 +226,14 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				case "effect":
 				{
-					final File file = new File(L2ScriptEngineManager.SCRIPT_FOLDER, "handlers/EffectMasterHandler.java");
-					try
-					{
-						L2ScriptEngineManager.getInstance().executeScript(file);
-						AdminData.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded Effects.");
-					}
-					catch (ScriptException e)
-					{
-						L2ScriptEngineManager.getInstance().reportScriptFileError(file, e);
-						activeChar.sendMessage("There was an error while loading handlers.");
-					}
+					EffectHandler.getInstance().executeScript();
+					AdminData.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded Effects.");
 					break;
 				}
 				case "handler":
 				{
-					final File file = new File(L2ScriptEngineManager.SCRIPT_FOLDER, "handlers/MasterHandler.java");
-					try
-					{
-						L2ScriptEngineManager.getInstance().executeScript(file);
-						AdminData.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded Handlers.");
-					}
-					catch (ScriptException e)
-					{
-						L2ScriptEngineManager.getInstance().reportScriptFileError(file, e);
-						activeChar.sendMessage("There was an error while loading handlers.");
-					}
+					L2ScriptEngineManager.getInstance().executeScriptList();
+					AdminData.getInstance().broadcastMessageToGMs(activeChar.getName() + ": Reloaded Handlers.");
 					break;
 				}
 				case "enchant":
