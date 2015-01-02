@@ -83,7 +83,7 @@ public final class SubclassCertification extends AbstractNpcAI
 	
 	private SubclassCertification()
 	{
-		super(SubclassCertification.class.getSimpleName(), "ai/npc");
+		super(SubclassCertification.class.getSimpleName(), "ai/npc/VillageMasters");
 		addStartNpc(NPCS);
 		addTalkId(NPCS);
 	}
