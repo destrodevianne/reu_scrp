@@ -29,6 +29,7 @@ import l2r.gameserver.model.base.ClassId;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.util.Util;
+import l2r.util.Rnd;
 
 /**
  * Dragon Valley AI.
@@ -87,6 +88,7 @@ public final class DragonValley extends AbstractNpcAI
 	private static final SkillHolder MORALE_BOOST3 = new SkillHolder(6885, 3);
 	
 	// Misc
+	private final int SPAWN_CHANCE = 100; // Retail 100%
 	private static final int MIN_DISTANCE = 1500;
 	private static final int MIN_MEMBERS = 3;
 	private static final int MIN_LVL = 80;
@@ -167,13 +169,16 @@ public final class DragonValley extends AbstractNpcAI
 		{
 			if ((npc.getCurrentHp() < (npc.getMaxHp() / 2)) && (getRandom(100) < 5) && npc.isScriptValue(0))
 			{
-				npc.setScriptValue(1);
-				final int rnd = getRandom(3, 5);
-				for (int i = 0; i < rnd; i++)
+				if (Rnd.get(1000) <= (SPAWN_CHANCE * 10))
 				{
-					final L2Playable playable = isSummon ? attacker.getSummon() : attacker;
-					final L2Npc minion = addSpawn(DRAKOS_ASSASSIN, npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), true, 0, true);
-					addAttackPlayerDesire(minion, playable);
+					npc.setScriptValue(1);
+					final int rnd = getRandom(3, 5);
+					for (int i = 0; i < rnd; i++)
+					{
+						final L2Playable playable = isSummon ? attacker.getSummon() : attacker;
+						final L2Npc minion = addSpawn(DRAKOS_ASSASSIN, npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), true, 0, true);
+						addAttackPlayerDesire(minion, playable);
+					}
 				}
 			}
 		}
