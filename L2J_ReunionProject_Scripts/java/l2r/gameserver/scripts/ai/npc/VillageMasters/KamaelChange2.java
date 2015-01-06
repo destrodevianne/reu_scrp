@@ -27,6 +27,7 @@ import l2r.gameserver.model.base.ClassId;
 import l2r.gameserver.model.quest.QuestState;
 import l2r.gameserver.scripts.ai.npc.AbstractNpcAI;
 import l2r.gameserver.scripts.quests.Q00064_CertifiedBerserker;
+import l2r.gameserver.scripts.quests.Q00065_CertifiedSoulBreaker;
 import l2r.gameserver.scripts.quests.Q00066_CertifiedArbalester;
 import l2r.gameserver.util.Util;
 
@@ -182,7 +183,7 @@ public final class KamaelChange2 extends AbstractNpcAI
 					}
 					else if (classId == 128)
 					{
-						QuestState qs = player.getQuestState("65_CertifiedSoulBreaker");
+						QuestState qs = player.getQuestState(Q00065_CertifiedSoulBreaker.class.getSimpleName());
 						if (player.getLevel() < 40)
 						{
 							if ((qs != null) && qs.isCompleted())
@@ -225,7 +226,7 @@ public final class KamaelChange2 extends AbstractNpcAI
 				{
 					if (classId == 129)
 					{
-						QuestState qs = player.getQuestState("65_CertifiedSoulBreaker");
+						QuestState qs = player.getQuestState(Q00065_CertifiedSoulBreaker.class.getSimpleName());
 						if (player.getLevel() < 40)
 						{
 							if ((qs != null) && qs.isCompleted())
