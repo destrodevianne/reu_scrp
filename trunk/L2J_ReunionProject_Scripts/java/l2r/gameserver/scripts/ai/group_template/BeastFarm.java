@@ -23,16 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 import javolution.util.FastMap;
-import l2r.gameserver.datatables.sql.NpcTable;
 import l2r.gameserver.datatables.xml.SkillData;
 import l2r.gameserver.enums.CtrlIntention;
-import l2r.gameserver.idfactory.IdFactory;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Attackable;
 import l2r.gameserver.model.actor.L2Npc;
 import l2r.gameserver.model.actor.instance.L2PcInstance;
 import l2r.gameserver.model.actor.instance.L2TamedBeastInstance;
-import l2r.gameserver.model.actor.templates.L2NpcTemplate;
 import l2r.gameserver.model.holders.SkillHolder;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.network.serverpackets.AbstractNpcInfo;
@@ -253,8 +250,7 @@ public class BeastFarm extends AbstractNpcAI
 		// player might have and initialize the Tamed Beast.
 		if (Util.contains(TAMED_BEASTS, nextNpcId))
 		{
-			L2NpcTemplate template = NpcTable.getInstance().getTemplate(nextNpcId);
-			L2TamedBeastInstance nextNpc = new L2TamedBeastInstance(IdFactory.getInstance().getNextId(), template, player, food, npc.getX(), npc.getY(), npc.getZ(), true);
+			final L2TamedBeastInstance nextNpc = new L2TamedBeastInstance(nextNpcId, player, food, npc.getX(), npc.getY(), npc.getZ(), true);
 			
 			TamedBeast beast = TAMED_BEAST_DATA.get(getRandom(TAMED_BEAST_DATA.size()));
 			String name = beast.getName();
