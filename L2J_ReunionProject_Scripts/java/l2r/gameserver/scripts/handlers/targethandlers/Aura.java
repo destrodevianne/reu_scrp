@@ -25,6 +25,7 @@ import l2r.gameserver.enums.ZoneIdType;
 import l2r.gameserver.handler.ITargetTypeHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
+import l2r.gameserver.model.actor.instance.L2DoorInstance;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.targets.L2TargetType;
 
@@ -40,8 +41,18 @@ public class Aura implements ITargetTypeHandler
 		final boolean srcInArena = (activeChar.isInsideZone(ZoneIdType.PVP) && !activeChar.isInsideZone(ZoneIdType.SIEGE));
 		for (L2Character obj : activeChar.getKnownList().getKnownCharactersInRadius(skill.getAffectRange()))
 		{
-			if (obj.isAttackable() || obj.isPlayable())
+			if (obj.isDoor() || obj.isAttackable() || obj.isPlayable())
 			{
+				// Stealth door targeting.
+				if (obj.isDoor())
+				{
+					final L2DoorInstance door = (L2DoorInstance) obj;
+					if (!door.getTemplate().isStealth())
+					{
+						continue;
+					}
+				}
+				
 				if (!L2Skill.checkForAreaOffensiveSkills(activeChar, obj, skill, srcInArena))
 				{
 					continue;
