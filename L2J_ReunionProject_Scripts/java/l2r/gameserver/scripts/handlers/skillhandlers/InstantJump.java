@@ -18,7 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.skillhandlers;
 
-import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.handler.ISkillHandler;
@@ -88,19 +87,13 @@ public class InstantJump implements ISkillHandler
 		y = (int) (py + (25 * Math.sin(ph)));
 		z = target.getZ();
 		
-		Location loc = new Location(x, y, z);
-		
-		if (Config.GEODATA > 0)
-		{
-			loc = GeoData.getInstance().moveCheck(activeChar.getX(), activeChar.getY(), activeChar.getZ(), x, y, z, activeChar.getInstanceId());
-		}
-		
+		final Location destination = GeoData.getInstance().moveCheck(activeChar.getX(), activeChar.getY(), activeChar.getZ(), x, y, z, activeChar.getInstanceId());
 		activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-		activeChar.broadcastPacket(new FlyToLocation(activeChar, loc.getX(), loc.getY(), loc.getZ(), FlyType.DUMMY));
+		activeChar.broadcastPacket(new FlyToLocation(activeChar, destination, FlyType.DUMMY));
 		activeChar.abortAttack();
 		activeChar.abortCast();
 		
-		activeChar.setXYZ(loc.getX(), loc.getY(), loc.getZ());
+		activeChar.setXYZ(destination);
 		activeChar.broadcastPacket(new ValidateLocation(activeChar));
 		
 		if (skill.hasEffects())

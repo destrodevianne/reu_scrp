@@ -18,7 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.actionhandlers;
 
-import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.InstanceType;
@@ -94,15 +93,7 @@ public class L2PcInstanceAction implements IActionHandler
 					}
 					else
 					{
-						if (Config.GEODATA > 0)
-						{
-							if (GeoData.getInstance().canSeeTarget(activeChar, target))
-							{
-								activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
-								activeChar.onActionRequest();
-							}
-						}
-						else
+						if (GeoData.getInstance().canSeeTarget(activeChar, target))
 						{
 							activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 							activeChar.onActionRequest();
@@ -113,14 +104,7 @@ public class L2PcInstanceAction implements IActionHandler
 				{
 					// This Action Failed packet avoids activeChar getting stuck when clicking three or more times
 					activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-					if (Config.GEODATA > 0)
-					{
-						if (GeoData.getInstance().canSeeTarget(activeChar, target))
-						{
-							activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, target);
-						}
-					}
-					else
+					if (GeoData.getInstance().canSeeTarget(activeChar, target))
 					{
 						activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, target);
 					}
