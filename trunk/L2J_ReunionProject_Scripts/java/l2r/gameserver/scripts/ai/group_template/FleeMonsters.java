@@ -18,7 +18,6 @@
  */
 package l2r.gameserver.scripts.ai.group_template;
 
-import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.model.Location;
@@ -73,15 +72,7 @@ public final class FleeMonsters extends AbstractNpcAI
 		final int posY = (int) (npc.getY() + (FLEE_DISTANCE * Math.sin(radians)));
 		final int posZ = npc.getZ();
 		
-		final Location destination;
-		if (Config.GEODATA > 0)
-		{
-			destination = GeoData.getInstance().moveCheck(npc.getX(), npc.getY(), npc.getZ(), posX, posY, posZ, attacker.getInstanceId());
-		}
-		else
-		{
-			destination = new Location(posX, posY, posZ);
-		}
+		final Location destination = GeoData.getInstance().moveCheck(npc.getX(), npc.getY(), npc.getZ(), posX, posY, posZ, attacker.getInstanceId());
 		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, destination);
 		return super.onAttack(npc, attacker, damage, isSummon);
 	}

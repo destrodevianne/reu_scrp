@@ -18,7 +18,6 @@
  */
 package l2r.gameserver.scripts.handlers.actionhandlers;
 
-import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.enums.CtrlIntention;
 import l2r.gameserver.enums.InstanceType;
@@ -58,16 +57,7 @@ public class L2PetInstanceAction implements IActionHandler
 			// Check if the pet is attackable (without a forced attack) and isn't dead
 			if (target.isAutoAttackable(activeChar) && !isOwner)
 			{
-				if (Config.GEODATA > 0)
-				{
-					if (GeoData.getInstance().canSeeTarget(activeChar, target))
-					{
-						// Set the L2PcInstance Intention to AI_INTENTION_ATTACK
-						activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
-						activeChar.onActionRequest();
-					}
-				}
-				else
+				if (GeoData.getInstance().canSeeTarget(activeChar, target))
 				{
 					activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 					activeChar.onActionRequest();
@@ -75,15 +65,7 @@ public class L2PetInstanceAction implements IActionHandler
 			}
 			else if (!((L2Character) target).isInsideRadius(activeChar, 150, false, false))
 			{
-				if (Config.GEODATA > 0)
-				{
-					if (GeoData.getInstance().canSeeTarget(activeChar, target))
-					{
-						activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, target);
-						activeChar.onActionRequest();
-					}
-				}
-				else
+				if (GeoData.getInstance().canSeeTarget(activeChar, target))
 				{
 					activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, target);
 					activeChar.onActionRequest();

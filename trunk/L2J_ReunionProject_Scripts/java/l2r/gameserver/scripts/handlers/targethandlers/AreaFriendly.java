@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import l2r.Config;
 import l2r.gameserver.GeoData;
 import l2r.gameserver.handler.ITargetTypeHandler;
 import l2r.gameserver.model.L2Object;
@@ -92,7 +91,7 @@ public class AreaFriendly implements ITargetTypeHandler
 	
 	private boolean checkTarget(L2Character activeChar, L2Character target)
 	{
-		if ((Config.GEODATA > 0) && !GeoData.getInstance().canSeeTarget(activeChar, target))
+		if (!GeoData.getInstance().canSeeTarget(activeChar, target))
 		{
 			return false;
 		}
