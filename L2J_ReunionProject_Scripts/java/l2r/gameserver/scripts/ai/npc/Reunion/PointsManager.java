@@ -80,7 +80,7 @@ public final class PointsManager extends AbstractNpcAI
 		final int npcId = npc.getId();
 		if (npcId == NpcId)
 		{
-			String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/PointsManager/1.htm");
+			String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/PointsManager/1.htm");
 			html = html.replaceAll("%player%", player.getName());
 			html = html.replaceAll("%REP_PRICE%", String.valueOf(REP_PRICE));
 			html = html.replaceAll("%FAME_PRICE%", String.valueOf(FAME_PRICE));
