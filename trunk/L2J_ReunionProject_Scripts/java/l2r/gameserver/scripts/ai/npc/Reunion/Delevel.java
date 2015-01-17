@@ -114,7 +114,7 @@ public class Delevel extends Quest
 		if (player.getLevel() < MINLVL)
 		{
 			final String filename = ((qs != null) && (qs.get("experience") == "off") ? "emergency.htm" : LVL_TOO_LOW);
-			htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/" + filename);
+			htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/" + filename);
 			htmltext = htmltext.replace("%MINLVL%", String.valueOf(MINLVL));
 		}
 		
@@ -137,12 +137,12 @@ public class Delevel extends Quest
 			}
 			else if (player.getLevel() < MINLVL)
 			{
-				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/" + LVL_TOO_LOW);
+				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/" + LVL_TOO_LOW);
 				htmltext = htmltext.replace("%MINLVL%", String.valueOf(MINLVL));
 			}
 			else
 			{
-				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/" + READY);
+				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/" + READY);
 				htmltext = htmltext.replace("%MINLVL%", String.valueOf(MINLVL));
 				htmltext = htmltext.replace("%KARMA%", String.valueOf(KARMA));
 				htmltext = htmltext.replace("%LEVEL%", String.valueOf(player.getLevel()));
@@ -157,7 +157,7 @@ public class Delevel extends Quest
 		{
 			if (player.isGM() || ((player.getAccessLevel().getLevel() > 0) && (player.getAccessLevel().getLevel() < ACCESSLEVEL)))
 			{
-				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/notforgm.htm");
+				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/notforgm.htm");
 			}
 			else if (player.getKarma() > KARMA)
 			{
@@ -176,7 +176,7 @@ public class Delevel extends Quest
 				}
 				else
 				{
-					htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/" + LVL_TOO_LOW);
+					htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/" + LVL_TOO_LOW);
 					htmltext = htmltext.replace("%MINLVL%", String.valueOf(MINLVL));
 				}
 			}
@@ -194,7 +194,7 @@ public class Delevel extends Quest
 			}
 			else if (Long.parseLong(st.get("timeleft")) > System.currentTimeMillis())
 			{
-				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/timeleft.htm");
+				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/timeleft.htm");
 				
 				htmltext = htmltext.replace("%DELAY%", String.valueOf(DELAY / 60) + " hour(s) and " + String.valueOf(DELAY % 60) + " minute(s)");
 				
@@ -227,7 +227,7 @@ public class Delevel extends Quest
 			}
 			else if (player.getLevel() < MINLVL)
 			{
-				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/" + LVL_TOO_LOW);
+				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/" + LVL_TOO_LOW);
 				htmltext = htmltext.replace("%MINLVL%", String.valueOf(MINLVL));
 			}
 			else if (player.getLevel() == MINLVL)
@@ -251,7 +251,7 @@ public class Delevel extends Quest
 				
 				if (player.getLevel() >= MINLVL)
 				{
-					htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/" + READY);
+					htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/" + READY);
 					htmltext = htmltext.replace("%MINLVL%", String.valueOf(MINLVL));
 					htmltext = htmltext.replace("%KARMA%", String.valueOf(KARMA));
 					htmltext = htmltext.replace("%LEVEL%", String.valueOf(player.getLevel()));
@@ -271,7 +271,7 @@ public class Delevel extends Quest
 			}
 			else if (player.getLevel() <= MINLVL)
 			{
-				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/" + LVL_TOO_LOW);
+				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/" + LVL_TOO_LOW);
 				htmltext = htmltext.replace("%MINLVL%", String.valueOf(MINLVL + 1));
 			}
 			else if (st.getQuestItemsCount(ADENA) < getDevitalizePrice(player))
@@ -309,7 +309,7 @@ public class Delevel extends Quest
 					player.sendPacket(new CreatureSay(npc.getObjectId(), 0, "Delevel Manager", "Congratulations, " + player.getName() + ", Your Vitality has been decreased!"));
 				}
 				
-				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/Delevel/" + READY);
+				htmltext = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/Delevel/" + READY);
 				htmltext = htmltext.replace("%MINLVL%", String.valueOf(MINLVL));
 				htmltext = htmltext.replace("%KARMA%", String.valueOf(KARMA));
 				htmltext = htmltext.replace("%LEVEL%", String.valueOf(player.getLevel()));
