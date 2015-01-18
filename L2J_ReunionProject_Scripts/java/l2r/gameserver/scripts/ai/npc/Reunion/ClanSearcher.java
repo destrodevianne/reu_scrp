@@ -82,7 +82,7 @@ public class ClanSearcher extends AbstractNpcAI
 		}
 		else if (event.startsWith("newclan.htm"))
 		{
-			String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/ClanSearcher/newclan.htm");
+			String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/ClanSearcher/newclan.htm");
 			html = html.replaceAll("%clanname%", player.getClan().getName());
 			html = html.replaceAll("%clanlevel%", "" + player.getClan().getLevel());
 			html = html.replaceAll("%clanleader%", player.getClan().getLeaderName());
@@ -91,7 +91,7 @@ public class ClanSearcher extends AbstractNpcAI
 		}
 		else if (event.startsWith("deleteclan.htm"))
 		{
-			sendCBHtml(player, HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/ClanSearcher/deleteclan.htm"));
+			sendCBHtml(player, HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/ClanSearcher/deleteclan.htm"));
 		}
 		return "";
 	}
@@ -102,7 +102,7 @@ public class ClanSearcher extends AbstractNpcAI
 		final int npcId = npc.getId();
 		if (npcId == NpcId)
 		{
-			String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/custom/ClanSearcher/1.htm");
+			String html = HtmCache.getInstance().getHtm(player.getHtmlPrefix(), "data/scripts/ai/reunionNpc/ClanSearcher/1.htm");
 			html = html.replaceAll("%player%", player.getName());
 			
 			if (player.getClan() == null)
