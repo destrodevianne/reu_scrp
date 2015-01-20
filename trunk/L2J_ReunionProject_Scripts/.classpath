@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="lib/reunion-interface.jar"/>
 	<classpathentry kind="lib" path="lib/reunion-protection.jar"/>
 	<classpathentry kind="lib" path="lib/L2J_GeoDriver.jar"/>
+	<classpathentry kind="lib" path="lib/L2J_GeoAbstraction.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
