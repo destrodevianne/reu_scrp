@@ -127,7 +127,6 @@ public class CrystalCaverns extends Quest
 		}
 	}
 	
-	private static final String qn = "CrystalCaverns";
 	private static final int TEMPLATE_ID = 10;
 	private static final boolean debug = false;
 	
@@ -1441,6 +1440,74 @@ public class CrystalCaverns extends Quest
 	private static final int DRAGONSCALETIME = 3000;
 	private static final int DRAGONCLAWTIME = 3000;
 	
+	public CrystalCaverns()
+	{
+		super(-1, CrystalCaverns.class.getSimpleName(), "instances");
+		
+		addStartNpc(ORACLE_GUIDE_1);
+		addTalkId(ORACLE_GUIDE_1);
+		addTalkId(ORACLE_GUIDE_3);
+		addStartNpc(ORACLE_GUIDE_4);
+		addFirstTalkId(ORACLE_GUIDE_4);
+		addTalkId(ORACLE_GUIDE_4);
+		addFirstTalkId(CRYSTAL_GOLEM);
+		addAttackId(TEARS);
+		addTrapActionId(DOOR_OPENING_TRAP[0]);
+		addKillId(TEARS);
+		addKillId(GK1);
+		addKillId(GK2);
+		addKillId(TEROD);
+		addKillId(WEYLIN);
+		addKillId(DOLPH);
+		addKillId(DARNEL);
+		addKillId(KECHI);
+		addKillId(GUARDIAN);
+		addKillId(GUARDIAN2);
+		addKillId(TOURMALINE);
+		addKillId(BAYLOR);
+		addSpellFinishedId(BAYLOR);
+		addKillId(ALARMID);
+		int[] Talk =
+		{
+			32275,
+			32276,
+			32277
+		};
+		for (int npc : Talk)
+		{
+			addTalkId(npc);
+		}
+		int[] firstTalk =
+		{
+			32274,
+			32275,
+			32276,
+			32277,
+			ORACLE_GUIDE_1,
+			ORACLE_GUIDE_2
+		};
+		for (int npc : firstTalk)
+		{
+			addFirstTalkId(npc);
+		}
+		int[] skillSee =
+		{
+			25534,
+			32275,
+			32276,
+			32277,
+			BAYLOR
+		};
+		for (int npc : skillSee)
+		{
+			addSkillSeeId(npc);
+		}
+		addKillId(MOBLIST);
+		addKillId(CGMOBS);
+		addEnterZoneId(ZONES);
+		addExitZoneId(ZONES);
+	}
+	
 	private boolean checkConditions(L2PcInstance player)
 	{
 		if (debug)
@@ -1828,8 +1895,7 @@ public class CrystalCaverns extends Quest
 				CCWorld world = (CCWorld) tmpworld;
 				if ((world.getStatus() == 0) && world.oracle.contains(npc))
 				{
-					String htmltext = "32281.htm";
-					return htmltext;
+					return "32281.htm";// TODO: Missing HTML.
 				}
 			}
 			npc.showChatWindow(player);
@@ -1843,8 +1909,7 @@ public class CrystalCaverns extends Quest
 				CCWorld world = (CCWorld) tmpworld;
 				if (!world.OracleTriggered[npc.getId() - 32275])
 				{
-					String htmltext = "no.htm";
-					return htmltext;
+					return "no.htm"; // TODO: Missing HTML.
 				}
 				npc.showChatWindow(player);
 				return null;
@@ -1855,19 +1920,13 @@ public class CrystalCaverns extends Quest
 			InstanceWorld tmpworld = InstanceManager.getInstance().getWorld(npc.getInstanceId());
 			if (tmpworld instanceof CCWorld)
 			{
-				String htmltext = "no.htm";
-				return htmltext;
+				return "no.htm"; // TODO: Missing HTML.
 			}
 		}
 		else if (npc.getId() == 32279)
 		{
-			QuestState st = player.getQuestState(Q00131_BirdInACage.class.getSimpleName());
-			String htmltext = "32279.htm";
-			if ((st != null) && !st.isCompleted())
-			{
-				htmltext = "32279-01.htm";
-			}
-			return htmltext;
+			final QuestState st = player.getQuestState(Q00131_BirdInACage.class.getSimpleName());
+			return (st != null) && !st.isCompleted() ? "32279-01.htm" : "32279.htm";
 		}
 		else if (npc.getId() == CRYSTAL_GOLEM)
 		{
@@ -2437,49 +2496,38 @@ public class CrystalCaverns extends Quest
 			{
 				if (partyMember.getInstanceId() == instanceId)
 				{
-					QuestState st = partyMember.getQuestState(qn);
-					if (st == null)
+					if (!isBaylor && hasQuestItems(partyMember, CONT_CRYSTAL))
 					{
-						st = newQuestState(partyMember);
-					}
-					if (!isBaylor && st.hasQuestItems(CONT_CRYSTAL))
-					{
-						st.takeItems(CONT_CRYSTAL, 1);
-						st.giveItems(bossCry, 1);
+						takeItems(partyMember, CONT_CRYSTAL, 1);
+						giveItems(partyMember, bossCry, 1);
 					}
 					if (getRandom(10) < 5)
 					{
-						st.giveItems(WHITE_SEED, num);
+						giveItems(partyMember, WHITE_SEED, num);
 					}
 					else
 					{
-						st.giveItems(BLACK_SEED, num);
+						giveItems(partyMember, BLACK_SEED, num);
 					}
 				}
 			}
 		}
 		else if (player.getInstanceId() == instanceId)
 		{
-			QuestState st = player.getQuestState(qn);
-			if (st == null)
+			if (!isBaylor && hasQuestItems(player, CONT_CRYSTAL))
 			{
-				st = newQuestState(player);
-			}
-			if (!isBaylor && st.hasQuestItems(CONT_CRYSTAL))
-			{
-				st.takeItems(CONT_CRYSTAL, 1);
-				st.giveItems(bossCry, 1);
+				takeItems(player, CONT_CRYSTAL, 1);
+				giveItems(player, bossCry, 1);
 			}
 			if (getRandom(10) < 5)
 			{
-				st.giveItems(WHITE_SEED, num);
+				giveItems(player, WHITE_SEED, num);
 			}
 			else
 			{
-				st.giveItems(BLACK_SEED, num);
+				giveItems(player, BLACK_SEED, num);
 			}
 		}
-		
 	}
 	
 	@Override
@@ -2723,7 +2771,7 @@ public class CrystalCaverns extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		int npcId = npc.getId();
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			st = newQuestState(player);
@@ -2972,21 +3020,19 @@ public class CrystalCaverns extends Quest
 							{
 								return "";
 							}
-							QuestState st = ((L2PcInstance) character).getQuestState(qn);
-							if (st == null)
-							{
-								st = newQuestState((L2PcInstance) character);
-							}
-							if (!st.hasQuestItems(RACE_KEY))
+							
+							if (!hasQuestItems((L2PcInstance) character, RACE_KEY))
 							{
 								return "";
 							}
+							
 							if (world.roomsStatus[zone.getId() - 20104] == 0)
 							{
 								runEmeraldRooms(world, spawns, room);
 							}
+							
 							door.openMe();
-							st.takeItems(RACE_KEY, 1);
+							takeItems((L2PcInstance) character, RACE_KEY, 1);
 							world.openedDoors.put(door, (L2PcInstance) character);
 							break;
 						}
@@ -3040,82 +3086,5 @@ public class CrystalCaverns extends Quest
 			}
 		}
 		return super.onExitZone(character, zone);
-	}
-	
-	public CrystalCaverns()
-	{
-		super(-1, qn, "instances");
-		
-		addStartNpc(ORACLE_GUIDE_1);
-		addTalkId(ORACLE_GUIDE_1);
-		addTalkId(ORACLE_GUIDE_3);
-		addStartNpc(ORACLE_GUIDE_4);
-		addFirstTalkId(ORACLE_GUIDE_4);
-		addTalkId(ORACLE_GUIDE_4);
-		addFirstTalkId(CRYSTAL_GOLEM);
-		addAttackId(TEARS);
-		addTrapActionId(DOOR_OPENING_TRAP[0]);
-		addKillId(TEARS);
-		addKillId(GK1);
-		addKillId(GK2);
-		addKillId(TEROD);
-		addKillId(WEYLIN);
-		addKillId(DOLPH);
-		addKillId(DARNEL);
-		addKillId(KECHI);
-		addKillId(GUARDIAN);
-		addKillId(GUARDIAN2);
-		addKillId(TOURMALINE);
-		addKillId(BAYLOR);
-		addSpellFinishedId(BAYLOR);
-		addKillId(ALARMID);
-		int[] Talk =
-		{
-			32275,
-			32276,
-			32277
-		};
-		for (int npc : Talk)
-		{
-			addTalkId(npc);
-		}
-		int[] firstTalk =
-		{
-			32274,
-			32275,
-			32276,
-			32277,
-			ORACLE_GUIDE_1,
-			ORACLE_GUIDE_2
-		};
-		for (int npc : firstTalk)
-		{
-			addFirstTalkId(npc);
-		}
-		int[] skillSee =
-		{
-			25534,
-			32275,
-			32276,
-			32277,
-			BAYLOR
-		};
-		for (int npc : skillSee)
-		{
-			addSkillSeeId(npc);
-		}
-		for (int mob : MOBLIST)
-		{
-			addKillId(mob);
-		}
-		for (int mob : CGMOBS)
-		{
-			addKillId(mob);
-		}
-		for (int zones : ZONES)
-		{
-			addEnterZoneId(zones);
-			addExitZoneId(zones);
-		}
 	}
 }
