@@ -13,8 +13,6 @@ import l2r.util.Rnd;
 
 public class Q00230_TestOfSummoner extends Quest
 {
-	private static final String qn = "Q00230_TestOfSummoner";
-	
 	static int MARK_OF_SUMMONER_ID = 3336;
 	static int LETOLIZARDMAN_AMULET_ID = 3337;
 	static int SAC_OF_REDSPORES_ID = 3338;
@@ -315,7 +313,7 @@ public class Q00230_TestOfSummoner extends Quest
 	
 	public Q00230_TestOfSummoner()
 	{
-		super(230, qn, "");
+		super(230, Q00230_TestOfSummoner.class.getSimpleName(), "");
 		addStartNpc(Galatea);
 		for (int npcId : npc)
 		{
@@ -342,7 +340,7 @@ public class Q00230_TestOfSummoner extends Quest
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return htmltext;
@@ -476,7 +474,7 @@ public class Q00230_TestOfSummoner extends Quest
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg(player);
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return htmltext;
@@ -791,7 +789,7 @@ public class Q00230_TestOfSummoner extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isSummon)
 	{
-		QuestState st = player.getQuestState(qn);
+		QuestState st = player.getQuestState(getName());
 		if (st == null)
 		{
 			return null;

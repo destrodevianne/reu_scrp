@@ -100,7 +100,7 @@ public class Q00179_IntoTheLargeCavern extends Quest
 					}
 					else
 					{
-						final QuestState prev = player.getQuestState("178_IconicTrinity");
+						final QuestState prev = player.getQuestState(Q00178_IconicTrinity.class.getSimpleName());
 						final int level = player.getLevel();
 						if ((prev != null) && prev.isCompleted() && (level >= 17) && (level <= 21) && (player.getClassId().level() == 0))
 						{
