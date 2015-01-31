@@ -27,6 +27,7 @@ public class Q00714_PathToBecomingALordSchuttgart extends Quest
 	{
 		super(714, Q00714_PathToBecomingALordSchuttgart.class.getSimpleName(), "Path to Becoming a Lord - Schuttgart");
 		addStartNpc(August);
+		addTalkId(August);
 		addTalkId(Newyear);
 		addTalkId(Yasheni);
 		for (int i = 22801; i < 22812; i++)

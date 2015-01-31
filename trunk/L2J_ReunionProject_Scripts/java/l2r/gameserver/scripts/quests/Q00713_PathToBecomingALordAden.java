@@ -30,6 +30,7 @@ public class Q00713_PathToBecomingALordAden extends Quest
 	{
 		super(713, Q00713_PathToBecomingALordAden.class.getSimpleName(), "Path to Becoming a Lord - Aden");
 		addStartNpc(Logan);
+		addTalkId(Logan);
 		addTalkId(Orven);
 		addKillId(Orcs);
 	}

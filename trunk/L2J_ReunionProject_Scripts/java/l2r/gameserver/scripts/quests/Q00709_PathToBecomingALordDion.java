@@ -45,6 +45,7 @@ public class Q00709_PathToBecomingALordDion extends Quest
 	{
 		super(709, Q00709_PathToBecomingALordDion.class.getSimpleName(), "Path to Becoming a Lord - Dion");
 		addStartNpc(Crosby);
+		addTalkId(Crosby);
 		addTalkId(Sophia);
 		addTalkId(Rouke);
 		questItemIds = new int[]
