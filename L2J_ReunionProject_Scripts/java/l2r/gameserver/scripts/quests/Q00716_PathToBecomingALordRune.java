@@ -17,10 +17,6 @@ import l2r.gameserver.network.NpcStringId;
 import l2r.gameserver.network.clientpackets.Say2;
 import l2r.gameserver.network.serverpackets.NpcSay;
 
-/**
- * TODO: ΡƒΠ΄Π°Π»Ρ�Ρ‚Ρ� ΠΊΠ²ΠµΡ�Ρ‚ Ρƒ Π΄ΠΎΠ²ΠµΡ€ΠµΠ½Π½ΠΎΠ³ΠΎ Π»ΠΈΡ†Π°
- */
-
 public class Q00716_PathToBecomingALordRune extends Quest
 {
 	private static final int Frederick = 35509;
@@ -136,7 +132,6 @@ public class Q00716_PathToBecomingALordRune extends Quest
 						st.exitQuest(true);
 					}
 				}
-				// Π›ΠΈΠ΄ΠµΡ€ ΠΊΠ»Π°Π½Π° Π² ΠΈΠ³Ρ€Πµ, Π³ΠΎΠ²ΠΎΡ€Ρ�Ρ‰ΠΈΠΉ Π½Πµ Π»ΠΈΠ΄ΠµΡ€, Ρƒ Π»ΠΈΠ΄ΠµΡ€Π° Π²Π·Ρ�Ρ‚ ΠΊΠ²ΠµΡ�Ρ‚ ΠΈ ΠΏΡ€ΠΎΠΉΠ΄ΠµΠ½ Π΄ΠΎ Ρ�Ρ‚Π°Π΄ΠΈΠΈ Π½Π°Π·Π½Π°Ρ‡ΠµΠ½ΠΈΡ� ΠΏΠΎΠ²ΠµΡ€ΠµΠ½Π½ΠΎΠ³ΠΎ
 				else if ((castleOwner != null) && (castleOwner != st.getPlayer()) && (castleOwner.getQuestState(Q00716_PathToBecomingALordRune.class.getSimpleName()) != null) && (castleOwner.getQuestState(Q00716_PathToBecomingALordRune.class.getSimpleName()).getInt("cond") == 4))
 				{
 					if (castleOwner.getDistanceSq(npc) <= 200)
