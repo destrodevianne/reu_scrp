@@ -40,6 +40,7 @@ public class Q00712_PathToBecomingALordOren extends Quest
 			Brasseur,
 			Marty
 		});
+		addTalkId(Brasseur);
 		addTalkId(Croop);
 		addTalkId(Marty);
 		addTalkId(Valleria);

@@ -27,6 +27,7 @@ public class Q00715_PathToBecomingALordGoddard extends Quest
 	{
 		super(715, Q00715_PathToBecomingALordGoddard.class.getSimpleName(), "Path to Becoming a Lord - Goddard");
 		addStartNpc(Alfred);
+		addTalkId(Alfred);
 		addKillId(WaterSpiritAshutar);
 		addKillId(FireSpiritNastron);
 	}

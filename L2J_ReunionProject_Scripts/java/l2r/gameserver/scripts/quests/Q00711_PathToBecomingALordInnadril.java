@@ -39,6 +39,7 @@ public class Q00711_PathToBecomingALordInnadril extends Quest
 	{
 		super(711, Q00711_PathToBecomingALordInnadril.class.getSimpleName(), "Path to Becoming a Lord - Innadril");
 		addStartNpc(Neurath);
+		addTalkId(Neurath);
 		addTalkId(IasonHeine);
 		addKillId(mobs);
 	}
