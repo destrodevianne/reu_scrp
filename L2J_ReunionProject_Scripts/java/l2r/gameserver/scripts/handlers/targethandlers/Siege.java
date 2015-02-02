@@ -21,6 +21,7 @@ package l2r.gameserver.scripts.handlers.targethandlers;
 import l2r.gameserver.handler.ITargetTypeHandler;
 import l2r.gameserver.model.L2Object;
 import l2r.gameserver.model.actor.L2Character;
+import l2r.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import l2r.gameserver.model.skills.L2Skill;
 import l2r.gameserver.model.skills.targets.L2TargetType;
 import l2r.gameserver.network.SystemMessageId;
@@ -34,7 +35,7 @@ public class Siege implements ITargetTypeHandler
 	public L2Object[] getTargetList(L2Skill skill, L2Character activeChar, boolean onlyFirst, L2Character target)
 	{
 		// Check for null target or any other invalid target
-		if ((target == null) || target.isDead() || !target.isDoor())
+		if ((target == null) || target.isDead() || (!target.isDoor() && !(target instanceof L2SiegeFlagInstance)))
 		{
 			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			return _emptyTargetList;
