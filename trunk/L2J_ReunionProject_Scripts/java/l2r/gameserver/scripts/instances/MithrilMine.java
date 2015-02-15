@@ -68,7 +68,7 @@ public final class MithrilMine extends AbstractNpcAI
 		new Location(185664, -184720, -3308, 27892)
 	};
 	
-	private MithrilMine()
+	public MithrilMine()
 	{
 		super(MithrilMine.class.getSimpleName(), "instances");
 		addFirstTalkId(KEGOR);
@@ -253,10 +253,5 @@ public final class MithrilMine extends AbstractNpcAI
 		teleportPlayer(player, loc, world.getInstanceId(), false);
 		world.addAllowed(player.getObjectId());
 		return world.getInstanceId();
-	}
-	
-	public static void main(String[] args)
-	{
-		new MithrilMine();
 	}
 }
